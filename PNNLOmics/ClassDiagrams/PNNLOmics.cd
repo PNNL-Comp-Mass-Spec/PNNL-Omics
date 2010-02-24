@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PNNLOmics.Feature">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAAAAAAABAiACAAAAAIAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Features\FeatureBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.LCMSFeatureCluster">
+    <Position X="1.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAABAAAAAAAAAAAAAABAAABAAAA=</HashCode>
+      <FileName>Data\Features\LCMSFeatureCluster.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PNNLOmics.Processor&lt;T, U, V&gt;" Collapsed="true">
+    <Position X="15.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Processor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.MassTag" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\MassTags\MassTag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.Peptide" Collapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\MassTags\Peptide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.Protein" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\MassTags\Protein.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.Data.LCMSFeature">
+    <Position X="4.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAACAAAAAAAAAAAAAAAAAAAAAAAABAAABAAAA=</HashCode>
+      <FileName>Data\Features\LCMSFeature.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PNNLOmics.Data.MSFeature">
+    <Position X="6.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAABAAABAAAA=</HashCode>
+      <FileName>Data\Features\LCMSFeature.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PNNLOmics.ScanSet" Collapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ScanSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.LCScan">
+    <Position X="7.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAACAAAAAAAAAAgACAA=</HashCode>
+      <FileName>Data\LCScan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.IMSScan">
+    <Position X="9.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\IMSScan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.MSPeak">
+    <Position X="1.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Peaks\MSPeak.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.IsotopicProfile" Collapsed="true">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\IsotopicProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.DatasetBase" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\DatasetBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.Dataset" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Dataset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.Data.Scan">
+    <Position X="8.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAEAAAAAAAAAEAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Scan.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PNNLOmics.ChromatagraphicPeak">
+    <Position X="3.75" Y="9.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Data\Peaks\ChromatagraphicPeak.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.Peak">
+    <Position X="2.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAABAAAAAEAAAAAAAACAAgAAAACAAAA=</HashCode>
+      <FileName>Data\Peaks\Peak.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="PNNLOmics.IBaseData&lt;T&gt;" Collapsed="true">
+    <Position X="12.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Data\IBaseData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
