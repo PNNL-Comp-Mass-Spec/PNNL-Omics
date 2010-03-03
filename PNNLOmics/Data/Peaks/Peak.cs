@@ -49,6 +49,7 @@ namespace PNNLOmics.Data
         #region BaseData<Peak> Members
         public override void Clear()
         {
+			throw new NotImplementedException();
         }
         #endregion
     }

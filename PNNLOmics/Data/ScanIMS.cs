@@ -2,7 +2,7 @@
 
 namespace PNNLOmics.Data
 {
-    public class IMSScan: Scan
+    public class ScanIMS: Scan
     {
         private float m_driftTime;
 
@@ -11,5 +11,10 @@ namespace PNNLOmics.Data
             get { return m_driftTime; }
             set { m_driftTime = value; }
         }
+
+		public override void Clear()
+		{
+			throw new NotImplementedException();
+		}
     }
 }

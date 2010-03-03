@@ -65,63 +65,13 @@ namespace PNNLOmics.Data
             get { return m_msFeatureList; }
             set { m_msFeatureList = value; }
         }
-    
-        public UMC()
-        {
-            
-        }
 
         #region BaseData<UMC> Members
 
-        public void Clear()
+        public override void Clear()
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IComparer<UMC> Members
-
-        public int Compare(UMC x, UMC y)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-    }
-
-    public class MSFeature : Feature
-    {
-        private IList<MSPeak> m_msPeakList;
-
-        public IList<MSPeak> MSPeakList
-        {
-            get { return m_msPeakList; }
-            set { m_msPeakList = value; }
-        }
-    
-        public int Fit
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        #region BaseData<MSFeature> Members
-
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IComparer<MSFeature> Members
-
 
         #endregion
     }

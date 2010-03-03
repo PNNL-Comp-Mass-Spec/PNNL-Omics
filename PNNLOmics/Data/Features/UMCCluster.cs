@@ -29,14 +29,10 @@ namespace PNNLOmics.Data
 
         #region BaseData<UMCCluster> Members
 
-        public void Clear()
+        public override void Clear()
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IComparable<UMCCluster> Members
 
         #endregion
     }

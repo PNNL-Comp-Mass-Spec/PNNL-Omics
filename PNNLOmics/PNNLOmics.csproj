@@ -45,21 +45,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Features\MSFeature.cs" />
     <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />
     <Compile Include="Data\Dataset.cs" />
     <Compile Include="Data\DatasetBase.cs" />
     <Compile Include="Data\MassTags\MassTag.cs" />
     <Compile Include="Data\MassTags\Peptide.cs" />
-    <Compile Include="Data\IMSScan.cs" />
+    <Compile Include="Data\ScanIMS.cs" />
     <Compile Include="Data\IsotopicProfile.cs" />
-    <Compile Include="Data\LCScan.cs" />
+    <Compile Include="Data\ScanLC.cs" />
     <Compile Include="Data\Peaks\MSPeak.cs" />
     <Compile Include="Data\Peaks\Peak.cs" />
     <Compile Include="Generic\Processor.cs" />
     <Compile Include="Data\Features\Feature.cs" />
     <Compile Include="Data\BaseData.cs" />
-    <Compile Include="Data\Features\LCMSFeature.cs" />
-    <Compile Include="Data\Features\LCMSFeatureCluster.cs" />
+    <Compile Include="Data\Features\UMC.cs" />
+    <Compile Include="Data\Features\UMCCluster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\MassTags\Protein.cs" />
     <Compile Include="Data\Scan.cs" />

@@ -8,12 +8,12 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Encapsulates Scan information of the LC dimension
     /// </summary>
-    public class LCScan: Scan
+    public class ScanLC: Scan
     {
         /// <summary>
         /// List of all IMS Scans available in the dataset for this scan.
         /// </summary>
-        private IList<IMSScan> m_imsScanList;
+        private IList<ScanIMS> m_ScanIMSList;
         /// <summary>
         /// Normalized Elution Time
         /// </summary>
@@ -31,10 +31,15 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the list of IMS Scans if data contains IMS data.
         /// </summary>
-        public IList<IMSScan> ImsScanList
+        public IList<ScanIMS> ScanIMSList
         {
-            get { return m_imsScanList; }
-            set { m_imsScanList = value; }
+            get { return m_ScanIMSList; }
+            set { m_ScanIMSList = value; }
         }
+
+		public override void Clear()
+		{
+			throw new NotImplementedException();
+		}
     }
 }
