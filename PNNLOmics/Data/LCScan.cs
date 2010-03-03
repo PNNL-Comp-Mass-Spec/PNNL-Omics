@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PNNLOmics
+namespace PNNLOmics.Data
 {
     /// <summary>
     /// Encapsulates Scan information of the LC dimension
@@ -13,7 +13,7 @@ namespace PNNLOmics
         /// <summary>
         /// List of all IMS Scans available in the dataset for this scan.
         /// </summary>
-        private List<IMSScan> m_imsScanList;
+        private IList<IMSScan> m_imsScanList;
         /// <summary>
         /// Normalized Elution Time
         /// </summary>
@@ -31,7 +31,7 @@ namespace PNNLOmics
         /// <summary>
         /// Gets or sets the list of IMS Scans if data contains IMS data.
         /// </summary>
-        public int ImsScanList
+        public IList<IMSScan> ImsScanList
         {
             get { return m_imsScanList; }
             set { m_imsScanList = value; }

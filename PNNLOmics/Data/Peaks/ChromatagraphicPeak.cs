@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PNNLOmics
+namespace PNNLOmics.Data
 {
     public class ChromatagraphicPeak: Peak
     {
@@ -31,6 +31,11 @@ namespace PNNLOmics
             set
             {
             }
+        }
+
+        public override void Clear()
+        {
+            throw new NotImplementedException();
         }
     }
 }

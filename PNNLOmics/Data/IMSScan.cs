@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace PNNLOmics
+namespace PNNLOmics.Data
 {
-    public class IMSScan:Scan
+    public class IMSScan: Scan
     {
         private float m_driftTime;
 

@@ -1,24 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace PNNLOmics
+namespace PNNLOmics.Data
 {
-    public class LCMSFeatureCluster: Feature, IBaseData<LCMSFeatureCluster>
+    /// <summary>
+    /// Class that contains information and references to a cluster of UMC's.
+    /// </summary>
+    public class UMCCluster: Feature
     {
-        public List<LCMSFeature> Features
+        private System.Collections.Generic.IList<UMC> m_umcList;
+        private IList<MassTag> m_massTagList;
+
+        private IList<MassTag> MassTagList
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+            get { return m_massTagList; }
+            set { m_massTagList = value; }
         }
 
-        #region IBaseData<LCMSFeatureCluster> Members
+        /// <summary>
+        /// Gets or sets the list of UMC's that comprise this cluster.
+        /// </summary>
+        private IList<UMC> UMCList
+        {
+            get { return m_umcList; }
+            set { m_umcList = value; }
+        }
+
+        #region BaseData<UMCCluster> Members
 
         public void Clear()
         {
@@ -27,21 +36,7 @@ namespace PNNLOmics
 
         #endregion
 
-        #region IComparer<LCMSFeatureCluster> Members
-
-        public int Compare(LCMSFeatureCluster x, LCMSFeatureCluster y)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+        #region IComparable<UMCCluster> Members
 
         #endregion
     }

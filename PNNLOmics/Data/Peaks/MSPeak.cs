@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PNNLOmics
+namespace PNNLOmics.Data
 {
     public class MSPeak: Peak
     {
@@ -35,5 +35,11 @@ namespace PNNLOmics
             {
             }
         }
+
+        public override void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

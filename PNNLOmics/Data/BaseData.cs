@@ -6,8 +6,9 @@ using System.Text;
 namespace PNNLOmics
 {
     [Serializable]
-    public interface IBaseData<T>: IComparer<T>, IDisposable
+    public abstract class BaseData
     {
-        void Clear();
+        int ID { get; set; }
+        public abstract void Clear();
     }
 }

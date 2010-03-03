@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PNNLOmics
+namespace PNNLOmics.Data
 {
-    public abstract class Peak
+    public abstract class Peak: BaseData
     {
         /// <summary>
         /// Height of the peak.
         /// </summary>
-        protected int       m_height;
+        private int       m_height;
         /// <summary>
         /// Width of the peak.
         /// </summary>
-        protected double    m_width;
+        private double    m_width;
         /// <summary>
         /// X-value can be time, scan, m/z
         /// </summary>
-        protected double    m_xValue;
+        private double    m_xValue;
 
         /// <summary>
         /// Gets or the height of the peak.
@@ -45,5 +45,11 @@ namespace PNNLOmics
             get { return m_xValue; }
             set { m_xValue = value; }
         }
+
+        #region BaseData<Peak> Members
+        public override void Clear()
+        {
+        }
+        #endregion
     }
 }

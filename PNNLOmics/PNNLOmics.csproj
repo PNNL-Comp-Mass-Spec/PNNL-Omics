@@ -45,8 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alignment\LCMSWarp.cs" />
-    <Compile Include="Alignment\LCMSWarpOptions.cs" />
     <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />
     <Compile Include="Data\Dataset.cs" />
     <Compile Include="Data\DatasetBase.cs" />
@@ -58,8 +56,8 @@
     <Compile Include="Data\Peaks\MSPeak.cs" />
     <Compile Include="Data\Peaks\Peak.cs" />
     <Compile Include="Generic\Processor.cs" />
-    <Compile Include="Data\Features\FeatureBase.cs" />
-    <Compile Include="Data\IBaseData.cs" />
+    <Compile Include="Data\Features\Feature.cs" />
+    <Compile Include="Data\BaseData.cs" />
     <Compile Include="Data\Features\LCMSFeature.cs" />
     <Compile Include="Data\Features\LCMSFeatureCluster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,6 +70,7 @@
     <None Include="ClassDiagrams\PNNLOmics.cd" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Alignment\" />
     <Folder Include="FeatureIdentification\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

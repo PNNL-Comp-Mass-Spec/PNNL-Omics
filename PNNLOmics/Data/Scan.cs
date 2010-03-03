@@ -8,7 +8,7 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Abstract base class for scan data shared between LC and IMS data objects.
     /// </summary>
-    public abstract class Scan: IBaseData<Scan>
+    public abstract class Scan: BaseData
     {
         /// <summary>
         /// MS Scan number
@@ -34,6 +34,11 @@ namespace PNNLOmics.Data
         {
             get { return m_scanNumber; }
             set { m_scanNumber = value; }
-        }       
+        }
+
+        public override void Clear()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
