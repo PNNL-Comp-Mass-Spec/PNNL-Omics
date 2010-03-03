@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PNNLOmics", "PNNLOmics\PNNLOmics.csproj", "{8A934DC1-3418-449F-ADF6-9962499F49B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplicationtest", "ConsoleApplicationtest\ConsoleApplicationtest.csproj", "{3EFC1AC5-2144-4747-8C2B-D70C290D77C7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +13,6 @@ Global
 		{8A934DC1-3418-449F-ADF6-9962499F49B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A934DC1-3418-449F-ADF6-9962499F49B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A934DC1-3418-449F-ADF6-9962499F49B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EFC1AC5-2144-4747-8C2B-D70C290D77C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EFC1AC5-2144-4747-8C2B-D70C290D77C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EFC1AC5-2144-4747-8C2B-D70C290D77C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
