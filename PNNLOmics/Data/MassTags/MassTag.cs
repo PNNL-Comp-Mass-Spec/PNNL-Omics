@@ -63,12 +63,48 @@ namespace PNNLOmics.Data
             get { return m_charge3FScore; }
             set { m_charge3FScore = value; }
         }
+        private double m_driftTimePredicted;
+
+        public double DriftTimePredicted
+        {
+            get { return m_driftTimePredicted; }
+            set { m_driftTimePredicted = value; }
+        }
+        private double m_peptideProphetProbability;
+
+        public double PeptideProphetProbability
+        {
+            get { return m_peptideProphetProbability; }
+            set { m_peptideProphetProbability = value; }
+        }
+
         private ushort m_cleavageState;
 
         public ushort CleavageState
         {
             get { return m_cleavageState; }
             set { m_cleavageState = value; }
+        }
+        private ushort m_observationCount;
+
+        public ushort ObservationCount
+        {
+            get { return m_observationCount; }
+            set { m_observationCount = value; }
+        }
+        private ushort m_pmtQualityScore;
+
+        public ushort PMTQualityScore
+        {
+            get { return m_pmtQualityScore; }
+            set { m_pmtQualityScore = value; }
+        }
+        private ushort m_chargeState;
+
+        public ushort ChargeState
+        {
+            get { return m_chargeState; }
+            set { m_chargeState = value; }
         }
         private IList<UMCCluster> m_umcClusterList;
 
@@ -105,5 +141,9 @@ namespace PNNLOmics.Data
             base.Clear();
             throw new NotImplementedException();
         }
+        public static Comparison<MassTag> MassComparison = delegate(MassTag massTag1, MassTag massTag2)
+        {
+            return massTag1.MassMonoisotopic.CompareTo(massTag2.MassMonoisotopic);
+        };
     }
 }
