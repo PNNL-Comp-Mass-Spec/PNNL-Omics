@@ -99,13 +99,6 @@ namespace PNNLOmics.Data
             get { return m_pmtQualityScore; }
             set { m_pmtQualityScore = value; }
         }
-        private ushort m_chargeState;
-
-        public ushort ChargeState
-        {
-            get { return m_chargeState; }
-            set { m_chargeState = value; }
-        }
         private IList<UMCCluster> m_umcClusterList;
 
         public IList<UMCCluster> UmcClusterList
