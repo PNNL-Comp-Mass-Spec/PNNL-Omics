@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Iridium, Version=1.0.0.22686, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\MathNet.Iridium.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -45,7 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Features\FeatureMatch.cs" />
+    <Compile Include="Algorithms\FeatureIdentification\FeatureMatcher.cs" />
+    <Compile Include="Algorithms\FeatureIdentification\FeatureMatchParameters.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
+    <Compile Include="Molecule.cs" />
+    <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />
     <Compile Include="Data\Dataset.cs" />
     <Compile Include="Data\DatasetBase.cs" />
@@ -56,6 +65,7 @@
     <Compile Include="Data\ScanLC.cs" />
     <Compile Include="Data\Peaks\MSPeak.cs" />
     <Compile Include="Data\Peaks\Peak.cs" />
+    <Compile Include="Data\XYData.cs" />
     <Compile Include="Generic\Processor.cs" />
     <Compile Include="Data\Features\Feature.cs" />
     <Compile Include="Data\BaseData.cs" />
@@ -71,8 +81,7 @@
     <None Include="ClassDiagrams\PNNLOmics.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Alignment\" />
-    <Folder Include="FeatureIdentification\" />
+    <Folder Include="Algorithms\Alignment\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

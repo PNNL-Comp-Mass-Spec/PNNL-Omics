@@ -36,7 +36,7 @@ namespace PNNLOmics.Data
             }
         }
 
-        public override void Clear()
+        public void Clear()
         {
             throw new NotImplementedException();
         }

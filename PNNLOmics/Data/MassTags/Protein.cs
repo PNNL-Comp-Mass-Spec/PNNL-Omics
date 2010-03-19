@@ -1,29 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using PNNLOmics;
+
 namespace PNNLOmics.Data
 {
-    public class Protein: BaseData
+    /// <summary>
+    /// Class that holds information about a protein.
+    /// </summary>
+    public class Protein: Molecule
     {
-        private string m_proteinSequence;
-        public string ProteinSequence
-        {
-            get { return m_proteinSequence; }
-            set { m_proteinSequence = value; }
-        }
-        private IList<MassTag> m_massTagList;
+        private int m_sequence;
 
-        public IList<MassTag> MassTagList
+        public int Sequence
         {
-            get { return m_massTagList; }
-            set { m_massTagList = value; }
+            get { return m_sequence; }
+            set { m_sequence = value; }
         }
 
+        /// <summary>
+        /// Clears the 
+        /// </summary>
+        public void Clear()
+        {            
+        }
+    }
 
-      
-        public override void Clear()
+    /// <summary>
+    /// Class that holds information about a protein.
+    /// </summary>
+    public class Metabolite : Molecule
+    {
+
+        /// <summary>
+        /// Clears the 
+        /// </summary>
+        public void Clear()
         {
-            throw new NotImplementedException();
         }
     }
 }

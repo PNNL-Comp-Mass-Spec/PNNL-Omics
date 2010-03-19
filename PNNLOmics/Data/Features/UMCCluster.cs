@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PNNLOmics.Data
+namespace PNNLOmics.Data.Features
 {
     /// <summary>
     /// Class that contains information and references to a cluster of UMC's.
@@ -10,13 +10,6 @@ namespace PNNLOmics.Data
     public class UMCCluster: Feature
     {
         private System.Collections.Generic.IList<UMC> m_umcList;
-        private IList<MassTag> m_massTagList;
-
-        private IList<MassTag> MassTagList
-        {
-            get { return m_massTagList; }
-            set { m_massTagList = value; }
-        }
 
         /// <summary>
         /// Gets or sets the list of UMC's that comprise this cluster.
@@ -28,12 +21,10 @@ namespace PNNLOmics.Data
         }
 
         #region BaseData<UMCCluster> Members
-
-        public override void Clear()
+        public void Clear()
         {
             throw new NotImplementedException();
         }
-
         #endregion
     }
 }

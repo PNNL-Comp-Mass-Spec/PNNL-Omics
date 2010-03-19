@@ -46,11 +46,9 @@ namespace PNNLOmics.Data
             set { m_xValue = value; }
         }
 
-        #region BaseData<Peak> Members
         public override void Clear()
         {
-			throw new NotImplementedException();
+            throw new NotImplementedException();
         }
-        #endregion
     }
 }

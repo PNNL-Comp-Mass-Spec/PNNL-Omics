@@ -1,47 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PNNLOmics.Data
 {
-    public class Peptide: BaseData
+    public class Peptide: Molecule
     {
         private int m_id;
-        private MassTag m_massTag;
 
         public int Id
         {
             get { return m_id; }
             set { m_id = value; }
         }
-        private string m_peptideSequence;
-
-        public string PeptideSequence
-        {
-            get { return m_peptideSequence; }
-            set { m_peptideSequence = value; }
-        }
-        private string m_peptideSequenceExtended;
-
-        public string PeptideSequenceExtended
-        {
-            get { return m_peptideSequenceExtended; }
-            set { m_peptideSequenceExtended = value; }
-        }
-
-        public MassTag MassTag
-        {
-            get { return m_massTag; }
-            set { m_massTag = value; }
-        }
 
         #region BaseData<Peptide> Members
 
-        public override void Clear()
+        public void Clear()
         {
             throw new NotImplementedException();
         }
         #endregion        
+
+        private List<Protein> m_proteinList;
+
+        public List<Protein> ProteinList
+        {
+            get { return m_proteinList; }
+            set { m_proteinList = value; }
+        }
+
+        private int m_sequence;
+
+        public int Sequence
+        {
+            get { return m_sequence; }
+            set { m_sequence = value; }
+        }
+
+        private string m_extendedSequence;
     }
 }

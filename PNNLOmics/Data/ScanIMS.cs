@@ -12,9 +12,9 @@ namespace PNNLOmics.Data
             set { m_driftTime = value; }
         }
 
-		public override void Clear()
-		{
-			throw new NotImplementedException();
-		}
+        public override void Clear()
+        {
+            base.Clear();
+        }
     }
 }

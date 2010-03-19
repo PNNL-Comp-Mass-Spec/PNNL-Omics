@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PNNLOmics.Data
+namespace PNNLOmics.Data.Features
 {
     /// <summary>
     /// Class that represents LC-MS, IMS-MS, LC-IMS-MS, etc. type data.
@@ -65,10 +65,24 @@ namespace PNNLOmics.Data
             get { return m_msFeatureList; }
             set { m_msFeatureList = value; }
         }
+    
+        public UMC()
+        {
+            
+        }
 
         #region BaseData<UMC> Members
 
-        public override void Clear()
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IComparer<UMC> Members
+
+        public int Compare(UMC x, UMC y)
         {
             throw new NotImplementedException();
         }

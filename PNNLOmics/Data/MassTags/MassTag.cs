@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using PNNLOmics.Data.Features;
+
 namespace PNNLOmics.Data
 {
     public class MassTag: Feature
@@ -101,13 +103,8 @@ namespace PNNLOmics.Data
         }
         private IList<UMCCluster> m_umcClusterList;
 
-        public IList<UMCCluster> UmcClusterList
-        {
-            get { return m_umcClusterList; }
-            set { m_umcClusterList = value; }
-        }
-        private IList<Peptide> m_peptideList;
-
+        //TODO: Jeff?
+        public IList<Peptide> m_peptideList;
         public IList<Peptide> PeptideList
         {
             get { return m_peptideList; }
