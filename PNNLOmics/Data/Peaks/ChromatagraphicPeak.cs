@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PNNLOmics.Data
 {
-    public class ChromatagraphicPeak: Peak
+    public class ChromatographicPeak: Peak
     {
         /// <summary>
         /// Gets or sets the Scan Number this peak was found in.
