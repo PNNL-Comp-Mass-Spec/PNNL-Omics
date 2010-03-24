@@ -15,7 +15,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the drift time of the feature.
         /// </summary>
-        public int DriftTime {get;set;}
+        public float DriftTime {get;set;}
         /// <summary>
         /// Gets or sets the monoisotopic mass of the feature.
         /// </summary>
@@ -43,7 +43,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the abundance of the feature.
         /// </summary>
-        public int Abundance{ get; set; }
+        public double Abundance{ get; set; }
         /// <summary>
         /// Gets or sets the M/Z value of the feature.
         /// </summary>

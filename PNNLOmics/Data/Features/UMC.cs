@@ -44,16 +44,16 @@ namespace PNNLOmics.Data.Features
             get { return m_chargeMax; }
             set { m_chargeMax = value; }
         }
-        private int m_abundanceMax;
+        private double m_abundanceMax;
 
-        public int AbundanceMax
+        public double AbundanceMax
         {
             get { return m_abundanceMax; }
             set { m_abundanceMax = value; }
         }
-        private int m_abundanceSum;
+        private double m_abundanceSum;
 
-        public int AbundanceSum
+        public double AbundanceSum
         {
             get { return m_abundanceSum; }
             set { m_abundanceSum = value; }
