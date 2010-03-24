@@ -43,7 +43,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the abundance of the feature.
         /// </summary>
-        public double Abundance{ get; set; }
+        public int Abundance{ get; set; }
         /// <summary>
         /// Gets or sets the M/Z value of the feature.
         /// </summary>
