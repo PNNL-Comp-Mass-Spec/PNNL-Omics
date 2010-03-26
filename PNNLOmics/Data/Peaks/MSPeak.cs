@@ -7,6 +7,13 @@ namespace PNNLOmics.Data
 {
     public class MSPeak: Peak
     {
+        private int m_scanNumber;
+
+        public int ScanNumber
+        {
+            get { return m_scanNumber; }
+            set { m_scanNumber = value; }
+        }
         /// <summary>
         /// Gets
         /// </summary>

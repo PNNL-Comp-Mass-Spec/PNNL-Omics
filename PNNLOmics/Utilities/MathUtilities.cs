@@ -17,7 +17,7 @@ namespace PNNLOmics.Utilities
         /// <param name="covarianceMatrix">Symmetric covariance matrix.  [n x n]</param>
         /// <returns>Double</returns>
         static public double MultivariateNormalDensity(Matrix xVector, Matrix meanVector, Matrix covarianceMatrix)
-        {
+        {            
             int numberOfRows = covarianceMatrix.RowCount;
             Matrix xMinusMean = xVector - meanVector;
             Matrix xMinusMeanPrime = xMinusMean.Clone();

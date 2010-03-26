@@ -40,5 +40,16 @@ namespace PNNLOmics.Data
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Gets the moleculare Weight
+        /// </summary>
+        public int MassMonoisotopic
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+        }
     }
 }

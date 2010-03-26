@@ -49,11 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AMTTagDatabase.cs" />
     <Compile Include="Data\Features\FeatureMatch.cs" />
     <Compile Include="Algorithms\FeatureIdentification\FeatureMatcher.cs" />
     <Compile Include="Algorithms\FeatureIdentification\FeatureMatchParameters.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
+    <Compile Include="IonType.cs" />
     <Compile Include="Molecule.cs" />
+    <Compile Include="MRMTransition.cs" />
+    <Compile Include="Organism.cs" />
+    <Compile Include="PeptideIon.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />
     <Compile Include="Data\Dataset.cs" />
@@ -76,6 +81,7 @@
     <Compile Include="Data\Scan.cs" />
     <Compile Include="Data\ScanSet.cs" />
     <Compile Include="Generic\Task.cs" />
+    <Compile Include="Utilities\MolecularWeightCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\PNNLOmics.cd" />

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace PNNLOmics.Data
 {
+    /// <summary>
+    /// This class encapsulates peptide level information.
+    /// </summary>
     public class Peptide: Molecule
     {
         private int m_id;
