@@ -7,6 +7,8 @@ namespace PNNLOmics.Data
 {
     public abstract class Feature: BaseData
     {
+        private const int CONST_DEFAULT_SCAN_VALUE = -1;
+
         #region Properties
         /// <summary>
         /// Gets or sets the ID 
@@ -69,8 +71,8 @@ namespace PNNLOmics.Data
             MZ                          = double.NaN;
             NET                         = double.NaN;
             NETAligned                  = double.NaN;
-            Scan                        = 0;
-            ScanAligned                 = 0;           
+            Scan                        = CONST_DEFAULT_SCAN_VALUE;
+            ScanAligned                 = CONST_DEFAULT_SCAN_VALUE;           
         }
         #endregion
     }

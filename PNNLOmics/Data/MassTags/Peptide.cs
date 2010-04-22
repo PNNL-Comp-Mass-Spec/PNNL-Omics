@@ -41,5 +41,12 @@ namespace PNNLOmics.Data
         }
 
         private string m_extendedSequence;
+        private int m_cleavageState;
+
+        public int CleavageState
+        {
+            get { return m_cleavageState; }
+            set { m_cleavageState = value; }
+        }
     }
 }

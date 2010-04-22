@@ -9,7 +9,7 @@
   <Comment CommentText="Do we get rid of the Intensity / MZ properties?&#xD;&#xA;&#xD;&#xA;Where do we link SCAN to MS Feature object level to do traceback kind of things.">
     <Position X="19.496" Y="8.452" Height="1.132" Width="1.7" />
   </Comment>
-  <Comment CommentText="Do we use unsigned values?&#xD;&#xA;e.g. Charge State in UMC&#xD;&#xA;&#xD;&#xA;Do we want to call mass Monoisotopic or just mass?&#xD;&#xA;&#xD;&#xA;Do we shorten StandardDeviation to StdDev? Are we violating the coding standard.&#xD;&#xA;&#xD;&#xA;Do we get rid of UMCCluster in the UMC Class?&#xD;&#xA; &#xD;&#xA;What do we call Net and scan and aligned and where should they exist?  Do we need ScanAligned?&#xD;&#xA;">
+  <Comment CommentText="Do we use unsigned values?&#xD;&#xA;e.g. Charge State in UMC&#xD;&#xA;&#xD;&#xA;Do we want to call mass Monoisotopic or just mass?&#xD;&#xA;&#xD;&#xA;Do we shorten StandardDeviation to StdDev? Are we violating the coding standard.&#xD;&#xA;&#xD;&#xA;Do we get rid of UMCCluster in the UMC Class?&#xD;&#xA; &#xD;&#xA;What do we call Net and scan and aligned and where should they exist?  Do we need ScanAligned?&#xD;&#xA;&#xD;&#xA;What is the DiscriminantMax score?">
     <Position X="19.51" Y="5.805" Height="2.296" Width="2.856" />
   </Comment>
   <Comment CommentText="What we do about scores?  SEQUEST/X!Tandem&#xD;&#xA;&#xD;&#xA;Can we use Hibernate with IList?">
@@ -19,9 +19,9 @@
     <Position X="3.571" Y="14.73" Height="1.303" Width="1.7" />
   </Comment>
   <Class Name="PNNLOmics.Data.Feature">
-    <Position X="6" Y="0.5" Width="1.5" />
+    <Position X="5.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABQAAAAAAABAiAgAAAAAIAAAABEAAAgAAAAAAgBAAAA=</HashCode>
+      <HashCode>ABQAAAAAAABAqAgAAAAAIAAAABEAAAgAAAAAAgBAAAA=</HashCode>
       <FileName>Data\Features\Feature.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -32,7 +32,7 @@
       <FileName>Data\Features\UMCCluster.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Processor&lt;T, U, V&gt;" Collapsed="true">
+  <Class Name="PNNLOmics.Processor&lt;T, U, V&gt;">
     <Position X="22.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
@@ -42,14 +42,14 @@
   <Class Name="PNNLOmics.Data.MassTag">
     <Position X="1" Y="4.5" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AIABgIAAAAACgEEaAAEQCAgACEIiAgBAIAAESABghAA=</HashCode>
+      <HashCode>AAABAIAAAAACgEASAgAADAgBCEAKAABAIAAAQARAAAA=</HashCode>
       <FileName>Data\MassTags\MassTag.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PNNLOmics.Data.Peptide">
     <Position X="5.75" Y="13.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>QAADAAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAFABAA=</HashCode>
+      <HashCode>QAADAAAAAQAAAAAAAAEAAAAAAAAAAAQAAAAAAAFgBAA=</HashCode>
       <FileName>Data\MassTags\Peptide.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -95,15 +95,15 @@
       <FileName>Data\Peaks\MSPeak.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.DatasetBase" Collapsed="true">
-    <Position X="22.75" Y="0.5" Width="1.5" />
+  <Class Name="PNNLOmics.DatasetBase">
+    <Position X="24.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\DatasetBase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Dataset" Collapsed="true">
-    <Position X="21" Y="0.5" Width="1.5" />
+  <Class Name="PNNLOmics.Dataset">
+    <Position X="24.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Dataset.cs</FileName>
@@ -137,8 +137,8 @@
       <FileName>Data\ScanLC.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.FeatureMatch" Collapsed="true">
-    <Position X="19.25" Y="1.5" Width="1.5" />
+  <Class Name="PNNLOmics.Data.FeatureMatch">
+    <Position X="5" Y="7" Width="1.75" />
     <TypeIdentifier>
       <HashCode>QSwIgAgAIgAKggAAAAAQAARAEgAAAAAAAAAFADBAIAA=</HashCode>
       <FileName>Data\Features\FeatureMatch.cs</FileName>
@@ -165,15 +165,15 @@
       <FileName>PeptideIon.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.AMTTagDatabase" Collapsed="true">
+  <Class Name="PNNLOmics.Data.AMTTagDatabase" Collapsed="true">
     <Position X="19.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAABAAABAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAgAAAAEAABAABBAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>AMTTagDatabase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Organism" Collapsed="true">
-    <Position X="21" Y="1.5" Width="1.5" />
+  <Class Name="PNNLOmics.Organism">
+    <Position X="21" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Organism.cs</FileName>

@@ -49,10 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\FeatureClustering\UMCClusterCreator.cs" />
     <Compile Include="AMTTagDatabase.cs" />
     <Compile Include="Data\Features\FeatureMatch.cs" />
     <Compile Include="Algorithms\FeatureIdentification\FeatureMatcher.cs" />
     <Compile Include="Algorithms\FeatureIdentification\FeatureMatchParameters.cs" />
+    <Compile Include="Data\Features\MonoisotopicMassComparer.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
     <Compile Include="IonType.cs" />
     <Compile Include="Molecule.cs" />

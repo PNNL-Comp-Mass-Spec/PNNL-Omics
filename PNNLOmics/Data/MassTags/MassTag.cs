@@ -38,32 +38,13 @@ namespace PNNLOmics.Data
             set { m_xCorr = value; }
         }
         private double m_discriminantMax;
-
+        /// <summary>
+        /// Gets or sets the discriminant score.  ???
+        /// </summary>
         public double DiscriminantMax
         {
             get { return m_discriminantMax; }
             set { m_discriminantMax = value; }
-        }
-        private double m_charge1FScore;
-
-        public double Charge1FScore
-        {
-            get { return m_charge1FScore; }
-            set { m_charge1FScore = value; }
-        }
-        private double m_charge2FScore;
-
-        public double Charge2FScore
-        {
-            get { return m_charge2FScore; }
-            set { m_charge2FScore = value; }
-        }
-        private double m_charge3FScore;
-
-        public double Charge3FScore
-        {
-            get { return m_charge3FScore; }
-            set { m_charge3FScore = value; }
         }
         private double m_driftTimePredicted;
 
@@ -72,20 +53,16 @@ namespace PNNLOmics.Data
             get { return m_driftTimePredicted; }
             set { m_driftTimePredicted = value; }
         }
-        private double m_peptideProphetProbability;
+        private double m_priorProbability;
 
-        public double PeptideProphetProbability
+        /// <summary>
+        /// Gets or sets the prior probability value.  This was previously
+        /// peptide prophet probability, or EPIC.
+        /// </summary>
+        public double PriorProbability
         {
-            get { return m_peptideProphetProbability; }
-            set { m_peptideProphetProbability = value; }
-        }
-
-        private ushort m_cleavageState;
-
-        public ushort CleavageState
-        {
-            get { return m_cleavageState; }
-            set { m_cleavageState = value; }
+            get { return m_priorProbability; }
+            set { m_priorProbability = value; }
         }
         private ushort m_observationCount;
 
@@ -94,21 +71,21 @@ namespace PNNLOmics.Data
             get { return m_observationCount; }
             set { m_observationCount = value; }
         }
-        private ushort m_pmtQualityScore;
+        private ushort m_qualityScore;
 
-        public ushort PMTQualityScore
+        public ushort QualityScore
         {
-            get { return m_pmtQualityScore; }
-            set { m_pmtQualityScore = value; }
+            get { return m_qualityScore; }
+            set { m_qualityScore = value; }
         }
-        private IList<UMCCluster> m_umcClusterList;
 
         //TODO: Jeff?
-        public IList<Peptide> m_peptideList;
-        public IList<Peptide> PeptideList
+        private IList<Peptide> m_molecule;
+
+        public IList<Peptide> Molecule
         {
-            get { return m_peptideList; }
-            set { m_peptideList = value; }
+            get { return m_molecule; }
+            set { m_molecule = value; }
         }
         /*
         private IList<Modification> m_modificationList;
@@ -118,14 +95,6 @@ namespace PNNLOmics.Data
             set { m_modificationList = value; }
         }
          */
-
-        private IList<Protein> m_proteinList;
-
-        public IList<Protein> ProteinList
-        {
-            get { return m_proteinList; }
-            set { m_proteinList = value; }
-        }
         public override void Clear()
         {
             base.Clear();
