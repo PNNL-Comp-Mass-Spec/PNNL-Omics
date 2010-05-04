@@ -1,193 +1,145 @@
 ﻿using System.Collections.Generic;
 using System;
+using PNNLOmics.Utilities;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
+using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 
-using PNNLOmics.Data.Features;
-
-namespace PNNLOmics.Data
+namespace PNNLOmics.Data.Features
 {
-	public class FeatureMatch: BaseData
-	{
-        private Feature m_matchedFeature;
-
-        public Feature MatchedFeature
-        {
-            get { return m_matchedFeature; }
-            set { m_matchedFeature = value; }
-        }
-        private MassTag m_matchedMassTag;
-
-        public MassTag MatchedMassTag
-        {
-            get { return m_matchedMassTag; }
-            set { m_matchedMassTag = value; }
-        }
-        private double m_smartScore;
-
-        public double SMARTScore
-        {
-            get { return m_smartScore; }
-            set { m_smartScore = value; }
-        }
-        private double m_smartSpecificity;
-
-        public double SMARTSpecificity
-        {
-            get { return m_smartSpecificity; }
-            set { m_smartSpecificity = value; }
-        }
+    public class FeatureMatch<T, U>: BaseData where T: Feature, new() where U: Feature, new()
+    {
+        #region Members
+        private double m_stacScore;
+        private double m_stacSpecificity;
         private double m_slicScore;
+        private double m_delSLiC;
 
+        private T m_observedFeature;
+        private U m_targetFeature;
+
+        private Matrix m_differenceVector;
+        private Matrix m_reducedDifferenceVector;
+
+        private bool m_useDriftTimePredicted;
+        private bool m_withinRefinedRegion;
+        #endregion
+
+        #region Properties
+        public double STACScore
+        {
+            get { return m_stacScore; }
+            set { m_stacScore = value; }
+        }
+        public double STACSpecificity
+        {
+            get { return m_stacSpecificity; }
+            set { m_stacSpecificity = value; }
+        }
         public double SLiCScore
         {
             get { return m_slicScore; }
             set { m_slicScore = value; }
         }
-        private double m_delSLiC;
-
         public double DelSLiC
         {
-            get { return m_delSLiC; }
-            set { m_delSLiC = value; }
+            get { return m_slicScore; }
+            set { m_slicScore = value; }
         }
-        private Matrix m_differenceVector;
-        
+
+        public T ObservedFeature
+        {
+            get { return m_observedFeature; }
+            set { m_observedFeature = value; }
+        }
+        public U TargetFeature
+        {
+            get { return m_targetFeature; }
+            set { m_targetFeature = value; }
+        }
+
         public Matrix DifferenceVector
         {
             get { return m_differenceVector; }
         }
-        private Matrix m_validMeans;
-
-        public Matrix ValidMeans
+        public Matrix ReducedDifferenceVector
         {
-            get { return m_validMeans; }
+            get { return m_reducedDifferenceVector; }
         }
 
-        private UMCCluster m_matchedUMCCluster;
-        public UMCCluster  MatchedUMCCluster
+        public bool UseDriftTimePredicted
         {
-            get
-            {
-                return m_matchedUMCCluster;
-            }
-            set
-            {
-                m_matchedUMCCluster = value;
-            }
+            get { return m_useDriftTimePredicted; }
         }
-        #region BaseData Members
-        public int ID { get; set; }
-        public override void Clear()
+        public bool WithinRefinedRegion
         {
-            m_matchedFeature = new UMC();
-            m_matchedUMCCluster = new UMCCluster();
-            m_matchedMassTag = new MassTag();
-            m_delSLiC = 0;
-            m_slicScore = 0;
-            m_smartScore = 0;
-            m_smartSpecificity = 0;
-            m_differenceVector = new Matrix(4, 1);
-            m_validMeans = new Matrix(4, 1.0);
+            get { return m_withinRefinedRegion; }
+            set { m_withinRefinedRegion = value; }
         }
         #endregion
 
-        public static Comparison<FeatureMatch> UMCComparison = delegate(FeatureMatch featureMatch1, FeatureMatch featureMatch2)
-        {
-            return featureMatch1.m_matchedFeature.ID.CompareTo(featureMatch2.MatchedFeature.ID);
-        };
-
-        public static Comparison<FeatureMatch> UMCClusterComparison = delegate(FeatureMatch featureMatch1, FeatureMatch featureMatch2)
-        {
-            return featureMatch1.m_matchedUMCCluster.ID.CompareTo(featureMatch2.MatchedUMCCluster.ID);
-        };
-
-        public static Comparison<FeatureMatch> SMARTComparison = delegate(FeatureMatch featureMatch1, FeatureMatch featureMatch2)
-        {
-            return featureMatch1.SMARTScore.CompareTo(featureMatch2.SMARTScore);
-        };
-
-        public static Comparison<FeatureMatch> MassDifferenceComparison = delegate(FeatureMatch featureMatch1, FeatureMatch featureMatch2)
-        {
-            return featureMatch1.m_differenceVector[1,1].CompareTo(featureMatch2.DifferenceVector[1,1]);
-        };
-
-        public FeatureMatch(UMC umc, MassTag massTag)
+        #region Constructors
+        public FeatureMatch()
         {
             Clear();
-            m_matchedFeature = umc;
-            m_matchedMassTag = massTag;
-            SetDifferenceVector();
         }
-
-        public FeatureMatch(UMCCluster umcCluster, MassTag massTag)
+        public FeatureMatch(T observedFeature, U targetFeature, bool useDriftTime)
         {
             Clear();
-            m_matchedUMCCluster = umcCluster;
-            m_matchedMassTag = massTag;
-            SetDifferenceVector();
+            m_observedFeature = observedFeature;
+            m_targetFeature = targetFeature;
+            m_reducedDifferenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime);
+            m_differenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime, true);
+            SetFlags(useDriftTime);
+        }
+        #endregion
+
+        #region Comparisons
+        public static Comparison<FeatureMatch<T, U>> FeatureComparison = delegate(FeatureMatch<T, U> featureMatch1, FeatureMatch<T, U> featureMatch2)
+        {
+            return featureMatch1.m_observedFeature.ID.CompareTo(featureMatch2.ObservedFeature.ID);
+        };
+        public static Comparison<FeatureMatch<T,U>> STACComparison = delegate(FeatureMatch<T,U> featureMatch1, FeatureMatch<T,U> featureMatch2)
+        {
+            return featureMatch1.m_stacScore.CompareTo(featureMatch2.STACScore);
+        };
+        #endregion
+
+        #region Private functions
+        public override void Clear()
+        {
+            m_observedFeature = new T();
+            m_targetFeature = new U();
+            m_delSLiC = 0;
+            m_slicScore = 0;
+            m_stacScore = 0;
+            m_stacSpecificity = 0;
+            m_differenceVector = new Matrix(2, 1, 0.0);
+            m_useDriftTimePredicted = false;
+            m_withinRefinedRegion = false;
+        }
+        private void SetFlags(bool useDriftTime)
+        {
+            if (useDriftTime)
+                if (m_targetFeature.DriftTime == 0)
+                {
+                    m_useDriftTimePredicted = true;
+                }
+        }
+        #endregion
+
+        #region Public functions  --- Needs work
+        public void AddFeatures(T observedFeature, U targetFeature, bool useDriftTime)
+        {
+            Clear();
+            m_observedFeature = observedFeature;
+            m_targetFeature = targetFeature;
+            m_reducedDifferenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime);
+            m_differenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime, true);
+            SetFlags(useDriftTime);
         }
 
-        private void SetDifferenceVector()
-        {
-            if (m_matchedFeature.MassMonoisotopic == 0)
-            {
-                m_differenceVector[1, 1] = CalculateMassDifferencePPM(m_matchedMassTag.MassMonoisotopicAligned,m_matchedUMCCluster.MassMonoisotopicAligned);
-                m_differenceVector[2, 1] = m_matchedMassTag.NETAligned - m_matchedUMCCluster.NETAligned;
-                if (m_matchedMassTag.DriftTime > 0)
-                {
-                    m_differenceVector[3, 1] = m_matchedMassTag.DriftTime - m_matchedUMCCluster.DriftTime;
-                    m_differenceVector[4, 1] = 0;
-                    m_validMeans[4, 4] = 0;
-                }
-                else if (m_matchedMassTag.DriftTimePredicted>0)
-                {
-                    m_differenceVector[3, 1] = 0;
-                    m_validMeans[3, 3] = 0;
-                    m_differenceVector[4, 1] = m_matchedMassTag.DriftTimePredicted - m_matchedUMCCluster.DriftTime;
-                }
-                else
-                {
-                    m_differenceVector[3, 1] = 0;
-                    m_differenceVector[4, 1] = 0;
-                    m_validMeans[3, 3] = 0;
-                    m_validMeans[4, 4] = 0;
-                }
-            }
-            else
-            {
-                m_differenceVector[1, 1] = CalculateMassDifferencePPM(m_matchedMassTag.MassMonoisotopicAligned,m_matchedFeature.MassMonoisotopicAligned);
-                m_differenceVector[2, 1] = m_matchedMassTag.NETAligned - m_matchedFeature.NETAligned;
-                if (m_matchedMassTag.DriftTime > 0)
-                {
-                    m_differenceVector[3, 1] = m_matchedMassTag.DriftTime - m_matchedFeature.DriftTime;
-                    m_differenceVector[4, 1] = 0;
-                    m_validMeans[4, 4] = 0;
-                }
-                else if(m_matchedMassTag.DriftTimePredicted>0)
-                {
-                    m_differenceVector[3, 1] = 0;
-                    m_validMeans[3, 3] = 0;
-                    m_differenceVector[4, 1] = m_matchedMassTag.DriftTimePredicted - m_matchedFeature.DriftTime;
-                }
-                else
-                {
-                    m_differenceVector[3, 1] = 0;
-                    m_differenceVector[4, 1] = 0;
-                    m_validMeans[3, 3] = 0;
-                    m_validMeans[4, 4] = 0;
-                }
-            }
-        }
-
-        public double CalculateMassDifferencePPM(double mass1, double mass2)
-        {
-            return ((mass2 - mass1) / mass1 * 1000000);
-        }
-
-        public Matrix LCMSDifferenceVector()
-        {
-            return(m_differenceVector.GetMatrix(1,2,1,1));
-        }
-	}
+        //Add a function to set m_withinRefinedRegion.
+        #endregion
+    }
 }
