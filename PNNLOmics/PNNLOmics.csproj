@@ -56,11 +56,14 @@
     <Compile Include="Algorithms\FeatureIdentification\FeatureMatchParameters.cs" />
     <Compile Include="Data\Features\MonoisotopicMassComparer.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
+    <Compile Include="Glycan.cs" />
     <Compile Include="IonType.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
     <Compile Include="Organism.cs" />
     <Compile Include="PeptideIon.cs" />
+    <Compile Include="RawDataReader.cs" />
+    <Compile Include="UIMFReader.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />
     <Compile Include="Data\Dataset.cs" />
@@ -86,7 +89,9 @@
     <Compile Include="Utilities\MolecularWeightCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagrams\AlgorithmLayer.cd" />
     <None Include="ClassDiagrams\PNNLOmics.cd" />
+    <None Include="ClassDiagrams\UtilityLayer.cd" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Algorithms\Alignment\" />

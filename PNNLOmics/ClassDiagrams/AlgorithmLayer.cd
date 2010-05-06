@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PNNLOmics.FeatureIdentification.FeatureMatcher">
+    <Position X="1.75" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAUAAEAAABAAQgAAIABAAAAAAgAAAAAAAQAAJAAgA=</HashCode>
+      <FileName>Algorithms\FeatureIdentification\FeatureMatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.FeatureIdentification.FeatureMatchParameters">
+    <Position X="5.25" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAABAATDAAAAAAAACAEAAAAMIEABkgAADABAM=</HashCode>
+      <FileName>Algorithms\FeatureIdentification\FeatureMatchParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

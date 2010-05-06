@@ -16,7 +16,7 @@
     <Position X="22.522" Y="6.721" Height="0.75" Width="1.7" />
   </Comment>
   <Comment CommentText="there is a debate on whether to move the Scan Number from ChromaPeak and MSPeak to the abstract Peak class.&#xD;&#xA;&#xD;&#xA;Move the AMTTagDatabase class to another package&#xD;&#xA;">
-    <Position X="3.571" Y="14.73" Height="1.303" Width="1.7" />
+    <Position X="4.967" Y="17.136" Height="1.303" Width="1.7" />
   </Comment>
   <Class Name="PNNLOmics.Data.Feature">
     <Position X="5.5" Y="0.5" Width="1.5" />
@@ -191,6 +191,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAAAAAARAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Utilities\MathUtilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.Data.XYData">
+    <Position X="7.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Data\XYData.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="PNNLOmics.IonType" Collapsed="true">
