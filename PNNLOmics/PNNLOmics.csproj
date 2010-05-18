@@ -50,10 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\FeatureClustering\UMCClusterCreator.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\Data\FeatureMatcherParameters.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\Data\SLiCInformation.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\Data\STACInformation.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\Data\Tolerances.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\FeatureMatcher.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\Utilities\ExpectationMaximization.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\Utilities\MatrixUtilities.cs" />
     <Compile Include="AMTTagDatabase.cs" />
     <Compile Include="Data\Features\FeatureMatch.cs" />
-    <Compile Include="Algorithms\FeatureIdentification\FeatureMatcher.cs" />
-    <Compile Include="Algorithms\FeatureIdentification\FeatureMatchParameters.cs" />
     <Compile Include="Data\Features\MonoisotopicMassComparer.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
     <Compile Include="Glycan.cs" />
