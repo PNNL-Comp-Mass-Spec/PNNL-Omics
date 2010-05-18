@@ -4,6 +4,7 @@ using PNNLOmics.Utilities;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
+using PNNLOmics.Algorithms.FeatureMatcher.Data;
 
 namespace PNNLOmics.Data.Features
 {
@@ -23,6 +24,7 @@ namespace PNNLOmics.Data.Features
 
         private bool m_useDriftTimePredicted;
         private bool m_withinRefinedRegion;
+        private bool m_shiftedMatch;
         #endregion
 
         #region Properties
@@ -76,6 +78,11 @@ namespace PNNLOmics.Data.Features
             get { return m_withinRefinedRegion; }
             set { m_withinRefinedRegion = value; }
         }
+        public bool ShiftedMatch
+        {
+            get { return m_shiftedMatch; }
+            set { m_shiftedMatch = value; }
+        }
         #endregion
 
         #region Constructors
@@ -83,7 +90,7 @@ namespace PNNLOmics.Data.Features
         {
             Clear();
         }
-        public FeatureMatch(T observedFeature, U targetFeature, bool useDriftTime)
+        public FeatureMatch(T observedFeature, U targetFeature, bool useDriftTime, bool shiftedMatch)
         {
             Clear();
             m_observedFeature = observedFeature;
@@ -91,6 +98,7 @@ namespace PNNLOmics.Data.Features
             m_reducedDifferenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime);
             m_differenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime, true);
             SetFlags(useDriftTime);
+            m_shiftedMatch = shiftedMatch;
         }
         #endregion
 
@@ -128,8 +136,8 @@ namespace PNNLOmics.Data.Features
         }
         #endregion
 
-        #region Public functions  --- Needs work
-        public void AddFeatures(T observedFeature, U targetFeature, bool useDriftTime)
+        #region Public functions
+        public void AddFeatures(T observedFeature, U targetFeature, bool useDriftTime, bool shiftedMatch)
         {
             Clear();
             m_observedFeature = observedFeature;
@@ -137,9 +145,37 @@ namespace PNNLOmics.Data.Features
             m_reducedDifferenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime);
             m_differenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime, true);
             SetFlags(useDriftTime);
+            m_shiftedMatch = shiftedMatch;
         }
 
-        //Add a function to set m_withinRefinedRegion.
+        public bool InRegion(Tolerances tolerances, bool useElllipsoid)
+        {
+            if (m_targetFeature == new U())
+            {
+                throw new InvalidOperationException("Match must be populated before using functions involving the match.");
+            }
+            int dimensions = m_reducedDifferenceVector.RowCount;
+            Matrix toleranceMatrix = tolerances.AsVector(true);
+            if (useElllipsoid)
+            {
+                double distance = 0;
+                for (int i = 0; i < dimensions; i++)
+                {
+                    distance += m_reducedDifferenceVector[i,0]*m_reducedDifferenceVector[i,0]/toleranceMatrix[i,0]/toleranceMatrix[i,0];
+                }
+                m_withinRefinedRegion = (distance <= 1);
+            }
+            else
+            {
+                bool truthValue = true;
+                for( int i =0; i<dimensions; i++)
+                {
+                    truthValue = (truthValue && Math.Abs(m_reducedDifferenceVector[i, 0]) <= toleranceMatrix[i, 0]);
+                }
+                m_withinRefinedRegion = truthValue;
+            }
+            return m_withinRefinedRegion;
+        }
         #endregion
     }
 }
