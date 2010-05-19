@@ -11,7 +11,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 	public class FeatureMatcherParameters
     {
         #region Members
-        private Tolerances m_userTolerances;
+        private FeatureMatcherTolerances m_userTolerances;
 
         private bool m_useEllipsoid;
         private bool m_useTrapezoid;
@@ -29,7 +29,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         #endregion
 
         #region Properties
-        public Tolerances UserTolerances
+        public FeatureMatcherTolerances UserTolerances
         {
             get { return m_userTolerances; }
             set { m_userTolerances = value; }
@@ -110,7 +110,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         #region Private functions
         private void Clear()
 		{
-            m_userTolerances = new Tolerances();
+            m_userTolerances = new FeatureMatcherTolerances();
             m_useEllipsoid = true;
             m_useTrapezoid = false;
             m_calculateShiftFDR = true;

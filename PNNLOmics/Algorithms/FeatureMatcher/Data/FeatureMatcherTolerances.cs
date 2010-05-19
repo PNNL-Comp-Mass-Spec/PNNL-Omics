@@ -5,7 +5,7 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {
-    public class Tolerances
+    public class FeatureMatcherTolerances
     {
         #region Members
         private bool m_refined;
@@ -42,11 +42,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         #endregion
 
         #region Constructors
-        public Tolerances()
+        public FeatureMatcherTolerances()
         {
             Clear();
         }
-        public Tolerances(double massTolerancePPM, double netTolerance, float driftTimeTolerance)
+        public FeatureMatcherTolerances(double massTolerancePPM, double netTolerance, float driftTimeTolerance)
         {
             m_massTolerancePPM = massTolerancePPM;
             m_netTolerance = netTolerance;

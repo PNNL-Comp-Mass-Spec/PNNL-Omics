@@ -102,7 +102,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         }
 
         // Redesign to take in matches.
-        public bool RunSTAC(List<Matrix> differenceMatrixList, Tolerances uniformTolerances, List<bool> driftTime, List<bool> driftTimePredicted, 
+        public bool RunSTAC(List<Matrix> differenceMatrixList, FeatureMatcherTolerances uniformTolerances, List<bool> driftTime, List<bool> driftTimePredicted, 
                                     bool usePriorProbabilities)
         {
             ExpectationMaximization.NormalUniformMixture(differenceMatrixList, ref m_meanVectorT, ref m_covarianceMatrixT, uniformTolerances.AsVector(true),

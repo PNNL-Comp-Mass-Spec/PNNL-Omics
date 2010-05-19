@@ -23,7 +23,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private double m_errorHistogramFDR;
 
         private List<STACInformation> m_stacParametersList;
-        private List<Tolerances> m_refinedTolerancesList;
+        private List<FeatureMatcherTolerances> m_refinedTolerancesList;
         private SLiCInformation m_slicParameters;
 
         const int MIN_MATCHES_FOR_NORMAL_ASSUMPTION = 50;
@@ -65,7 +65,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         {
             get { return m_stacParametersList; }
         }
-        public List<Tolerances> RefinedToleranceList
+        public List<FeatureMatcherTolerances> RefinedToleranceList
         {
             get { return m_refinedTolerancesList; }
         }
@@ -94,7 +94,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             m_shiftConservativeFDR = 0;
             m_errorHistogramFDR = 0;
             m_stacParametersList = new List<STACInformation>();
-            m_refinedTolerancesList = new List<Tolerances>();
+            m_refinedTolerancesList = new List<FeatureMatcherTolerances>();
             m_slicParameters = new SLiCInformation();
             m_matchList = new List<FeatureMatch<T, U>>();
             m_shiftedMatchList = new List<FeatureMatch<T, U>>();
@@ -113,7 +113,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         }
 
         private List<FeatureMatch<T, U>> FindMatches(List<T> shortObservedList, List<U> shortTargetList, 
-                                                        Tolerances tolerances, bool useEllipsoid, double shiftAmount)
+                                                        FeatureMatcherTolerances tolerances, bool useEllipsoid, double shiftAmount)
         {
             List<FeatureMatch<T, U>> matchList = new List<FeatureMatch<T, U>>();
 
@@ -134,7 +134,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             return matchList;
         }
 
-        private Tolerances FindOptimalTolerances<T,U>(List<FeatureMatch<T,U>> matchList)
+        private FeatureMatcherTolerances FindOptimalTolerances<T,U>(List<FeatureMatch<T,U>> matchList)
         {
             List<Matrix> differenceMatrixList = new List<Matrix>();
             for (int i = 0; i <= matchList.Count; i++)
@@ -157,7 +157,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             if (m_matchParameters.UseDriftTime)
                 m_slicParameters.DriftTimeStDev = (float)Math.Sqrt(covarianceMatrix[2, 2]);
 
-            Tolerances refinedTolerances = new Tolerances((2.5 * m_slicParameters.MassPPMStDev), (2.5 * m_slicParameters.NETStDev), 
+            FeatureMatcherTolerances refinedTolerances = new FeatureMatcherTolerances((2.5 * m_slicParameters.MassPPMStDev), (2.5 * m_slicParameters.NETStDev), 
                                                             (float)(2.5 * m_slicParameters.DriftTimeStDev));
             refinedTolerances.Refined = true;
             return refinedTolerances;

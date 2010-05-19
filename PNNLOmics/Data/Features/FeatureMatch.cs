@@ -129,10 +129,12 @@ namespace PNNLOmics.Data.Features
         private void SetFlags(bool useDriftTime)
         {
             if (useDriftTime)
+            {
                 if (m_targetFeature.DriftTime == 0)
                 {
                     m_useDriftTimePredicted = true;
                 }
+            }
         }
         #endregion
 
@@ -148,7 +150,7 @@ namespace PNNLOmics.Data.Features
             m_shiftedMatch = shiftedMatch;
         }
 
-        public bool InRegion(Tolerances tolerances, bool useElllipsoid)
+        public bool InRegion(FeatureMatcherTolerances tolerances, bool useElllipsoid)
         {
             if (m_targetFeature == new U())
             {
