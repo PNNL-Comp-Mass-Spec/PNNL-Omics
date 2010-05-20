@@ -110,6 +110,6 @@ namespace PNNLOmics.Utilities
             {
                 throw new InvalidOperationException("X and Y arrays must be same length as XYData list in function XYDataListToArrays.");
             }
-        }
+        }        
     }
 }

@@ -9,21 +9,45 @@ namespace PNNLOmics.Data.Features
     /// </summary>
     public class UMCCluster: Feature
     {
-        private System.Collections.Generic.IList<UMC> m_umcList;
+        /// <summary>
+        /// List of UMC's that define the cluster.
+        /// </summary>
+        private IList<UMC> m_umcList;
 
+        /// <summary>
+        /// Default constructor for a cluster.
+        /// </summary>
+        public UMCCluster()
+        {
+            m_umcList = new List<UMC>();
+        }
+
+        #region Properties
         /// <summary>
         /// Gets or sets the list of UMC's that comprise this cluster.
         /// </summary>
-        private IList<UMC> UMCList
+        public IList<UMC> UMCList
         {
             get { return m_umcList; }
             set { m_umcList = value; }
         }
+        #endregion
 
         #region BaseData<UMCCluster> Members
+        /// <summary>
+        /// Resets the object to it's default values.
+        /// </summary>
         public void Clear()
         {
-            throw new NotImplementedException();
+            base.Clear();
+
+            /// 
+            /// Clears the list of UMC's, or if null recreates the list.
+            /// 
+            if (m_umcList == null)
+                m_umcList = new List<UMC>();
+            else
+                m_umcList.Clear();
         }
         #endregion
     }
