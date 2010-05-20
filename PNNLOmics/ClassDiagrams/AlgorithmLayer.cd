@@ -1,18 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="PNNLOmics.FeatureIdentification.FeatureMatcher">
-    <Position X="1.75" Y="1" Width="2.75" />
+  <Class Name="PNNLOmics.Algorithms.FeatureMatcher.FeatureMatcher&lt;T, U&gt;">
+    <Position X="2" Y="2.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAUAAEAAABAAQgAAIABAAAAAAgAAAAAAAQAAJAAgA=</HashCode>
-      <FileName>Algorithms\FeatureIdentification\FeatureMatcher.cs</FileName>
+      <HashCode>ABAgFAgCIAABQA4gAAAAAgwAAAACCCAAAEgAAABARhA=</HashCode>
+      <FileName>Algorithms\FeatureMatcher\FeatureMatcher.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.FeatureIdentification.FeatureMatchParameters">
-    <Position X="5.25" Y="0.75" Width="2.5" />
+  <Class Name="PNNLOmics.Algorithms.FeatureClustering.UMCSingleLinkageClusterer">
+    <Position X="9.25" Y="2.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="PNNLOmics.Algorithms.FeatureClustering.UMCSingleLinkageClusterer.PairwiseUMCDistance">
+        <TypeIdentifier>
+          <NewMemberFileName>Algorithms\FeatureClustering\UMCSingleLinkageClusterer.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AgAAAAAAABAATDAAAAAAAACAEAAAAMIEABkgAADABAM=</HashCode>
-      <FileName>Algorithms\FeatureIdentification\FeatureMatchParameters.cs</FileName>
+      <HashCode>AAEJAAAAAAAAAAAAAAAAAAAAABAAAAAACIAAAAAAAAA=</HashCode>
+      <FileName>Algorithms\FeatureClustering\UMCSingleLinkageClusterer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Parameters" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PNNLOmics.Algorithms.FeatureClustering.Data.UMCSingleLinkageClustererTolerances">
+    <Position X="14" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBAAAAAAAgAACAAAAAAAAAAAAAAAAAAAAAAAIADAAAA=</HashCode>
+      <FileName>Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererTolerances.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="PNNLOmics.Algorithms.FeatureClustering.Data.UMCSingleLinkageClustererParameters">
+    <Position X="11.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAEEAAAAAEABAACA=</HashCode>
+      <FileName>Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererParameters.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Tolerances" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="PNNLOmics.Algorithms.FeatureClustering.IClusterer&lt;T, U&gt;">
+    <Position X="6.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Algorithms\FeatureClustering\IClusterer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>
