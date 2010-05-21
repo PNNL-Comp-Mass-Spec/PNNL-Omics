@@ -8,6 +8,7 @@ namespace PNNLOmics.Utilities
 {
     static public class MathUtilities
     {
+        #region Statistical distributions
         /// <summary>
         /// Finds the density of the n-variate normal distribution with mean meanVector and covariance structure covarianceMatrix 
         /// at the value xVector.
@@ -17,16 +18,18 @@ namespace PNNLOmics.Utilities
         /// <param name="covarianceMatrix">Symmetric covariance matrix.  [n x n]</param>
         /// <returns>Double</returns>
         static public double MultivariateNormalDensity(Matrix xVector, Matrix meanVector, Matrix covarianceMatrix)
-        {            
+        {
             int numberOfRows = covarianceMatrix.RowCount;
             Matrix xMinusMean = xVector - meanVector;
             Matrix xMinusMeanPrime = xMinusMean.Clone();
             xMinusMeanPrime.Transpose();
             Matrix exponent = xMinusMeanPrime * covarianceMatrix.Inverse() * xMinusMean;
             double denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrix.Determinant()));
-            return Math.Exp(-0.5 * exponent[1, 1]) / denominator;
+            return Math.Exp(-0.5 * exponent[0, 0]) / denominator;
         }
+        #endregion
 
+        #region Histogram functions
         /// <summary>
         /// Finds the number of points in each bin of binWidth corresponding to a histogram of the values list.
         /// </summary>
@@ -89,7 +92,9 @@ namespace PNNLOmics.Utilities
             }
             return histogramValues;
         }
+        #endregion
 
+        #region XYData manipulators
         /// <summary>
         /// Convert XYData to arrays to interact with other functions more easily.
         /// </summary>
@@ -110,6 +115,20 @@ namespace PNNLOmics.Utilities
             {
                 throw new InvalidOperationException("X and Y arrays must be same length as XYData list in function XYDataListToArrays.");
             }
-        }        
+        }
+        #endregion
+
+        #region Helper functions
+        /// <summary>
+        /// Convert the difference between two masses to a difference in parts per million (PPM).
+        /// </summary>
+        /// <param name="mass1">First mass.  (Aligned mass of observedFeature)</param>
+        /// <param name="mass2">Second mass.  (Aligned mass of targetFeature)</param>
+        /// <returns></returns>
+        static public double MassDifferenceInPPM(double mass1, double mass2)
+        {
+            return ((mass1 - mass2) / mass2 * 1000000);
+        }
+        #endregion
     }
 }

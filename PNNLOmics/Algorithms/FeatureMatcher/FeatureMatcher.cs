@@ -134,7 +134,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             return matchList;
         }
 
-        private FeatureMatcherTolerances FindOptimalTolerances<T,U>(List<FeatureMatch<T,U>> matchList)
+        private FeatureMatcherTolerances FindOptimalTolerances(List<FeatureMatch<T,U>> matchList)
         {
             List<Matrix> differenceMatrixList = new List<Matrix>();
             for (int i = 0; i <= matchList.Count; i++)
