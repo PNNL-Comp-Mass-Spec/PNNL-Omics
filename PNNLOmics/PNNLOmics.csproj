@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Alignment\IFeatureMapAligner.cs" />
+    <Compile Include="Algorithms\Alignment\LCMSWarp.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />
     <Compile Include="Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererParameters.cs" />
     <Compile Include="Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererTolerances.cs" />
@@ -100,9 +102,6 @@
     <None Include="ClassDiagrams\AlgorithmLayer.cd" />
     <None Include="ClassDiagrams\PNNLOmics.cd" />
     <None Include="ClassDiagrams\UtilityLayer.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Algorithms\Alignment\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
