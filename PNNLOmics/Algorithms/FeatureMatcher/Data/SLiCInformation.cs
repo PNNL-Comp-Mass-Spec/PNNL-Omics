@@ -15,17 +15,26 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the standard deviation of the mass errors in ppm.
+        /// </summary>
         public double MassPPMStDev
         {
             get { return m_massPPMStDev; }
             set { m_massPPMStDev = value; }
         }
+        /// <summary>
+        /// Gets or sets the standard deviation of the NET errors.
+        /// </summary>
         public double NETStDev
         {
             get { return m_netStDev; }
             set { m_netStDev = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the standard deviation of the drift time errors.
+        /// </summary>
         public float DriftTimeStDev
         {
             get { return m_driftTimeStDev; }
@@ -34,6 +43,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Default constructor for SLiCInformation class.
+        /// </summary>
         public SLiCInformation()
         {
             Clear();
@@ -41,6 +53,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         #endregion
 
         #region Public functions
+        /// <summary>
+        /// Reset all SLiC parameters to default values.
+        /// </summary>
         public void Clear()
         {
             m_massPPMStDev = 3.0;

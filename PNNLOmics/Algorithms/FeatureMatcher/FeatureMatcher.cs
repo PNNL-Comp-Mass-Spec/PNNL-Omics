@@ -30,45 +30,75 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the initial parameters used for matching.
+        /// </summary>
         public FeatureMatcherParameters MatchParameters
         {
             get { return m_matchParameters; }
             set { m_matchParameters = value; }
         }
+        /// <summary>
+        /// Gets the list of feature matches.
+        /// </summary>
         public List<FeatureMatch<T, U>> MatchList
         {
             get { return m_matchList; }
         }
+        /// <summary>
+        /// Gets the list of features matched with a shift.
+        /// </summary>
         public List<FeatureMatch<T, U>> ShiftedMatchList
         {
             get { return m_shiftedMatchList; }
         }
 
+        /// <summary>
+        /// Gets the FDR calculated by STAC.
+        /// </summary>
         public double STACFDR
         {
             get { return m_stacFDR; }
         }
+        /// <summary>
+        /// Gets the FDR calculated by using a fixed shift.  Calculated as (# shifted matches)/(# shifted matches + # non-shifted matches).
+        /// </summary>
         public double ShiftFDR
         {
             get { return m_shiftFDR; }
         }
+        /// <summary>
+        /// Gets the FDR calculated by using a fixed shift.  Calculated as 2*(# shifted matches)/(# shifted matches + # non-shifted matches).
+        /// </summary>
         public double ShiftConservativeFDR
         {
             get { return m_shiftConservativeFDR; }
         }
+        /// <summary>
+        /// Gets the FDR calculated by using a mass error histogram.
+        /// </summary>
         public double ErrorHistogramFDR
         {
             get { return m_errorHistogramFDR; }
         }
 
+        /// <summary>
+        /// Gets the list of parameters trained by STAC.  Each entry is a different charge state.
+        /// </summary>
         public List<STACInformation> STACParameterList
         {
             get { return m_stacParametersList; }
         }
+        /// <summary>
+        /// Gets the list of refined tolerances used for SLiC and shift.  Each entry is a different charge state.
+        /// </summary>
         public List<FeatureMatcherTolerances> RefinedToleranceList
         {
             get { return m_refinedTolerancesList; }
         }
+        /// <summary>
+        /// Gets the parameters used in calculating SLiC.
+        /// </summary>
         public SLiCInformation SLiCParameters
         {
             get { return m_slicParameters; }
@@ -76,16 +106,26 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Default constructor for use in matching features.  Uses passed parameters to calculate desired results.
+        /// </summary>
+        /// <param name="observedFeatureList">List of features observed in an analysis.  Generally UMC or UMCCluster.</param>
+        /// <param name="targetFeatureList">List of features to be matched to.  Generally AMTTags.</param>
+        /// <param name="matchParameters">FeatureMatcherParameters object containing initial parameters and algorithm settings.</param>
         public FeatureMatcher(List<T> observedFeatureList, List<U> targetFeatureList, FeatureMatcherParameters matchParameters)
         {
             Clear();
             m_observedFeatureList = observedFeatureList;
             m_targetFeatureList = targetFeatureList;
             m_matchParameters = matchParameters;
+            MatchFeatures();
         }
         #endregion
 
         #region Private functions
+        /// <summary>
+        /// Reset all algorithm results to default values.
+        /// </summary>
         private void Clear()
 		{
             m_matchParameters = new FeatureMatcherParameters();
@@ -100,6 +140,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             m_shiftedMatchList = new List<FeatureMatch<T, U>>();
         }
 
+        /// <summary>
+        /// Set the list of charge states to be used in IMS calculations.
+        /// </summary>
         private void SetChargeStateList()
         {
             m_matchParameters.ChargeStateList.Clear();
@@ -112,6 +155,15 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             }
         }
 
+        /// <summary>
+        /// Find a list of matches between two lists.
+        /// </summary>
+        /// <param name="shortObservedList">List of observed features.  Possibly a subset of the entire list corresponding to a particular charge state.</param>
+        /// <param name="shortTargetList">List of target features.  Possibly a subset of the entire list corresponding to a particular charge state.</param>
+        /// <param name="tolerances">Tolerances to be used for matching.</param>
+        /// <param name="useEllipsoid">Whether or not to use an ellipsoidal matching region.  If false, uses a rectangular match region.</param>
+        /// <param name="shiftAmount">A fixed shift amount to use for populating the shifted match list.</param>
+        /// <returns>A list of type FeatureMatch containing matches within the defined region.</returns>
         private List<FeatureMatch<T, U>> FindMatches(List<T> shortObservedList, List<U> shortTargetList, 
                                                         FeatureMatcherTolerances tolerances, bool useEllipsoid, double shiftAmount)
         {
@@ -134,6 +186,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             return matchList;
         }
 
+        /// <summary>
+        /// Refine tolerances for use in SLiC and shift match methods.
+        /// </summary>
+        /// <param name="matchList">List of matches used to train the refined tolerances.</param>
+        /// <returns>Refined tolerances for use in SLiC and shift match methods.</returns>
         private FeatureMatcherTolerances FindOptimalTolerances(List<FeatureMatch<T,U>> matchList)
         {
             List<Matrix> differenceMatrixList = new List<Matrix>();
@@ -162,6 +219,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             refinedTolerances.Refined = true;
             return refinedTolerances;
         }
+
         /*
         public void FindSTACParameters<T,U>(List<FeatureMatch<T,U>> featureMatchList, bool usePriorProbabilities) where T: Feature, new() where U: Feature, new()
         {
@@ -187,6 +245,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         #endregion
 
         #region Public functions
+        /// <summary>
+        /// Function to call to re-calculate algorithm results.  Called within constructor by default.
+        /// </summary>
         public void MatchFeatures()
         {
             if (m_matchParameters.UseDriftTime)

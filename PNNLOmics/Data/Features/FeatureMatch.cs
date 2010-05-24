@@ -28,56 +28,87 @@ namespace PNNLOmics.Data.Features
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the STAC score for the match.
+        /// </summary>
         public double STACScore
         {
             get { return m_stacScore; }
             set { m_stacScore = value; }
         }
+        /// <summary>
+        /// Gets or sets the STAC Specificity of the match.
+        /// </summary>
         public double STACSpecificity
         {
             get { return m_stacSpecificity; }
             set { m_stacSpecificity = value; }
         }
+        /// <summary>
+        /// Gets or sets the SLiC score for the match.
+        /// </summary>
         public double SLiCScore
         {
             get { return m_slicScore; }
             set { m_slicScore = value; }
         }
+        /// <summary>
+        /// Gets or sets the delSLiC for the match.
+        /// </summary>
         public double DelSLiC
         {
             get { return m_slicScore; }
             set { m_slicScore = value; }
         }
 
+        /// <summary>
+        /// Gets the observed feature, i.e. the feature seen in the analysis.
+        /// </summary>
         public T ObservedFeature
         {
             get { return m_observedFeature; }
-            set { m_observedFeature = value; }
         }
+        /// <summary>
+        /// Gets the target feature, i.e. the feature that was matched to.
+        /// </summary>
         public U TargetFeature
         {
             get { return m_targetFeature; }
-            set { m_targetFeature = value; }
         }
 
+        /// <summary>
+        /// Gets the difference vector between the matched features.  This includes both observed and predicted drift times where appropriate.
+        /// </summary>
         public Matrix DifferenceVector
         {
             get { return m_differenceVector; }
         }
+        /// <summary>
+        /// Gets the distance matrix with only applicable dimensions.
+        /// </summary>
         public Matrix ReducedDifferenceVector
         {
             get { return m_reducedDifferenceVector; }
         }
 
+        /// <summary>
+        /// Gets whether the drift time provided was predicted.
+        /// </summary>
         public bool UseDriftTimePredicted
         {
             get { return m_useDriftTimePredicted; }
         }
+        /// <summary>
+        /// Gets or sets whether the match was within the refined region.
+        /// </summary>
         public bool WithinRefinedRegion
         {
             get { return m_withinRefinedRegion; }
             set { m_withinRefinedRegion = value; }
         }
+        /// <summary>
+        /// Gets or sets whether the match is a shifted match.
+        /// </summary>
         public bool ShiftedMatch
         {
             get { return m_shiftedMatch; }
@@ -86,27 +117,37 @@ namespace PNNLOmics.Data.Features
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Parameterless constructor.  Must use AddFeatures function before attempting to use match.
+        /// </summary>
         public FeatureMatch()
         {
             Clear();
         }
+        /// <summary>
+        /// Default constructor for FeatureMatch.
+        /// </summary>
+        /// <param name="observedFeature">Feature observed in experiment.  Typically a UMC or UMCCluster.</param>
+        /// <param name="targetFeature">Feature to match to.  Typically an AMTTag.</param>
+        /// <param name="useDriftTime">Whether to use the drift time in distance vectors.</param>
+        /// <param name="shiftedMatch">Whether the match is the result of a fixed shift.</param>
         public FeatureMatch(T observedFeature, U targetFeature, bool useDriftTime, bool shiftedMatch)
         {
-            Clear();
-            m_observedFeature = observedFeature;
-            m_targetFeature = targetFeature;
-            m_reducedDifferenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime);
-            m_differenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime, true);
-            SetFlags(useDriftTime);
-            m_shiftedMatch = shiftedMatch;
+            AddFeatures(observedFeature, targetFeature, useDriftTime, shiftedMatch);
         }
         #endregion
 
         #region Comparisons
+        /// <summary>
+        /// Comparison function for sorting by feature ID.
+        /// </summary>
         public static Comparison<FeatureMatch<T, U>> FeatureComparison = delegate(FeatureMatch<T, U> featureMatch1, FeatureMatch<T, U> featureMatch2)
         {
             return featureMatch1.m_observedFeature.ID.CompareTo(featureMatch2.ObservedFeature.ID);
         };
+        /// <summary>
+        /// Comparison function for sorting by STAC score.
+        /// </summary>
         public static Comparison<FeatureMatch<T,U>> STACComparison = delegate(FeatureMatch<T,U> featureMatch1, FeatureMatch<T,U> featureMatch2)
         {
             return featureMatch1.m_stacScore.CompareTo(featureMatch2.STACScore);
@@ -114,7 +155,10 @@ namespace PNNLOmics.Data.Features
         #endregion
 
         #region Private functions
-        public override void Clear()
+        /// <summary>
+        /// Resets all member variables to default values.  Must use AddFeatures to add features after use.
+        /// </summary>
+        private override void Clear()
         {
             m_observedFeature = new T();
             m_targetFeature = new U();
@@ -126,6 +170,10 @@ namespace PNNLOmics.Data.Features
             m_useDriftTimePredicted = false;
             m_withinRefinedRegion = false;
         }
+        /// <summary>
+        /// Sets internal flag as to whether drift time or predicted drift time is used.
+        /// </summary>
+        /// <param name="useDriftTime"></param>
         private void SetFlags(bool useDriftTime)
         {
             if (useDriftTime)
@@ -139,6 +187,13 @@ namespace PNNLOmics.Data.Features
         #endregion
 
         #region Public functions
+        /// <summary>
+        /// Add (or replace) features in a match.
+        /// </summary>
+        /// <param name="observedFeature">Feature observed in experiment.  Typically a UMC or UMCCluster.</param>
+        /// <param name="targetFeature">Feature to match to.  Typically an AMTTag.</param>
+        /// <param name="useDriftTime">Whether to use the drift time in distance vectors.</param>
+        /// <param name="shiftedMatch">Whether the match is the result of a fixed shift.</param>
         public void AddFeatures(T observedFeature, U targetFeature, bool useDriftTime, bool shiftedMatch)
         {
             Clear();
@@ -149,7 +204,12 @@ namespace PNNLOmics.Data.Features
             SetFlags(useDriftTime);
             m_shiftedMatch = shiftedMatch;
         }
-
+        /// <summary>
+        /// Sets the internal flag as to whether the match is within the given tolerances.
+        /// </summary>
+        /// <param name="tolerances">Tolerances to use for matching.</param>
+        /// <param name="useElllipsoid">Whether to use ellipsoidal region for matching.</param>
+        /// <returns></returns>
         public bool InRegion(FeatureMatcherTolerances tolerances, bool useElllipsoid)
         {
             if (m_targetFeature == new U())
