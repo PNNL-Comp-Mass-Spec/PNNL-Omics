@@ -203,11 +203,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             Matrix meanVector = new Matrix(rows,1,0.0);
             Matrix covarianceMatrix = new Matrix(rows,1.0);
             double mixtureParameter = 0.5; 
-            double logLikelihood = 0;
-
-            Utilities.ExpectationMaximization.NormalUniformMixture(differenceMatrixList, ref meanVector, ref covarianceMatrix,
-                                                                    m_matchParameters.UserTolerances.AsVector(m_matchParameters.UseDriftTime),
-                                                                    ref mixtureParameter, ref logLikelihood, true);
+            
+            Utilities.ExpectationMaximization.NormalUniformMixture(differenceMatrixList, ref meanVector, ref covarianceMatrix, m_matchParameters.UserTolerances.AsVector(m_matchParameters.UseDriftTime), ref mixtureParameter, true);
             
             m_slicParameters.MassPPMStDev = Math.Sqrt(covarianceMatrix[0,0]);
             m_slicParameters.NETStDev = Math.Sqrt(covarianceMatrix[1, 1]);
@@ -314,7 +311,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
                 if (m_matchParameters.CalculateSTAC && lengthCheck)
                 {
-                    // Calculate STAC parameters, values, specificity, and FDR table for each potential match.
+                    STACParameterList[0].TrainSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime,m_matchParameters.UsePriors);
+                    // Calculate STAC values, specificity, and FDR table for each potential match.
                 }
                 if (m_matchParameters.CalculateHistogramFDR)
                 {

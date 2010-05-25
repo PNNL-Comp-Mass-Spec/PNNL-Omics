@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PNNLOmics.Data
+namespace PNNLOmics.Data.Features
 {
 	public class MSFeature : Feature
 	{

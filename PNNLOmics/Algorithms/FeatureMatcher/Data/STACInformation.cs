@@ -11,8 +11,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
     public class STACInformation
     {
         # region Members
-        private uint m_iterations;
-
         private double m_mixtureProportion;
         private double m_logLikelihood;
 
@@ -20,18 +18,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         private Matrix m_covarianceMatrixT;
         private Matrix m_meanVectorF;
         private Matrix m_covarianceMatrixF;
+
+        private uint m_iterations;
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Gets the number of iterations needed to reach convergence.
-        /// </summary>
-        public uint Iterations
-        {
-            get { return m_iterations; }
-            set { m_iterations = value; }
-        }
-
         /// <summary>
         /// Gets or sets the mixture proportion, i.e. the probability of being from the correct distribution.
         /// </summary>
@@ -39,14 +30,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         {
             get { return m_mixtureProportion; }
             set { m_mixtureProportion = value; }
-        }
-        /// <summary>
-        /// Gets or sets the value of the loglikelihood function evaluated at the current parameters.
-        /// </summary>
-        public double LogLikelihood
-        {
-            get { return m_logLikelihood; }
-            set { m_logLikelihood = value; }
         }
 
         /// <summary>
@@ -94,14 +77,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         }
         #endregion
 
-        #region Variable routines  ---Needs work
+        #region Public functions
         /// <summary>
         /// Resets parameters to default values.
         /// </summary>
         /// <param name="driftTime">Whether to use drift times in the analysis.</param>
         public void Clear(bool driftTime)
         {
-            m_iterations = 0;
             m_mixtureProportion = 0.5;
             m_logLikelihood = 0.0;
             if (driftTime)
@@ -129,13 +111,30 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 m_covarianceMatrixF[2, 2] = 0.1;
             }
         }
-
-        // Redesign to take in matches.
-        public bool RunSTAC(List<Matrix> differenceMatrixList, FeatureMatcherTolerances uniformTolerances, List<bool> driftTime, List<bool> driftTimePredicted, 
-                                    bool usePriorProbabilities)
+        /// <summary>
+        /// Trains the STAC parameters using the passed data.
+        /// </summary>
+        /// <typeparam name="T">Observed feature to be matched.  Derived from Feature.  Usually UMC or UMCCluster.</typeparam>
+        /// <typeparam name="U">Feature to be matched to.  Derived from Feature.  Usually AMTTag.</typeparam>
+        /// <param name="featureMatchList">List of FeatureMatches to train parameters on.</param>
+        /// <param name="uniformTolerances">User provided tolerances.</param>
+        /// <param name="useDriftTime">Whether to train the data on the drift time dimension.</param>
+        /// <returns>A boolean flag indicating whether convergence was reached.</returns>
+        public bool TrainSTAC<T,U>(List<FeatureMatch<T,U>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime, bool usePrior) where T: Feature, new() where U: Feature, new()
         {
-            ExpectationMaximization.NormalUniformMixture(differenceMatrixList, ref m_meanVectorT, ref m_covarianceMatrixT, uniformTolerances.AsVector(true),
-                                                            ref m_mixtureProportion, ref m_logLikelihood, false);
+            List<Matrix> differenceMatrixList = new List<Matrix>();
+            foreach (FeatureMatch<T, U> match in featureMatchList)
+            {
+                differenceMatrixList.Add(match.ReducedDifferenceVector);
+            }
+            if (!usePrior)
+            {
+                return ExpectationMaximization.NormalUniformMixture(differenceMatrixList, ref m_meanVectorT, ref m_covarianceMatrixT, uniformTolerances.AsVector(useDriftTime), ref m_mixtureProportion, false);
+            }
+            else
+            {
+                // Run IMS STAC here.
+            }
             return false;
         }
         #endregion

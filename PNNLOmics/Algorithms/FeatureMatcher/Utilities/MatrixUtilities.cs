@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Data;
+using PNNLOmics.Data.Features;
 using PNNLOmics.Utilities;
 
 

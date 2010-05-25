@@ -11,23 +11,47 @@ namespace PNNLOmics.Data.Features
     public class FeatureMatch<T, U>: BaseData where T: Feature, new() where U: Feature, new()
     {
         #region Members
+        private bool m_useDriftTimePredicted;
+        private bool m_withinRefinedRegion;
+        private bool m_shiftedMatch;
+
         private double m_stacScore;
         private double m_stacSpecificity;
         private double m_slicScore;
         private double m_delSLiC;
 
-        private T m_observedFeature;
-        private U m_targetFeature;
-
         private Matrix m_differenceVector;
         private Matrix m_reducedDifferenceVector;
 
-        private bool m_useDriftTimePredicted;
-        private bool m_withinRefinedRegion;
-        private bool m_shiftedMatch;
+        private T m_observedFeature;
+        private U m_targetFeature;
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets whether the drift time provided was predicted.
+        /// </summary>
+        public bool UseDriftTimePredicted
+        {
+            get { return m_useDriftTimePredicted; }
+        }
+        /// <summary>
+        /// Gets or sets whether the match was within the refined region.
+        /// </summary>
+        public bool WithinRefinedRegion
+        {
+            get { return m_withinRefinedRegion; }
+            set { m_withinRefinedRegion = value; }
+        }
+        /// <summary>
+        /// Gets or sets whether the match is a shifted match.
+        /// </summary>
+        public bool ShiftedMatch
+        {
+            get { return m_shiftedMatch; }
+            set { m_shiftedMatch = value; }
+        }
+
         /// <summary>
         /// Gets or sets the STAC score for the match.
         /// </summary>
@@ -62,21 +86,6 @@ namespace PNNLOmics.Data.Features
         }
 
         /// <summary>
-        /// Gets the observed feature, i.e. the feature seen in the analysis.
-        /// </summary>
-        public T ObservedFeature
-        {
-            get { return m_observedFeature; }
-        }
-        /// <summary>
-        /// Gets the target feature, i.e. the feature that was matched to.
-        /// </summary>
-        public U TargetFeature
-        {
-            get { return m_targetFeature; }
-        }
-
-        /// <summary>
         /// Gets the difference vector between the matched features.  This includes both observed and predicted drift times where appropriate.
         /// </summary>
         public Matrix DifferenceVector
@@ -92,27 +101,18 @@ namespace PNNLOmics.Data.Features
         }
 
         /// <summary>
-        /// Gets whether the drift time provided was predicted.
+        /// Gets the observed feature, i.e. the feature seen in the analysis.
         /// </summary>
-        public bool UseDriftTimePredicted
+        public T ObservedFeature
         {
-            get { return m_useDriftTimePredicted; }
+            get { return m_observedFeature; }
         }
         /// <summary>
-        /// Gets or sets whether the match was within the refined region.
+        /// Gets the target feature, i.e. the feature that was matched to.
         /// </summary>
-        public bool WithinRefinedRegion
+        public U TargetFeature
         {
-            get { return m_withinRefinedRegion; }
-            set { m_withinRefinedRegion = value; }
-        }
-        /// <summary>
-        /// Gets or sets whether the match is a shifted match.
-        /// </summary>
-        public bool ShiftedMatch
-        {
-            get { return m_shiftedMatch; }
-            set { m_shiftedMatch = value; }
+            get { return m_targetFeature; }
         }
         #endregion
 
@@ -125,7 +125,7 @@ namespace PNNLOmics.Data.Features
             Clear();
         }
         /// <summary>
-        /// Default constructor for FeatureMatch.
+        /// Constructor that takes in all necessary information.
         /// </summary>
         /// <param name="observedFeature">Feature observed in experiment.  Typically a UMC or UMCCluster.</param>
         /// <param name="targetFeature">Feature to match to.  Typically an AMTTag.</param>
@@ -156,21 +156,6 @@ namespace PNNLOmics.Data.Features
 
         #region Private functions
         /// <summary>
-        /// Resets all member variables to default values.  Must use AddFeatures to add features after use.
-        /// </summary>
-        private override void Clear()
-        {
-            m_observedFeature = new T();
-            m_targetFeature = new U();
-            m_delSLiC = 0;
-            m_slicScore = 0;
-            m_stacScore = 0;
-            m_stacSpecificity = 0;
-            m_differenceVector = new Matrix(2, 1, 0.0);
-            m_useDriftTimePredicted = false;
-            m_withinRefinedRegion = false;
-        }
-        /// <summary>
         /// Sets internal flag as to whether drift time or predicted drift time is used.
         /// </summary>
         /// <param name="useDriftTime"></param>
@@ -187,6 +172,23 @@ namespace PNNLOmics.Data.Features
         #endregion
 
         #region Public functions
+        /// <summary>
+        /// Resets all member variables to default values.  Must use AddFeatures to add features after use.
+        /// </summary>
+        public override void Clear()
+        {
+            m_observedFeature = new T();
+            m_targetFeature = new U();
+            m_delSLiC = 0;
+            m_slicScore = 0;
+            m_stacScore = 0;
+            m_stacSpecificity = 0;
+            m_differenceVector = new Matrix(2, 1, 0.0);
+            m_reducedDifferenceVector = m_differenceVector;
+            m_useDriftTimePredicted = false;
+            m_withinRefinedRegion = false;
+            m_shiftedMatch = false;
+        }
         /// <summary>
         /// Add (or replace) features in a match.
         /// </summary>
@@ -237,6 +239,11 @@ namespace PNNLOmics.Data.Features
                 m_withinRefinedRegion = truthValue;
             }
             return m_withinRefinedRegion;
+        }
+
+        public void CalculateSTAC(STACInformation parameters)
+        {
+
         }
         #endregion
     }

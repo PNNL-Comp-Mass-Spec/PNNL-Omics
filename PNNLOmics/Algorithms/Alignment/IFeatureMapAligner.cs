@@ -16,6 +16,6 @@ namespace PNNLOmics.Algorithms.Alignment
         /// </summary>
         /// <param name="aligneeFeatures">Features to align.</param>
         /// <param name="baselineFeatures">Features to align to.</param>
-        public void Align(IList<Feature> aligneeFeatures, IList<Feature> baselineFeatures);
+        void Align(IList<Feature> aligneeFeatures, IList<Feature> baselineFeatures);
     }
 }

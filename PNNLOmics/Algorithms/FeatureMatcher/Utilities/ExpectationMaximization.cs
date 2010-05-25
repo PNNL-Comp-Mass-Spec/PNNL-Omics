@@ -5,79 +5,46 @@ using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Utilities;
+using PNNLOmics.Algorithms.FeatureMatcher.Data;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 {
-    static public class ExpectationMaximization
+    public static class ExpectationMaximization
     {
-        # region Algorithm variables
-        /// <summary>
-        /// The maximum number of EM iterations to perform.
-        /// </summary>
-        static private int m_maxIterations;
-
-        static public int MaxIterations
-        {
-            get { return m_maxIterations; }
-            set { m_maxIterations = value; }
-        }
-        /// <summary>
-        /// The current number of iterations.
-        /// </summary>
-        static private int m_iteration;
-
-        static public int Iteration
-        {
-            get { return m_iteration; }
-            set { m_iteration = value; }
-        }
-        /// <summary>
-        /// The convergence criteria.  The log likelihood must change by less than this amount to achieve convergence.
-        /// </summary>
-        static private double m_epsilon;
-
-        static public double Epsilon
-        {
-            get { return m_epsilon; }
-            set { m_epsilon = value; }
-        }
-        /// <summary>
-        /// A variable asserting whether or not the algorithm reached the convergence criteria.
-        /// </summary>
-        static private bool m_converges;
-
-        static public bool Converges
-        {
-            get { return m_converges; }
-        }
+        # region Members
+        const double EPSILON = 0.0001;
+        const int MAX_ITERATIONS = 500;
         #endregion
 
-        # region Variable routines
+        # region Public functions
         /// <summary>
-        /// Sets epsilon and the number of iterations to default values if not already set.
+        /// Update mean vector of normal distribution.  Used for Normal-Uniform mixture.
         /// </summary>
-        static private void CheckParameters()
+        /// <param name="dataList">List of difference matrices.</param>
+        /// <param name="alphaList">List of mixture estimates corresponding to differences.</param>
+        /// <returns>Updated Matrix containing mean of normal distribution.</returns>
+        public static Matrix UpdateNormalMeanVector(List<Matrix> dataList, List<double> alphaList)
         {
-            if (m_epsilon == 0)
-            {
-                m_epsilon = 0.0001;
-            }
-            if (m_maxIterations == 0)
-            {
-                m_maxIterations = 500;
-            }
-        }
-        /// <summary>
-        /// Resets the iteration count to 0.
-        /// </summary>
-        static private void ResetIterations()
-        {
-            m_iteration = 0;
-        }
-        # endregion
+            Matrix numerator = new Matrix(dataList[0].RowCount, 1, 0.0);
+            double denominator = 0.0;
 
-        # region Update normal parameters
-        static private Matrix UpdateNormalMeanVector(List<Matrix> dataList, List<double> alphaList, List<double> priorList, bool secondNormal)
+            for (int i = 0; i < dataList.Count; i++)
+            {
+                numerator += alphaList[i] * dataList[i];
+                denominator += alphaList[i];
+            }
+
+            return ((1 / denominator) * numerator);
+        }
+        /// <summary>
+        /// Update mean vector of normal distribution.  Used for Normal-Normal-Uniform mixture.
+        /// </summary>
+        /// <param name="dataList">List of difference matrices.</param>
+        /// <param name="alphaList">List of mixture estimates corresponding to differences.</param>
+        /// <param name="priorList">List of prior probabilities corresponding to differences.</param>
+        /// <param name="secondNormal">Whether the data is from the second of the normal distributions, i.e. incorrect in AMT database.</param>
+        /// <returns>Updated Matrix containing mean of normal distribution.</returns>
+        public static Matrix UpdateNormalMeanVector(List<Matrix> dataList, List<double> alphaList, List<double> priorList, bool secondNormal)
         {
             Matrix numerator = new Matrix(dataList[0].RowCount,1,0.0);
             double denominator = 0.0;
@@ -93,14 +60,67 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 
             for (int i = 0; i < dataList.Count; i++)
             {
-                numerator += alphaList[i] * (adder + multiplier * priorList[i]) * dataList[i];
-                denominator += alphaList[i] * (adder + multiplier * priorList[i]);
+                double weight = alphaList[i] * (adder + multiplier * priorList[i]);
+                numerator += weight * dataList[i];
+                denominator += weight;
             }
 
             return ((1/denominator)*numerator);
         }
+        /// <summary>
+        /// Update covariance matrix of normal distribution.  Used for Normal-Uniform mixture.
+        /// </summary>
+        /// <param name="dataList">List of difference matrices.</param>
+        /// <param name="meanVector">Matrix containing mean parameters for the normal distribution.</param>
+        /// <param name="alphaList">List of mixture estimates corresponding to differences</param>
+        /// <param name="independent">Whether the dimensions of the normal distribution should be considered normal.  Returns a diagonal Matrix if true.  Should use false if unknown.</param>
+        /// <returns>Updated Matrix containing covariances of normal distribution.</returns>
+        public static Matrix UpdateNormalCovarianceMatrix(List<Matrix> dataList, Matrix meanVector, List<double> alphaList, bool independent)
+        {
+            Matrix numerator = new Matrix(meanVector.RowCount, meanVector.RowCount, 0.0);
+            double denominator = 0.0;
 
-        static private Matrix UpdateNormalCovarianceMatrix(List<Matrix> dataList, Matrix meanVector, List<double> alphaList, List<double> priorList, bool independent, bool secondNormal)
+            for (int i = 0; i < dataList.Count; i++)
+            {
+                Matrix dataT = dataList[i].Clone();
+                dataT.Transpose();
+                numerator += alphaList[i] * dataList[i] * dataT;
+                denominator += alphaList[i];
+            }
+
+            Matrix covarianceMatrix = (1 / denominator) * numerator;
+
+            if (independent)
+            {
+                Matrix indCovarianceMatrix = new Matrix(covarianceMatrix.RowCount, covarianceMatrix.ColumnCount, 0.0);
+                for (int i = 0; i < covarianceMatrix.ColumnCount; i++)
+                {
+                    indCovarianceMatrix[i, i] = covarianceMatrix[i, i];
+                }
+                covarianceMatrix = indCovarianceMatrix.Clone();
+            }
+
+            for (int i = 0; i < meanVector.RowCount; i++)
+            {
+                if (covarianceMatrix[i, i] < 0.001)
+                {
+                    covarianceMatrix[i, i] = 0.001;
+                }
+            }
+
+            return (covarianceMatrix);
+        }
+        /// <summary>
+        /// Update covariance matrix of normal distribution.  Used for Normal-Normal-Uniform mixture.
+        /// </summary>
+        /// <param name="dataList">List of difference matrices.</param>
+        /// <param name="meanVector">Matrix containing mean parameters for the normal distribution.</param>
+        /// <param name="alphaList">List of mixture estimates corresponding to differences</param>
+        /// <param name="priorList">List of prior probabilities corresponding to differences.</param>
+        /// <param name="independent">Whether the dimensions of the normal distribution should be considered normal.  Returns a diagonal Matrix if true.  Should use false if unknown.</param>
+        /// <param name="secondNormal">Whether the data is from the second of the normal distributions, i.e. incorrect in AMT database.</param>
+        /// <returns>Updated Matrix containing covariances of normal distribution.</returns>
+        public static Matrix UpdateNormalCovarianceMatrix(List<Matrix> dataList, Matrix meanVector, List<double> alphaList, List<double> priorList, bool independent, bool secondNormal)
         {
             Matrix numerator = new Matrix(meanVector.RowCount, meanVector.RowCount, 0.0);
             double denominator = 0.0;
@@ -118,8 +138,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             {
                 Matrix dataT = dataList[i].Clone();
                 dataT.Transpose();
-                numerator += alphaList[i] * (adder + multiplier * priorList[i]) * dataList[i] * dataT;
-                denominator += alphaList[i] * (adder + multiplier * priorList[i]);
+                double weight = alphaList[i] * (adder + multiplier * priorList[i]);
+                numerator += weight * dataList[i] * dataT;
+                denominator += weight;
             }
 
             Matrix covarianceMatrix = (1 / denominator) * numerator;
@@ -144,7 +165,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 
             return (covarianceMatrix);
         }
-        # endregion
+        #endregion
 
         # region Normal Uniform mixture
         /// <summary>
@@ -158,18 +179,16 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <param name="logLikelihood">A placeholder to which the loglikelihood of the function will be returned.</param>
         /// <param name="independent">true/false:  Whether or not the multivariate normal distribution should be treated as independent, i.e. a diagonal covariance matrix.</param>
         /// <returns>A boolean flag indicating whether the EM algorithm achieved convergence.</returns>
-        static public bool NormalUniformMixture(List<Matrix> dataList, ref Matrix meanVector, ref Matrix covarianceMatrix, Matrix uniformTolerances, ref double mixtureParameter, 
-                                                    ref double logLikelihood, bool independent)
+        public static bool NormalUniformMixture(List<Matrix> dataList, ref Matrix meanVector, ref Matrix covarianceMatrix, Matrix uniformTolerances, ref double mixtureParameter, bool independent)
         {
+            int iteration = 0;
+            bool converges = false;
             // Check that the dimensions of the matrices agree.
             if( !(dataList[0].RowCount==meanVector.RowCount && dataList[0].ColumnCount==meanVector.ColumnCount && covarianceMatrix.RowCount==covarianceMatrix.ColumnCount
                    && covarianceMatrix.Rank()==covarianceMatrix.ColumnCount && covarianceMatrix.RowCount==meanVector.RowCount && uniformTolerances.RowCount==meanVector.RowCount) )
             {
                 throw new InvalidOperationException("Dimensions of matrices do not agree in ExpectationMaximization.NormalUniformMixture function.");
             }
-            // Check that the EM parameters are set and reset the iteration count to 0.
-            CheckParameters();
-            ResetIterations();
             // Calculate the uniform density based on the tolerances passed.
             double uniformDensity = 1.0;
             for (int i = 0; i < uniformTolerances.RowCount; i++)
@@ -177,7 +196,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 uniformDensity /= (2*uniformTolerances[i,0]);
             }
             // Calculate the starting loglikelihood and initialize a variable for the loglikelihood at the next iteration.
-            logLikelihood = NormalUniformLogLikelihood(dataList, meanVector, covarianceMatrix, uniformDensity, mixtureParameter);
+            double logLikelihood = NormalUniformLogLikelihood(dataList, meanVector, covarianceMatrix, uniformDensity, mixtureParameter);
             double nextLogLikelihood=0.0;
             // Initialize the individual observation mixture estimates to the given mixture parameter and a list of priors to 1.
             List<double> alphaList = new List<double>(dataList.Count);
@@ -188,7 +207,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 priorList.Add(1.0);
             }
             // Step through the EM algorithm up to m_maxIterations time.
-            while (m_iteration <= m_maxIterations)
+            while (iteration <= MAX_ITERATIONS)
             {
                 // Update the parameters in the following order: mixture parameters, mean, covariance.
                 mixtureParameter = UpdateNormalUniformMixtureParameter(dataList, meanVector, covarianceMatrix, mixtureParameter, uniformDensity, ref alphaList);
@@ -197,18 +216,18 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 // Calculate the loglikelihood based on the new parameters.
                 nextLogLikelihood = NormalUniformLogLikelihood(dataList, meanVector, covarianceMatrix, uniformDensity, mixtureParameter);
                 // Increment the counter to show that another iteration has been completed.
-                m_iteration++;
+                iteration++;
                 // Set the convergence flag and exit the while loop if the convergence criteria is met.
-                if (Math.Abs(nextLogLikelihood - logLikelihood) < m_epsilon)
+                if (Math.Abs(nextLogLikelihood - logLikelihood) < EPSILON)
                 {
-                    m_converges = true;
+                    converges = true;
                     break;
                 }
                 // Update the loglikelihood.
                 logLikelihood = nextLogLikelihood;
             }
             // Return the convergence flag, which is still false unless changed to true above.
-            return (m_converges);
+            return (converges);
         }
         /// <summary>
         /// Calculate the loglikelihood for a normal uniform mixture.
@@ -219,7 +238,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <param name="uniformDensity">The density of the uniform distribution.</param>
         /// <param name="mixtureParameter">The current mixture parameter.</param>
         /// <returns></returns>
-        static private double NormalUniformLogLikelihood(List<Matrix> dataList, Matrix meanVector, Matrix covarianceMatrix, double uniformDensity, double mixtureParameter)
+        private static double NormalUniformLogLikelihood(List<Matrix> dataList, Matrix meanVector, Matrix covarianceMatrix, double uniformDensity, double mixtureParameter)
         {
             double logLikelihood = 0;
             double numerator = 0;
@@ -244,7 +263,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <param name="uniformDensity">The density of the uniform distribution.</param>
         /// <param name="alphaList">A List of observation-wise mixture proportions estimates is passed initially and an updated list is returned.</param>
         /// <returns></returns>
-        static private double UpdateNormalUniformMixtureParameter(List<Matrix> dataList, Matrix meanVector, Matrix covarianceMatrix, double mixtureParameter, double uniformDensity, ref List<double> alphaList)
+        private static double UpdateNormalUniformMixtureParameter(List<Matrix> dataList, Matrix meanVector, Matrix covarianceMatrix, double mixtureParameter, double uniformDensity, ref List<double> alphaList)
         {
             double numerator = 0.0;
             double nextMixtureParameter = 0.0;
@@ -263,7 +282,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         #region Normal Normal Uniform mixture -- incomplete!!
         static public int NormalNormalUniformMixture(List<double> featureList)
         {
-            CheckParameters();
             return (-99);
         }
 
