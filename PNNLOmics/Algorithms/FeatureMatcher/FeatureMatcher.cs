@@ -216,29 +216,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             refinedTolerances.Refined = true;
             return refinedTolerances;
         }
-
-        /*
-        public void FindSTACParameters<T,U>(List<FeatureMatch<T,U>> featureMatchList, bool usePriorProbabilities) where T: Feature, new() where U: Feature, new()
-        {
-            List<Matrix> differenceMatrixList = new List<Matrix>();
-            List<bool> useDriftTime = new List<bool>();
-            List<bool> useDriftTimePredicted = new List<bool>();
-
-            for (int i = 0; i <= featureMatchList.Count; i++)
-            {
-                differenceMatrixList.Add(featureMatchList[i].DifferenceVector);
-                useDriftTime.Add(featureMatchList[i].UseDriftTime);
-                useDriftTimePredicted.Add(featureMatchList[i].UseDriftTimePredicted);
-            }
-
-            int rows = differenceMatrixList[0].RowCount;
-
-            m_smartParameters.RunSTAC(differenceMatrixList, m_userTolerances, useDriftTime, useDriftTimePredicted, usePriorProbabilities);
-        }
-        public void FindSTACParameters<T, U>(List<FeatureMatch<T, U>> featureMatchList, bool useDriftTime, bool usePriorProbabilities) where T : Feature, new() where U : Feature, new()
-        {
-
-        }*/
         #endregion
 
         #region Public functions
@@ -279,7 +256,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     bool lengthCheck = (tempMatchList.Count < MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
                     if (m_matchParameters.CalculateSTAC && lengthCheck)
                     {
-                        // Calculate STAC parameters, values, and specificity for each potential match.
+                        STACParameterList[i].TrainSTAC(tempMatchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+                        STACParameterList[i].SetSTACScores(tempMatchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+                        // Calculate STAC specificity for each potential match.
                     }
                     if (m_matchParameters.CalculateShiftFDR)
                     {
@@ -311,8 +290,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
                 if (m_matchParameters.CalculateSTAC && lengthCheck)
                 {
-                    STACParameterList[0].TrainSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime,m_matchParameters.UsePriors);
-                    // Calculate STAC values, specificity, and FDR table for each potential match.
+                    STACParameterList[0].TrainSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+                    STACParameterList[0].SetSTACScores(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+                    // Calculate specificity and FDR table for each potential match.
                 }
                 if (m_matchParameters.CalculateHistogramFDR)
                 {
