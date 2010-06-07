@@ -3,138 +3,221 @@ using System.Collections.Generic;
 
 namespace PNNLOmics.Data.Features
 {
-    /// <summary>
-    /// Class that represents LC-MS, IMS-MS, LC-IMS-MS, etc. type data.
-    /// </summary>
-    /// <remarks>UMC stands for Unique Mass Class - see Advances in Proteomics Data Analysis and Display Using An Accurate Mass and Time Tag Approach in Mass Spectrometry Reviews, 2006. Zimmer et. al.</remarks>
-    public class UMC: Feature
-    {
-        #region Members
-        private UMCCluster m_umcCluster;
-        private ushort m_chargeMax;
-        private double m_massMonoisotopicStandardDeviation;
-        private ushort m_scanStart;
-        private ushort m_scanEnd;
-        private IList<MSFeature> m_msFeatureList;
-        private int m_abundanceSum;
-        private int m_abundanceMax;
-        #endregion
+	/// <summary>
+	/// Class that represents LC-MS, IMS-MS, LC-IMS-MS, etc. type data.
+	/// </summary>
+	/// <remarks>UMC stands for Unique Mass Class - see Advances in Proteomics Data Analysis and Display Using An Accurate Mass and Time Tag Approach in Mass Spectrometry Reviews, 2006. Zimmer et. al.</remarks>
+	public class UMC : Feature, IComparable<UMC>
+	{
+		#region AutoProperties and Properties
+		/// <summary>
+		/// True if the the UMC should be removed from the working List of UMCs.
+		/// </summary>
+		public bool Remove { get; set; }
+		/// <summary>
+		/// The maximum charge state of the UMC.
+		/// </summary>
+		public int ChargeMaximum { get; set; }
+		/// <summary>
+		/// The maximum abundance of the UMC.
+		/// </summary>
+		public int AbundanceMaximum { get; set; }
+		/// <summary>
+		/// The sum of the abundance of the UMC.
+		/// </summary>
+		public int AbundanceSum { get; set; }
+		/// <summary>
+		/// The maximum Dalton Correction to be applied to the UMC.
+		/// </summary>
+		public int DaltonCorrectionMax { get; set; }
+		/// <summary>
+		/// The index of where the Conformation of the UMC occurred in respect to the rest of the Conformations.
+		/// </summary>
+		public int ConformationIndex { get; set; }
+		/// <summary>
+		/// The LC Scan where the UMC begins.
+		/// </summary>
+		public int ScanLCStart { get; set; }
+		/// <summary>
+		/// The LC Scan where the UMC ends. 
+		/// </summary>
+		public int ScanLCEnd { get; set; }
+		/// <summary>
+		/// The LC Scan that contains the most abundant MS Feature associated with the UMC.
+		/// </summary>
+		public int ScanLCOfMaxAbundance { get; set; }
+		/// <summary>
+		/// The LC Scan that contains the most abundant MS Feature associated with the UMC.
+		/// </summary>
+		public override int ScanLC
+		{
+			get { return this.ScanLCOfMaxAbundance; }
+			set { this.ScanLCOfMaxAbundance = value; }
+		}
+		/// <summary>
+		/// The minimum monoisotopic mass of the UMC.
+		/// </summary>
+		public double MassMonoisotopicMinimum { get; set; }
+		/// <summary>
+		/// The maximum monoisotopic mass of the UMC.
+		/// </summary>
+		public double MassMonoisotopicMaximum { get; set; }
+		/// <summary>
+		/// The average monoisotopic mass of the UMC.
+		/// </summary>
+		public double MassMonoisotopicAverage { get; set; }
+		/// <summary>
+		/// The median monoisotopic mass of the UMC.
+		/// </summary>
+		public double MassMonoisotopicMedian { get; set; }
+		/// <summary>
+		/// The standard deviation of the monoisotopic mass of the UMC.
+		/// </summary>
+		public double MassMonoisotopicStandardDeviation { get; set; }
+		/// <summary>
+		/// The monoisotopic mass of the most abundant MS Feature associated with the UMC.
+		/// </summary>
+		public double MassOfMaxAbundance { get; set; }
+		/// <summary>
+		/// The List of MS Features associated with the UMC.
+		/// </summary>
+		public virtual List<MSFeature> MSFeatureList { get; set; }
+		/// <summary>
+		/// The UMC Cluster that is associated with the UMC.
+		/// </summary>
+		public UMCCluster UmcCluster { get; set; }
+		#endregion
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public UMC()
-        {
-            Clear();
-        }
+		#region BaseData Members
+		/// <summary>
+		/// Clears the datatype and resets the raw values to their default values.
+		/// </summary>
+		public override void Clear()
+		{
+			base.Clear();
+			this.Remove = false;
+			this.ConformationIndex = -1;
+			this.ChargeMaximum = 0;
+			this.AbundanceMaximum = 0;
+			this.AbundanceSum = 0;
+			this.DaltonCorrectionMax = 0;
+			this.MassMonoisotopicMinimum = double.MaxValue;
+			this.MassMonoisotopicMaximum = 0;
+			this.MassMonoisotopicAverage = 0;
+			this.MassMonoisotopicMedian = 0;
+			this.MassMonoisotopicStandardDeviation = 0;
+			this.MassOfMaxAbundance = double.NaN;
+			this.ScanLCStart = int.MaxValue;
+			this.ScanLCEnd = 0;
+			this.ScanLCOfMaxAbundance = 0;
+			this.MSFeatureList = new List<MSFeature>();
+			this.UmcCluster = null;
+		}
+		#endregion
 
-        #region Properties
-        public int AbundanceMax
-        {
-            get { return m_abundanceMax; }
-            set { m_abundanceMax = value; }
-        }
-        public int AbundanceSum
-        {
-            get { return m_abundanceSum; }
-            set { m_abundanceSum = value; }
-        }
-        public ushort ChargeMax
-        {
-            get { return m_chargeMax; }
-            set { m_chargeMax = value; }
-        }
-        public double MassMonoisotopicStandardDeviation
-        {
-            get { return m_massMonoisotopicStandardDeviation; }
-            set { m_massMonoisotopicStandardDeviation = value; }
-        }
-        public IList<MSFeature> MSFeatureList
-        {
-            get { return m_msFeatureList; }
-            set { m_msFeatureList = value; }
-        }
-        public UMCCluster UmcCluster
-        {
-            get { return m_umcCluster; }
-            set { m_umcCluster = value; }
-        }
-        public ushort ScanStart
-        {
-            get { return m_scanStart; }
-            set { m_scanStart = value; }
-        }        
-        public ushort ScanEnd
-        {
-            get { return m_scanEnd; }
-            set { m_scanEnd = value; }
-        }
-        #endregion
+		#region IComparable<LCFeature> Members
+		/// <summary>
+		/// Default Comparer used for the LCFeature class. Sorts by Monoisotopic Mass.
+		/// </summary>
+		public int CompareTo(UMC other)
+		{
+			return this.MassMonoisotopic.CompareTo(other.MassMonoisotopic);
+		}
 
-        #region BaseData<UMC> Members
-        /// <summary>
-        /// Resets the object to it's default values.
-        /// </summary>
-        public void Clear()
-        {
-            base.Clear();
-            if (MSFeatureList == null)
-                m_msFeatureList = new List<MSFeature>();
-            else
-                MSFeatureList.Clear();            
-        }
-        #endregion
+		#endregion
 
-        #region IComparer<UMC> and Comparison methods.
-        /// <summary>
-        /// Compares two UMC
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public int Compare(UMC x, UMC y)
-        {
-            //TODO: How should we compare two UMC's?
-            /// 
-            ///  By (weighted) euclidean distance?
-            ///
-            throw new NotImplementedException();
-        }
-        /// <summary>
-        /// Compares the scan end of two UMCs
-        /// </summary>
-        public static Comparison<UMC> ScanEndComparison = delegate(UMC x, UMC y)
-        {
-            return x.ScanEnd.CompareTo(y.ScanEnd);
-        };
-        /// <summary>
-        /// Compares the scan start of two UMCs
-        /// </summary>
-        public static Comparison<UMC> ScanStartComparison = delegate(UMC x, UMC y)
-        {
-            return x.ScanStart.CompareTo(y.ScanStart);
-        };
-        /// <summary>
-        /// Compares the summed abundance of two UMCs
-        /// </summary>
-        public static Comparison<UMC> AbundanceSumComparison = delegate(UMC x, UMC y)
-        {
-            return x.AbundanceSum.CompareTo(y.AbundanceSum);
-        };
-        /// <summary>
-        /// Compares the max abundance of two UMCs
-        /// </summary>
-        public static Comparison<UMC> AbundanceMaxComparison = delegate(UMC x, UMC y)
-        {
-            return x.AbundanceMax.CompareTo(y.AbundanceMax);
-        };
-        /// <summary>
-        /// Compares the max charge state of two UMCs
-        /// </summary>
-        public static Comparison<UMC> ChargeMaxComparison = delegate(UMC x, UMC y)
-        {
-            return x.ChargeMax.CompareTo(y.ChargeMax);
-        };
-        #endregion
-    }
+		#region Comparers
+		/// <summary>
+		/// Compares the first LC Scan of two UMCS
+		/// </summary>
+		public static Comparison<UMC> ScanLCStartComparison = delegate(UMC x, UMC y)
+		{
+			return x.ScanLCStart.CompareTo(y.ScanLCStart);
+		};
+		/// <summary>
+		/// Compares the last LC Scan of two UMCS
+		/// </summary>
+		public static Comparison<UMC> ScanLCEndComparison = delegate(UMC x, UMC y)
+		{
+			return x.ScanLCEnd.CompareTo(y.ScanLCEnd);
+		};
+		/// <summary>
+		/// Compares the summed abundance of two UMCS
+		/// </summary>
+		public static Comparison<UMC> AbundanceSumComparison = delegate(UMC x, UMC y)
+		{
+			return x.AbundanceSum.CompareTo(y.AbundanceSum);
+		};
+		/// <summary>
+		/// Compares the maximum abundance of two UMCS
+		/// </summary>
+		public static Comparison<UMC> AbundanceMaximumComparison = delegate(UMC x, UMC y)
+		{
+			return x.AbundanceMaximum.CompareTo(y.AbundanceMaximum);
+		};
+		/// <summary>
+		/// Compares the maximum charge state of two UMCS
+		/// </summary>
+		public static Comparison<UMC> ChargeMaximumComparison = delegate(UMC x, UMC y)
+		{
+			return x.ChargeMaximum.CompareTo(y.ChargeMaximum);
+		};
+		/// <summary>
+		/// Compares the LC Scan that contains the most abundant MS Feature of two UMCS
+		/// </summary>
+		public static Comparison<UMC> ScanLCOfMaxAbundanceComparison = delegate(UMC x, UMC y)
+		{
+			return x.ScanLCOfMaxAbundance.CompareTo(y.ScanLCOfMaxAbundance);
+		};
+		/// <summary>
+		/// Compares the maximum monoisotopic mass of two UMCS
+		/// </summary>
+		public static Comparison<UMC> MassMaxComparison = delegate(UMC x, UMC y)
+		{
+			return x.MassMonoisotopicMaximum.CompareTo(y.MassMonoisotopicMaximum);
+		};
+		/// <summary>
+		/// Compares the first LC Scan then the monoisotopic mass of two UMCS
+		/// </summary>
+		public static Comparison<UMC> LCScanStartAndMassComparison = delegate(UMC x, UMC y)
+		{
+			if (x.ScanLCStart != y.ScanLCStart)
+			{
+				return x.ScanLCStart.CompareTo(y.ScanLCStart);
+			}
+			else
+			{
+				return x.MassMonoisotopicMedian.CompareTo(y.MassMonoisotopicMedian);
+			}
+		};
+		/// <summary>
+		/// Compares the representative LC Scan and the median monoisotopic mass of two UMCS
+		/// </summary>
+		public static Comparison<UMC> LCScanAndMedianMassComparison = delegate(UMC x, UMC y)
+		{
+			if (x.ScanLC != y.ScanLC)
+			{
+				return x.ScanLC.CompareTo(y.ScanLC);
+			}
+			else
+			{
+				return x.MassMonoisotopicMedian.CompareTo(y.MassMonoisotopicMedian);
+			}
+		};
+		/// <summary>
+		/// Compares the representative LC Scan and the monoisotopic mass of the most abundant MS Feature of two UMCS
+		/// </summary>
+		public static Comparison<UMC> LCScanAndMassOfMaxAbundanceComparison = delegate(UMC x, UMC y)
+		{
+			if (x.ScanLC != y.ScanLC)
+			{
+				return x.ScanLC.CompareTo(y.ScanLC);
+			}
+			else
+			{
+				return x.MassOfMaxAbundance.CompareTo(y.MassOfMaxAbundance);
+			}
+		};
+		#endregion
+	}
 }

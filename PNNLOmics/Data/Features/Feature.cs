@@ -5,57 +5,63 @@ using System.Text;
 
 namespace PNNLOmics.Data.Features
 {
-    public abstract class Feature: BaseData
+	/// <summary>
+	/// Abstract base class that represents the most basic properties of any Feature.
+	/// </summary>
+	public abstract class Feature : BaseData, IComparable<Feature>
     {
-        private const int CONST_DEFAULT_SCAN_VALUE = -1;
+		/// <summary>
+		/// Default value for any scan.
+		/// </summary>
+        protected const int CONST_DEFAULT_SCAN_VALUE = -1;
 
-        #region Properties
+        #region AutoProperties
         /// <summary>
-        /// Gets or sets the ID of the group the feature belongs to.  Where a group could be a dataset or factor.
+        /// The ID of the group the feature belongs to.  Where a group could be a dataset or factor.
         /// </summary>
         public int GroupID { get; set; }
         /// <summary>
-        /// Gets or sets the ID for a feature.
+        /// The ID for a feature.
         /// </summary>
         public int ID { get; set; }
         /// <summary>
-        /// Gets or sets the drift time of the feature.
+        /// The drift time of the feature.
         /// </summary>
-        public float DriftTime {get;set;}
+        public virtual float DriftTime {get;set;}
         /// <summary>
-        /// Gets or sets the monoisotopic mass of the feature.
+        /// The monoisotopic mass of the feature.
         /// </summary>
         public double MassMonoisotopic { get; set; }
         /// <summary>
-        /// Gets or sets the monoisotopic mass (aligned) of the feature.
+        /// The aligned monoisotopic mass of the feature.
         /// </summary>
         public double MassMonoisotopicAligned { get; set; }     
         /// <summary>
-        /// Gets or sets the normalized elution time (NET) of the feature.
+        /// The normalized elution time (NET) of the feature.
         /// </summary>
         public double NET { get; set; }
         /// <summary>
-        /// Gets or sets the aligned NET of the feature.
+        /// The aligned NET of the feature.
         /// </summary>
         public double NETAligned { get; set; }        
         /// <summary>
-        /// Gets or sets the scan of the feature from the raw data.
+        /// The LC scan of the feature from the raw data.
         /// </summary>
-        public int Scan { get; set; }
+        public virtual int ScanLC { get; set; }
         /// <summary>
-        /// Gets or sets the aligned scan of the feature.
+        /// The aligned LC scan of the feature.
         /// </summary>
-        public int ScanAligned { get; set; }   
+        public int ScanLCAligned { get; set; }   
         /// <summary>
-        /// Gets or sets the abundance of the feature.
+        /// The abundance of the feature.
         /// </summary>
         public int Abundance{ get; set; }
         /// <summary>
-        /// Gets or sets the M/Z value of the feature.
+        /// The M/Z value of the feature.
         /// </summary>
         public double MZ { get; set; }
         /// <summary>
-        /// Gets or sets the charge state of the feature.
+        /// The charge state of the feature.
         /// </summary>
         public int ChargeState{get;set;}  
         #endregion
@@ -64,21 +70,31 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Clears the datatype and resets the raw values to their default values.
         /// </summary>
-        public override void  Clear()
+        public override void Clear()
         {
-            Abundance                   = 0;
-            ChargeState                 = 0;
-            DriftTime                   = 0;
-            ID                          = -1;
-            MassMonoisotopic            = double.NaN;
-            MassMonoisotopicAligned     = double.NaN;
-            MZ                          = double.NaN;
-            NET                         = double.NaN;
-            NETAligned                  = double.NaN;
-            Scan                        = CONST_DEFAULT_SCAN_VALUE;
-            ScanAligned                 = CONST_DEFAULT_SCAN_VALUE;           
+			this.Abundance = 0;
+			this.ChargeState = 0;
+			this.DriftTime = 0;
+			this.ID = -1;
+			this.MassMonoisotopic = double.NaN;
+			this.MassMonoisotopicAligned = double.NaN;
+			this.MZ = double.NaN;
+			this.NET = double.NaN;
+			this.NETAligned = double.NaN;
+			this.ScanLC = CONST_DEFAULT_SCAN_VALUE;
+			this.ScanLCAligned = CONST_DEFAULT_SCAN_VALUE;         
         }
         #endregion
+
+		#region IComparable<Feature> Members
+		/// <summary>
+		/// Default Comparer used for the Feature class. Sorts by Monoisotopic Mass.
+		/// </summary>
+		public int CompareTo(Feature other)
+		{
+			return this.MassMonoisotopic.CompareTo(other.MassMonoisotopic);
+		}
+		#endregion
 
         #region Comparison Methods
         /// <summary>
@@ -98,16 +114,16 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Compares the scan of two Features
         /// </summary>
-        public static Comparison<Feature> ScanComparison = delegate(Feature x, Feature y)
+        public static Comparison<Feature> ScanLCComparison = delegate(Feature x, Feature y)
         {
-            return x.Scan.CompareTo(y.Scan);
+            return x.ScanLC.CompareTo(y.ScanLC);
         };
         /// <summary>
         /// Compares the aligned scan of two Features
         /// </summary>
         public static Comparison<Feature> ScanAlignedComparison = delegate(Feature x, Feature y)
         {
-            return x.ScanAligned.CompareTo(y.ScanAligned);
+            return x.ScanLCAligned.CompareTo(y.ScanLCAligned);
         };
         /// <summary>
         /// Compares the NET of two Features
@@ -158,9 +174,10 @@ namespace PNNLOmics.Data.Features
         {
             return x.Abundance.CompareTo(y.Abundance);
         };
-        #endregion
+		#endregion
 
-        /// <summary>
+		#region Public Utility Functions
+		/// <summary>
         /// Computes the mass difference in parts per million (ppm) for two given masses.
         /// </summary>
         /// <param name="massX">Mass of feature X.</param>
@@ -169,6 +186,7 @@ namespace PNNLOmics.Data.Features
         public static double ComputeMassPPMDifference(double massX, double massY)
         {
             return (massX - massY) * 1000000.0/ massX;
-        }
-    }
+		}
+		#endregion
+	}
 }
