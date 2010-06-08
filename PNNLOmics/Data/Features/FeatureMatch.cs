@@ -8,7 +8,9 @@ using PNNLOmics.Algorithms.FeatureMatcher.Data;
 
 namespace PNNLOmics.Data.Features
 {
-    public class FeatureMatch<T, U>: BaseData where T: Feature, new() where U: Feature, new()
+    public class FeatureMatch<T, U> : BaseData
+        where T : Feature, new()
+        where U : Feature, new()
     {
         #region Members
         private bool m_useDriftTimePredicted;
@@ -148,7 +150,7 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Comparison function for sorting by STAC score.
         /// </summary>
-        public static Comparison<FeatureMatch<T,U>> STACComparison = delegate(FeatureMatch<T,U> featureMatch1, FeatureMatch<T,U> featureMatch2)
+        public static Comparison<FeatureMatch<T, U>> STACComparison = delegate(FeatureMatch<T, U> featureMatch1, FeatureMatch<T, U> featureMatch2)
         {
             return featureMatch1.m_stacScore.CompareTo(featureMatch2.STACScore);
         };
@@ -225,25 +227,20 @@ namespace PNNLOmics.Data.Features
                 double distance = 0;
                 for (int i = 0; i < dimensions; i++)
                 {
-                    distance += m_reducedDifferenceVector[i,0]*m_reducedDifferenceVector[i,0]/toleranceMatrix[i,0]/toleranceMatrix[i,0];
+                    distance += m_reducedDifferenceVector[i, 0] * m_reducedDifferenceVector[i, 0] / toleranceMatrix[i, 0] / toleranceMatrix[i, 0];
                 }
                 m_withinRefinedRegion = (distance <= 1);
             }
             else
             {
                 bool truthValue = true;
-                for( int i =0; i<dimensions; i++)
+                for (int i = 0; i < dimensions; i++)
                 {
                     truthValue = (truthValue && Math.Abs(m_reducedDifferenceVector[i, 0]) <= toleranceMatrix[i, 0]);
                 }
                 m_withinRefinedRegion = truthValue;
             }
             return m_withinRefinedRegion;
-        }
-
-        public void CalculateSTAC(STACInformation parameters)
-        {
-
         }
         #endregion
     }
