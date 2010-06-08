@@ -56,6 +56,7 @@
     <Compile Include="Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererTolerances.cs" />
     <Compile Include="Algorithms\FeatureClustering\IClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCSingleLinkageClusterer.cs" />
+    <Compile Include="Algorithms\FeatureFinding\CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Algorithms\FeatureFinding\Data\UniqueMass.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\FeatureMatcherParameters.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\SLiCInformation.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Data\Features\LCIMSMSFeature.cs" />
     <Compile Include="Data\Features\LCMSFeature.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
+    <Compile Include="Generic\AnonymousComparer.cs" />
     <Compile Include="IonType.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
