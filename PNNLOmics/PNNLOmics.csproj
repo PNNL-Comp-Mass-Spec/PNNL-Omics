@@ -60,6 +60,7 @@
     <Compile Include="Algorithms\FeatureFinding\Data\UniqueMass.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\FeatureMatcherParameters.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\SLiCInformation.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\Data\STACFDR.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\STACInformation.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\FeatureMatcherTolerances.cs" />
     <Compile Include="Algorithms\FeatureMatcher\FeatureMatcher.cs" />
