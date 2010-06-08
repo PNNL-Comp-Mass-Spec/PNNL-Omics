@@ -47,13 +47,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>Updated Matrix containing mean of normal distribution.</returns>
         public static Matrix UpdateNormalMeanVector(List<Matrix> dataList, List<double> alphaList, List<double> priorList, bool secondNormal)
         {
-            Matrix numerator = new Matrix(dataList[0].RowCount,1,0.0);
+            Matrix numerator = new Matrix(dataList[0].RowCount, 1, 0.0);
             double denominator = 0.0;
 
             double multiplier = 1.0;
             double adder = 0;
 
-            if( secondNormal )
+            if (secondNormal)
             {
                 multiplier = -1.0;
                 adder = 1.0;
@@ -66,7 +66,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 denominator += weight;
             }
 
-            return ((1/denominator)*numerator);
+            return ((1 / denominator) * numerator);
         }
         /// <summary>
         /// Update covariance matrix of normal distribution.  Used for Normal-Uniform mixture.
@@ -129,7 +129,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             double multiplier = 1.0;
             double adder = 0;
 
-            if( secondNormal )
+            if (secondNormal)
             {
                 multiplier = -1.0;
                 adder = 1.0;
@@ -158,7 +158,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 
             for (int i = 0; i < meanVector.RowCount; i++)
             {
-                if(covarianceMatrix[i,i]<0.000001)
+                if (covarianceMatrix[i, i] < 0.000001)
                 {
                     covarianceMatrix[i, i] = 0.000001;
                 }
@@ -287,7 +287,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 nextMixtureParameter += alphaList[i];
             }
 
-            return (nextMixtureParameter/alphaList.Count);
+            return (nextMixtureParameter / alphaList.Count);
         }
         /// <summary>
         /// Calculate the density of the mixture distribution for a normal-uniform mixture.
@@ -324,7 +324,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             if (normalDensityT > 0)
             {
                 double numerator = mixtureParameter * prior * normalDensityT;
-                return Math.Log(numerator) - Math.Log(numerator + mixtureParameter * (1-prior) * normalDensityF + (1 - mixtureParameter) * uniformDensity);
+                return Math.Log(numerator) - Math.Log(numerator + mixtureParameter * (1 - prior) * normalDensityF + (1 - mixtureParameter) * uniformDensity);
             }
             return 0.0;
         }
@@ -343,9 +343,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         static public double NormalNormalUniformLogLikelihood(List<Matrix> dataList, List<double> prior, Matrix meanVectorT, Matrix covarianceMatrixT, Matrix meanVectorF, Matrix covarianceMatrixF, double uniformDensity, double mixtureParameter)
         {
             double logLikelihood = 0.0;
-            for ( int i=0; i<dataList.Count; i++ )
+            for (int i = 0; i < dataList.Count; i++)
             {
-                logLikelihood += NormalNormalUniformLogLikelihood(dataList[i], prior[i], meanVectorT, covarianceMatrixT, meanVectorF, covarianceMatrixF, uniformDensity, mixtureParameter); 
+                logLikelihood += NormalNormalUniformLogLikelihood(dataList[i], prior[i], meanVectorT, covarianceMatrixT, meanVectorF, covarianceMatrixF, uniformDensity, mixtureParameter);
             }
             return logLikelihood;
         }
@@ -368,7 +368,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             double numerator = 0.0;
             for (int i = 0; i < dataList.Count; i++)
             {
-                numerator = priorList[i] * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorT, covarianceMatrixT) + (1-priorList[i]) * MathUtilities.MultivariateNormalDensity(dataList[i],meanVectorF,covarianceMatrixF);
+                numerator = priorList[i] * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorT, covarianceMatrixT) + (1 - priorList[i]) * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorF, covarianceMatrixF);
                 alphaList[i] = (numerator * mixtureParameter) / (numerator * mixtureParameter + (1 - mixtureParameter) * uniformDensity);
                 nextMixtureParameter += alphaList[i];
             }
