@@ -30,6 +30,22 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 
         const int MIN_MATCHES_FOR_NORMAL_ASSUMPTION = 50;
         #endregion
+        
+        #region Constructors
+        /// <summary>
+        /// Default constructor for use in matching features.  Uses passed parameters to calculate desired results.
+        /// </summary>
+        /// <param name="observedFeatureList">List of features observed in an analysis.  Generally UMC or UMCCluster.</param>
+        /// <param name="targetFeatureList">List of features to be matched to.  Generally AMTTags.</param>
+        /// <param name="matchParameters">FeatureMatcherParameters object containing initial parameters and algorithm settings.</param>
+        public FeatureMatcher(List<T> observedFeatureList, List<U> targetFeatureList, FeatureMatcherParameters matchParameters)
+        {
+            Clear();
+            m_observedFeatureList = observedFeatureList;
+            m_targetFeatureList = targetFeatureList;
+            m_matchParameters = matchParameters;
+        }
+        #endregion
 
         #region Properties
         /// <summary>
@@ -104,23 +120,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         public SLiCInformation SLiCParameters
         {
             get { return m_slicParameters; }
-        }
-        #endregion
-
-        #region Constructors
-        /// <summary>
-        /// Default constructor for use in matching features.  Uses passed parameters to calculate desired results.
-        /// </summary>
-        /// <param name="observedFeatureList">List of features observed in an analysis.  Generally UMC or UMCCluster.</param>
-        /// <param name="targetFeatureList">List of features to be matched to.  Generally AMTTags.</param>
-        /// <param name="matchParameters">FeatureMatcherParameters object containing initial parameters and algorithm settings.</param>
-        public FeatureMatcher(List<T> observedFeatureList, List<U> targetFeatureList, FeatureMatcherParameters matchParameters)
-        {
-            Clear();
-            m_observedFeatureList = observedFeatureList;
-            m_targetFeatureList = targetFeatureList;
-            m_matchParameters = matchParameters;
-            MatchFeatures();
         }
         #endregion
 
@@ -200,7 +199,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             int rows = differenceMatrixList[0].RowCount;
             Matrix meanVector = new Matrix(rows, 1, 0.0);
             Matrix covarianceMatrix = new Matrix(rows, 1.0);
-            double mixtureParameter = 0.5;
+            double mixtureParameter = 0.5; //TODO: Jeff Make a constant
 
             Utilities.ExpectationMaximization.NormalUniformMixture(differenceMatrixList, ref meanVector, ref covarianceMatrix, m_matchParameters.UserTolerances.AsVector(m_matchParameters.UseDriftTime), ref mixtureParameter, true);
 
@@ -209,6 +208,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             if (m_matchParameters.UseDriftTime)
                 m_slicParameters.DriftTimeStDev = (float)Math.Sqrt(covarianceMatrix[2, 2]);
 
+            //TODO: Jeff make 2.5 a CONSTANT
             FeatureMatcherTolerances refinedTolerances = new FeatureMatcherTolerances((2.5 * m_slicParameters.MassPPMStDev), (2.5 * m_slicParameters.NETStDev),
                                                             (float)(2.5 * m_slicParameters.DriftTimeStDev));
             refinedTolerances.Refined = true;
@@ -220,11 +220,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private void SetSTACCutoffs()
         {
             m_stacFDRList.Clear();
+            //TODO: Jeff make .97 constants, etc
             for (double cutoff = 0.97; cutoff > 0.90; cutoff -= 0.01)
             {
                 STACFDR tableLine = new STACFDR(cutoff);
                 m_stacFDRList.Add(tableLine);
             }
+            //TODO: Jeff make .97 constants, etc
             for (double cutoff = 0.90; cutoff >= 0; cutoff -= 0.10)
             {
                 STACFDR tableLine = new STACFDR(cutoff);
@@ -242,6 +244,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             int cutoffIndex = 0;
             int matches = 0;
             double fdr = 0.0;
+
+            //TODO: Jeff make .XX constants
             foreach (FeatureMatch<T, U> match in m_matchList)
             {
                 double stac = match.STACScore;
@@ -300,6 +304,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 int chargeStateCount = m_matchParameters.ChargeStateList.Count;
                 m_stacParametersList.Capacity = chargeStateCount;
                 m_refinedTolerancesList.Capacity = chargeStateCount;
+                /*
+                 * 1. Add comments
+                 * 
+                 */
                 for (int i = 0; i < chargeStateCount; i++)
                 {
                     List<T> chargeObservedList = new List<T>();
@@ -337,18 +345,21 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     }
                     m_matchList.AddRange(tempMatchList);
                 }
-                PopulateSTACFDRTable(); // Need to calculate STAC FDR in a smarter way than this.
+                PopulateSTACFDRTable(); //TODO: Jeff Need to calculate STAC FDR in a smarter way than this.
                 int count = 0;
                 for (int j = 0; j < m_matchList.Count; j++)
                 {
                     if (m_matchList[j].WithinRefinedRegion)
+                    {
                         count++;
+                    }
                 }
                 m_shiftFDR = (1.0 * count) / m_shiftedMatchList.Count;
                 m_shiftConservativeFDR = (2.0 * count) / m_shiftedMatchList.Count;
             }
             else
             {
+                //TODO: Jeff Make awesome by putting code into private (modular) code, reduce redundancy.
                 m_matchList.Clear();
                 m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, false, 0);
                 bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
@@ -359,7 +370,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 }
                 if (m_matchParameters.CalculateHistogramFDR)
                 {
-                    // Calculate mass error histogram FDR.
+                    //TODO: Jeff Calculate mass error histogram FDR.
                 }
                 if (m_matchParameters.CalculateShiftFDR)
                 {
@@ -385,7 +396,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     {
                         m_refinedTolerancesList[0] = FindOptimalTolerances(m_matchList);
                     }
-                    // Find SLiC scores.
+                    //TODO: Jeff Find SLiC scores.
                 }
             }
         }

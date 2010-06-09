@@ -28,6 +28,17 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         private double m_histogramBinWidth;
         #endregion
 
+        #region Constructors
+        /// <summary>
+        /// Default constructor for FeatureMatcherParameters.
+        /// </summary>
+        public FeatureMatcherParameters()
+		{
+			Clear();
+		}
+        #endregion
+
+
         #region Properties
         /// <summary>
         /// Gets or sets the user defined tolerances for initial matching.
@@ -130,8 +141,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// </summary>
         public double ShiftAmount
         {
-            get{ return m_shiftAmount; }
-            set{ m_shiftAmount = value; }
+            get { return m_shiftAmount; }
+            set { m_shiftAmount = value; }
         }
         /// <summary>
         /// Gets or sets the histogram bin width for mass error histogram FDR calculation.
@@ -141,16 +152,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             get { return m_histogramBinWidth; }
             set { m_histogramBinWidth = value; }
         }
-        #endregion
-
-        #region Constructors
-        /// <summary>
-        /// Default constructor for FeatureMatcherParameters.
-        /// </summary>
-        public FeatureMatcherParameters()
-		{
-			Clear();
-		}
         #endregion
 
         #region Private functions
