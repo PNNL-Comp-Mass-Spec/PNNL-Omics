@@ -15,6 +15,6 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         /// <param name="data">Data to cluster.</param>
         /// <returns>List of cluster objects defined over input data.</returns>
-        List<U> Cluster(List<T> data);
+        void Cluster(List<T> data, List<U> clusters);
     }
 }

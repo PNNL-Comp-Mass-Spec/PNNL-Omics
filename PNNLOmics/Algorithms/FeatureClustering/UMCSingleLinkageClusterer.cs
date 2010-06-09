@@ -244,7 +244,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         /// <param name="data">List of data to cluster.</param>
         /// <returns>List of clustered data.</returns>
-        public List<UMCCluster> Cluster(List<UMC> data)
+        public void Cluster(List<UMC> data, List<UMCCluster> clusters)
         {
             /**********************************************************************************************
              * 
@@ -255,8 +255,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
              * current index of the features in question.  
              * 
              **********************************************************************************************/
-            List<UMCCluster> clusters = new List<UMCCluster>();
-
+            
             /// 
             /// The first thing we do is to sort the features based on mass since we know that has the least
             /// variability in the data across runs.
@@ -310,8 +309,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     }
                     startFeatureIndex = i + 1;
                 }
-            }
-            return clusters;            
+            }                    
         }
         #endregion
 

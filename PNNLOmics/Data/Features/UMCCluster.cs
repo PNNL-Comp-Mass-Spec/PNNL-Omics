@@ -22,6 +22,15 @@ namespace PNNLOmics.Data.Features
             m_umcList = new List<UMC>();
         }
 
+        public UMCCluster(UMCCluster cluster)
+        {
+            List<UMC> umcs = new List<UMC>();
+            umcs.AddRange(cluster.UMCList);
+            m_umcList      = umcs;
+
+            //TODO: Brian finish copy constructor
+        }
+
         #region Properties
         /// <summary>
         /// Gets or sets the list of UMC's that comprise this cluster.
