@@ -31,22 +31,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         const int MIN_MATCHES_FOR_NORMAL_ASSUMPTION = 50;
         #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         #region Properties
         /// <summary>
         /// Gets or sets the initial parameters used for matching.
