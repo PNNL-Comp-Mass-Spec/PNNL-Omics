@@ -15,14 +15,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 
         private bool m_useEllipsoid;
         private bool m_useTrapezoid;
-        private bool m_calculateShiftFDR;
-        private bool m_calculateSTAC;
-        private bool m_calculateHistogramFDR;
-        private bool m_calculateSLiC;
+        private bool m_shouldCalculateShiftFDR;
+        private bool m_shouldCalculateSTAC;
+        private bool m_shouldCalculateHistogramFDR;
+        private bool m_shouldCalculateSLiC;
         private bool m_useDriftTime;
         private bool m_usePriors;
 
-        private List<double> m_chargeStateList;
+        private List<int> m_chargeStateList;
 
         private double m_shiftAmount;
         private double m_histogramBinWidth;
@@ -81,34 +81,34 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <summary>
         /// Gets or sets whether to calculate FDR using a fixed shift.
         /// </summary>
-        public bool CalculateShiftFDR
+        public bool ShouldCalculateShiftFDR
         {
-            get { return m_calculateShiftFDR; }
-            set { m_calculateShiftFDR = value; }
+            get { return m_shouldCalculateShiftFDR; }
+            set { m_shouldCalculateShiftFDR = value; }
         }
         /// <summary>
         /// Gets or sets whether to calculate STAC scores and FDR.
         /// </summary>
-        public bool CalculateSTAC
+        public bool ShouldCalculateSTAC
         {
-            get { return m_calculateSTAC; }
-            set { m_calculateSTAC = value; }
+            get { return m_shouldCalculateSTAC; }
+            set { m_shouldCalculateSTAC = value; }
         }
         /// <summary>
         /// Gets or sets whether to create a mass error histogram to compute FDR.
         /// </summary>
-        public bool CalculateHistogramFDR
+        public bool ShouldCalculateHistogramFDR
         {
-            get { return m_calculateHistogramFDR; }
-            set { m_calculateHistogramFDR = value; }
+            get { return m_shouldCalculateHistogramFDR; }
+            set { m_shouldCalculateHistogramFDR = value; }
         }
         /// <summary>
         /// Gets or sets whether to calculate SLiC scores for each match.
         /// </summary>
-        public bool CalculateSLiC
+        public bool ShouldCalculateSLiC
         {
-            get { return m_calculateSLiC; }
-            set { m_calculateSLiC = value; }
+            get { return m_shouldCalculateSLiC; }
+            set { m_shouldCalculateSLiC = value; }
         }
         /// <summary>
         /// Gets or sets whether to use the drift times in calculations.
@@ -130,7 +130,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <summary>
         /// Gets or sets the list of charge states to perform algorithms over in the case of IMS data.
         /// </summary>
-        public List<double> ChargeStateList
+        public List<int> ChargeStateList
         {
             get { return m_chargeStateList; }
             set { m_chargeStateList = value; }
@@ -163,13 +163,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             m_userTolerances = new FeatureMatcherTolerances();
             m_useEllipsoid = true;
             m_useTrapezoid = false;
-            m_calculateShiftFDR = true;
-            m_calculateSTAC = true;
-            m_calculateHistogramFDR = false;
-            m_calculateSLiC = true;
+            m_shouldCalculateShiftFDR = true;
+            m_shouldCalculateSTAC = true;
+            m_shouldCalculateHistogramFDR = false;
+            m_shouldCalculateSLiC = true;
             m_useDriftTime = false;
             m_usePriors = true;
-            m_chargeStateList = new List<double>();
+            m_chargeStateList = new List<int>();
             m_shiftAmount = 11.0;
             m_histogramBinWidth = 0.02;
         }
