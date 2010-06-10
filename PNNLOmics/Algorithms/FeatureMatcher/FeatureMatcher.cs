@@ -30,22 +30,22 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 
         const int MIN_MATCHES_FOR_NORMAL_ASSUMPTION = 50;
         #endregion
-        
-        #region Constructors
-        /// <summary>
-        /// Default constructor for use in matching features.  Uses passed parameters to calculate desired results.
-        /// </summary>
-        /// <param name="observedFeatureList">List of features observed in an analysis.  Generally UMC or UMCCluster.</param>
-        /// <param name="targetFeatureList">List of features to be matched to.  Generally AMTTags.</param>
-        /// <param name="matchParameters">FeatureMatcherParameters object containing initial parameters and algorithm settings.</param>
-        public FeatureMatcher(List<T> observedFeatureList, List<U> targetFeatureList, FeatureMatcherParameters matchParameters)
-        {
-            Clear();
-            m_observedFeatureList = observedFeatureList;
-            m_targetFeatureList = targetFeatureList;
-            m_matchParameters = matchParameters;
-        }
-        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         #region Properties
         /// <summary>
@@ -120,6 +120,22 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         public SLiCInformation SLiCParameters
         {
             get { return m_slicParameters; }
+        }
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Default constructor for use in matching features.  Uses passed parameters to calculate desired results.
+        /// </summary>
+        /// <param name="observedFeatureList">List of features observed in an analysis.  Generally UMC or UMCCluster.</param>
+        /// <param name="targetFeatureList">List of features to be matched to.  Generally AMTTags.</param>
+        /// <param name="matchParameters">FeatureMatcherParameters object containing initial parameters and algorithm settings.</param>
+        public FeatureMatcher(List<T> observedFeatureList, List<U> targetFeatureList, FeatureMatcherParameters matchParameters)
+        {
+            Clear();
+            m_observedFeatureList = observedFeatureList;
+            m_targetFeatureList = targetFeatureList;
+            m_matchParameters = matchParameters;
         }
         #endregion
 
@@ -199,7 +215,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             int rows = differenceMatrixList[0].RowCount;
             Matrix meanVector = new Matrix(rows, 1, 0.0);
             Matrix covarianceMatrix = new Matrix(rows, 1.0);
-            double mixtureParameter = 0.5; //TODO: Jeff Make a constant
+            double mixtureParameter = 0.5;
+
 
             Utilities.ExpectationMaximization.NormalUniformMixture(differenceMatrixList, ref meanVector, ref covarianceMatrix, m_matchParameters.UserTolerances.AsVector(m_matchParameters.UseDriftTime), ref mixtureParameter, true);
 
@@ -208,7 +225,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             if (m_matchParameters.UseDriftTime)
                 m_slicParameters.DriftTimeStDev = (float)Math.Sqrt(covarianceMatrix[2, 2]);
 
-            //TODO: Jeff make 2.5 a CONSTANT
             FeatureMatcherTolerances refinedTolerances = new FeatureMatcherTolerances((2.5 * m_slicParameters.MassPPMStDev), (2.5 * m_slicParameters.NETStDev),
                                                             (float)(2.5 * m_slicParameters.DriftTimeStDev));
             refinedTolerances.Refined = true;
@@ -220,13 +236,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private void SetSTACCutoffs()
         {
             m_stacFDRList.Clear();
-            //TODO: Jeff make .97 constants, etc
             for (double cutoff = 0.97; cutoff > 0.90; cutoff -= 0.01)
             {
                 STACFDR tableLine = new STACFDR(cutoff);
                 m_stacFDRList.Add(tableLine);
             }
-            //TODO: Jeff make .97 constants, etc
             for (double cutoff = 0.90; cutoff >= 0; cutoff -= 0.10)
             {
                 STACFDR tableLine = new STACFDR(cutoff);
@@ -244,8 +258,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             int cutoffIndex = 0;
             int matches = 0;
             double fdr = 0.0;
-
-            //TODO: Jeff make .XX constants
             foreach (FeatureMatch<T, U> match in m_matchList)
             {
                 double stac = match.STACScore;
@@ -287,6 +299,33 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 }
             }
         }
+        /// <summary>
+        /// Find the subset of a list which has the same charge state.
+        /// </summary>
+        /// <typeparam name="T">Any class derived from Feature.</typeparam>
+        /// <param name="featureList">Original list of features from which to extract the subset.</param>
+        /// <param name="startIndex">Index at which to start search.  Set to the value of the last such item.</param>
+        /// <param name="chargeState">The charge state to search for a subset of.</param>
+        /// <returns>A list of features with the given charge state.</returns>
+        private List<T> ExtractChargeStateList<T>(List<T> featureList, ref int startIndex, int chargeState) where T:Feature, new()
+        {
+            featureList.Sort(Feature.ChargeStateComparison);
+            int currentIndex = startIndex;
+            int start = startIndex;
+            int endIndex = featureList.Count;
+            while (featureList[currentIndex].ChargeState < chargeState)
+            {
+                currentIndex++;
+            }
+            start = currentIndex;
+            while (featureList[currentIndex].ChargeState == chargeState)
+            {
+                currentIndex++;
+            }
+            endIndex = currentIndex;
+            startIndex = currentIndex;
+            return featureList.GetRange(startIndex, endIndex - startIndex + 1);
+        }
         #endregion
 
         #region Public functions
@@ -297,43 +336,38 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         {
             if (m_matchParameters.UseDriftTime)
             {
+                // If no charge states were specified in the parameters, fill in the charge state list with all charge states contained in the observed feature list.
                 if (m_matchParameters.ChargeStateList.Count == 0)
                 {
                     SetChargeStateList();
                 }
+                // Resize the STAC and refined tolerances list so that they are the same length as the charge state list.
                 int chargeStateCount = m_matchParameters.ChargeStateList.Count;
                 m_stacParametersList.Capacity = chargeStateCount;
                 m_refinedTolerancesList.Capacity = chargeStateCount;
-                /*
-                 * 1. Add comments
-                 * 
-                 */
+                // Sort the feature lists and create indices to store where a charge state ends.
+                m_observedFeatureList.Sort(Feature.ChargeStateComparison);
+                int chargeStateIndexObserved = 0;
+                m_targetFeatureList.Sort(Feature.ChargeStateComparison);
+                int chargeStateIndexTarget = 0;
+                // Iterate through each charge state performing the desired operations.
                 for (int i = 0; i < chargeStateCount; i++)
                 {
-                    List<T> chargeObservedList = new List<T>();
-                    foreach (T observed in m_observedFeatureList)
-                    {
-                        if (observed.ChargeState == m_matchParameters.ChargeStateList[i])
-                        {
-                            chargeObservedList.Add(observed);
-                        }
-                    }
-                    List<U> chargeTargetList = new List<U>();
-                    foreach (U target in m_targetFeatureList)
-                    {
-                        if (target.ChargeState == m_matchParameters.ChargeStateList[i])
-                        {
-                            chargeTargetList.Add(target);
-                        }
-                    }
+                    // Create sub-lists of the features with the current charge state.
+                    int chargeState = m_matchParameters.ChargeStateList[i];
+                    List<T> chargeObservedList = ExtractChargeStateList(m_observedFeatureList, ref chargeStateIndexObserved, chargeState);
+                    List<U> chargeTargetList = ExtractChargeStateList(m_targetFeatureList, ref chargeStateIndexTarget, chargeState);
+                    // Find the matches among the two feature lists.
                     List<FeatureMatch<T, U>> tempMatchList = new List<FeatureMatch<T, U>>();
                     tempMatchList = FindMatches(chargeObservedList, chargeTargetList, m_matchParameters.UserTolerances, false, 0);
                     bool lengthCheck = (tempMatchList.Count < MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
-                    if (m_matchParameters.CalculateSTAC && lengthCheck)
+                    // If the STAC score is requested and there are sufficient matches for the assumptions, perform it.
+                    if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
                     {
                         STACParameterList[i].PerformSTAC(tempMatchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
                     }
-                    if (m_matchParameters.CalculateShiftFDR)
+                    // If 11 Dalton shift FDR is requested, calculate whether each of the temporary matches is within the bounds.
+                    if (m_matchParameters.ShouldCalculateShiftFDR)
                     {
                         m_refinedTolerancesList[i] = FindOptimalTolerances(tempMatchList);
                         for (int j = 0; j < tempMatchList.Count; j++)
@@ -343,9 +377,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                         m_shiftedMatchList.AddRange(FindMatches(chargeObservedList, chargeTargetList, m_refinedTolerancesList[i],
                                                                     m_matchParameters.UseEllipsoid, m_matchParameters.ShiftAmount));
                     }
+                    // Add the temporary matches to the match list.
                     m_matchList.AddRange(tempMatchList);
                 }
-                PopulateSTACFDRTable(); //TODO: Jeff Need to calculate STAC FDR in a smarter way than this.
+                PopulateSTACFDRTable(); // Need to calculate STAC FDR in a smarter way than this.
                 int count = 0;
                 for (int j = 0; j < m_matchList.Count; j++)
                 {
@@ -359,20 +394,19 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             }
             else
             {
-                //TODO: Jeff Make awesome by putting code into private (modular) code, reduce redundancy.
                 m_matchList.Clear();
                 m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, false, 0);
                 bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
-                if (m_matchParameters.CalculateSTAC && lengthCheck)
+                if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
                 {
                     STACParameterList[0].PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
                     PopulateSTACFDRTable();
                 }
-                if (m_matchParameters.CalculateHistogramFDR)
+                if (m_matchParameters.ShouldCalculateHistogramFDR)
                 {
-                    //TODO: Jeff Calculate mass error histogram FDR.
+                    // Calculate mass error histogram FDR.
                 }
-                if (m_matchParameters.CalculateShiftFDR)
+                if (m_matchParameters.ShouldCalculateShiftFDR)
                 {
                     int count = 0;
                     m_refinedTolerancesList[0] = FindOptimalTolerances(m_matchList);
@@ -390,13 +424,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     m_shiftFDR = (1.0 * count) / m_shiftedMatchList.Count;
                     m_shiftConservativeFDR = (2.0 * count) / m_shiftedMatchList.Count;
                 }
-                if (m_matchParameters.CalculateSLiC && lengthCheck)
+                if (m_matchParameters.ShouldCalculateSLiC && lengthCheck)
                 {
                     if (!m_refinedTolerancesList[0].Refined)
                     {
                         m_refinedTolerancesList[0] = FindOptimalTolerances(m_matchList);
                     }
-                    //TODO: Jeff Find SLiC scores.
+                    // Find SLiC scores.
                 }
             }
         }
