@@ -293,7 +293,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <returns>A list of features with the given charge state.</returns>
         private List<T> ExtractChargeStateList<T>(List<T> featureList, ref int startIndex, int chargeState) where T:Feature, new()
         {
-            featureList.Sort(Feature.ChargeStateComparison);
+            featureList.Sort(new Comparison<T>(Feature.ChargeStateComparison));
             int currentIndex = startIndex;
             int start = startIndex;
             int endIndex = featureList.Count;
@@ -330,9 +330,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 m_stacParametersList.Capacity = chargeStateCount;
                 m_refinedTolerancesList.Capacity = chargeStateCount;
                 // Sort the feature lists and create indices to store where a charge state ends.
-                m_observedFeatureList.Sort(Feature.ChargeStateComparison);
+                m_observedFeatureList.Sort(new Comparison<T>(Feature.ChargeStateComparison));
                 int chargeStateIndexObserved = 0;
-                m_targetFeatureList.Sort(Feature.ChargeStateComparison);
+                m_targetFeatureList.Sort(new Comparison<U>(Feature.ChargeStateComparison));
                 int chargeStateIndexTarget = 0;
                 // Iterate through each charge state performing the desired operations.
                 for (int i = 0; i < chargeStateCount; i++)
