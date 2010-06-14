@@ -4,6 +4,7 @@ using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Algorithms.FeatureMatcher.Data;
+using PNNLOmics.Utilities;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher
 {
@@ -165,22 +166,70 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private List<FeatureMatch<T, U>> FindMatches(List<T> shortObservedList, List<U> shortTargetList,
                                                         FeatureMatcherTolerances tolerances, bool useEllipsoid, double shiftAmount)
         {
+            // Create a list to hold the matches until they are returned.
             List<FeatureMatch<T, U>> matchList = new List<FeatureMatch<T, U>>();
 
-            foreach (T feature in shortObservedList)
+            // Set indices to use when iterating over the lists.
+            int observedIndex = 0;
+            int targetIndex = 0;
+            int lowerBound = 0;
+
+            // Sort both lists by mass.
+            shortObservedList.Sort(new Comparison<T>(Feature.MassAlignedComparison));
+            shortTargetList.Sort(new Comparison<U>(Feature.MassAlignedComparison));
+
+            // Locally store the mass tolerance.
+            double massTolerancePPM = tolerances.MassTolerancePPM;
+
+            // Iterate through the list of observed features.
+            while( observedIndex < shortObservedList.Count )
             {
-                foreach (U massTag in shortTargetList)
+                // Store the current observed feature locally.
+                T observedFeature = shortObservedList[observedIndex];
+                // Flag variable that gets set to false when the observed mass is greater than the current mass tag by more than the tolerance.
+                bool continueLoop = true;
+                // Set the target feature iterator to the current lower bound.
+                targetIndex = lowerBound;
+                // Iterate through the list of target featrues or until the observed feature is too great.
+                while( targetIndex < shortTargetList.Count && continueLoop )
                 {
-                    U shiftedTag = massTag;
+                    // Store the current target feature locally.
+                    U shiftedTag = shortTargetList[targetIndex];
+                    // Add any shift to the mass tag.
                     shiftedTag.MassMonoisotopicAligned += shiftAmount;
-                    FeatureMatch<T, U> match = new FeatureMatch<T, U>();
-                    match.AddFeatures(feature, shiftedTag, m_matchParameters.UseDriftTime, (shiftAmount > 0));
-                    if (match.InRegion(tolerances, useEllipsoid))
+                    // Store the masses of both features locally.
+                    double shiftedTagMass = shiftedTag.MassMonoisotopicAligned;
+                    double observedMass = observedFeature.MassMonoisotopicAligned;
+                    // Check to see that the features are within the mass tolearance of one another.
+                    if (MathUtilities.MassDifferenceInPPM(shiftedTagMass, observedMass) <= massTolerancePPM)
                     {
-                        matchList.Add(match);
+                        // Create a temporary matche between the two and check it against all tolerances before adding to the match list.
+                        FeatureMatch<T, U> match = new FeatureMatch<T, U>();
+                        match.AddFeatures(observedFeature, shiftedTag, m_matchParameters.UseDriftTime, (shiftAmount > 0));
+                        if (match.InRegion(tolerances, useEllipsoid))
+                        {
+                            matchList.Add(match);
+                        }
                     }
+                    else
+                    {
+                        // Increase the lower bound if the the MassTag masses are too low or set the continueLoop flag to false if they are too high.
+                        if (shiftedTagMass < observedMass)
+                        {
+                            lowerBound++;
+                        }
+                        else
+                        {
+                            continueLoop = false;
+                        }
+                    }
+                    // Increment the target index.
+                    targetIndex++;
                 }
+                // Increment the observed index.
+                observedIndex++;
             }
+            // Return the list of matches.
             return matchList;
         }
         /// <summary>
