@@ -359,6 +359,71 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             startIndex = currentIndex;
             return featureList.GetRange(startIndex, endIndex - startIndex + 1);
         }
+        /// <summary>
+        /// Sets the false discovery rate by creating a histogram of the mass errors and comparing the proportion above a threshhold to the area below.
+        /// </summary>
+        private void SetMassErrorHistogramFDR()
+        {
+            // Populate the mass error list and create the histogram.
+            List<XYData> histogramList = new List<XYData>();
+            List<double> massErrorList = new List<double>();
+            foreach (FeatureMatch<T, U> match in m_matchList)
+            {
+                massErrorList.Add(match.DifferenceVector[1, 1]);
+            }
+            histogramList = MathUtilities.GetHistogramValues(massErrorList, m_matchParameters.HistogramBinWidth);
+
+            int peakIndex = 0;
+            double peakValue = 0.0;
+            double upperBound = 0.0;
+            double lowerBound = 0.0;
+            double threshold = 0.0;
+            double meanValue = 0.0;
+            // Find the maximum and average values.
+            for( int i=0; i<histogramList.Count; i++ )
+            {
+                XYData bin = histogramList[i];
+                if (bin.Y > peakValue)
+                {
+                    peakValue = bin.Y;
+                    peakIndex = i;
+                }
+                meanValue += bin.Y;
+            }
+            meanValue /= histogramList.Count;
+            // Set the threshold to a value between the peak and the average value.
+            threshold = meanValue + m_matchParameters.HistogramMultiplier * (peakValue - meanValue);
+            // Find the upper bound.
+            for (int i = peakIndex; i < histogramList.Count; i++)
+            {
+                XYData bin = histogramList[i];
+                XYData lowerBin = histogramList[i - 1];
+                if (bin.Y < threshold && lowerBin.Y >= threshold)
+                {
+                    upperBound = lowerBin.X + (lowerBin.Y - threshold) / (lowerBin.Y - bin.Y) * (bin.X - lowerBin.X);
+                }
+            }
+            // Find the lower bound.
+            for (int i = peakIndex; i >= 0; i--)
+            {
+                XYData bin = histogramList[i];
+                XYData upperBin = histogramList[i + 1];
+                if (bin.Y < threshold && upperBin.Y >= threshold)
+                {
+                    lowerBound = bin.X + (threshold-bin.Y) / (upperBin.Y-bin.Y) * (upperBin.X - bin.X);
+                }
+            }
+            // Count the number of matches within the bounds and calculate the FDR.
+            int countInBounds = 0;
+            foreach (double massDifference in massErrorList)
+            {
+                if (massDifference >= lowerBound && massDifference <= upperBound)
+                {
+                    countInBounds++;
+                }
+            }
+            m_errorHistogramFDR = countInBounds/((upperBound-lowerBound)*threshold);
+        }
         #endregion
 
         #region Public functions
@@ -437,7 +502,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 }
                 if (m_matchParameters.ShouldCalculateHistogramFDR)
                 {
-                    // Calculate mass error histogram FDR.
+                    SetMassErrorHistogramFDR();
                 }
                 if (m_matchParameters.ShouldCalculateShiftFDR)
                 {

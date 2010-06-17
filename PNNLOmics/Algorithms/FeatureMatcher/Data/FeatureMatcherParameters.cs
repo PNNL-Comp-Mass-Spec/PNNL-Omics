@@ -14,7 +14,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         private FeatureMatcherTolerances m_userTolerances;
 
         private bool m_useEllipsoid;
-        private bool m_useTrapezoid;
         private bool m_shouldCalculateShiftFDR;
         private bool m_shouldCalculateSTAC;
         private bool m_shouldCalculateHistogramFDR;
@@ -26,6 +25,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 
         private double m_shiftAmount;
         private double m_histogramBinWidth;
+        private double m_histogramMultiplier;
         #endregion
 
         #region Constructors
@@ -69,14 +69,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         {
             get { return m_useEllipsoid; }
             set { m_useEllipsoid = value; }
-        }
-        /// <summary>
-        /// Gets or sets whether a trapezoidal region is used in the mass error histogram FDR calculation.
-        /// </summary>
-        public bool UseTrapezoid
-        {
-            get { return m_useTrapezoid; }
-            set { m_useTrapezoid = value; }
         }
         /// <summary>
         /// Gets or sets whether to calculate FDR using a fixed shift.
@@ -152,6 +144,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             get { return m_histogramBinWidth; }
             set { m_histogramBinWidth = value; }
         }
+        /// <summary>
+        /// Gets or sets the multiplier to use when calculating FDR via the mass error histogram.
+        /// </summary>
+        public double HistogramMultiplier
+        {
+            get { return m_histogramMultiplier; }
+            set { m_histogramMultiplier = value; }
+        }
         #endregion
 
         #region Private functions
@@ -162,7 +162,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 		{
             m_userTolerances = new FeatureMatcherTolerances();
             m_useEllipsoid = true;
-            m_useTrapezoid = false;
             m_shouldCalculateShiftFDR = true;
             m_shouldCalculateSTAC = true;
             m_shouldCalculateHistogramFDR = false;
@@ -172,6 +171,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             m_chargeStateList = new List<int>();
             m_shiftAmount = 11.0;
             m_histogramBinWidth = 0.02;
+            m_histogramMultiplier = 0.1;
         }
         #endregion   
     }
