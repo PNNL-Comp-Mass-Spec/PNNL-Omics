@@ -94,6 +94,7 @@
     <Compile Include="PeptideIon.cs" />
     <Compile Include="RawDataReader.cs" />
     <Compile Include="UIMFReader.cs" />
+    <Compile Include="Utilities\Importers\ImporterBase.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />
     <Compile Include="Data\Dataset.cs" />
@@ -122,6 +123,9 @@
     <None Include="ClassDiagrams\DataLayer.cd" />
     <None Include="ClassDiagrams\PNNLOmics.cd" />
     <None Include="ClassDiagrams\UtilityLayer.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilities\Exporters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
