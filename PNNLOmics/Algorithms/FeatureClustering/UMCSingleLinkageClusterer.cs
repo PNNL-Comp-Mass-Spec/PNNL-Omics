@@ -27,6 +27,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Clustering parameters 
         /// </summary>
+        //TODO: BLL - Fix this to be either an auto property or a member variable.
         private UMCSingleLinkageClustererParameters m_parameters;
         #endregion
 
@@ -35,7 +36,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         public UMCSingleLinkageClusterer()
         {
-            m_parameters = new UMCSingleLinkageClustererParameters();
+            m_parameters = new UMCSingleLinkageClustererParameters();            
         }
 
         #region Properties
@@ -57,19 +58,18 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="clusterY">Cluster y.</param>
         /// <returns>True if the clusters overlap based on group ID or false if they do not.</returns>
         private bool DoClustersHaveGroupOverlap(UMCCluster clusterX, UMCCluster clusterY)
-        {
-            bool overlap = false;
-
+        {            
             foreach (UMC umcX in clusterX.UMCList)
             {
                 foreach(UMC umcY in clusterY.UMCList)
                 {
                     if (umcX.GroupID == umcY.GroupID)
+                    {
                         return true;
+                    }
                 }
             }
-
-            return overlap;
+            return false;
         }
         /// <summary>
         /// Performs single linkage clustering over the data and returns a list of UMC clusters.
@@ -79,6 +79,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns>List of UMC clusters.</returns>
         private List<UMCCluster> LinkUMCs(List<PairwiseUMCDistance> distances)
         {
+            //TODO: BLL make sure that the umc's are initialized first to a singleton cluster 
+
             /// 
             /// Create a new list of clusters 
             /// 
@@ -103,8 +105,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 /// 
                 /// Determine if they are already clustered into the same cluster
                 /// 
+                //TODO: What to do about a cluster == null
                 if (clusterX == clusterY && clusterX != null)
+                {
                     continue;
+                }
 
                 /// 
                 /// Now we make sure we don't merge two clusters that have the same group ID.
@@ -112,36 +117,26 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 bool hasOverlap = DoClustersHaveGroupOverlap(clusterX, clusterY);
 
                 /// 
-                /// If there is no overlap of group ID's then we can go ahead and merge the clusters.
+                /// If there is no overlap of group ID's then we can go ahead and merge the clusters
+                /// into one of the clusters.
                 /// 
-                if (hasOverlap == false)
+                if (!hasOverlap)
                 {
-                    UMCCluster cluster = new UMCCluster();
-
+                    
                     /// 
                     /// Remove the references for all the clusters in the group 
-                    /// and point them to the new cluster.
+                    /// and merge them into the other cluster.
                     /// 
                     foreach (UMC umcX in clusterX.UMCList)
                     {
-                        umcX.UmcCluster = cluster;
-                        cluster.UMCList.Add(umcX);
-                    }
-                    foreach (UMC umcY in clusterY.UMCList)
-                    {
-                        umcY.UmcCluster = cluster;
-                        cluster.UMCList.Add(umcY);
-                    }
-                    /// 
-                    /// Remove the old cluster
-                    /// 
-                    clusters.Remove(clusterX);
-                    clusters.Remove(clusterY);
-
-                    /// 
-                    /// Then add it back into the main list of clusters
-                    /// 
-                    clusters.Add(cluster);
+                        umcX.UmcCluster = clusterY;
+                        clusterY.UMCList.Add(umcX);
+                    }                    
+                    
+                    //TODO: BLL Remove flowers (three slashes)
+                    //TODO: BLL Clean this up for the pink pig...
+                    // Remove the old cluster                    
+                    clusters.Remove(clusterX);                    
                 }
             }
 
@@ -160,12 +155,16 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             double netTolerance     = m_parameters.Tolerances.NET;            
             double driftTolerance   = m_parameters.Tolerances.DriftTime;
 
+            //TODO: BLL stop and stop - 1, double check this is set correctly.
             List<PairwiseUMCDistance> distances = new List<PairwiseUMCDistance>();
             for(int i = start; i < stop - 1; i++) // (int i = start; i < stop - 1; i++)
             {
                 UMC featureX = data[i];
                 for(int j = i + 1; j < stop - 1; j++)
                 {
+                    //TODO: BLL Check why we should check this (i==j)
+                    //TODO: BLL why check if ID == ID? -- I think this can go!
+                    //TODO: Check about object references.
                     /// 
                     /// Don't calculate distance to self.
                     /// 
@@ -202,6 +201,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     if (massDiff <= massTolerance && netDiff <= netTolerance && driftDiff <= driftTolerance)
                     {
 
+                        //TODO: BLL Write a weighted Euclidean distance
+                        //TODO: BLL Remove explicit checks == true, and == false
+                        
                         /// 
                         /// If IMS or equivalent only cluster similar charge states
                         /// 
@@ -232,6 +234,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             pairwiseDistance.Distance = m_parameters.DistanceFunction(featureX, featureY);
                         }
                     }
+                    //TODO: BLL Add the calculated distances.
                 }
             }
             return distances;
@@ -266,6 +269,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             /// Now partition the data based on mass ranges and the parameter values.
             /// 
             double massTolerance  = m_parameters.Tolerances.Mass;
+
+            //TODO: Change feature to UMC...Make it startFeatureIndex
             /// 
             /// This is the index of first feature of a given mass partition.
             /// 
@@ -288,6 +293,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 /// 
                 if (ppm > massTolerance)
                 {
+                    //TODO: Make this comment a little clearer.
                     /// 
                     /// If this is true then we only have one feature to cluster
                     /// 
@@ -304,6 +310,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                         /// Otherwise we have more than one feature to cluster to consider.
                         /// 
                         List<PairwiseUMCDistance> distances = CalculatePairWiseDistances(startFeatureIndex, i, data);
+                        //TODO: Sort pairwise distances...
                         List<UMCCluster>  blockClusters     = LinkUMCs(distances);
                         clusters.AddRange(blockClusters);
                     }
@@ -313,6 +320,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         }
         #endregion
 
+
+        //TODO: Brian add this to the PNNLOmics.Data namespace as public
         /// <summary>
         /// Holds the distance between two features and indices.
         /// </summary>

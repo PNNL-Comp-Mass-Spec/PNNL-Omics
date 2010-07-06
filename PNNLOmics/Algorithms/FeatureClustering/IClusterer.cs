@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+//TODO: Brian add file header...
+
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
     /// <summary>
@@ -13,8 +15,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Clusters the data objects provided in the list.
         /// </summary>
-        /// <param name="data">Data to cluster.</param>
-        /// <returns>List of cluster objects defined over input data.</returns>
+        /// <param name="data">Data to cluster.</param>        
+        //TODO: Make this return a list of new clusters, update method comment.
+        //TODO: Make two methods, overloaded, make one that doesnt take a list of clusters.
         void Cluster(List<T> data, List<U> clusters);
     }
 }
