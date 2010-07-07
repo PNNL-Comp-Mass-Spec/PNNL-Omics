@@ -5,6 +5,7 @@ using NUnit.Framework;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data;
 using PNNLOmics.Algorithms.FeatureMatcher.Data;
+using PNNLOmics.Utilities.Importers;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests
 {
@@ -37,11 +38,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests
             //TODO: Gord - add code for importing UMC files. 
             //TODO: Gord - add code for importing MassTag data from a .txt file. 
 
+
             string umcFilePath = FileReferences.OrbitrapUMCFile1;
             string massTagFilePath = FileReferences.OrbitrapMassTagFile;
 
+            UMCImporter importer = new UMCImporter(umcFilePath, '\t');
+            umcList =  importer.Import();
 
-            throw new NotImplementedException();
         }
 
 

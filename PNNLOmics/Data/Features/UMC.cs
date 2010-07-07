@@ -17,8 +17,12 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// The maximum charge state of the UMC.
 		/// </summary>
-		public int ChargeMaximum { get; set; }
-		/// <summary>
+        public int ChargeMaximum { get; set; }
+        /// <summary>
+        /// The minimum charge state of the UMC.
+        /// </summary>
+        public int ChargeMinimum { get; set; }
+        /// <summary>
 		/// The maximum abundance of the UMC.
 		/// </summary>
 		public int AbundanceMaximum { get; set; }
@@ -86,6 +90,15 @@ namespace PNNLOmics.Data.Features
 		/// The UMC Cluster that is associated with the UMC.
 		/// </summary>
 		public UMCCluster UmcCluster { get; set; }
+
+        //TODO: figure out whether or not to include these additional properties:
+        public double FitScoreAverage { get; set; }
+
+
+
+
+
+
 		#endregion
 
 		#region BaseData Members

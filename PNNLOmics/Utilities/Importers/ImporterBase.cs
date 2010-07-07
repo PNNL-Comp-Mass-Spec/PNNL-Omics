@@ -14,25 +14,25 @@ namespace PNNLOmics.Utilities.Importers
         //TODO: Gord - finish cleaning up this before harsh code review
 
 
-        public abstract void Import(T data);
+        public abstract T Import();
 
-        protected char delimiter = '\t';
+        protected char m_delimiter = '\t';
+        protected List<string> m_columnHeaders= new List<string>();
 
         /// <summary>
-        /// 
+        /// This method retrieves a single cell of data (row, column) in the form of a string.  
         /// </summary>
         /// <param name="row">Single row of data </param>
-        /// <param name="columnHeaders">List of column headers</param>
-        /// <param name="targetColumn"></param>
+        /// <param name="targetColumn">Column header name</param>
         /// <returns></returns>
-        protected string lookupData(List<string> row, List<string> columnHeaders, string targetColumn)
+        protected string LookupData(List<string> row, string targetColumn)
         {
-            int columnIndex = getIndexForHeader(columnHeaders, targetColumn, false);
+            int columnIndex = GetColumnIndexForHeader(targetColumn, false);
             if (columnIndex == -1) return "null";
             return row[columnIndex];
         }
 
-        protected bool parseBoolField(string inputstring)
+        protected bool ParseBoolField(string inputstring)
         {
             bool result = false;
             if (bool.TryParse(inputstring, out result))
@@ -40,7 +40,7 @@ namespace PNNLOmics.Utilities.Importers
             else return false;     
         }
 
-        protected short parseShortField(string inputstring)
+        protected short ParseShortField(string inputstring)
         {
             short result = 0;
             if (Int16.TryParse(inputstring, out result))
@@ -48,7 +48,7 @@ namespace PNNLOmics.Utilities.Importers
             else return 0;
         }
 
-        protected double parseDoubleField(string inputstring)
+        protected double ParseDoubleField(string inputstring)
         {
             double result = 0;
             if (double.TryParse(inputstring, out result))
@@ -59,7 +59,7 @@ namespace PNNLOmics.Utilities.Importers
             }
         }
 
-        protected float parseFloatField(string inputstring)
+        protected float ParseFloatField(string inputstring)
         {
             float result = 0;
             if (float.TryParse(inputstring, out result))
@@ -69,14 +69,14 @@ namespace PNNLOmics.Utilities.Importers
         }
 
 
-        protected int parseIntField(string inputstring)
+        protected int ParseIntField(string inputstring)
         {
             int result = 0;
             if (Int32.TryParse(inputstring, out result))
                 return result;
             else
             {
-                double secondAttempt = parseDoubleField(inputstring);
+                double secondAttempt = ParseDoubleField(inputstring);
                 if (secondAttempt != double.NaN)
                 {
                     return Convert.ToInt32(secondAttempt);
@@ -88,9 +88,14 @@ namespace PNNLOmics.Utilities.Importers
             }
         }
 
-        protected List<string> processLine(string inputLine)
+        /// <summary>
+        /// Parses a single line of data into a List of strings
+        /// </summary>
+        /// <param name="inputLine"></param>
+        /// <returns></returns>
+        protected List<string> ProcessLine(string inputLine)
         {
-            char[] splitter = { delimiter };
+            char[] splitter = { m_delimiter };
             List<string> parsedLine = new List<string>();
 
             string[] arr = inputLine.Split(splitter);
@@ -100,20 +105,21 @@ namespace PNNLOmics.Utilities.Importers
             }
             return parsedLine;
         }
-        protected int getIndexForHeader(List<string> tableHeaders, string target, bool ignoreCase)
+        
+        protected int GetColumnIndexForHeader(string target, bool ignoreCase)
         {
-            for (int i = 0; i < tableHeaders.Count; i++)
+            for (int i = 0; i < m_columnHeaders.Count; i++)
             {
                 string columnHeader;
 
                 if (ignoreCase)
                 {
-                    columnHeader = tableHeaders[i].ToLower();
+                    columnHeader = m_columnHeaders[i].ToLower();
                     target = target.ToLower();
                 }
                 else
                 {
-                    columnHeader = tableHeaders[i];
+                    columnHeader = m_columnHeaders[i];
                 }
 
 
