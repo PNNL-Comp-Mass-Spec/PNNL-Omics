@@ -23,7 +23,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests
             loadOrbitrapData(umcList,massTagList);
 
             bool useDriftDimension = false;
-            STACInformation stac = new STACInformation(useDriftDimension);
+            //STACInformation stac = new STACInformation(useDriftDimension);
 
             //stac.PerformSTAC<UMC,MassTag>(
         }
