@@ -47,6 +47,21 @@ namespace PNNLOmics.Data.Features
 		{
 			Clear();
 		}
+
+		/// <summary>
+		/// This constructor will create a new IMS-MS Feature that is a replica of the given IMS-MS Feature.
+		/// </summary>
+		/// <param name="imsmsFeatureToCopy">The IMS-MS Feature to replicate.</param>
+		public IMSMSFeature(IMSMSFeature imsmsFeatureToCopy)
+		{
+			this.MSFeatureList = new List<MSFeature>();
+			this.ScanIMSList = new List<int>();
+			Clear();
+
+			this.ScanLC = imsmsFeatureToCopy.ScanLC;
+			this.ChargeState = imsmsFeatureToCopy.ChargeState;
+			this.AddMSFeatureList(imsmsFeatureToCopy.MSFeatureList);
+		}
 		#endregion
 
 		#region BaseData Members

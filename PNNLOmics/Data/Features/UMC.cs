@@ -15,6 +15,10 @@ namespace PNNLOmics.Data.Features
 		/// </summary>
 		public bool Remove { get; set; }
 		/// <summary>
+		/// True if the the UMC has been corrected using Dalton Error Correction.
+		/// </summary>
+		public bool DaError { get; set; }
+		/// <summary>
 		/// The maximum charge state of the UMC.
 		/// </summary>
         public int ChargeMaximum { get; set; }
@@ -38,6 +42,10 @@ namespace PNNLOmics.Data.Features
 		/// The index of where the Conformation of the UMC occurred in respect to the rest of the Conformations.
 		/// </summary>
 		public int ConformationIndex { get; set; }
+		/// <summary>
+		/// The fit score determined by the Conformation Detection algorithm.
+		/// </summary>
+		public double ConformationFitScore { get; set; }
 		/// <summary>
 		/// The LC Scan where the UMC begins.
 		/// </summary>
@@ -190,9 +198,23 @@ namespace PNNLOmics.Data.Features
 			return x.MassMonoisotopicMaximum.CompareTo(y.MassMonoisotopicMaximum);
 		};
 		/// <summary>
+		/// Compares the minimum monoisotopic mass of two UMCS
+		/// </summary>
+		public static Comparison<UMC> MassMinComparison = delegate(UMC x, UMC y)
+		{
+			return x.MassMonoisotopicMinimum.CompareTo(y.MassMonoisotopicMinimum);
+		};
+		/// <summary>
+		/// Compares the monoisotopic mass of the most abundant MS Features associated with two UMCS
+		/// </summary>
+		public static Comparison<UMC> MassofMaxAbundanceComparison = delegate(UMC x, UMC y)
+		{
+			return x.MassOfMaxAbundance.CompareTo(y.MassOfMaxAbundance);
+		};
+		/// <summary>
 		/// Compares the first LC Scan then the monoisotopic mass of two UMCS
 		/// </summary>
-		public static Comparison<UMC> LCScanStartAndMassComparison = delegate(UMC x, UMC y)
+		public static Comparison<UMC> ScanLCStartAndMassComparison = delegate(UMC x, UMC y)
 		{
 			if (x.ScanLCStart != y.ScanLCStart)
 			{
@@ -206,7 +228,7 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// Compares the representative LC Scan and the median monoisotopic mass of two UMCS
 		/// </summary>
-		public static Comparison<UMC> LCScanAndMedianMassComparison = delegate(UMC x, UMC y)
+		public static Comparison<UMC> ScanLCAndMedianMassComparison = delegate(UMC x, UMC y)
 		{
 			if (x.ScanLC != y.ScanLC)
 			{
@@ -220,7 +242,7 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// Compares the representative LC Scan and the monoisotopic mass of the most abundant MS Feature of two UMCS
 		/// </summary>
-		public static Comparison<UMC> LCScanAndMassOfMaxAbundanceComparison = delegate(UMC x, UMC y)
+		public static Comparison<UMC> ScanLCAndMassOfMaxAbundanceComparison = delegate(UMC x, UMC y)
 		{
 			if (x.ScanLC != y.ScanLC)
 			{

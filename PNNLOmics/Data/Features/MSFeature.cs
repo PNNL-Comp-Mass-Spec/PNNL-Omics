@@ -10,10 +10,6 @@ namespace PNNLOmics.Data.Features
 	{
 		#region AutoProperties
 		/// <summary>
-		/// True if the MSFeature was marked as Suspicious by Deconvolution algorithm.
-		/// </summary>
-		public bool Suspicious { get; set; }
-		/// <summary>
 		/// The index location (row #) of the MSFeature in the input file.
 		/// </summary>
 		public int IndexInFile { get; set; }
@@ -33,6 +29,10 @@ namespace PNNLOmics.Data.Features
 		/// The magnitude of Da Correction of the MSFeature.
 		/// </summary>
 		public int CorrectedValue { get; set; }
+		/// <summary>
+		/// The mass of the most abundant Peak of the MS Feature.
+		/// </summary>
+		public double MassMostAbundant { get; set; }
 		/// <summary>
 		/// The fit value of the MSFeature.
 		/// </summary>
@@ -57,6 +57,10 @@ namespace PNNLOmics.Data.Features
 		/// The List of MSPeaks that make up the MSFeature.
 		/// </summary>
 		public List<MSPeak> MSPeakList { get; set; }
+		/// <summary>
+		/// The UMC associated with this MS Feature.
+		/// </summary>
+		public UMC UMC { get; set; }
 		#endregion
 
 		#region BaseData Members

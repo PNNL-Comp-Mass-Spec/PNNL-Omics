@@ -13,24 +13,71 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\x64\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\lib\x86\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\lib\x64\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\lib\x86\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\lib\x64\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
   <ItemGroup>
+    <Reference Include="Mapack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Mapack.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Iridium, Version=1.0.0.22686, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MathNet.Iridium.dll</HintPath>
@@ -47,6 +94,10 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIMFLibrary, Version=1.1.3828.24207, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\UIMFLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Alignment\AlignmentMatch.cs" />
@@ -64,13 +115,26 @@
     <Compile Include="Algorithms\Alignment\NormalizedUniformExpectationMaximization.cs" />
     <Compile Include="Algorithms\Alignment\RegressionPoints.cs" />
     <Compile Include="Algorithms\Alignment\RegressionType.cs" />
+    <Compile Include="Algorithms\ConformationDetection\Data\CurveFit.cs" />
+    <Compile Include="Algorithms\ConformationDetection\Data\Pair.cs" />
+    <Compile Include="Algorithms\ConformationDetection\Util\MathUtil.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />
     <Compile Include="Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererParameters.cs" />
     <Compile Include="Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererTolerances.cs" />
     <Compile Include="Algorithms\FeatureClustering\IClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCSingleLinkageClusterer.cs" />
     <Compile Include="Algorithms\FeatureFinding\CodeExamples\BinarySearchExample.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Control\IsosReader.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Control\IsosWriter.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Control\Logger.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Control\Settings.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Data\MSFeatureGroup.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Data\ScanLCMapHolder.cs" />
     <Compile Include="Algorithms\FeatureFinding\Data\UniqueMass.cs" />
+    <Compile Include="Algorithms\ConformationDetection\Util\ConformerUtil.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Util\FeatureUtil.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Util\IMSMSFeatureUtil.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Util\LCMSFeatureUtil.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\FeatureMatcherParameters.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\SLiCInformation.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\STACFDR.cs" />
@@ -87,6 +151,7 @@
     <Compile Include="Data\Features\LCMSFeature.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
     <Compile Include="Generic\AnonymousComparer.cs" />
+    <Compile Include="Algorithms\FeatureFinding\Control\IniReader.cs" />
     <Compile Include="IonType.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
@@ -94,7 +159,6 @@
     <Compile Include="PeptideIon.cs" />
     <Compile Include="RawDataReader.cs" />
     <Compile Include="UIMFReader.cs" />
-    <Compile Include="Utilities\Importers\ImporterBase.cs" />
     <Compile Include="Utilities\Importers\UMCImporter.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />
@@ -124,9 +188,6 @@
     <None Include="ClassDiagrams\DataLayer.cd" />
     <None Include="ClassDiagrams\PNNLOmics.cd" />
     <None Include="ClassDiagrams\UtilityLayer.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\Exporters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

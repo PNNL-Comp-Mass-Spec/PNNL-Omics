@@ -10,11 +10,11 @@ namespace PNNLOmics.Data.Features
 	/// </summary>
 	public class LCIMSMSFeature : UMC, IComparable<LCIMSMSFeature>
 	{
-		#region Properties and Fields
+		#region Properties
 		/// <summary>
 		/// Drift Time of the maximum LC Scan of the LC-IMS-MS Feature.
 		/// </summary>
-		private float m_driftTimeOfScanLCMax;
+		public float DriftTimeOfScanLCMax { get; set; }
 		/// <summary>
 		/// List of IMS-MS features associated with the LC-IMS-MS Feature.
 		/// </summary>
@@ -27,15 +27,6 @@ namespace PNNLOmics.Data.Features
 		/// List of gaos in the LC dimension.
 		/// </summary>
 		public List<int> GapLCList { get; set; }
-
-		/// <summary>
-		/// Drift Time of the LC-IMS-MS Feature.
-		/// </summary>
-		public override float DriftTime
-		{
-			get { return m_driftTimeOfScanLCMax; }
-			set { m_driftTimeOfScanLCMax = value; }
-		}
 
 		/// <summary>
 		/// List of MS Features associated with the LC-IMS-MS feature.
@@ -116,6 +107,7 @@ namespace PNNLOmics.Data.Features
 					this.ScanLCOfMaxAbundance = imsmsFeature.ScanLC;
 					this.MZ = imsmsFeature.MZ;
 					this.MassOfMaxAbundance = imsmsFeature.MassOfMaxAbundance;
+					this.DriftTime = imsmsFeature.DriftTime;
 				}
 
 				if (imsmsFeature.ScanLC < this.ScanLCStart)
@@ -125,7 +117,7 @@ namespace PNNLOmics.Data.Features
 				if (imsmsFeature.ScanLC > this.ScanLCEnd)
 				{
 					this.ScanLCEnd = imsmsFeature.ScanLC;
-					this.DriftTime = imsmsFeature.DriftTime;
+					this.DriftTimeOfScanLCMax = imsmsFeature.DriftTime;
 				}
 
 				this.ScanLCList.Add(imsmsFeature.ScanLC);
@@ -151,6 +143,7 @@ namespace PNNLOmics.Data.Features
 				this.ScanLCOfMaxAbundance = imsmsFeature.ScanLC;
 				this.MZ = imsmsFeature.MZ;
 				this.MassOfMaxAbundance = imsmsFeature.MassOfMaxAbundance;
+				this.DriftTime = imsmsFeature.DriftTime;
 			}
 
 			if (imsmsFeature.ScanLC < this.ScanLCStart)
@@ -160,7 +153,7 @@ namespace PNNLOmics.Data.Features
 			if (imsmsFeature.ScanLC > this.ScanLCEnd)
 			{
 				this.ScanLCEnd = imsmsFeature.ScanLC;
-				this.DriftTime = imsmsFeature.DriftTime;
+				this.DriftTimeOfScanLCMax = imsmsFeature.DriftTime;
 			}
 
 			this.ScanLCList.Add(imsmsFeature.ScanLC);

@@ -24,6 +24,14 @@ namespace PNNLOmics.Data.Features
         /// The ID for a feature.
         /// </summary>
         public int ID { get; set; }
+		/// <summary>
+		/// True if the MSFeature was marked as Suspicious by Deconvolution algorithm.
+		/// </summary>
+		public bool Suspicious { get; set; }
+		/// <summary>
+		/// True if the MSFeature was marked corrected by the Da Correction algorithm.
+		/// </summary>
+		public bool Corrected { get; set; }
         /// <summary>
         /// The drift time of the feature.
         /// </summary>
@@ -60,6 +68,10 @@ namespace PNNLOmics.Data.Features
         /// The M/Z value of the feature.
         /// </summary>
         public double MZ { get; set; }
+		/// <summary>
+		/// The Da corrected M/Z value of the feature.
+		/// </summary>
+		public double MZCorrected { get; set; }
         /// <summary>
         /// The charge state of the feature.
         /// </summary>
@@ -174,6 +186,52 @@ namespace PNNLOmics.Data.Features
         {
             return x.Abundance.CompareTo(y.Abundance);
         };
+		/// <summary>
+		/// Compares the LC Scan and then the Monoisotopic Mass of two Features
+		/// </summary>
+		public static Comparison<Feature> ScanLCAndMassComparison = delegate(Feature x, Feature y)
+		{
+			if (x.ScanLC != y.ScanLC)
+			{
+				return x.ScanLC.CompareTo(y.ScanLC);
+			}
+			else
+			{
+				return x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
+			}
+		};
+		/// <summary>
+		/// Compares the LC Scan and then the Charge State of two Features
+		/// </summary>
+		public static Comparison<Feature> ScanLCAndChargeStateComparison = delegate(Feature x, Feature y)
+		{
+			if (x.ScanLC != y.ScanLC)
+			{
+				return x.ScanLC.CompareTo(y.ScanLC);
+			}
+			else
+			{
+				return x.ChargeState.CompareTo(y.ChargeState);
+			}
+		};
+		/// <summary>
+		/// Compares the LC Scan and then the Monoisotopic Mass of two Features
+		/// </summary>
+		public static Comparison<Feature> ScanLCAndDriftTimeAndMassComparison = delegate(Feature x, Feature y)
+		{
+			if (x.ScanLC != y.ScanLC)
+			{
+				return x.ScanLC.CompareTo(y.ScanLC);
+			}
+			else if (x.DriftTime != y.DriftTime)
+			{
+				return x.DriftTime.CompareTo(y.DriftTime);
+			}
+			else
+			{
+				return x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
+			}
+		};
 		#endregion
 
 		#region Public Utility Functions
