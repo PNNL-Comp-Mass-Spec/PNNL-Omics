@@ -15,17 +15,30 @@ using PNNLOmics.Algorithms.ConformationDetection.Util;
 
 namespace PNNLOmics.Algorithms.FeatureFinding.Util
 {
+	/// <summary>
+	/// Utility class for Features that are involved with Ion Mobility Spectrometry, including IMS-MS and LC-IMS-MS Features.
+	/// </summary>
 	public class IMSMSFeatureUtil
 	{
 		private Logger m_logger;
 		private Settings m_settings;
 
+		/// <summary>
+		/// Contructor that takes a Settings object and a Logger object
+		/// </summary>
+		/// <param name="settings">Settings object</param>
+		/// <param name="logger">Logger object</param>
 		public IMSMSFeatureUtil(Settings settings, Logger logger)
 		{
 			m_logger = logger;
 			m_settings = settings;
 		}
 
+		/// <summary>
+		/// Clusters a List of MS Features together across the IMS dimension to create a List of IMS-MS Features.
+		/// </summary>
+		/// <param name="msFeatureList">List of MS Features to be clustered</param>
+		/// <returns>List of IMS-MS Features</returns>
 		public List<IMSMSFeature> ProcessMSFeatures(List<MSFeature> msFeatureList)
 		{
 			MSFeature currentMSFeature = null;
@@ -275,6 +288,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		}
 		*/
 
+		/// <summary>
+		/// Clusters a List of IMS-MS Features together across the LC dimension to create LC-IMS-MS Features.
+		/// </summary>
+		/// <param name="imsmsFeatureList">List of IMS-MS Features to be clustered</param>
+		/// <returns>A List of LC-IMS-MS Features</returns>
 		public List<LCIMSMSFeature> ProcessIMSMSFeatures(List<IMSMSFeature> imsmsFeatureList)
 		{
 			IMSMSFeature currentIMSMSFeature = new IMSMSFeature();
@@ -385,7 +403,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					if ((int)currentScanLC - (int)lcimsmsFeature.ScanLCEnd - 1 <= m_settings.LCGapSizeMax)
 					{
-						SearchAndInsert(lcimsmsFeaturesToLeaveOpen, lcimsmsFeature, comparer);
+						FeatureUtil.SearchAndInsert(lcimsmsFeaturesToLeaveOpen, lcimsmsFeature, comparer);
 					}
 				}
 				openLCIMSMSFeatureList = lcimsmsFeaturesToLeaveOpen;
@@ -393,7 +411,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				// Open all New LC-IMS-MS Features
 				foreach (LCIMSMSFeature lcimsmsFeature in newLCIMSMSFeatureList)
 				{
-					SearchAndInsert(openLCIMSMSFeatureList, lcimsmsFeature, comparer);
+					FeatureUtil.SearchAndInsert(openLCIMSMSFeatureList, lcimsmsFeature, comparer);
 				}
 				newLCIMSMSFeatureList.Clear();
 
@@ -411,34 +429,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return completeLCIMSMSFeatureList;
 		}
 
-		private void SearchAndInsert(List<IMSMSFeature> imsmsFeatureList, IMSMSFeature imsmsFeature, AnonymousComparer<IMSMSFeature> comparer)
-		{
-			int index = imsmsFeatureList.BinarySearch(imsmsFeature, comparer);
-
-			if (index < 0)
-			{
-				imsmsFeatureList.Insert(~index, imsmsFeature);
-			}
-			else
-			{
-				imsmsFeatureList.Insert(index, imsmsFeature);
-			}
-		}
-
-		private void SearchAndInsert(List<LCIMSMSFeature> lcimsmsFeatureList, LCIMSMSFeature lcimsmsFeature, AnonymousComparer<LCIMSMSFeature> comparer)
-		{
-			int index = lcimsmsFeatureList.BinarySearch(lcimsmsFeature, comparer);
-
-			if (index < 0)
-			{
-				lcimsmsFeatureList.Insert(~index, lcimsmsFeature);
-			}
-			else
-			{
-				lcimsmsFeatureList.Insert(index, lcimsmsFeature);
-			}
-		}
-
+		/// <summary>
+		/// Part of the Dalton Correction algrotihm. This method fills in IMS-MS Feature that have "gaps" in the IMS dimension with
+		/// IMS-MS Features that fit the gap.
+		/// </summary>
+		/// <param name="imsmsFeatureList">List of IMS-MS Features</param>
+		/// <returns>New List of IMS-MS Features</returns>
 		private List<IMSMSFeature> FillGaps(List<IMSMSFeature> imsmsFeatureList)
 		{
 			List<IMSMSFeature> imsmsfeaturesToRemove = new List<IMSMSFeature>();
@@ -568,6 +564,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return imsmsFeatureList;
 		}
 
+		/// <summary>
+		/// Part of the Dalton Correction algrotihm. This method fills in LC-IMS-MS Feature that have "gaps" in the LC dimension with
+		/// LC-IMS-MS Features that fit the gap.
+		/// </summary>
+		/// <param name="lcimsmsFeatureList">List of LC-IMS-MS Features</param>
+		/// <returns>New List of LC-IMS-MS Features</returns>
 		private List<LCIMSMSFeature> FillGaps(List<LCIMSMSFeature> lcimsmsFeatureList)
 		{
 			List<LCIMSMSFeature> gappedLCIMSMSFeatureList = new List<LCIMSMSFeature>();
@@ -716,6 +718,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return query.ToList();
 		}
 
+		/// <summary>
+		/// Part of the Dalton Correction algrotihm. This method appends IMS-MS Features with other IMS-MS Features that meet specific criteria.
+		/// </summary>
+		/// <param name="imsmsFeatureList">List of IMS-MS Features</param>
+		/// <returns>New List of IMS-MS Features</returns>
 		private List<IMSMSFeature> AppendIMSMSFeatures(List<IMSMSFeature> imsmsFeatureList)
 		{
 			// Sort all MS Feature Lists by IMS Scan
@@ -770,6 +777,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return query.ToList();
 		}
 
+		/// <summary>
+		/// Part of the Dalton Correction algrotihm. This method appends LC-IMS-MS Features with other LC-IMS-MS Features that meet specific criteria.
+		/// </summary>
+		/// <param name="lcimsmsFeatureList">List of LC-IMS-MS Features</param>
+		/// <returns>New List of LC-IMS-MS Features</returns>
 		private List<LCIMSMSFeature> AppendLCIMSMSFeatures(List<LCIMSMSFeature> lcimsmsFeatureList)
 		{
 			AnonymousComparer<IMSMSFeature> scanLCComparer = new AnonymousComparer<IMSMSFeature>(new Comparison<IMSMSFeature>(Feature.ScanLCComparison));
@@ -823,6 +835,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return query.ToList();
 		}
 
+		/// <summary>
+		/// Calculates statistics of the given IMS-MS Features.
+		/// Currently, this only includes attaching an ID to the Feature.
+		/// </summary>
+		/// <param name="imsmsFeatureList">List of IMS-MS Features</param>
+		/// <returns>New List of IMS-MS Features that have statistics calculated</returns>
 		public List<IMSMSFeature> CalculateIMSMSFeatureStatistics(List<IMSMSFeature> imsmsFeatureList)
 		{
 			imsmsFeatureList.Sort(new Comparison<IMSMSFeature>(Feature.ScanLCAndMassComparison));
@@ -838,6 +856,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return imsmsFeatureList;
 		}
 
+		/// <summary>
+		/// Calculates statistics of the given LC-IMS-MS Features.
+		/// </summary>
+		/// <param name="lcimsmsFeatureList">List of LC-IMS-MS Features</param>
+		/// <returns>New List of LC-IMS-MS Features that have statistics calculated</returns>
 		public List<LCIMSMSFeature> CalculateLCIMSMSFeatureStatistics(List<LCIMSMSFeature> lcimsmsFeatureList)
 		{
 			lcimsmsFeatureList.Sort(new Comparison<LCIMSMSFeature>(UMC.ScanLCStartAndMassComparison));
@@ -893,7 +916,13 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return lcimsmsFeatureList;
 		}
 
-		public List<IMSMSFeature> UseConformationDetection(List<IMSMSFeature> imsmsFeatureList, DataReader uimfReader)
+		/// <summary>
+		/// Performs conformation detection on the given List of IMS-MS Features
+		/// </summary>
+		/// <param name="imsmsFeatureList">List of IMS-MS Features</param>
+		/// <param name="uimfReader">DataReader object representing the UIMF file to be used as the raw data</param>
+		/// <returns>New List of IMS-MS Features that underwent conformation detection</returns>
+		public List<IMSMSFeature> PerformConformationDetection(List<IMSMSFeature> imsmsFeatureList, DataReader uimfReader)
 		{
 			List<IMSMSFeature> newIMSMSFeatureList = new List<IMSMSFeature>();
 
@@ -931,142 +960,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return newIMSMSFeatureList;
 		}
 
-		private double CurveFitScore(IMSMSFeature imsmsFeature)
-		{
-			List<MSFeature> msFeatureList = imsmsFeature.MSFeatureList;
-			msFeatureList.Sort(MSFeature.ScanIMSComparison);
-			double msFeatureCount = msFeatureList.Count;
-
-			int scanIMSOfMaxAbundance = (int)imsmsFeature.ScanIMSOfMaxAbundance;
-			int indexOfMaxAbundance = 0;
-			for (int i = 0; i < msFeatureCount; i++)
-			{
-				MSFeature msFeature = msFeatureList[i];
-				if (msFeature.ScanIMS == scanIMSOfMaxAbundance)
-				{
-					indexOfMaxAbundance = i;
-					break;
-				}
-			}
-
-			double changes = 0;
-			bool ascending = false;
-			int previousAbundance = imsmsFeature.AbundanceMaximum;
-			for (int i = indexOfMaxAbundance + 1; i < msFeatureCount; i++)
-			{
-				MSFeature msFeature = msFeatureList[i];
-				if (msFeature.Abundance <= previousAbundance)
-				{
-					if (ascending)
-					{
-						changes++;
-						ascending = false;
-					}
-				}
-				else
-				{
-					if (!ascending)
-					{
-						changes++;
-						ascending = true;
-					}
-				}
-
-				previousAbundance = msFeature.Abundance;
-			}
-
-			ascending = false;
-			previousAbundance = imsmsFeature.AbundanceMaximum;
-			for (int i = indexOfMaxAbundance - 1; i >= 0; i--)
-			{
-				MSFeature msFeature = msFeatureList[i];
-				if (msFeature.Abundance <= previousAbundance)
-				{
-					if (ascending)
-					{
-						changes++;
-						ascending = false;
-					}
-				}
-				else
-				{
-					if (!ascending)
-					{
-						changes++;
-						ascending = true;
-					}
-				}
-
-				previousAbundance = msFeature.Abundance;
-			}
-
-			return (msFeatureCount - changes) / msFeatureCount;
-		}
-
-		private double CurveMatch(IMSMSFeature feature, IMSMSFeature otherFeature)
-		{
-			List<MSFeature> msFeatureList = feature.MSFeatureList;
-			msFeatureList.Sort(MSFeature.ScanIMSComparison);
-
-			List<int> abundanceList = new List<int>();
-			int maxAbundance = 0;
-			int indexOfMaxAbundance = 0;
-
-			for (int i = 0; i < msFeatureList.Count; i++)
-			{
-				MSFeature msFeature = msFeatureList[i];
-
-				if (msFeature.Abundance > maxAbundance)
-				{
-					maxAbundance = msFeature.Abundance;
-					indexOfMaxAbundance = i;
-				}
-
-				abundanceList.Add(msFeature.Abundance);
-			}
-
-			List<MSFeature> otherMSFeatureList = otherFeature.MSFeatureList;
-			otherMSFeatureList.Sort(MSFeature.ScanIMSComparison);
-
-			List<int> otherAbundanceList = new List<int>();
-			int otherMaxAbundance = 0;
-			int otherIndexOfMaxAbundance = 0;
-
-			for (int i = 0; i < otherMSFeatureList.Count; i++)
-			{
-				MSFeature msFeature = otherMSFeatureList[i];
-
-				if (msFeature.Abundance > maxAbundance)
-				{
-					otherMaxAbundance = msFeature.Abundance;
-					otherIndexOfMaxAbundance = i;
-				}
-
-				otherAbundanceList.Add(msFeature.Abundance);
-			}
-
-			if (indexOfMaxAbundance != otherIndexOfMaxAbundance)
-			{
-				if (indexOfMaxAbundance < otherIndexOfMaxAbundance)
-				{
-					for (int i = 0; i < (otherIndexOfMaxAbundance - indexOfMaxAbundance); i++)
-					{
-						abundanceList.Insert(0, 0);
-					}
-				}
-				else
-				{
-					for (int i = 0; i < (indexOfMaxAbundance - otherIndexOfMaxAbundance); i++)
-					{
-						otherAbundanceList.Insert(0, 0);
-					}
-				}
-			}
-
-			return 0.0;
-		}
-
-		public List<IMSMSFeature> RefineIMSMSFeatures(List<IMSMSFeature> imsmsFeatureList)
+		/// <summary>
+		/// Refines a List of IMS-MS Features based on the feature length (# of MS Features)
+		/// </summary>
+		/// <param name="imsmsFeatureList">List of IMS-MS Features</param>
+		/// <returns>Refined List of IMS-MS Features</returns>
+		public List<IMSMSFeature> RefineIMSMSFeaturesByFeatureLength(List<IMSMSFeature> imsmsFeatureList)
 		{
 			List<IMSMSFeature> imsmsFeaturesToKeep = new List<IMSMSFeature>();
 
@@ -1081,7 +980,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return imsmsFeaturesToKeep;
 		}
 
-		public List<LCIMSMSFeature> RefineLCIMSMSFeatures(List<LCIMSMSFeature> lcimsmsFeatureList)
+		/// <summary>
+		/// Refines a List of LC-IMS-MS Features based on the feature length (# of MS Features)
+		/// </summary>
+		/// <param name="lcimsmsFeatureList">List of LC-IMS-MS Features</param>
+		/// <returns>Refined List of LC-IMS-MS Features</returns>
+		public List<LCIMSMSFeature> RefineLCIMSMSFeaturesByFeatureLength(List<LCIMSMSFeature> lcimsmsFeatureList)
 		{
 			List<LCIMSMSFeature> lcimsmsFeaturesToKeep = new List<LCIMSMSFeature>();
 

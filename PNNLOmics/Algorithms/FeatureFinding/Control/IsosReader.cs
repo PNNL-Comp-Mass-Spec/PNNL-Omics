@@ -7,6 +7,9 @@ using PNNLOmics.Algorithms.FeatureFinding.Data;
 
 namespace PNNLOmics.Algorithms.FeatureFinding.Control
 {
+	/// <summary>
+	/// Reads a text-based delimited Isos file and creates a List of MS Features based on the file contents.
+	/// </summary>
 	public class IsosReader
 	{
 		#region AutoProperties
@@ -23,6 +26,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 		/// Constructor for passing in a String containing the location of the ISOS csv file
 		/// </summary>
 		/// <param name="settings">Reference to the Settings object</param>
+		/// <param name="logger">Logger object</param>
 		public IsosReader(ref Settings settings, Logger logger)
 		{
 			this.Logger = logger;
@@ -138,6 +142,8 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 		/// <summary>
 		/// Saves the data from a ISOS csv file to an List of MSFeature Objects.
 		/// </summary>
+		/// <param name="settings">Reference to the Settings object</param>
+		/// <returns>List of MS Features</returns>
 		private List<MSFeature> SaveDataToMSFeatureList(ref Settings settings)
 		{
 			List<MSFeature> msFeatureList = new List<MSFeature>();
@@ -215,6 +221,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			return msFeatureList;
 		}
 
+		/// <summary>
+		/// Determines if an MS Feature passes the filters defined by the Settings object
+		/// </summary>
+		/// <param name="msFeature">MS Feature to be tested</param>
+		/// <param name="settings">Reference to the Settings object</param>
+		/// <returns>true if the MS Feature passes, false otherwise</returns>
 		private bool PassesFilters(MSFeature msFeature, ref Settings settings)
 		{
 			if (ColumnMap.ContainsKey("MSFeature.Frame"))

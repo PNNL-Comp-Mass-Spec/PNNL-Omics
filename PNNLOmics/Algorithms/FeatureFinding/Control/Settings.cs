@@ -83,6 +83,9 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			this.IgnoreIMSDriftTime = false;
 		}
 
+		/// <summary>
+		/// Prints out an example Settings file to the console.
+		/// </summary>
 		public static void PrintExampleSettings()
 		{
 			Console.WriteLine("");

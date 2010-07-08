@@ -7,12 +7,19 @@ using System.Data.SQLite;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Algorithms.FeatureFinding.Data;
 using PNNLOmics.Algorithms.FeatureFinding.Control;
+using PNNLOmics.Generic;
 
 namespace PNNLOmics.Algorithms.FeatureFinding.Util
 {
 	public static class FeatureUtil
 	{
-		public static void WriteLCFeatureBaseListToFile<T>(List<T> featureList, Settings settings) where T : UMC
+		/// <summary>
+		/// Writes a list of UMCs to a tab-delimited file for use in VIPER or MultiAlign.
+		/// </summary>
+		/// <typeparam name="T">UMC</typeparam>
+		/// <param name="featureList">List of UMCs</param>
+		/// <param name="settings">Settings object</param>
+		public static void WriteUMCListToFile<T>(List<T> umcList, Settings settings) where T : UMC
 		{
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
 			String outputDirectory = "";
@@ -30,18 +37,18 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			mapWriter.WriteLine("Feature_Index\tPeak_Index\tFiltered_Peak_Index");
 			cmcWriter.WriteLine("Feature_Index\tCharge_State\tIntensity");
 
-			foreach (T feature in featureList)
+			foreach (T umc in umcList)
 			{
-				featureWriter.WriteLine(feature.ID + "\t" + feature.MassMonoisotopicMedian.ToString("0.00000") + "\t" + feature.MassMonoisotopicMedian.ToString("0.00000") + "\t"
-							+ feature.MassMonoisotopicMinimum + "\t" + feature.MassMonoisotopicMaximum + "\t" + ScanLCMapHolder.ScanLCMap[feature.ScanLCStart] + "\t" + ScanLCMapHolder.ScanLCMap[feature.ScanLCEnd] + "\t"
-							+ ScanLCMapHolder.ScanLCMap[feature.ScanLCOfMaxAbundance] + "\t" + feature.MSFeatureList.Count + "\t" + feature.AbundanceMaximum + "\t" + feature.AbundanceSum + "\t"
-							+ feature.MZ + "\t" + feature.ChargeState + "\t" + feature.ChargeMaximum + "\t" + feature.DriftTime + "\t" + feature.ConformationFitScore);
+				featureWriter.WriteLine(umc.ID + "\t" + umc.MassMonoisotopicMedian.ToString("0.00000") + "\t" + umc.MassMonoisotopicMedian.ToString("0.00000") + "\t"
+							+ umc.MassMonoisotopicMinimum + "\t" + umc.MassMonoisotopicMaximum + "\t" + ScanLCMapHolder.ScanLCMap[umc.ScanLCStart] + "\t" + ScanLCMapHolder.ScanLCMap[umc.ScanLCEnd] + "\t"
+							+ ScanLCMapHolder.ScanLCMap[umc.ScanLCOfMaxAbundance] + "\t" + umc.MSFeatureList.Count + "\t" + umc.AbundanceMaximum + "\t" + umc.AbundanceSum + "\t"
+							+ umc.MZ + "\t" + umc.ChargeState + "\t" + umc.ChargeMaximum + "\t" + umc.DriftTime + "\t" + umc.ConformationFitScore);
 
 				Dictionary<int, int> cmcMap = new Dictionary<int, int>();
 
-				foreach (MSFeature msFeature in feature.MSFeatureList)
+				foreach (MSFeature msFeature in umc.MSFeatureList)
 				{
-					mapWriter.WriteLine(feature.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID);
+					mapWriter.WriteLine(umc.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID);
 
 					if (cmcMap.ContainsKey(msFeature.ChargeState))
 					{
@@ -55,7 +62,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 
 				foreach (byte key in cmcMap.Keys)
 				{
-					cmcWriter.WriteLine(feature.ID + "\t" + key + "\t" + cmcMap[key]);
+					cmcWriter.WriteLine(umc.ID + "\t" + key + "\t" + cmcMap[key]);
 				}
 			}
 
@@ -63,8 +70,17 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			mapWriter.Close();
 		}
 
-		public static void WriteLCFeatureBaseListToSQLite<T>(List<T> featureList, Settings settings) where T : UMC
+		/// <summary>
+		/// Outputs a list of UMCs to a SQLite database.
+		/// INCOMPLETE METHOD. DOES NOT WORK YET.
+		/// </summary>
+		/// <typeparam name="T">UMC</typeparam>
+		/// <param name="featureList">List of UMCs</param>
+		/// <param name="settings">Settings object</param>
+		public static void WriteUMCListToSQLite<T>(List<T> umcList, Settings settings) where T : UMC
 		{
+			// TODO: Finish this method
+
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
 			String outputDirectory = "";
 
@@ -94,7 +110,13 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			throw new NotImplementedException();
 		}
 
-		public static void CreateAbundanceProfile<T>(List<T> featureList, Settings settings) where T : UMC
+		/// <summary>
+		/// Outputs a list of UMCs to a tab-delimited in such a way that the abundance profile of each UMC is made clear.
+		/// </summary>
+		/// <typeparam name="T">UMC</typeparam>
+		/// <param name="featureList">List of UMCs</param>
+		/// <param name="settings">Settings object</param>
+		public static void CreateAbundanceProfile<T>(List<T> umcList, Settings settings) where T : UMC
 		{
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
 			String outputDirectory = "";
@@ -108,9 +130,9 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 
 			profileWriter.WriteLine("Feature_index\tMass\tCharge\tScan\tAbundance");
 
-			foreach (T feature in featureList)
+			foreach (T umc in umcList)
 			{
-				List<MSFeature> msFeatureList = feature.MSFeatureList;
+				List<MSFeature> msFeatureList = umc.MSFeatureList;
 				//msFeatureList.Sort(MSFeature.FrameComparison);
 				msFeatureList.Sort(new Comparison<MSFeature>(Feature.ScanLCAndChargeStateComparison));
 
@@ -135,18 +157,25 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 						i++;
 					}
 
-					profileWriter.WriteLine(feature.ID + "\t" + feature.MassMonoisotopicMedian + "\t" + currentCharge + "\t" + currentScanLC + "\t" + totalbundance);
+					profileWriter.WriteLine(umc.ID + "\t" + umc.MassMonoisotopicMedian + "\t" + currentCharge + "\t" + currentScanLC + "\t" + totalbundance);
 				}
 			}
 		}
 
-		public static void CorrectMassMostAbundant<T>(T feature) where T : UMC
+		/// <summary>
+		/// Corrects the monoisotopic mass of a UMC (based on Da correction algorithm results) by assuming the most abundant
+		/// MS Feature of the UMC contains the correct mass. All other masses will be corrected in increments of 1 Da in respect 
+		/// to the mass of the most abundant MS Feature.
+		/// </summary>
+		/// <typeparam name="T">UMC</typeparam>
+		/// <param name="feature">The UMC to be corrected</param>
+		public static void CorrectMassMostAbundant<T>(T umc) where T : UMC
 		{
-			if (feature.DaError)
+			if (umc.DaError)
 			{
-				double massReference = feature.MassOfMaxAbundance;
+				double massReference = umc.MassOfMaxAbundance;
 
-				foreach (MSFeature msFeature in feature.MSFeatureList)
+				foreach (MSFeature msFeature in umc.MSFeatureList)
 				{
 					int differenceInt = (int)Math.Round(massReference - msFeature.MassMonoisotopic);
 
@@ -164,6 +193,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 		}
 
+		/// <summary>
+		/// Writes a list of MS Features that are contained in a List of LC-MS Features to a tab-delimited file.
+		/// </summary>
+		/// <param name="featureList">LC-MS Feature list</param>
+		/// <param name="settings">Settings object</param>
 		public static void WriteMSFeaturesToFile(List<LCMSFeature> featureList, Settings settings)
 		{
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
@@ -191,6 +225,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			msFeatureWriter.Close();
 		}
 
+		/// <summary>
+		/// Writes a list of MS Features that are contained in a List of IMS-MS Features to a tab-delimited file.
+		/// </summary>
+		/// <param name="featureList">IMS-MS Feature list</param>
+		/// <param name="settings">Settings object</param>
 		public static void WriteMSFeaturesToFile(List<IMSMSFeature> featureList, Settings settings)
 		{
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
@@ -223,6 +262,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			msFeatureWriter.Close();
 		}
 
+		/// <summary>
+		/// Writes a list of MS Features that are contained in a List of LC-IMS-MS Features to a tab-delimited file.
+		/// </summary>
+		/// <param name="featureList">LC-IMS-MS Feature list</param>
+		/// <param name="settings">Settings object</param>
 		public static void WriteMSFeaturesToFile(List<LCIMSMSFeature> featureList, Settings settings)
 		{
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
@@ -259,6 +303,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			msFeatureWriter.Close();
 		}
 
+		/// <summary>
+		/// Outputs the mass-abundance relationship of each MS Feature to a tab-delimited file.
+		/// </summary>
+		/// <param name="featureList">List of IMS-MS Features</param>
+		/// <param name="settings">Settings object</param>
 		public static void CheckMassAbundanceRelationship(List<IMSMSFeature> featureList, Settings settings)
 		{
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
@@ -311,7 +360,13 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			//msFeatureWriter.Close();
 		}
 
-		public static void WriteMSFeaturesToFile<T>(List<T> featureList, Settings settings) where T : UMC
+		/// <summary>
+		/// Writes a List of MS Features that are contained in a List of UMCs to a tab-delimited file.
+		/// </summary>
+		/// <typeparam name="T">UMC</typeparam>
+		/// <param name="featureList">List of UMCs</param>
+		/// <param name="settings">Settings object</param>
+		public static void WriteMSFeaturesToFile<T>(List<T> umcList, Settings settings) where T : UMC
 		{
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
 			String outputDirectory = "";
@@ -325,11 +380,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 
 			msFeatureWriter.WriteLine("Feature_Index\tMS_Feature_Index\tFiltered_MS_Feature_Index\tLC_Scan\tMono_mass\tCharge\tAbundance\tOriginal_Intensity\tFit\tFlag");
 
-			foreach (T feature in featureList)
+			foreach (T umc in umcList)
 			{
-				foreach (MSFeature msFeature in feature.MSFeatureList)
+				foreach (MSFeature msFeature in umc.MSFeatureList)
 				{
-					msFeatureWriter.WriteLine(feature.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID + "\t" + ScanLCMapHolder.ScanLCMap[msFeature.ScanLC] + "\t" +
+					msFeatureWriter.WriteLine(umc.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID + "\t" + ScanLCMapHolder.ScanLCMap[msFeature.ScanLC] + "\t" +
 												msFeature.MassMonoisotopic + "\t" + msFeature.ChargeState + "\t" + msFeature.Abundance + "\t" +
 												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious);
 				}
@@ -338,19 +393,48 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			msFeatureWriter.Close();
 		}
 
-		public static List<T> FilterFeatureListByAbundanceMaximum<T>(List<T> featureList, uint abundanceMax) where T : UMC
+		/// <summary>
+		/// Filters a List of UMCs based on Maximum Abundance
+		/// </summary>
+		/// <typeparam name="T">UMC</typeparam>
+		/// <param name="featureList">List of UMCs to filter</param>
+		/// <param name="abundanceMax">The abundance value used for filtering</param>
+		/// <returns>A filtered List of UMCs</returns>
+		public static List<T> FilterFeatureListByAbundanceMaximum<T>(List<T> umcList, uint abundanceMax) where T : UMC
 		{
 			List<T> filteredFeatureList = new List<T>();
 
-			foreach (T feature in featureList)
+			foreach (T umc in umcList)
 			{
-				if (feature.AbundanceMaximum >= abundanceMax)
+				if (umc.AbundanceMaximum >= abundanceMax)
 				{
-					filteredFeatureList.Add(feature);
+					filteredFeatureList.Add(umc);
 				}
 			}
 
 			return filteredFeatureList;
+		}
+
+		/// <summary>
+		/// Does a Binary Search on a List based on a given object and inserts the object into the appropriate location.
+		/// This allows for the List to stay sorted as you insert objects.
+		/// </summary>
+		/// <typeparam name="T">UMC</typeparam>
+		/// <param name="umcList">UMC List</param>
+		/// <param name="umc">UMC object to be inserted</param>
+		/// <param name="comparer">AnyonymousComparer to be used for the binary search</param>
+		public static void SearchAndInsert<T>(List<T> umcList, T umc, AnonymousComparer<T> comparer) where T : UMC
+		{
+			int index = umcList.BinarySearch(umc, comparer);
+
+			if (index < 0)
+			{
+				umcList.Insert(~index, umc);
+			}
+			else
+			{
+				umcList.Insert(index, umc);
+			}
 		}
 	}
 }

@@ -101,7 +101,7 @@ namespace LCMSFeatureFinder
 			logger.Log("Total Number of Unfiltered UMCs = " + lcmsFeatureList.Count);
 
 			logger.Log("Filtering out short UMCs...");
-			lcmsFeatureList = lcmsFeatureUtil.RefineLCMSFeatures(lcmsFeatureList);
+			lcmsFeatureList = lcmsFeatureUtil.RefineLCMSFeaturesByFeatureLength(lcmsFeatureList);
 			logger.Log("Total Number of Filtered UMCs = " + lcmsFeatureList.Count);
 
 			if (settings.LCDaCorrectionMax > 0)
@@ -139,7 +139,7 @@ namespace LCMSFeatureFinder
 				logger.Log("Splitting UMCs by gap size...");
 				lcmsFeatureList = lcmsFeatureUtil.SplitLCMSFeaturesByGapSize(lcmsFeatureList);
 				logger.Log("Filtering out short UMCs...");
-				lcmsFeatureList = lcmsFeatureUtil.RefineLCMSFeatures(lcmsFeatureList);
+				lcmsFeatureList = lcmsFeatureUtil.RefineLCMSFeaturesByFeatureLength(lcmsFeatureList);
 				logger.Log("Total Number of UMCs after splitting = " + lcmsFeatureList.Count);
 			}
 
@@ -152,7 +152,7 @@ namespace LCMSFeatureFinder
 			logger.Log("Percentage of filtered peaks that map to UMCs = " + string.Format("{0:00.00%}", numOfMSFeaturesMappedToLCMSFeatures / isosReader.MSFeatureList.Count));
 
 			logger.Log("Writing output files...");
-			FeatureUtil.WriteLCFeatureBaseListToFile(lcmsFeatureList, settings);
+			FeatureUtil.WriteUMCListToFile(lcmsFeatureList, settings);
 			//FeatureUtil.WriteMSFeaturesToFile(lcmsFeatureList, settings);
 
 			//logger.Log("Creating abundance profiles...");
@@ -183,7 +183,7 @@ namespace LCMSFeatureFinder
 			logger.Log("Total Number of Unfiltered IMS-MS Features = " + imsmsFeatureList.Count);
 
 			logger.Log("Filtering out short IMS-MS Features...");
-			imsmsFeatureList = imsmsFeatureUtil.RefineIMSMSFeatures(imsmsFeatureList);
+			imsmsFeatureList = imsmsFeatureUtil.RefineIMSMSFeaturesByFeatureLength(imsmsFeatureList);
 			logger.Log("Total Number of Filtered IMS-MS Features = " + imsmsFeatureList.Count);
 
 			//imsmsFeatureList = imsmsFeatureUtil.GetIMSMSFeaturesProfileStatistics(imsmsFeatureList);
@@ -230,7 +230,7 @@ namespace LCMSFeatureFinder
 			if (settings.UseConformationDetection)
 			{
 				logger.Log("Drift Time Conformer Detection...");
-				imsmsFeatureList = imsmsFeatureUtil.UseConformationDetection(imsmsFeatureList, uimfReader);
+				imsmsFeatureList = imsmsFeatureUtil.PerformConformationDetection(imsmsFeatureList, uimfReader);
 				logger.Log("New Total Number of Filtered IMS-MS Features = " + imsmsFeatureList.Count);
 			}
 
@@ -286,7 +286,7 @@ namespace LCMSFeatureFinder
 			lcimsmsFeatureList = imsmsFeatureUtil.CalculateLCIMSMSFeatureStatistics(lcimsmsFeatureList);
 
 			logger.Log("Writing output files...");
-			FeatureUtil.WriteLCFeatureBaseListToFile(lcimsmsFeatureList, settings);
+			FeatureUtil.WriteUMCListToFile(lcimsmsFeatureList, settings);
 			//FeatureUtil.WriteMSFeaturesToFile(lcimsmsFeatureList, settings);
 
 			logger.Log("Creating filtered Isos file...");

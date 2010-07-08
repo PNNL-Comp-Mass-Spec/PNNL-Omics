@@ -6,6 +6,9 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureFinding.Control
 {
+	/// <summary>
+	/// CLass designed for writing a comma-delimited Isos file based on a List of MS Features
+	/// </summary>
 	public class IsosWriter
 	{
 		private StreamReader m_isosFileReader;
@@ -13,6 +16,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 		private Dictionary<String, int> m_columnMap;
 		private List<MSFeature> m_msFeatureList;
 
+		/// <summary>
+		/// Constructor for IsosWriter. This constructor will doo all of the processing. No other methods will need to be called.
+		/// </summary>
+		/// <param name="settings">Settings object</param>
+		/// <param name="msFeatureList">List of MS Features to be written to the Isos file</param>
+		/// <param name="columnMap">The column mapping as originally defined by the Isos Reader</param>
 		public IsosWriter(Settings settings, List<MSFeature> msFeatureList, Dictionary<String, int> columnMap)
 		{
 			String baseFileName = Regex.Split(settings.InputFileName, "_isos")[0];
@@ -27,6 +36,9 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			File.Move(settings.OutputDirectory + baseFileName + "_Filtered_New_isos.csv", settings.OutputDirectory + baseFileName + "_Filtered_isos.csv");
 		}
 
+		/// <summary>
+		/// Does the actual writing to the Isos file.
+		/// </summary>
 		private void WriteIsosFile()
 		{
 			String line = "";

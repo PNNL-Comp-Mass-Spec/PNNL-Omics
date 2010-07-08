@@ -10,6 +10,9 @@ using PNNLOmics.Algorithms.FeatureFinding.Data;
 
 namespace PNNLOmics.Algorithms.FeatureFinding.Util
 {
+	/// <summary>
+	/// Utility class for LC-MS Features.
+	/// </summary>
 	public class LCMSFeatureUtil
 	{
 		private Logger m_logger;
@@ -17,6 +20,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		private bool m_useCharge;
 		private Settings m_settings;
 
+		/// <summary>
+		/// Constructor that takes a Settings object and a Logger object.
+		/// </summary>
+		/// <param name="settings">Settings object</param>
+		/// <param name="logger">Logger object</param>
 		public LCMSFeatureUtil(Settings settings, Logger logger)
 		{
 			m_settings = settings;
@@ -24,6 +32,9 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			m_logger = logger;
 		}
 
+		/// <summary>
+		/// The total number of MS Features that are mapped to an LC-MS Feature
+		/// </summary>
 		public int NumOfMSFeaturesMappedToLCMSFeatures
 		{
 			get { return m_numOfMSFeaturesMappedToLCMSFeatures; }
@@ -69,6 +80,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		}
 		*/
 
+		/// <summary>
+		/// Clusters MS Features in the LC dimension to create LC-MS Features.
+		/// </summary>
+		/// <param name="msFeatureList">List of MS Features to be clustered</param>
+		/// <returns>List of LC-MS Features</returns>
 		public List<LCMSFeature> ProcessMSFeatures(List<MSFeature> msFeatureList)
 		{
 			MSFeature currentMSFeature = null;
@@ -152,7 +168,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 
 							newLCMSFeature.ChargeState = currentMSFeature.ChargeState;
 
-							SearchAndInsert(openLCMSFeatureList, newLCMSFeature, comparer);
+							FeatureUtil.SearchAndInsert(openLCMSFeatureList, newLCMSFeature, comparer);
 							completeLCMSFeatureList.Add(newLCMSFeature);
 						}
 					}
@@ -174,7 +190,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					if ((int)currentScanLC - (int)lcmsFeature.ScanLCEnd - 1 <= m_settings.LCGapSizeMax)
 					{
-						SearchAndInsert(lcmsFeaturesToLeaveOpen, lcmsFeature, comparer);
+						FeatureUtil.SearchAndInsert(lcmsFeaturesToLeaveOpen, lcmsFeature, comparer);
 					}
 				}
 				openLCMSFeatureList = lcmsFeaturesToLeaveOpen;
@@ -183,199 +199,15 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				i += msFeatureCount;
 			}
 
-			// Fill Gaps and Append LC-MS Features
-			//if (m_settings.LCDaCorrectionMax > 0)
-			//{
-			//    completeLCMSFeatureList = FillGaps(completeLCMSFeatureList);
-			//    completeLCMSFeatureList = AppendLCMSFeatures(completeLCMSFeatureList);
-			//}
-
 			return completeLCMSFeatureList;
 		}
 
-		private List<LCMSFeature> AppendLCMSFeatures(List<LCMSFeature> lcmsFeatureList)
-		{
-			List<LCMSFeature> lcmsFeatureListCopy = new List<LCMSFeature>();
-			lcmsFeatureListCopy.AddRange(lcmsFeatureList);
-
-			// Sort all MS Feature Lists by LC Scan
-			foreach (LCMSFeature lcmsFeature in lcmsFeatureList)
-			{
-				lcmsFeature.MSFeatureList.Sort(new Comparison<MSFeature>(Feature.ScanLCComparison));
-			}
-
-			for (int i = 0; i < lcmsFeatureList.Count; i++)
-			{
-				LCMSFeature currentLCMSFeature = lcmsFeatureList[i];
-
-				// If the current LC-MS Feature has not been involved in an Append
-				if (!currentLCMSFeature.Remove)
-				{
-					LCMSFeature featureToRemove = null;
-
-					foreach (LCMSFeature lcmsFeature in lcmsFeatureListCopy)
-					{
-						if (!m_settings.UseCharge || currentLCMSFeature.ChargeState == lcmsFeature.ChargeState)
-						{
-							// If the LC-MS Feature fits before the Current LC-MS Feature
-							if ((lcmsFeature.ScanLCEnd < currentLCMSFeature.ScanLCStart && (int)currentLCMSFeature.ScanLCStart - (int)lcmsFeature.ScanLCEnd - 1 <= m_settings.LCGapSizeMax)
-								|| (lcmsFeature.ScanLCStart > currentLCMSFeature.ScanLCEnd && (int)lcmsFeature.ScanLCStart - (int)currentLCMSFeature.ScanLCEnd - 1 <= m_settings.LCGapSizeMax))
-							{
-								List<MSFeature> msFeatureListToAppend = lcmsFeature.MSFeatureList;
-								List<MSFeature> msFeatureListOfCurrentIMSMSFeature = currentLCMSFeature.MSFeatureList;
-
-								double massOfEnd = 0;
-								double massOfStart = 0;
-
-								if (lcmsFeature.ScanLCEnd < currentLCMSFeature.ScanLCStart)
-								{
-									massOfEnd = msFeatureListToAppend[msFeatureListToAppend.Count - 1].MassMonoisotopic;
-									massOfStart = msFeatureListOfCurrentIMSMSFeature[0].MassMonoisotopic;
-								}
-								else
-								{
-									massOfEnd = msFeatureListOfCurrentIMSMSFeature[msFeatureListOfCurrentIMSMSFeature.Count - 1].MassMonoisotopic;
-									massOfStart = msFeatureListToAppend[0].MassMonoisotopic;
-								}
-
-								// Check if the Mass is within the Mass Tolerance of the Append
-								double massToleranceOfStart = m_settings.MassMonoisotopicConstraint * massOfStart / 1000000;
-								double massDifferenceForAppend = Math.Abs(massOfStart - massOfEnd);
-
-								bool broke = false;
-
-								for (int j = 0; j <= m_settings.LCDaCorrectionMax; j++)
-								{
-									// Mass Difference must be within j Da +- X ppm
-									if (massDifferenceForAppend < (j + massToleranceOfStart) && massDifferenceForAppend > (j - massToleranceOfStart))
-									{
-										if (j > 0) currentLCMSFeature.DaError = true;
-										currentLCMSFeature.AddMSFeatureList(lcmsFeature.MSFeatureList);
-										featureToRemove = lcmsFeature;
-										lcmsFeature.Remove = true;
-										i--;
-										broke = true;
-										break;
-									}
-								}
-
-								if (broke) break;
-							}
-						}
-					}
-
-					if (featureToRemove != null)
-					{
-						lcmsFeatureListCopy.Remove(featureToRemove);
-					}
-				}
-			}
-
-			return lcmsFeatureListCopy;
-		}
-
-		private List<LCMSFeature> FillGaps(List<LCMSFeature> lcmsFeatureList)
-		{
-			List<LCMSFeature> lcmsFeatureListCopy = new List<LCMSFeature>();
-			lcmsFeatureListCopy.AddRange(lcmsFeatureList);
-
-			for (int i = 0; i < lcmsFeatureListCopy.Count; i++)
-			{
-				LCMSFeature currentLCMSFeature = lcmsFeatureListCopy[i];
-
-				// If the current LC-MS Feature has not been involved in a gap fill
-				if (!currentLCMSFeature.Remove)
-				{
-					LCMSFeature featureToRemove = null;
-
-					foreach (LCMSFeature lcmsFeature in lcmsFeatureList)
-					{
-						if (!m_settings.UseCharge || currentLCMSFeature.ChargeState == lcmsFeature.ChargeState)
-						{
-							bool daError = false;
-
-							// First check if the IMS-MS Feature can fill in at least 1 gap
-							for (int scanLC = currentLCMSFeature.ScanLCStart; scanLC <= currentLCMSFeature.ScanLCStart; scanLC++)
-							//foreach (uint gap in currentLCMSFeature.GapList)
-							{
-								if (scanLC >= lcmsFeature.ScanLCStart && scanLC <= lcmsFeature.ScanLCEnd)
-								//if (lcmsFeature.ScanLCList.Contains(gap))
-								{
-									double massOfScanLCBeforeGap = -100;
-									double massOfFiller = -50;
-
-									// Find the Mass of the MS Feature in the Current LC-MS Feature that is in the first LC Scan before the beginning of the Gap
-									currentLCMSFeature.MSFeatureList.Sort(new Comparison<MSFeature>(Feature.ScanLCComparison));
-									foreach (MSFeature msFeature in currentLCMSFeature.MSFeatureList)
-									{
-										if (msFeature.ScanLC <= scanLC)
-										{
-											massOfScanLCBeforeGap = msFeature.MassMonoisotopic;
-										}
-										else
-										{
-											break;
-										}
-									}
-
-									// Find the Mass of the MS Feature that is first MS Feature that will be used to fill the Gap
-									foreach (MSFeature msFeature in lcmsFeature.MSFeatureList)
-									{
-										if (msFeature.ScanLC >= scanLC)
-										{
-											massOfFiller = msFeature.MassMonoisotopic;
-											break;
-										}
-									}
-
-									// Check if the Mass for the Gap Filler is within the Mass Tolerance of the Gap
-									double massToleranceOfScanLCBeforeGap = m_settings.MassMonoisotopicConstraint * massOfScanLCBeforeGap / 1000000;
-									double massDifferenceForGap = Math.Abs(massOfScanLCBeforeGap - massOfFiller);
-
-									daError = false;
-
-									// Check the mass difference for each Da until we reach past the Max Da Correction
-									for (int j = 0; j <= m_settings.LCDaCorrectionMax; j++)
-									{
-										// Mass Difference must be within X Da +- 20 ppm
-										if (massDifferenceForGap < (j + massToleranceOfScanLCBeforeGap) && massDifferenceForGap > (j - massToleranceOfScanLCBeforeGap))
-										{
-											if (j > 0)
-											{
-												daError = true;
-											}
-
-											currentLCMSFeature.DaError = daError;
-											currentLCMSFeature.AddMSFeatureList(lcmsFeature.MSFeatureList);
-											featureToRemove = lcmsFeature;
-											lcmsFeature.Remove = true;
-
-											// After filling the gap, if the current IMS-MS Feature contains more gaps, process it again
-											//if (currentLCMSFeature.GapList.Count != 0)
-											//{
-											// Process again
-											i--;
-											//}
-
-											// Exit the gap filling process
-											break;
-										}
-									}
-								}
-							}
-						}
-					}
-
-					if (featureToRemove != null)
-					{
-						lcmsFeatureList.Remove(featureToRemove);
-					}
-				}
-			}
-
-			return lcmsFeatureList;
-		}
-
+		/// <summary>
+		/// Attempts to insert an MS Feature into an LC-MS Feature based on specific criteria.
+		/// </summary>
+		/// <param name="lcmsFeature">LC-MS Feature to be inserted into</param>
+		/// <param name="msFeature">MS Feature to be inserted</param>
+		/// <returns>True is inserted, false otherwise</returns>
 		private bool TryInsertMSFeature(LCMSFeature lcmsFeature, MSFeature msFeature)
 		{
 			List<UniqueMass> massList = lcmsFeature.MassList;
@@ -466,21 +298,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 		}
 
-		private void SearchAndInsert(List<LCMSFeature> lcmsFeatureList, LCMSFeature lcmsFeature, AnonymousComparer<LCMSFeature> comparer)
-		{
-			int index = lcmsFeatureList.BinarySearch(lcmsFeature, comparer);
-
-			if (index < 0)
-			{
-				lcmsFeatureList.Insert(~index, lcmsFeature);
-			}
-			else
-			{
-				lcmsFeatureList.Insert(index, lcmsFeature);
-			}
-		}
-
-		public List<LCMSFeature> RefineLCMSFeatures(List<LCMSFeature> lcmsFeatureList)
+		/// <summary>
+		/// Refines a List of LC-MS Feature based on the number of MS Features
+		/// </summary>
+		/// <param name="lcmsFeatureList">List of LC-MS Features to be refined</param>
+		/// <returns>Refined List of LC-MS Features</returns>
+		public List<LCMSFeature> RefineLCMSFeaturesByFeatureLength(List<LCMSFeature> lcmsFeatureList)
 		{
 			List<LCMSFeature> lcmsFeaturesToKeep = new List<LCMSFeature>();
 
@@ -502,6 +325,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return lcmsFeaturesToKeep;
 		}
 
+		/// <summary>
+		/// Calculates statistics of a List of LC-MS Features
+		/// </summary>
+		/// <param name="lcmsFeatureList">List of LC-MS Features</param>
+		/// <returns>List of LC-MS Features that have statistics calculated</returns>
 		public List<LCMSFeature> CalculateLCMSFeatureStatistics(List<LCMSFeature> lcmsFeatureList)
 		{
 			int lcmsFeatureIndex = 0;
@@ -569,6 +397,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			return lcmsFeatureList;
 		}
 
+		/// <summary>
+		/// Splits a List of LC-MS Features based on the LC-dimension gap size
+		/// </summary>
+		/// <param name="lcmsFeatureList">List of LC-MS Features to be split</param>
+		/// <returns>New List of LC-MS Features</returns>
 		public List<LCMSFeature> SplitLCMSFeaturesByGapSize(List<LCMSFeature> lcmsFeatureList)
 		{
 			List<LCMSFeature> newLCMSFeatureList = new List<LCMSFeature>();
@@ -764,12 +597,23 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		} 
 		*/
 
+		/// <summary>
+		/// Adds an MS Feature to an LC-MS Feature
+		/// </summary>
+		/// <param name="msFeature">MS Feature to be added</param>
+		/// <param name="lcmsFeature">LC-MS Feature to be added into</param>
 		private void AddMSFeatureToLCMSFeature(MSFeature msFeature, LCMSFeature lcmsFeature)
 		{
 			msFeature.UMC = lcmsFeature;
 			lcmsFeature.AddMSFeature(msFeature);
 		}
 
+		/// <summary>
+		/// Decides whether to split an LC-MS Feature or not.
+		/// </summary>
+		/// <param name="lcmsFeature">LC-MS Feature</param>
+		/// <param name="scanLC">The LC Scan to be used as the splitting point</param>
+		/// <returns>True if it should be split, false otherwise</returns>
 		private bool DecideToSplit(LCMSFeature lcmsFeature, int scanLC)
 		{
 			List<double> massMonoisotopicLeftList = new List<double>();
@@ -835,6 +679,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 		}
 
+		/// <summary>
+		/// Does the actual splitting of the LC-MS Feature
+		/// </summary>
+		/// <param name="lcmsFeature">LC-MS Feature to be split</param>
+		/// <param name="firstScanLCToKeep">The LC Scan used as the splitting point</param>
+		/// <returns>The newly created LC-MS Feature (the part that was split off)</returns>
 		private LCMSFeature SplitLCMSFeature(ref LCMSFeature lcmsFeature, int firstScanLCToKeep)
 		{
 			LCMSFeature newLCMSFeature = new LCMSFeature(0);

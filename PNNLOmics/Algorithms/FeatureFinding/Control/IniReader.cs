@@ -5,6 +5,9 @@ using System.IO;
 
 namespace PNNLOmics.Algorithms.FeatureFinding.Control
 {
+	/// <summary>
+	/// Class designed for reading an INI Settings file for the LCMSFeatureFinder application and storing its contents into a Setting object.
+	/// </summary>
 	public class IniReader
 	{
 		private String m_path;
@@ -12,6 +15,10 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 		[DllImport("kernel32")]
 		private static extern int GetPrivateProfileString(String section, String key, String def, StringBuilder retVal, int size, String filePath);
 
+		/// <summary>
+		/// Constructor that takes in an INI file path.
+		/// </summary>
+		/// <param name="path">File path of the INI file to be read</param>
 		public IniReader(String path)
 		{
 			if (File.Exists(path))
@@ -24,6 +31,10 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			}
 		}
 
+		/// <summary>
+		/// Creates a Settings object based on the INI file contents.
+		/// </summary>
+		/// <returns>Settings object</returns>
 		public Settings CreateSettings()
 		{
 			Settings settings = new Settings();
@@ -226,6 +237,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			return settings;
 		}
 
+		/// <summary>
+		/// Reads a value of an INI key
+		/// </summary>
+		/// <param name="Section">Section that contains the key</param>
+		/// <param name="Key">The key of the value to be read</param>
+		/// <returns>The value read as a String</returns>
 		private String IniReadValue(String Section, String Key)
 		{
 			StringBuilder stringBuilder = new StringBuilder(255);
