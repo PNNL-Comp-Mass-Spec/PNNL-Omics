@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using NUnit.Framework;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data;
@@ -19,11 +20,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests
             List<UMC> umcList = new List<UMC>();
             List<MassTag> massTagList = new List<MassTag>();
 
-
             loadOrbitrapData(ref umcList, ref massTagList);
 
             Assert.AreEqual(14182, umcList.Count);
             Assert.AreEqual(36549, massTagList.Count);
+
+            umcList = (from n in umcList where n.ChargeState==3 select n).ToList();
+            umcList = umcList.Take(10).ToList();
 
             FeatureMatcherParameters fmParams = new FeatureMatcherParameters();
             fmParams.ShouldCalculateHistogramFDR = false;
@@ -34,14 +37,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests
             PNNLOmics.Algorithms.FeatureMatcher.FeatureMatcher<UMC, MassTag> fm = new PNNLOmics.Algorithms.FeatureMatcher.FeatureMatcher<UMC, MassTag>(umcList, massTagList, fmParams);
             fm.MatchFeatures();
 
-
             Assert.AreNotEqual(0, fm.MatchList.Count);
+            Assert.AreEqual(11, fm.MatchList.Count);
 
-            //Assert.AreEqual(100, fm.MatchList.Count);
-
+            //bool useDriftDimension=false;
+            //bool usePrior = false;
             //STACInformation stac = new STACInformation(useDriftDimension);
+            //stac.PerformSTAC<UMC, MassTag>(fm.MatchList,new FeatureMatcherTolerances(), useDriftDimension, usePrior);
 
-            //stac.PerformSTAC<UMC,MassTag>(
         }
 
 
