@@ -32,9 +32,9 @@ namespace PNNLOmics.Data
             set { m_proteinList = value; }
         }
 
-        private int m_sequence;
+        private string m_sequence;
 
-        public int Sequence
+        public string Sequence
         {
             get { return m_sequence; }
             set { m_sequence = value; }

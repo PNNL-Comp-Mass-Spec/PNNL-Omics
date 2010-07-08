@@ -160,6 +160,7 @@
     <Compile Include="RawDataReader.cs" />
     <Compile Include="UIMFReader.cs" />
     <Compile Include="Utilities\Importers\ImporterBase.cs" />
+    <Compile Include="Utilities\Importers\MassTagTextFileImporter.cs" />
     <Compile Include="Utilities\Importers\UMCImporter.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />

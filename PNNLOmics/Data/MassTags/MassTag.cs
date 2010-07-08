@@ -79,10 +79,10 @@ namespace PNNLOmics.Data
             set { m_qualityScore = value; }
         }
 
-        //TODO: ??
-        private IList<Peptide> m_molecule;
+        //TODO: [gord] agree on this... 
+        private Molecule m_molecule;
 
-        public IList<Peptide> Molecule
+        public Molecule Molecule
         {
             get { return m_molecule; }
             set { m_molecule = value; }

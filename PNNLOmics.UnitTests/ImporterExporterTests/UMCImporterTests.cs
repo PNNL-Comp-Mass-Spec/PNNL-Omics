@@ -25,7 +25,11 @@ namespace PNNLOmics.UnitTests.ImporterExporterTests
             Assert.AreEqual(4831, testUMC.ScanLCEnd);
             Assert.AreEqual(4740, testUMC.ScanLC);
             Assert.AreEqual(0.2696, testUMC.NET);
+            Assert.AreEqual(0.2696, testUMC.NETAligned);
+
             Assert.AreEqual(400.23241, testUMC.MassMonoisotopic);
+            Assert.AreEqual(400.23241, testUMC.MassMonoisotopicAligned);
+
             Assert.AreEqual(0.000211, testUMC.MassMonoisotopicStandardDeviation);
             Assert.AreEqual(400.23214262033, testUMC.MassMonoisotopicMinimum);
             Assert.AreEqual(400.232691086785, testUMC.MassMonoisotopicMaximum);

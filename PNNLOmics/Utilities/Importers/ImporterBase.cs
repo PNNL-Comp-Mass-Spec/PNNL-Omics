@@ -27,7 +27,12 @@ namespace PNNLOmics.Utilities.Importers
         /// <returns></returns>
         protected string LookupData(List<string> row, string targetColumn)
         {
-            int columnIndex = GetColumnIndexForHeader(targetColumn, false);
+            return LookupData(row, targetColumn, true);
+        }
+
+        protected string LookupData(List<string> row, string targetColumn, bool ignoreCase)
+        {
+            int columnIndex = GetColumnIndexForHeader(targetColumn, ignoreCase);
             if (columnIndex == -1) return "null";
             return row[columnIndex];
         }

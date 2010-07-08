@@ -196,7 +196,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     // Store the current target feature locally.
                     U shiftedTag = shortTargetList[targetIndex];
                     // Add any shift to the mass tag.
-                    shiftedTag.MassMonoisotopicAligned += shiftAmount;
+                    shiftedTag.MassMonoisotopicAligned += shiftAmount;     //TODO: [gord] check this... this permanently updates the massTag; so if run a second time, shifted amount will be increased again
                     // Store the masses of both features locally.
                     double shiftedTagMass = shiftedTag.MassMonoisotopicAligned;
                     double observedMass = observedFeature.MassMonoisotopicAligned;
@@ -428,7 +428,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 
         #region Public functions
         /// <summary>
-        /// Function to call to re-calculate algorithm results.  Called within constructor by default.
+        /// Function to call to re-calculate algorithm results. [gord - following comment lies!] Called within constructor by default.
         /// </summary>
         public void MatchFeatures()
         {
