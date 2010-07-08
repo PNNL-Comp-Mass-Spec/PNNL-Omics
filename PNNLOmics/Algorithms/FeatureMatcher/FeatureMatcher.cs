@@ -184,6 +184,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             // Iterate through the list of observed features.
             while( observedIndex < shortObservedList.Count )
             {
+                if (observedIndex % 100 == 0) Console.WriteLine("Working on UMC index = " + observedIndex);
+
+
                 // Store the current observed feature locally.
                 T observedFeature = shortObservedList[observedIndex];
                 // Flag variable that gets set to false when the observed mass is greater than the current mass tag by more than the tolerance.

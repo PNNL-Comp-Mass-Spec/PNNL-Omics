@@ -22,8 +22,8 @@ namespace PNNLOmics.UnitTests
         public static string Bruker12TStandardFile = "";
 
 
-        public static string OrbitrapUMCFile1 = "..\\..\\TestFiles\\QC_Shew_08_04-pt5-2_11Jan09_Sphinx_08-11-18_UMCs.txt";
-        public static string OrbitrapMassTagFile = "..\\..\\TestFiles\\STAC_related\\QC_Shew_MTs.txt";
+        public static string OrbitrapUMCFile1 = "..\\..\\..\\TestFiles\\QC_Shew_08_04-pt5-2_11Jan09_Sphinx_08-11-18_UMCs.txt";
+        public static string OrbitrapMassTagFile = "..\\..\\..\\TestFiles\\STAC_related\\QC_Shew_MTs.txt";
 
 
     }

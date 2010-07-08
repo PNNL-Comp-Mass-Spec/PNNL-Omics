@@ -26,6 +26,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests
             Assert.AreEqual(36549, massTagList.Count);
 
             FeatureMatcherParameters fmParams = new FeatureMatcherParameters();
+            fmParams.ShouldCalculateHistogramFDR = false;
+            fmParams.ShouldCalculateShiftFDR = false;
+            fmParams.ShouldCalculateSLiC = false;
+            fmParams.ShouldCalculateSTAC = false;
+
             PNNLOmics.Algorithms.FeatureMatcher.FeatureMatcher<UMC, MassTag> fm = new PNNLOmics.Algorithms.FeatureMatcher.FeatureMatcher<UMC, MassTag>(umcList, massTagList, fmParams);
             fm.MatchFeatures();
 

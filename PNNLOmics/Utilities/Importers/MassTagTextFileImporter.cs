@@ -78,7 +78,9 @@ namespace PNNLOmics.Utilities.Importers
             MassTag mt = new MassTag();
             mt.ID = ParseIntField(LookupData(processedLineData, "Mass_Tag_ID"));
             mt.MassMonoisotopic = ParseDoubleField(LookupData(processedLineData, "Monoisotopic_Mass"));
-            
+            mt.MassMonoisotopicAligned = mt.MassMonoisotopic;
+
+
             //TODO: determine which NET to import into...  NET or NETAverage or both 
             mt.NET = ParseDoubleField(LookupData(processedLineData, "NET"));
             mt.NETAverage = ParseDoubleField(LookupData(processedLineData, "NET"));
