@@ -13,6 +13,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         where U : Feature, new()
     {
         #region Members
+        private bool m_areDifferencesSet;
+
         private FeatureMatcherParameters m_matchParameters;
 
         private List<FeatureMatch<T, U>> m_matchList;
@@ -121,6 +123,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             m_observedFeatureList = observedFeatureList;
             m_targetFeatureList = targetFeatureList;
             m_matchParameters = matchParameters;
+            m_areDifferencesSet = false;
         }
         #endregion
 
@@ -199,9 +202,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     // Store the current target feature locally.
                     U shiftedTag = shortTargetList[targetIndex];
                     // Add any shift to the mass tag.
-                    shiftedTag.MassMonoisotopicAligned += shiftAmount;     //TODO: [gord] check this... this permanently updates the massTag; so if run a second time, shifted amount will be increased again
+                    double shiftedTagMass = shiftedTag.MassMonoisotopicAligned + shiftAmount;
                     // Store the masses of both features locally.
-                    double shiftedTagMass = shiftedTag.MassMonoisotopicAligned;
                     double observedMass = observedFeature.MassMonoisotopicAligned;
                     // Check to see that the features are within the mass tolearance of one another.
                     if (MathUtilities.MassDifferenceInPPM(shiftedTagMass, observedMass) <= massTolerancePPM)
