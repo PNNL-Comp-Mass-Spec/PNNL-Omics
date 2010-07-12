@@ -37,6 +37,10 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public virtual float DriftTime {get;set;}
         /// <summary>
+        /// The elution time of the feature.
+        /// </summary>
+        public double ElutionTime { get; set; }
+        /// <summary>
         /// The monoisotopic mass of the feature.
         /// </summary>
         public double MassMonoisotopic { get; set; }
