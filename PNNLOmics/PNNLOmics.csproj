@@ -156,6 +156,7 @@
     <Compile Include="PeptideIon.cs" />
     <Compile Include="RawDataReader.cs" />
     <Compile Include="UIMFReader.cs" />
+    <Compile Include="Utilities\ConsoleUtil\CommandLineUtil.cs" />
     <Compile Include="Utilities\Importers\ImporterBase.cs" />
     <Compile Include="Utilities\Importers\MassTagTextFileImporter.cs" />
     <Compile Include="Utilities\Importers\UMCImporter.cs" />
