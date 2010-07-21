@@ -42,18 +42,23 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		public List<IMSMSFeature> ProcessMSFeatures(List<MSFeature> msFeatureList)
 		{
 			MSFeature currentMSFeature = null;
+
+            // TODO: Kevin - Add description of the lists
 			List<IMSMSFeature> openIMSMSFeatureList = new List<IMSMSFeature>();
 			List<IMSMSFeature> newIMSMSFeatureList = new List<IMSMSFeature>();
 			List<IMSMSFeature> completeIMSMSFeatureList = new List<IMSMSFeature>();
 			List<IMSMSFeature> imsmsFeatureListForLCScan = new List<IMSMSFeature>();
-			int currentScanLC = 0;
+			
+            int currentScanLC = 0;
 			int currentScanIMS = 0;
-			int imsDaCorrectionMax = m_settings.IMSDaCorrectionMax;
+			int imsDaltonCorrectionMax = m_settings.IMSDaltonCorrectionMax;
 			double massToleranceBase = m_settings.MassMonoisotopicConstraint;
-			AnonymousComparer<IMSMSFeature> comparer = new AnonymousComparer<IMSMSFeature>(new Comparison<IMSMSFeature>(UMC.MassMinComparison));
 
 			// Sort MS Features by LC Scan, then IMS Scan, then Mass
+            // TODO: Kevin - Add description of why algorithm requires it
 			msFeatureList.Sort(new Comparison<MSFeature>(Feature.ScanLCAndDriftTimeAndMassComparison));
+
+            // TODO: Kevin - Add big code block explaining entire process
 
 			// Iterate over all MS Features
 			int i = 0;
@@ -67,13 +72,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				// Keeps track of how many MS Features we process for the current IMS Scan
 				int msFeatureCount = 0;
 
+                // Iterate over all MS Features until we reach a new LC Scan
 				for (int j = i; j < msFeatureList.Count; j++)
 				{
-					// If this is not the first iteration, get the current MS Feature
-					if (j != i)
-					{
-						currentMSFeature = msFeatureList[j];
-					}
+					// Get the current MS Feature
+					currentMSFeature = msFeatureList[j];
 
 					// Keep going as long as we are still in the same IMS Scan
 					if (currentMSFeature.ScanIMS == currentScanIMS)
@@ -83,7 +86,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 						double massToleranceHigh = currentMSFeature.MassMonoisotopic + massTolerance;
 
 						// Keeps track of if the Current MS Feature finds an IMS-MS Feature to live in
-						Boolean found = false;
+						bool found = false;
 
 						var query = from IMSMSFeature imsmsFeature in openIMSMSFeatureList
 									where imsmsFeature.ChargeState == currentMSFeature.ChargeState
@@ -93,6 +96,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 									orderby Math.Abs(imsmsFeature.MassOfScanIMSMax - currentMSFeature.MassMonoisotopic)
 									select imsmsFeature;
 
+                        // TODO: Kevin - check count and combine
 						foreach (IMSMSFeature imsmsFeature in query)
 						{
 							// Add the MS Feature to the IMS-MS Feature
@@ -127,6 +131,8 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					msFeatureCount++;
 				}
 
+                // STOPPED CODE REVIEW HERE
+
 				// If we get to a new LC Scan, then Close all IMS-MS Features
 				if (currentMSFeature.ScanLC != currentScanLC)
 				{
@@ -134,7 +140,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					newIMSMSFeatureList.Clear();
 
 					// This is where we fill in IMS gaps
-					if (m_settings.IMSDaCorrectionMax > 0)
+					if (m_settings.IMSDaltonCorrectionMax > 0)
 					{
 						imsmsFeatureListForLCScan = AppendIMSMSFeatures(imsmsFeatureListForLCScan);
 						imsmsFeatureListForLCScan = FillGaps(imsmsFeatureListForLCScan);
@@ -164,7 +170,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 
 			// Since the LC Scan technically will not change when we finish, we need to process the Gap Filler for the last LC Scan
-			if (m_settings.IMSDaCorrectionMax > 0)
+			if (m_settings.IMSDaltonCorrectionMax > 0)
 			{
 				imsmsFeatureListForLCScan = AppendIMSMSFeatures(imsmsFeatureListForLCScan);
 				imsmsFeatureListForLCScan = FillGaps(imsmsFeatureListForLCScan);
@@ -420,7 +426,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 
 			// This is where we fill in LC gaps
-			if (m_settings.LCDaCorrectionMax > 0)
+			if (m_settings.LCDaltonCorrectionMax > 0)
 			{
 				completeLCIMSMSFeatureList = AppendLCIMSMSFeatures(completeLCIMSMSFeatureList);
 				completeLCIMSMSFeatureList = FillGaps(completeLCIMSMSFeatureList);
@@ -503,7 +509,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 								bool broke = false;
 
 								// Check the mass difference for each Da until we reach past the Max Da Correction
-								for (int j = 1; j <= m_settings.IMSDaCorrectionMax; j++)
+								for (int j = 1; j <= m_settings.IMSDaltonCorrectionMax; j++)
 								{
 									// Mass Difference must be within j Da +- X ppm
 									if (massDifferenceForGap < (j + massToleranceOfScanIMSBeforeGap) && massDifferenceForGap > (j - massToleranceOfScanIMSBeforeGap))
@@ -649,7 +655,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 												bool broke = false;
 
 												// Check the mass difference for each Da until we reach past the Max Da Correction
-												for (int j = 1; j <= m_settings.LCDaCorrectionMax; j++)
+												for (int j = 1; j <= m_settings.LCDaltonCorrectionMax; j++)
 												{
 													// Mass Difference must be within j Da +- X ppm
 													if (massDifferenceForGap < (j + massToleranceOfScanLCBeforeGap) && massDifferenceForGap > (j - massToleranceOfScanLCBeforeGap))
@@ -740,7 +746,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					double massTolerance = m_settings.MassMonoisotopicConstraint * currentIMSMSFeature.MassOfMaxAbundance / 1000000 * 1.25;
 
-					for (int j = 1; j <= m_settings.IMSDaCorrectionMax; j++)
+					for (int j = 1; j <= m_settings.IMSDaltonCorrectionMax; j++)
 					{
 						var appendQuery = from IMSMSFeature imsmsFeatureToAppend in imsmsFeatureList
 										  where imsmsFeatureToAppend.ScanLC == currentIMSMSFeature.ScanLC
@@ -798,7 +804,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					double massTolerance = m_settings.MassMonoisotopicConstraint * currentLCIMSMSFeature.MassOfMaxAbundance / 1000000 * 1.25;
 
-					for (int j = 1; j <= m_settings.LCDaCorrectionMax; j++)
+					for (int j = 1; j <= m_settings.LCDaltonCorrectionMax; j++)
 					{
 						var appendQuery = from LCIMSMSFeature lcimsmsFeatureToAppend in lcimsmsFeatureListCopy
 										  where lcimsmsFeatureToAppend.ChargeState == currentLCIMSMSFeature.ChargeState

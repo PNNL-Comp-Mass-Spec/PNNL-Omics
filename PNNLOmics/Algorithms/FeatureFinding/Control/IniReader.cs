@@ -169,11 +169,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 
 				if (readValue < 0)
 				{
-					settings.LCDaCorrectionMax = 0;
+					settings.LCDaltonCorrectionMax = 0;
 				}
 				else
 				{
-					settings.LCDaCorrectionMax = readValue;
+					settings.LCDaltonCorrectionMax = readValue;
 				}
 			}
 
@@ -184,11 +184,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 
 				if (readValue < 0)
 				{
-					settings.IMSDaCorrectionMax = 0;
+					settings.IMSDaltonCorrectionMax = 0;
 				}
 				else
 				{
-					settings.IMSDaCorrectionMax = readValue;
+					settings.IMSDaltonCorrectionMax = readValue;
 				}
 			}
 

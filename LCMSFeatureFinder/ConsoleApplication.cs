@@ -104,7 +104,7 @@ namespace LCMSFeatureFinder
 			lcmsFeatureList = lcmsFeatureUtil.RefineLCMSFeaturesByFeatureLength(lcmsFeatureList);
 			logger.Log("Total Number of Filtered UMCs = " + lcmsFeatureList.Count);
 
-			if (settings.LCDaCorrectionMax > 0)
+			if (settings.LCDaltonCorrectionMax > 0)
 			{
 				List<int> corrections = new List<int>();
 				int featuresWithDaErrors = 0;
@@ -189,7 +189,7 @@ namespace LCMSFeatureFinder
 			//imsmsFeatureList = imsmsFeatureUtil.GetIMSMSFeaturesProfileStatistics(imsmsFeatureList);
 			//FeatureUtil.CheckMassAbundanceRelationship(imsmsFeatureList, settings);
 
-			if (settings.IMSDaCorrectionMax > 0)
+			if (settings.IMSDaltonCorrectionMax > 0)
 			{
 				List<int> corrections = new List<int>();
 				int featuresWithDaErrors = 0;
@@ -244,7 +244,7 @@ namespace LCMSFeatureFinder
 			List<LCIMSMSFeature> lcimsmsFeatureList = imsmsFeatureUtil.ProcessIMSMSFeatures(imsmsFeatureList);
 			logger.Log("Total Number of Unfiltered LC-IMS-MS Features = " + lcimsmsFeatureList.Count);
 
-			if (settings.LCDaCorrectionMax > 0)
+			if (settings.LCDaltonCorrectionMax > 0)
 			{
 				List<int> corrections = new List<int>();
 				int featuresWithDaErrors = 0;

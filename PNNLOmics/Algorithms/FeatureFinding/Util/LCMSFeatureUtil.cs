@@ -93,7 +93,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			int currentScanLC = 0;
 			double massToleranceBase = m_settings.MassMonoisotopicConstraint;
 			AnonymousComparer<LCMSFeature> comparer = new AnonymousComparer<LCMSFeature>(new Comparison<LCMSFeature>(UMC.MassMaxComparison));
-			int lcDaCorrectionMax = m_settings.LCDaCorrectionMax;
+			int lcDaCorrectionMax = m_settings.LCDaltonCorrectionMax;
 
 			// Sort MS Features by LC Scan, then Mass
 			msFeatureList.Sort(new Comparison<MSFeature>(Feature.ScanLCAndMassComparison));

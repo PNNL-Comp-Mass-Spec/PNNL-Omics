@@ -19,8 +19,8 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 		public short LCGapSizeMax { get; set; }
 		public short IMSGapSizeMax { get; set; }
 
-		public int LCDaCorrectionMax { get; set; }
-		public int IMSDaCorrectionMax { get; set; }
+		public int LCDaltonCorrectionMax { get; set; }
+		public int IMSDaltonCorrectionMax { get; set; }
 		public int ScanIMSMin { get; set; }
 		public int ScanIMSMax { get; set; }
 		public int ScanLCMin { get; set; }
@@ -74,7 +74,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			this.IMSGapSizeMax = 5;
 			this.MinimumDifferenceInMedianPpmMassToSplit = 4;
 			this.Split = true;
-			this.LCDaCorrectionMax = 3;
+			this.LCDaltonCorrectionMax = 3;
 			this.SmoothingStDev = 0.35;
 			this.PeakWidthMinimum = 3;
 			this.UseConformationDetection = true;
