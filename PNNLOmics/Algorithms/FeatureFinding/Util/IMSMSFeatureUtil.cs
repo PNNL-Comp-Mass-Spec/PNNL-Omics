@@ -41,24 +41,64 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		/// <returns>List of IMS-MS Features</returns>
 		public List<IMSMSFeature> ProcessMSFeatures(List<MSFeature> msFeatureList)
 		{
-			MSFeature currentMSFeature = null;
-
-            // TODO: Kevin - Add description of the lists
+			/*
+			 * These lists will be used to hold different sets of IMS-MS Features based on the current state of the Feature:
+			 * 
+			 *		openIMSMSFeatureList		- List of current IMS-MS Features that are still open
+			 *										* An open IMS-MS Feature is a Feature that exists in the current LC Scan that MS Features
+			 *										* can still be added to.
+			 *		newIMSMSFeatureList			- List of new IMS-MS Features that are not yet included in the openIMSIMSFeatureList
+			 *										* The List of new IMS-MS Features will be dumped into the openIMSMSFeatureList after processing
+			 *										* for an entire IMS Scan is finished.
+			 *		imsmsFeatureListForLCScan	- List of all IMS-MS Features that exist in the current LC Scan
+			 *										* The IMS-MS Features in imsmsFeatureListForLCScan are dumped into completeIMSMSFeatureList 
+			 *										* after processing for an entire LC Scan is finished.
+			 *		completeIMSMSFeatureList	- List of all IMS-MS Features that have been created
+			 *		
+			 */
 			List<IMSMSFeature> openIMSMSFeatureList = new List<IMSMSFeature>();
 			List<IMSMSFeature> newIMSMSFeatureList = new List<IMSMSFeature>();
-			List<IMSMSFeature> completeIMSMSFeatureList = new List<IMSMSFeature>();
 			List<IMSMSFeature> imsmsFeatureListForLCScan = new List<IMSMSFeature>();
-			
+			List<IMSMSFeature> completeIMSMSFeatureList = new List<IMSMSFeature>();
+
+			MSFeature currentMSFeature = null;
             int currentScanLC = 0;
 			int currentScanIMS = 0;
 			int imsDaltonCorrectionMax = m_settings.IMSDaltonCorrectionMax;
 			double massToleranceBase = m_settings.MassMonoisotopicConstraint;
 
-			// Sort MS Features by LC Scan, then IMS Scan, then Mass
-            // TODO: Kevin - Add description of why algorithm requires it
-			msFeatureList.Sort(new Comparison<MSFeature>(Feature.ScanLCAndDriftTimeAndMassComparison));
+			/*
+			 * Steps for clustering MS Features into IMS-MS Features:
+			 * 
+			 *	- Grab the first MS Feature and store both the LC Scan and IMS Scan numbers of the MS Feature (currentScanIMS and currentScanLC)
+			 *	- Iterate over all MS Features
+			 *		- For all MS Features (including the first MS Feature)
+			 *			- If this MS Feature has the same IMS Scan number as the stored IMS Scan number (currentScanIMS)
+			 *				- Search the Open IMS-MS Features for a valid match (based on mass and charge)
+			 *				- If 1 or more valid matches are found
+			 *					- Add the MS Feature to the "closest" (based on mass) IMS-MS Feature
+			 *				- If no valid matches are found
+			 *					- Create a new IMS-MS Feature
+			 *					- Add the new IMS-MS Feature to the New IMS-MS Features List and the IMS-MS Feature List For LC Scan (imsmsFeatureListForLCScan)
+			 *			- If this MS Feature has a different IMS Scan number than the stored IMS Scan number (currentScanIMS)
+			 *				- If this MS Feature has the same LC Scan number
+			 *					- Refine the Open IMS-MS Feature List to only contain IMS-MS Features that will not have too big of an IMS gap 
+			 *					  now that we have reached the next IMS Scan number
+			 *					- Update currentScanIMS to reflect the new IMS Scan Number 
+			 *				- If this MS Feature has a different LC Scan number than the stored LC Scan number (currentScanLC)
+			 *					- Clear out the Open IMS-MS Feature List
+			 *					- Run Dalton correction on all of the IMS-MS Features in imsmsFeatureListForLCScan
+			 *					- Add these Dalton-corrected IMS-MS Feature to the Complete List of IMS-MS Features
+			 *					- Clear out the imsmsFeatureListForLCScan
+			 *					- Update the currentScanIMS to reflect the new IMS Scan Number
+			 *					- Update the currentScanLC to reflect the new LC Scan Number
+			 *					- Start iterating over the MS Features agin but re-process the current MS Feature
+			 *						- It is important to remember that the current MS Feature was not placed into an IMS-MS feature because we
+			 *						  we reached a new LC Scan
+			 */
 
-            // TODO: Kevin - Add big code block explaining entire process
+			// Sort MS Features by LC Scan, then IMS Scan, then Mass
+			msFeatureList.Sort(new Comparison<MSFeature>(Feature.ScanLCAndDriftTimeAndMassComparison));
 
 			// Iterate over all MS Features
 			int i = 0;
@@ -72,7 +112,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				// Keeps track of how many MS Features we process for the current IMS Scan
 				int msFeatureCount = 0;
 
-                // Iterate over all MS Features until we reach a new LC Scan
+                // Iterate over all MS Features until we reach a new IMS Scan
 				for (int j = i; j < msFeatureList.Count; j++)
 				{
 					// Get the current MS Feature
@@ -85,9 +125,6 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 						double massTolerance = massToleranceBase * currentMSFeature.MassMonoisotopic / 1000000;
 						double massToleranceHigh = currentMSFeature.MassMonoisotopic + massTolerance;
 
-						// Keeps track of if the Current MS Feature finds an IMS-MS Feature to live in
-						bool found = false;
-
 						var query = from IMSMSFeature imsmsFeature in openIMSMSFeatureList
 									where imsmsFeature.ChargeState == currentMSFeature.ChargeState
 											&& imsmsFeature.MassOfScanIMSMax >= currentMSFeature.MassMonoisotopic - massTolerance
@@ -96,20 +133,15 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 									orderby Math.Abs(imsmsFeature.MassOfScanIMSMax - currentMSFeature.MassMonoisotopic)
 									select imsmsFeature;
 
-                        // TODO: Kevin - check count and combine
-						foreach (IMSMSFeature imsmsFeature in query)
+						if (query.Count() > 0)
 						{
-							// Add the MS Feature to the IMS-MS Feature
+							// Use the "closest" IMS-MS Feature that was returned by the query
+							IMSMSFeature imsmsFeature = query.First();
 							imsmsFeature.AddMSFeature(currentMSFeature);
-
-							// Set that we found an IMS-MS Feature and break out of the loop
-							found = true;
-							break;
 						}
-
-						// If we did not find an IMS-MS Feature, Create a new IMS-MS Feature
-						if (!found)
+						else
 						{
+							// If we did not find an IMS-MS Feature, Create a new IMS-MS Feature
 							IMSMSFeature newIMSMSFeature = new IMSMSFeature();
 							newIMSMSFeature.AddMSFeature(currentMSFeature);
 							newIMSMSFeature.ScanLC = currentMSFeature.ScanLC;
@@ -131,7 +163,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					msFeatureCount++;
 				}
 
-                // STOPPED CODE REVIEW HERE
+                // TODO: Kevin - STOPPED CODE REVIEW HERE
 
 				// If we get to a new LC Scan, then Close all IMS-MS Features
 				if (currentMSFeature.ScanLC != currentScanLC)
@@ -139,7 +171,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					openIMSMSFeatureList.Clear();
 					newIMSMSFeatureList.Clear();
 
-					// This is where we fill in IMS gaps
+					// Dalton Correction
 					if (m_settings.IMSDaltonCorrectionMax > 0)
 					{
 						imsmsFeatureListForLCScan = AppendIMSMSFeatures(imsmsFeatureListForLCScan);
@@ -155,7 +187,6 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				else
 				{
 					// Allow for IMS Gap
-					List<IMSMSFeature> imsmsFeaturesToLeaveOpen = new List<IMSMSFeature>();
 					var query = from IMSMSFeature imsmsFeature in openIMSMSFeatureList
 								where (int)currentScanIMS - (int)imsmsFeature.ScanIMSEnd - 1 <= m_settings.IMSGapSizeMax
 								select imsmsFeature;
