@@ -232,7 +232,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 
 			// Calculate the PPM tolerance
-			double massTolerance = m_settings.MassAverageConstraint * msFeature.MassMonoisotopic / 1000000;
+			double massTolerance = m_settings.MassMonoisotopicConstraint * msFeature.MassMonoisotopic / 1000000;
 
 			// If this is the first Mass going into this bin
 			if (uniqueMass.MSFeatureList.Count == 0 && (lcmsFeature.Suspicious || msFeature.Suspicious))
