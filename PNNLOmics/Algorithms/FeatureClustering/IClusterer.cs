@@ -1,7 +1,17 @@
-﻿using System;
+﻿/*////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ * 
+ * Name:    IClusterer Interface 
+ * File:    IClsuterer.cs
+ * Author:  Brian LaMarche 
+ * Purpose: Interface for clustering UMC data.
+ * Date:    5-19-2010
+ * Revisions:
+ *          5-19-2010 - BLL - Created interface.
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+using System;
 using System.Collections.Generic;
 
-//TODO: Brian add file header...
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -15,9 +25,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Clusters the data objects provided in the list.
         /// </summary>
-        /// <param name="data">Data to cluster.</param>        
-        //TODO: Make this return a list of new clusters, update method comment.
-        //TODO: Make two methods, overloaded, make one that doesnt take a list of clusters.
-        void Cluster(List<T> data, List<U> clusters);
+        /// <param name="data">Data to cluster.</param>                
+        List<U> Cluster(List<T> data, List<U> clusters);
+        List<U> Cluster(List<T> data);
     }
 }

@@ -21,14 +21,29 @@ namespace PNNLOmics.Data.Features
         {
             m_umcList = new List<UMC>();
         }
-
+        /// <summary>
+        /// Copy constructor. 
+        /// </summary>
+        /// <param name="cluster"></param>
         public UMCCluster(UMCCluster cluster)
-        {
-            List<UMC> umcs = new List<UMC>();
+        {            
+            List<UMC> umcs  = new List<UMC>();
             umcs.AddRange(cluster.UMCList);
-            m_umcList      = umcs;
-
-            //TODO: Brian finish copy constructor
+            m_umcList       = umcs;
+            
+            Abundance       = cluster.Abundance;
+            ChargeState     = cluster.ChargeState;
+            Corrected       = cluster.Corrected;
+            DriftTime       = cluster.DriftTime;
+            ElutionTime     = cluster.ElutionTime;
+            GroupID         = cluster.GroupID;
+            ID              = cluster.ID;
+            MZ              = cluster.MZ;
+            MZCorrected     = cluster.MZCorrected;
+            NETAligned      = cluster.NET; 
+            ScanLC          = cluster.ScanLC;
+            ScanLCAligned   = cluster.ScanLCAligned; 
+            Suspicious      = cluster.Suspicious;            
         }
 
         #region Properties
@@ -59,5 +74,6 @@ namespace PNNLOmics.Data.Features
                 m_umcList.Clear();
         }
         #endregion
+
     }
 }

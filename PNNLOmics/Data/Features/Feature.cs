@@ -35,6 +35,8 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// The drift time of the feature.
         /// </summary>
+        //TODO: Should we make this a double
+        //TODO: Why is this a virtual property.
         public virtual float DriftTime {get;set;}
         /// <summary>
         /// The elution time of the feature.
@@ -238,8 +240,8 @@ namespace PNNLOmics.Data.Features
 		};
 		#endregion
 
-		#region Public Utility Functions
-		/// <summary>
+        #region Public Utility Functions
+        /// <summary>
         /// Computes the mass difference in parts per million (ppm) for two given masses.
         /// </summary>
         /// <param name="massX">Mass of feature X.</param>
@@ -247,8 +249,18 @@ namespace PNNLOmics.Data.Features
         /// <returns>Mass difference in parts per million (ppm).</returns>
         public static double ComputeMassPPMDifference(double massX, double massY)
         {
-            return (massX - massY) * 1e6/ massX;
-		}
+            return (massX - massY) * 1e6 / massX;
+        }
+        /// <summary>
+        /// Computes the mass difference in parts per million (ppm) for two given masses.
+        /// </summary>
+        /// <param name="massX">Mass of feature X.</param>
+        /// <param name="massY">Mass of feature Y.</param>
+        /// <returns>Mass difference in parts per million (ppm).</returns>
+        public static double ComputeDaDifferenceFromPPM(double massX, double ppm)
+        {
+            return massX - (ppm * 1e-6 * massX);
+        }
 		#endregion
 	}
 }

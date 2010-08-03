@@ -173,14 +173,15 @@
     <Compile Include="Constants\ConstantsUtilities\OtherMoleculeUtilites\OtherMoleculeConstantsTable.cs" />
     <Compile Include="Constants\ConstantsUtilities\PhysicalConstantsUtilities\PhysicalConstant.cs" />
     <Compile Include="Constants\ConstantsUtilities\PhysicalConstantsUtilities\PhysicalConstantsTable.cs" />
+    <Compile Include="Data\PairwiseUMCDistance.cs" />
     <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\Alignment\SimilarityScore.cs" />
     <Compile Include="Algorithms\ConformationDetection\Data\CurveFit.cs" />
     <Compile Include="Algorithms\ConformationDetection\Data\Pair.cs" />
     <Compile Include="Algorithms\ConformationDetection\Util\MathUtil.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />
-    <Compile Include="Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererParameters.cs" />
-    <Compile Include="Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererTolerances.cs" />
+    <Compile Include="Algorithms\FeatureClustering\UMCSingleLinkageClustererParameters.cs" />
+    <Compile Include="Algorithms\UMCTolerances.cs" />
     <Compile Include="Algorithms\FeatureClustering\IClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCSingleLinkageClusterer.cs" />
     <Compile Include="Algorithms\FeatureFinding\CodeExamples\BinarySearchExample.cs" />

@@ -29,11 +29,11 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="PNNLOmics.Algorithms.FeatureClustering.Data.UMCSingleLinkageClustererTolerances">
+  <Class Name="PNNLOmics.Algorithms.FeatureClustering.Data.UMCTolerances">
     <Position X="14" Y="10.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QBAAAAAAAgAACAAAAAAAAAAAAAAAAAAAAAAAIADAAAA=</HashCode>
-      <FileName>Algorithms\FeatureClustering\Data\UMCSingleLinkageClustererTolerances.cs</FileName>
+      <FileName>Algorithms\FeatureClustering\Data\UMCTolerances.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PNNLOmics.Algorithms.FeatureClustering.Data.UMCSingleLinkageClustererParameters">

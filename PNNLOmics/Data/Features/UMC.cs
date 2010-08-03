@@ -101,12 +101,6 @@ namespace PNNLOmics.Data.Features
 
         //TODO: figure out whether or not to include these additional properties:
         public double FitScoreAverage { get; set; }
-
-
-
-
-
-
 		#endregion
 
 		#region BaseData Members
@@ -153,69 +147,111 @@ namespace PNNLOmics.Data.Features
 		/// </summary>
 		public static Comparison<UMC> ScanLCStartComparison = delegate(UMC x, UMC y)
 		{
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
+
 			return x.ScanLCStart.CompareTo(y.ScanLCStart);
 		};
 		/// <summary>
 		/// Compares the last LC Scan of two UMCS
 		/// </summary>
 		public static Comparison<UMC> ScanLCEndComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			return x.ScanLCEnd.CompareTo(y.ScanLCEnd);
 		};
 		/// <summary>
 		/// Compares the summed abundance of two UMCS
 		/// </summary>
 		public static Comparison<UMC> AbundanceSumComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			return x.AbundanceSum.CompareTo(y.AbundanceSum);
 		};
 		/// <summary>
 		/// Compares the maximum abundance of two UMCS
 		/// </summary>
 		public static Comparison<UMC> AbundanceMaximumComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			return x.AbundanceMaximum.CompareTo(y.AbundanceMaximum);
 		};
 		/// <summary>
 		/// Compares the maximum charge state of two UMCS
 		/// </summary>
 		public static Comparison<UMC> ChargeMaximumComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			return x.ChargeMaximum.CompareTo(y.ChargeMaximum);
 		};
 		/// <summary>
 		/// Compares the LC Scan that contains the most abundant MS Feature of two UMCS
 		/// </summary>
 		public static Comparison<UMC> ScanLCOfMaxAbundanceComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			return x.ScanLCOfMaxAbundance.CompareTo(y.ScanLCOfMaxAbundance);
 		};
 		/// <summary>
 		/// Compares the maximum monoisotopic mass of two UMCS
 		/// </summary>
 		public static Comparison<UMC> MassMaxComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			return x.MassMonoisotopicMaximum.CompareTo(y.MassMonoisotopicMaximum);
 		};
 		/// <summary>
 		/// Compares the minimum monoisotopic mass of two UMCS
 		/// </summary>
 		public static Comparison<UMC> MassMinComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			return x.MassMonoisotopicMinimum.CompareTo(y.MassMonoisotopicMinimum);
 		};
 		/// <summary>
 		/// Compares the monoisotopic mass of the most abundant MS Features associated with two UMCS
 		/// </summary>
 		public static Comparison<UMC> MassofMaxAbundanceComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			return x.MassOfMaxAbundance.CompareTo(y.MassOfMaxAbundance);
 		};
 		/// <summary>
 		/// Compares the first LC Scan then the monoisotopic mass of two UMCS
 		/// </summary>
 		public static Comparison<UMC> ScanLCStartAndMassComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
+
 			if (x.ScanLCStart != y.ScanLCStart)
 			{
 				return x.ScanLCStart.CompareTo(y.ScanLCStart);
@@ -229,7 +265,11 @@ namespace PNNLOmics.Data.Features
 		/// Compares the representative LC Scan and the median monoisotopic mass of two UMCS
 		/// </summary>
 		public static Comparison<UMC> ScanLCAndMedianMassComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			if (x.ScanLC != y.ScanLC)
 			{
 				return x.ScanLC.CompareTo(y.ScanLC);
@@ -243,7 +283,11 @@ namespace PNNLOmics.Data.Features
 		/// Compares the representative LC Scan and the monoisotopic mass of the most abundant MS Feature of two UMCS
 		/// </summary>
 		public static Comparison<UMC> ScanLCAndMassOfMaxAbundanceComparison = delegate(UMC x, UMC y)
-		{
+        {
+            if (x == null || y == null)
+            {
+                throw new NullReferenceException("The UMC was null for the comparison.");
+            }
 			if (x.ScanLC != y.ScanLC)
 			{
 				return x.ScanLC.CompareTo(y.ScanLC);
@@ -254,5 +298,19 @@ namespace PNNLOmics.Data.Features
 			}
 		};
 		#endregion
+
+        /// <summary>
+        /// Returns a string representation of this object based on its aligned
+        /// data values and feature ID.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("ID: {0} Mono-Mass: {1} NET {2} Drift {3}",
+                                    ID, 
+                                    MassMonoisotopicAligned,
+                                    NETAligned, 
+                                    DriftTime);
+        }
 	}
 }
