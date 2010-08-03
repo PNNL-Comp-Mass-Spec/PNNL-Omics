@@ -54,6 +54,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -67,6 +69,7 @@
     <Compile Include="AlgorithmTests\FeatureClustering\UMCSingleLinkageClusteringTests.cs" />
     <Compile Include="AlgorithmTests\STACTests.cs" />
     <Compile Include="ConstantsTests\ConstantsTest.cs" />
+    <Compile Include="FeatureFinderTests\Test.cs" />
     <Compile Include="DataTests\Features\FeatureTests.cs" />
     <Compile Include="FileReferences.cs" />
     <Compile Include="ImporterExporterTests\MassTagTextFileImporterTests.cs" />

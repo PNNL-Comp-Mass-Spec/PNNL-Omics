@@ -29,6 +29,13 @@ namespace PNNLOmics.Data.Features
 		/// <param name="daCorrectionMax">The maximum Dalton Correction to be applied.</param>
 		public LCMSFeature(int daCorrectionMax)
 		{
+			this.MassList = new List<UniqueMass>();
+			for (int i = 0; i < (daCorrectionMax * 2) + 1; i++)
+			{
+				UniqueMass uniqueMass = new UniqueMass();
+				this.MassList.Add(uniqueMass);
+			}
+
 			Clear();
 			this.DaltonCorrectionMax = daCorrectionMax;
 			CreateInitialMassList();
@@ -85,6 +92,9 @@ namespace PNNLOmics.Data.Features
 			{
 				this.AbundanceMaximum = msFeature.Abundance;
 				this.MassOfMaxAbundance = msFeature.MassMonoisotopic;
+				this.ChargeState = msFeature.ChargeState;
+				this.MZ = msFeature.MZ;
+				this.ScanLCOfMaxAbundance = msFeature.ScanLC;
 			}
 		}
 

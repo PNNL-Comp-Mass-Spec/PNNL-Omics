@@ -343,7 +343,6 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				double massMonoisotopicSum = 0;
 				List<double> massMonoisotopicList = new List<double>();
 
-				lcmsFeature.Clear();
 				lcmsFeature.ID = lcmsFeatureIndex;
 
 				foreach (MSFeature msFeature in lcmsFeature.MSFeatureList)
