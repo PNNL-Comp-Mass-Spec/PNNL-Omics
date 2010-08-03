@@ -120,6 +120,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			/*
 			 * UMCCreationOptions Settings
 			 */
+			value = IniReadValue("UMCCreationOptions", "IgnoreIMSDriftTime");
+			if (!value.Equals(String.Empty))
+			{
+				settings.IgnoreIMSDriftTime = bool.Parse(value);
+			}
+
 			value = IniReadValue("UMCCreationOptions", "MonoMassConstraint");
 			if (!value.Equals(String.Empty))
 			{
@@ -192,6 +198,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 				}
 			}
 
+			value = IniReadValue("UMCCreationOptions", "UMCFitScoreMinimum");
+			if (!value.Equals(String.Empty))
+			{
+				settings.UMCFitScoreMinimum = float.Parse(value);
+			}
+
 			/*
 			 * UMCSplittingOptions Settings
 			 */
@@ -214,6 +226,12 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			if (!value.Equals(String.Empty))
 			{
 				settings.UseConformationDetection = bool.Parse(value);
+			}
+
+			value = IniReadValue("DriftProfileOptions", "UseConformationIndex");
+			if (!value.Equals(String.Empty))
+			{
+				settings.UseConformationIndex = bool.Parse(value);
 			}
 
 			value = IniReadValue("DriftProfileOptions", "ReportFittedTime");

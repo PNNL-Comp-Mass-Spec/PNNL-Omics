@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PNNLOmics.Algorithms.ConformationDetection.Data;
 
 namespace PNNLOmics.Data.Features
 {
@@ -29,6 +30,26 @@ namespace PNNLOmics.Data.Features
 		/// The monoisotopic mass of the MS Feature of the max IMS Scan of the IMS-MS Feature.
 		/// </summary>
 		public double MassOfScanIMSMax { get; set; }
+		/// <summary>
+		/// The Drift Time of an IMS-MS Feature is calculated using the associated Conformation object.
+		/// </summary>
+		public override float DriftTime
+		{
+			get	{ return this.Conformation.DriftTime; }
+			set	{ this.Conformation.DriftTime = value; }
+		}
+		/// <summary>
+		/// Conformation Fit Score associated with the Conformation of this IMS-MS Feature.
+		/// </summary>
+		public override double ConformationFitScore
+		{
+			get { return this.Conformation.FitScore; }
+			set { this.Conformation.FitScore = value; }
+		}
+		/// <summary>
+		/// The Conformation object associated with this IMS-MS Feature.
+		/// </summary>
+		public Conformation Conformation { get; set; }
 		/// <summary>
 		/// A List of IMS Scan numbers.
 		/// </summary>
@@ -70,13 +91,16 @@ namespace PNNLOmics.Data.Features
 		/// </summary>
 		public override void Clear()
 		{
+			this.Conformation = new Conformation();
+			this.GapList = new List<int>();
+			this.ScanIMSList = new List<int>();
+
 			base.Clear();
+
 			this.ScanIMSStart = int.MaxValue;
 			this.ScanIMSEnd = 0;
 			this.MassOfScanIMSMax = 0;
 			this.HasGap = false;
-			this.GapList = new List<int>();
-			this.ScanIMSList = new List<int>();
 		}
 		#endregion
 

@@ -244,6 +244,16 @@ namespace LCMSFeatureFinder
 			List<LCIMSMSFeature> lcimsmsFeatureList = imsmsFeatureUtil.ProcessIMSMSFeatures(imsmsFeatureList);
 			logger.Log("Total Number of Unfiltered LC-IMS-MS Features = " + lcimsmsFeatureList.Count);
 
+			if (settings.UseConformationDetection)
+			{
+				logger.Log("Calculating LC-IMS-MS Feature Fit Scores...");
+				lcimsmsFeatureList = imsmsFeatureUtil.CalculateFitScore(lcimsmsFeatureList);
+
+				logger.Log("Filtering LC-IMS-MS Features based on Fit Scores...");
+				lcimsmsFeatureList = imsmsFeatureUtil.RefineLCIMSMSFeatures(lcimsmsFeatureList);
+				logger.Log("Total Number of Filtered LC-IMS-MS Features = " + lcimsmsFeatureList.Count);
+			}
+
 			if (settings.LCDaltonCorrectionMax > 0)
 			{
 				List<int> corrections = new List<int>();

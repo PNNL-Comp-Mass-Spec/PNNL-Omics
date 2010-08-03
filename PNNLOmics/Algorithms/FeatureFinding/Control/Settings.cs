@@ -30,14 +30,13 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 		public float FitMax { get; set; }
 		public float IntensityMin { get; set; }
 		public float MassMonoisotopicConstraint { get; set; }
-		public float MassAverageConstraint { get; set; }
+		public float UMCFitScoreMinimum { get; set; }
 
 		public double MassMonoisotopicStart { get; set; }
 		public double MassMonoisotopicEnd { get; set; }
         public double SmoothingStDev { get; set; }
 
 		public bool MassMonoisotopicConstraintIsPPM { get; set; }
-		public bool MassAverageConstraintIsPPM { get; set; }
 		public bool UseGenericNET { get; set; }
 		public bool UseCharge { get; set; }
 		public bool Split { get; set; }
@@ -64,9 +63,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			this.MassMonoisotopicStart = 0;
 			this.MassMonoisotopicEnd = 15000;
 			this.MassMonoisotopicConstraint = 20f;
-			this.MassAverageConstraint = 10f;
 			this.MassMonoisotopicConstraintIsPPM = true;
-			this.MassAverageConstraintIsPPM = true;
 			this.FeatureLengthMin = 3;
 			this.UseGenericNET = true;
 			this.UseCharge = false;
@@ -76,6 +73,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			this.Split = true;
 			this.LCDaltonCorrectionMax = 3;
 			this.SmoothingStDev = 0.35;
+			this.UMCFitScoreMinimum = 0f;
 			this.PeakWidthMinimum = 3;
 			this.UseConformationDetection = true;
 			this.UseConformationIndex = false;
@@ -112,6 +110,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 			Console.WriteLine("IMSGapMaxSize=4");
 			Console.WriteLine("LCMaxDaCorrection=0");
 			Console.WriteLine("IMSMaxDaCorrection=0");
+			Console.WriteLine("UMCFitScoreMinimum=0.9");
 			Console.WriteLine("[UMCSplittingOptions]");
 			Console.WriteLine("Split=True");
 			Console.WriteLine("MinimumDifferenceInMedianPpmMassToSplit=4");

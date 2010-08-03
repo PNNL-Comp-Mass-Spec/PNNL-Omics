@@ -45,36 +45,38 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 		/// <param name="imsmsFeature">The IMS-MS feature to detect conformations for.</param>
 		/// <param name="uimfReader">A DataReader object connecting to the UIMF file containing the raw information for the IMS-MS feature.</param>
 		/// <param name="numFramesToSum">The number of IMS frames that should be summed to obtain the intensities.</param>
-		/// <param name="driftTimeFitScoreList">A List of fit values (Pearson's correlation) for the fit of the conformer peak to the theoretical peak.</param>
-		/// <returns>A List of drift times for the conformations detected in the drift profile.</returns>
-		public List<float> ComputeDriftTime(IMSMSFeature imsmsFeature, int numFramesToSum, out List<double> driftTimeFitScoreList)
+		/// <returns>A List of Conformation objects that represent conformation detected in the drift profile.</returns>
+		public List<Conformation> ComputeDriftTime(IMSMSFeature imsmsFeature, int numFramesToSum)
 		{
 			// Create local variables.
 			List<double> driftTimeList = new List<double>();
 			List<double> intensityList = new List<double>();
-			List<float> driftTimeResultList = new List<float>();
-			driftTimeFitScoreList = new List<double>();
+
+			List<Conformation> conformationList = new List<Conformation>();
 
 			// Fetch the data.
 			GetIMSProfileOfIMSMSFeature(imsmsFeature, numFramesToSum, driftTimeList, intensityList);
 
 			// Filter out infinite drift times.
 			int numPoints = intensityList.Count;
-			for (int i = numPoints - 1; i >= 0; i--)
+			/*for (int i = numPoints - 1; i >= 0; i--)
 			{
-				if (double.IsInfinity(driftTimeList[i]) || intensityList[i] == 0)
+				if (double.IsInfinity(driftTimeList[i]) || intensityList[i]==0)
 				{
 					driftTimeList.RemoveAt(i);
 					intensityList.RemoveAt(i);
 					i--;
 				}
-			}
+			}*/
 			numPoints = intensityList.Count;
 			if (numPoints < m_peakWidthMinimum)
 			{
-				driftTimeResultList.Add(float.NaN);
-				driftTimeFitScoreList.Add(double.NaN);
-				return driftTimeResultList;
+				Conformation conformation = new Conformation();
+				conformation.DriftTime = float.NaN;
+				conformation.FitScore = double.NaN;
+				conformation.NumOfPoints = numPoints;
+				conformationList.Add(conformation);
+				return conformationList;
 			}
 
 			// Smooth the data.
@@ -84,24 +86,62 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 			// Write out the smoothed profile.
 			//WriteIMSMSFeatureProfile(imsmsFeature, driftTimeList, intensityList, originalIntensityList);
 
+			List<double> intensityLogList = new List<double>();
+			for (int i = 0; i < intensityList.Count; i++)
+			{
+				intensityLogList.Add(Math.Log(intensityList[i] + 1));
+			}
+
+			List<double> intensityChangeList = new List<double>();
+			for (int i = 0; i < intensityList.Count - 1; i++)
+			{
+				intensityChangeList.Add(intensityLogList[i] - intensityLogList[i + 1]);
+			}
+			intensityChangeList.Add(0);
 			// Find the peak information.
 			int indexOfIntensityMax = 0;
 			double tempIntensityMax = MathUtil.Max(intensityList, out indexOfIntensityMax);
 			int firstIndexOfIntensityMax = indexOfIntensityMax;
+			double intensityMax = tempIntensityMax;
 
 			// While we still have a peak...
-			while (tempIntensityMax > firstIndexOfIntensityMax * 0.1)
+			while (tempIntensityMax > intensityMax * 0.05)
 			{
 				// Find the ends of the profile.
 				int leftPosition = indexOfIntensityMax;
 				int rightPosition = indexOfIntensityMax;
-				while (leftPosition > 0 && intensityList[leftPosition - 1] <= intensityList[leftPosition] && intensityList[leftPosition - 1] > tempIntensityMax * 0.1)
+
+				//while (leftPosition > 0 && intensityList[leftPosition - 1] <= intensityList[leftPosition] && intensityList[leftPosition - 1] > tempIntensityMax*0.01)
+				//{
+				//    leftPosition--;
+				//}
+				//while (rightPosition < numPoints - 1 && intensityList[rightPosition + 1] <= intensityList[rightPosition] && intensityList[rightPosition + 1] > tempIntensityMax * 0.01)
+				//{
+				//    rightPosition++;
+				//}
+
+				//identify the linear part around the peak
+				while (leftPosition > 0)
 				{
-					leftPosition--;
+					if (intensityChangeList[leftPosition - 1] - intensityChangeList[leftPosition] > 0)
+					{
+						break;
+					}
+					else
+					{
+						leftPosition--;
+					}
 				}
-				while (rightPosition < numPoints - 1 && intensityList[rightPosition + 1] <= intensityList[rightPosition] && intensityList[rightPosition + 1] > tempIntensityMax * 0.1)
+				while (rightPosition < numPoints - 1)
 				{
-					rightPosition++;
+					if (intensityChangeList[rightPosition] - intensityChangeList[rightPosition + 1] > 0)
+					{
+						break;
+					}
+					else
+					{
+						rightPosition++;
+					}
 				}
 
 				// Create variables to store profile info.
@@ -110,8 +150,9 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 				List<double> observedValueList = new List<double>();
 
 				// Pull out the selected points.
-				List<double> selectedDriftTime = driftTimeList.GetRange(leftPosition, rightPosition - leftPosition + 1);
-				List<double> selectedIntensity = intensityList.GetRange(leftPosition, rightPosition - leftPosition + 1);
+				int nSelectedPoints = rightPosition - leftPosition + 1;
+				List<double> selectedDriftTime = driftTimeList.GetRange(leftPosition, nSelectedPoints);
+				List<double> selectedIntensity = intensityList.GetRange(leftPosition, nSelectedPoints);
 
 				// Train the Gaussian model.
 				double[] curveParameters = CurveFit.GaussianFit(selectedDriftTime, selectedIntensity, 0);
@@ -138,9 +179,9 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 
 						// Subtract the estimated from the observed and make all small values 0.
 						intensityList[i] = tempObservedValue - tempTrainedValue;
-						if (Math.Floor(intensityList[i]) < 0)
+						if (Math.Floor(intensityList[i]) < tempIntensityMax * 0.01)
 						{
-							intensityList[i] = 0;
+							intensityList[i] = 1;
 						}
 					}
 				}
@@ -150,37 +191,53 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 				}
 
 				// Check that the peak is the appropriate width and of a minimal number of points before adding to list.
-				double fwhm = 2.35482 * curveParameters[1];
-				if (fwhm >= 0.3 && fwhm <= 0.8 && rightPosition - leftPosition + 1 >= m_peakWidthMinimum)
+				//double fwhm = 2.35482 * curveParameters[1];
+				//if (fwhm >= 0.25 && fwhm <= 1.2 && rightPosition - leftPosition + 1 >= m_peakWidthMinimum)
+				//{
+
+				Conformation conformation = new Conformation();
+				conformation.NumOfPoints = nSelectedPoints;
+
+				// Calculate the MSE (fit score) for the data.
+				double fitScore = MathUtil.PearsonCorr(trainedValueList, observedValueList);
+				conformation.FitScore = fitScore;
+
+				// Option for reported drift time.
+				if (m_reportFittedTime)
 				{
-					// Calculate the MSE (fit score) for the data.
-					double fitScore = MathUtil.PearsonCorr(trainedValueList, observedValueList);
-					driftTimeFitScoreList.Add(fitScore);
-					// Option for reported drift time.
-					if (m_reportFittedTime)
-					{
-						driftTimeResultList.Add((float)curveParameters[0]);
-					}
-					else
-					{
-						driftTimeResultList.Add((float)driftTimeList[indexOfIntensityMax]);
-					}
-					// Write out the predicted and observed values.
-					//WriteIMSMSFeaturePredictedProfile(imsmsFeature, driftValueList, trainedValueList, observedValueList);
+					conformation.DriftTime = (float)curveParameters[0];
+				}
+				else
+				{
+					conformation.DriftTime = (float)driftTimeList[indexOfIntensityMax];
 				}
 
-				// Find the next peak.
-				tempIntensityMax = MathUtil.Max(intensityList, out indexOfIntensityMax);
+				conformationList.Add(conformation);
+				// Write out the predicted and observed values.
+				//WriteIMSMSFeaturePredictedProfile(imsmsFeature, driftValueList, trainedValueList, observedValueList);
+			}
+
+			// Find the next peak.
+			tempIntensityMax = MathUtil.Max(intensityList, out indexOfIntensityMax);
+			for (int i = 0; i < intensityList.Count; i++)
+			{
+				intensityLogList[i] = Math.Log(intensityList[i]);
+			}
+			for (int i = 0; i < intensityLogList.Count - 1; i++)
+			{
+				intensityChangeList[i] = intensityLogList[i] - intensityLogList[i + 1];
 			}
 
 			// If no valid peaks are found, output the drift time of the maximum intensity.
-			if (driftTimeResultList.Count < 1)
+			if (conformationList.Count < 1)
 			{
-				driftTimeResultList.Add((float)driftTimeList[firstIndexOfIntensityMax]);
-				driftTimeFitScoreList.Add(double.NaN);
+				Conformation conformation = new Conformation();
+				conformation.DriftTime = (float)driftTimeList[firstIndexOfIntensityMax];
+				conformation.FitScore = 0;
+				conformationList.Add(conformation);
 			}
 
-			return driftTimeResultList;
+			return conformationList;
 		}
 		#endregion
 
@@ -268,7 +325,7 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 		private void GetIMSProfileOfIMSMSFeature(IMSMSFeature imsmsFeature, int numFramesToSum, List<double> driftTimeList, List<double> intensityList)
 		{
 			// Set local parameters.
-			int currentScanLC = ScanLCMapHolder.ScanLCMap[imsmsFeature.ScanLC];
+			int currentScanLC = (int)ScanLCMapHolder.ScanLCMap[imsmsFeature.ScanLC];
 			MSFeature maxMSFeature = new MSFeature();
 			double maxAbundance = imsmsFeature.AbundanceMaximum;
 			foreach (MSFeature msFeature in imsmsFeature.MSFeatureList)
@@ -290,14 +347,14 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 			List<double> endMZ = new List<double>();
 
 			// Set ranges over which to look for the original data in the UIMF.
-			//double charge = Convert.ToDouble(imsmsFeature.Charge);
-			//for (int i = 0; i < 3; i++)
-			//{
-			startMZ.Add(currentMonoMZ - (0.5 * currentFWHM));
-			endMZ.Add(currentMonoMZ + (0.5 * currentFWHM));
-			//startMZ.Add(currentMonoMZ + (1.003 * i / charge) - (currentMonoMZ * 25 / 1e6));
-			//endMZ.Add(currentMonoMZ + (1.003 * i / charge) + (currentMonoMZ * 25 / 1e6));
-			//}
+			double charge = Convert.ToDouble(imsmsFeature.ChargeState);
+			for (int i = 0; i < 3; i++)
+			{
+				startMZ.Add(currentMonoMZ + (1.003 * i / charge) - (0.5 * currentFWHM));
+				endMZ.Add(currentMonoMZ + (1.003 * i / charge) + (0.5 * currentFWHM));
+				//startMZ.Add(currentMonoMZ + (1.003 * i / charge) - (currentMonoMZ * 25 / 1e6));
+				//endMZ.Add(currentMonoMZ + (1.003 * i / charge) + (currentMonoMZ * 25 / 1e6));
+			}
 
 			// Grab the raw data plus a few extra points on each side.
 			int numExtraIMSScans = 0;

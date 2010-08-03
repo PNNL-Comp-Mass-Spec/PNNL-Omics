@@ -45,7 +45,7 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// The fit score determined by the Conformation Detection algorithm.
 		/// </summary>
-		public double ConformationFitScore { get; set; }
+		public virtual double ConformationFitScore { get; set; }
 		/// <summary>
 		/// The LC Scan where the UMC begins.
 		/// </summary>

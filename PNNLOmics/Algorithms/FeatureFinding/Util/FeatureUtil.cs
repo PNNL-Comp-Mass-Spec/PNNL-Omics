@@ -68,6 +68,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 
 			featureWriter.Close();
 			mapWriter.Close();
+			cmcWriter.Close();
 		}
 
 		/// <summary>

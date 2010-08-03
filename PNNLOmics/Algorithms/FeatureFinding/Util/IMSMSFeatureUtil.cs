@@ -12,6 +12,7 @@ using PNNLOmics.Data.Features;
 using PNNLOmics.Algorithms.FeatureFinding.Control;
 using PNNLOmics.Generic;
 using PNNLOmics.Algorithms.ConformationDetection.Util;
+using PNNLOmics.Algorithms.ConformationDetection.Data;
 
 namespace PNNLOmics.Algorithms.FeatureFinding.Util
 {
@@ -394,7 +395,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 									{
 										if (!m_settings.UseConformationIndex || lcimsmsFeature.ConformationIndex == currentIMSMSFeature.ConformationIndex)
 										{
-											// Drift Time of most abundant MSFeature Should be close
+											// Drift Time of most abundant MSFeature of the IMS-MS Feature should be close to the Drift Time of the Max LC Scan of the LC-IMS-MS Feature
 											if (Math.Abs(lcimsmsFeature.DriftTimeOfScanLCMax - currentIMSMSFeature.DriftTime) < (0.1 * (double)m_settings.IMSGapSizeMax))
 											{
 												// Add the IMS-MS Feature to the LC-IMS-MS Feature and Recalculate the LC-IMS-MS Feature 
@@ -840,7 +841,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 						var appendQuery = from LCIMSMSFeature lcimsmsFeatureToAppend in lcimsmsFeatureListCopy
 										  where lcimsmsFeatureToAppend.ChargeState == currentLCIMSMSFeature.ChargeState
 												  && (Math.Abs(lcimsmsFeatureToAppend.MassOfMaxAbundance - currentLCIMSMSFeature.MassOfMaxAbundance) < (j + massTolerance) && Math.Abs(lcimsmsFeatureToAppend.MassOfMaxAbundance - currentLCIMSMSFeature.MassOfMaxAbundance) > (j - massTolerance))
-												  && Math.Abs(lcimsmsFeatureToAppend.DriftTime - currentLCIMSMSFeature.DriftTimeOfScanLCMax) < (0.1 * (double)m_settings.IMSGapSizeMax)
+												  && Math.Abs(lcimsmsFeatureToAppend.DriftTime - currentLCIMSMSFeature.DriftTime) < (0.1 * (double)m_settings.IMSGapSizeMax)
 												  && ((lcimsmsFeatureToAppend.ScanLCEnd < currentLCIMSMSFeature.ScanLCStart && (int)currentLCIMSMSFeature.ScanLCStart - (int)lcimsmsFeatureToAppend.ScanLCEnd - 1 <= m_settings.LCGapSizeMax)
 														  || (lcimsmsFeatureToAppend.ScanLCStart > currentLCIMSMSFeature.ScanLCEnd && (int)lcimsmsFeatureToAppend.ScanLCStart - (int)currentLCIMSMSFeature.ScanLCEnd - 1 <= m_settings.LCGapSizeMax))
 												  && !lcimsmsFeatureToAppend.Remove
@@ -934,20 +935,6 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 
 				lcimsmsFeature.MassMonoisotopicMinimum = massMonoisotopicList[0];
 				lcimsmsFeature.MassMonoisotopicMaximum = massMonoisotopicList[massMonoisotopicList.Count - 1];
-
-				foreach (IMSMSFeature imsmsFeature in lcimsmsFeature.IMSMSFeatureList)
-				{
-					conformationFitScoreList.Add(imsmsFeature.ConformationFitScore);
-				}
-
-				if (conformationFitScoreList.Count % 2 == 1)
-				{
-					lcimsmsFeature.ConformationFitScore = conformationFitScoreList[conformationFitScoreList.Count / 2];
-				}
-				else
-				{
-					lcimsmsFeature.ConformationFitScore = 0.5 * (conformationFitScoreList[conformationFitScoreList.Count / 2 - 1] + conformationFitScoreList[conformationFitScoreList.Count / 2]);
-				}
 			}
 
 			return lcimsmsFeatureList;
@@ -967,28 +954,25 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 
 			foreach (IMSMSFeature imsmsFeature in imsmsFeatureList)
 			{
-				List<double> driftTimeFitScoreList;
-				List<float> driftTimeList = conformerUtil.ComputeDriftTime(imsmsFeature, 3, out driftTimeFitScoreList);
+				List<Conformation> conformationList = conformerUtil.ComputeDriftTime(imsmsFeature, 3);
 
-				if (driftTimeList.Count == 0)
+				if (conformationList.Count == 0)
 				{
 					newIMSMSFeatureList.Add(imsmsFeature);
 				}
 				else
 				{
 					// First update the original IMS-MS feature with the first Drift Time
-					imsmsFeature.DriftTime = driftTimeList[0];
+					imsmsFeature.Conformation = conformationList[0];
 					imsmsFeature.ConformationIndex = 0;
-					imsmsFeature.ConformationFitScore = driftTimeFitScoreList[0];
 					newIMSMSFeatureList.Add(imsmsFeature);
 
 					// Then create new IMS-MS Features for the rest of the Drift Times
-					for (int i = 1; i < driftTimeList.Count; i++)
+					for (int i = 1; i < conformationList.Count; i++)
 					{
 						IMSMSFeature newIMSMSFeature = new IMSMSFeature(imsmsFeature);
-						newIMSMSFeature.DriftTime = driftTimeList[i];
+						newIMSMSFeature.Conformation = conformationList[i];
 						newIMSMSFeature.ConformationIndex = i;
-						newIMSMSFeature.ConformationFitScore = driftTimeFitScoreList[i];
 						newIMSMSFeatureList.Add(newIMSMSFeature);
 					}
 				}
@@ -1018,23 +1002,47 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		}
 
 		/// <summary>
-		/// Refines a List of LC-IMS-MS Features based on the feature length (# of MS Features)
+		/// Refines a List of LC-IMS-MS Features based on the Conformation Fit Score
 		/// </summary>
 		/// <param name="lcimsmsFeatureList">List of LC-IMS-MS Features</param>
 		/// <returns>Refined List of LC-IMS-MS Features</returns>
-		public List<LCIMSMSFeature> RefineLCIMSMSFeaturesByFeatureLength(List<LCIMSMSFeature> lcimsmsFeatureList)
+		public List<LCIMSMSFeature> RefineLCIMSMSFeatures(List<LCIMSMSFeature> lcimsmsFeatureList)
 		{
-			List<LCIMSMSFeature> lcimsmsFeaturesToKeep = new List<LCIMSMSFeature>();
+			var refineQuery = from LCIMSMSFeature lcimsmsFeature in lcimsmsFeatureList
+							  where lcimsmsFeature.ConformationFitScore >= m_settings.UMCFitScoreMinimum
+							  select lcimsmsFeature;
 
+			return refineQuery.ToList();
+		}
+
+		public List<LCIMSMSFeature> CalculateFitScore(List<LCIMSMSFeature> lcimsmsFeatureList)
+		{
 			foreach (LCIMSMSFeature lcimsmsFeature in lcimsmsFeatureList)
 			{
-				if (lcimsmsFeature.MSFeatureList.Count >= m_settings.FeatureLengthMin)
+				int totalNumOfPoints = 0;
+				double fitScore = 0;
+
+				foreach (IMSMSFeature imsmsfeature in lcimsmsFeature.IMSMSFeatureList)
 				{
-					lcimsmsFeaturesToKeep.Add(lcimsmsFeature);
+					totalNumOfPoints += imsmsfeature.Conformation.NumOfPoints;
 				}
+
+				foreach (IMSMSFeature imsmsfeature in lcimsmsFeature.IMSMSFeatureList)
+				{
+					Conformation conformation = imsmsfeature.Conformation;
+					double weight = conformation.NumOfPoints / (1 + totalNumOfPoints);
+
+					double conformationFitScore = conformation.FitScore;
+					if (!double.IsNaN(weight) && !double.IsNaN(conformationFitScore))
+					{
+						fitScore += weight * conformationFitScore;
+					}
+				}
+
+				lcimsmsFeature.ConformationFitScore = fitScore;
 			}
 
-			return lcimsmsFeaturesToKeep;
+			return lcimsmsFeatureList;
 		}
 	}
 }
