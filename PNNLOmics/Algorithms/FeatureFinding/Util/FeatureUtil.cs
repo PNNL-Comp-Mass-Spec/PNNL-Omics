@@ -187,8 +187,8 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 						msFeature.MZCorrected = (msFeature.MassMonoisotopic / msFeature.ChargeState) + 1.00727849;
 						msFeature.Corrected = true;
 
-						if (msFeature.Corrected) msFeature.CorrectedValue += differenceInt;
-						else msFeature.CorrectedValue = differenceInt;
+						if (msFeature.Corrected) msFeature.MassOffset += differenceInt;
+						else msFeature.MassOffset = differenceInt;
 					}
 				}
 			}
@@ -255,7 +255,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					msFeatureWriter.WriteLine(imsmsFeature.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID + "\t" + ScanLCMapHolder.ScanLCMap[msFeature.ScanLC] + "\t" + msFeature.ScanIMS + "\t" +
 												msFeature.MassMonoisotopic + "\t" + msFeature.ChargeState + "\t" + msFeature.DriftTime + "\t" + msFeature.Abundance + "\t" +
-												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious + "\t" + msFeature.Corrected + "\t" + msFeature.CorrectedValue);
+												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious + "\t" + msFeature.Corrected + "\t" + msFeature.MassOffset);
 				}
 			}
 
@@ -295,7 +295,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					{
 						msFeatureWriter.WriteLine(lcimsmsFeature.ID + "\t" + imsmsFeature.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID + "\t" + ScanLCMapHolder.ScanLCMap[msFeature.ScanLC] + "\t" + msFeature.ScanIMS + "\t" +
 													msFeature.MassMonoisotopic + "\t" + msFeature.ChargeState + "\t" + msFeature.DriftTime + "\t" + msFeature.Abundance + "\t" +
-													msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious + "\t" + msFeature.Corrected + "\t" + msFeature.CorrectedValue);
+													msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious + "\t" + msFeature.Corrected + "\t" + msFeature.MassOffset);
 					}
 				}
 			}

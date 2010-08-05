@@ -15,7 +15,7 @@ namespace PNNLOmics.Data
             set { m_scanNumber = value; }
         }
         /// <summary>
-        /// Gets
+        /// Gets or sets the mass to charge ratio (m/z).
         /// </summary>
         public double MZ
         {
@@ -42,11 +42,9 @@ namespace PNNLOmics.Data
             {
             }
         }
-
-        public void Clear()
+        public override void Clear()
         {
-            throw new NotImplementedException();
+            base.Clear();
         }
-
     }
 }

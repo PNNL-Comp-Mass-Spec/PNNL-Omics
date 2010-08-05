@@ -119,12 +119,12 @@ namespace LCMSFeatureFinder
 						{
 							if (msFeature.Corrected)
 							{
-								while (corrections.Count <= Math.Abs(msFeature.CorrectedValue))
+								while (corrections.Count <= Math.Abs(msFeature.MassOffset))
 								{
 									corrections.Add(0);
 								}
 
-								corrections[Math.Abs(msFeature.CorrectedValue)]++;
+								corrections[Math.Abs(msFeature.MassOffset)]++;
 
 								msFeature.Corrected = false;
 								numberOfCorrections++;
@@ -204,12 +204,12 @@ namespace LCMSFeatureFinder
 						{
 							if (msFeature.Corrected)
 							{
-								while (corrections.Count <= Math.Abs(msFeature.CorrectedValue))
+								while (corrections.Count <= Math.Abs(msFeature.MassOffset))
 								{
 									corrections.Add(0);
 								}
 
-								corrections[Math.Abs(msFeature.CorrectedValue)]++;
+								corrections[Math.Abs(msFeature.MassOffset)]++;
 
 								msFeature.Corrected = false;
 								numberOfCorrections++;
@@ -269,12 +269,12 @@ namespace LCMSFeatureFinder
 						{
 							if (msFeature.Corrected)
 							{
-								while (corrections.Count <= Math.Abs(msFeature.CorrectedValue))
+								while (corrections.Count <= Math.Abs(msFeature.MassOffset))
 								{
 									corrections.Add(0);
 								}
 
-								corrections[Math.Abs(msFeature.CorrectedValue)]++;
+								corrections[Math.Abs(msFeature.MassOffset)]++;
 
 								msFeature.Corrected = false;
 								numberOfCorrections++;

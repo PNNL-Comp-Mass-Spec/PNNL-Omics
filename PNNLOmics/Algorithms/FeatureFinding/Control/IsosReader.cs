@@ -190,7 +190,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 					if (ColumnMap.ContainsKey("MSFeature.MassMonoisotopic")) msFeature.MassMonoisotopic = Double.Parse(columns[ColumnMap["MSFeature.MassMonoisotopic"]], System.Globalization.NumberStyles.Any);
 					if (ColumnMap.ContainsKey("MSFeature.MassMostAbundant")) msFeature.MassMostAbundant = Double.Parse(columns[ColumnMap["MSFeature.MassMostAbundant"]], System.Globalization.NumberStyles.Any);
 					if (ColumnMap.ContainsKey("MSFeature.Fwhm")) msFeature.Fwhm = float.Parse(columns[ColumnMap["MSFeature.Fwhm"]], System.Globalization.NumberStyles.Any);
-					if (ColumnMap.ContainsKey("MSFeature.SignalNoise")) msFeature.SignalNoise = float.Parse(columns[ColumnMap["MSFeature.SignalNoise"]], System.Globalization.NumberStyles.Any);
+					if (ColumnMap.ContainsKey("MSFeature.SignalNoise")) msFeature.SignalToNoiseRatio = float.Parse(columns[ColumnMap["MSFeature.SignalNoise"]], System.Globalization.NumberStyles.Any);
 					if (ColumnMap.ContainsKey("MSFeature.AbundanceMono")) msFeature.AbundanceMono = Int32.Parse(columns[ColumnMap["MSFeature.AbundanceMono"]], System.Globalization.NumberStyles.Any);
 					if (ColumnMap.ContainsKey("MSFeature.AbundancePlus2")) msFeature.AbundancePlus2 = Int32.Parse(columns[ColumnMap["MSFeature.AbundancePlus2"]], System.Globalization.NumberStyles.Any);
 					if (ColumnMap.ContainsKey("MSFeature.IntensityOriginal")) msFeature.IntensityOriginal = float.Parse(columns[ColumnMap["MSFeature.IntensityOriginal"]], System.Globalization.NumberStyles.Any);

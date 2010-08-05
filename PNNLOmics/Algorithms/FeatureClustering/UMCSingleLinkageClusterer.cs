@@ -22,7 +22,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// </summary>
     public class UMCSingleLinkageClusterer: IClusterer<UMC, UMCCluster>
     {
-        #region Members                
+        #region Members
         #endregion
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         }
         #endregion
 
-        #region Private Methods
+        #region Clustering Methods
         /// <summary>
         /// Checks the two clusters to see if they have UMC's with the same group ID's.
         /// </summary>
@@ -129,11 +129,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         private List<UMCCluster> CreateSingletonClusters(List<UMC> data, int start, int stop)
         {
             List<UMCCluster> clusters = new List<UMCCluster>();
-
             for (int i = start; i < stop; i++)
             {
                 UMC umc = data[i];
-
+                
                 // Double-reference between cluster and UMC so both can point to each other.
                 umc.UmcCluster = new UMCCluster();
                 umc.UmcCluster.UMCList.Add(umc);
@@ -184,9 +183,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
                     // Make sure we fall within the distance range before computing...
                     if (massDiff <= massTolerance && netDiff <= netTolerance && driftDiff <= driftTolerance)
-                    {
-                 
-                        
+                    {                                         
                         // If IMS or equivalent only cluster similar charge states                        
                         if (Parameters.OnlyClusterSameChargeStates)
                         {
@@ -260,8 +257,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 // This will determine if we cluster a block of data or not.                
                 UMC umcX    = data[i];
                 UMC umcY    = data[i + 1];
-                double ppm      = Feature.ComputeMassPPMDifference( umcX.MassMonoisotopicAligned, 
-                                                                    umcY.MassMonoisotopicAligned);
+                double ppm  = Feature.ComputeMassPPMDifference( umcX.MassMonoisotopicAligned, 
+                                                                umcY.MassMonoisotopicAligned);
 
                 // If the difference is greater than the tolerance then we cluster 
                 //  - we dont check the sign of the ppm because the data should be sorted based on mass.
@@ -297,7 +294,6 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 List<UMCCluster> blockClusters = LinkUMCs(distances, localClusters);
                 clusters.AddRange(blockClusters);
             }
-
 
             return clusters;
         }
