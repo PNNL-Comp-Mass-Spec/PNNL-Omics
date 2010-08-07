@@ -72,6 +72,11 @@ namespace PNNLOmics.Data.Features
 		/// The UMC associated with this MS Feature.
 		/// </summary>
 		public UMC UMC { get; set; }
+        /// <summary>
+        /// Gets or sets the child fragmentation spectra if it was acquired.
+        /// </summary>
+        public MSMSSpectra MSMSFragmentation
+        { get; set; }
 		#endregion
 
 		#region BaseData Members
@@ -87,12 +92,13 @@ namespace PNNLOmics.Data.Features
 			this.AbundancePlus2         = 0;
 			this.IntensityOriginal      = 0;
 			this.IntensityOriginalTIA   = 0;
-			this.MassOffset         = 0;
+			this.MassOffset             = 0;
 			this.ScanIMS                = CONST_DEFAULT_SCAN_VALUE;
 			this.Fit                    = float.NaN;
 			this.Fwhm                   = float.NaN;
-			this.SignalToNoiseRatio            = float.NaN;
+			this.SignalToNoiseRatio     = float.NaN;
 			this.MSPeakList             = new List<MSPeak>();
+            this.MSMSFragmentation      = null;
 		}
 		#endregion
 
