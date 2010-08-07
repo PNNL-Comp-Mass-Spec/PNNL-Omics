@@ -173,6 +173,8 @@
     <Compile Include="Constants\ConstantsUtilities\OtherMoleculeUtilites\OtherMoleculeConstantsTable.cs" />
     <Compile Include="Constants\ConstantsUtilities\PhysicalConstantsUtilities\PhysicalConstant.cs" />
     <Compile Include="Constants\ConstantsUtilities\PhysicalConstantsUtilities\PhysicalConstantsTable.cs" />
+    <Compile Include="Data\CollisionType.cs" />
+    <Compile Include="Data\MSMSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
     <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\Alignment\SimilarityScore.cs" />
