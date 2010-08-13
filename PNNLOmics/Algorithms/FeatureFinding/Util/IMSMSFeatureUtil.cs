@@ -163,7 +163,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					// When the IMS Scan changes, we still need to process the Current MSFeature
 					msFeatureCount++;
 				}
-s
+
 				// If we get to a new LC Scan, then Close all IMS-MS Features
 				if (currentMSFeature.ScanLC != currentScanLC)
 				{
