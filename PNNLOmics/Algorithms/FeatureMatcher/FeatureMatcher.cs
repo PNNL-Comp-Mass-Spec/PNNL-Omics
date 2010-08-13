@@ -177,19 +177,32 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             int targetIndex = 0;
             int lowerBound = 0;
 
-            // Sort both lists by mass.
-            shortObservedList.Sort(new Comparison<T>(Feature.MassAlignedComparison));
-            shortTargetList.Sort(new Comparison<U>(Feature.MassAlignedComparison));
+            bool useAlignedObserved = false;
+            bool useAlignedTarget = false;
 
-            // Locally store the mass tolerance.
+            // Sort both lists by mass.
+            if (shortObservedList[0].MassMonoisotopicAligned == double.NaN)
+            {
+                shortObservedList.Sort(new Comparison<T>(Feature.MassAlignedComparison));
+                useAlignedObserved = true;
+                shortTargetList.Sort(new Comparison<U>(Feature.MassAlignedComparison));
+                useAlignedTarget = true;
+            }
+            else
+            {
+                shortObservedList.Sort(new Comparison<T>(Feature.MassComparison));
+                shortTargetList.Sort(new Comparison<U>(Feature.MassComparison));
+            }
+
+            // Locally store the tolerances.
             double massTolerancePPM = tolerances.MassTolerancePPM;
+            double netTolerance = tolerances.NETTolerance;
+            float driftTimeTolerance = tolerances.DriftTimeTolerance;
 
             // Iterate through the list of observed features.
             while( observedIndex < shortObservedList.Count )
             {
                 if (observedIndex % 100 == 0) Console.WriteLine("Working on UMC index = " + observedIndex);
-
-
                 // Store the current observed feature locally.
                 T observedFeature = shortObservedList[observedIndex];
                 // Flag variable that gets set to false when the observed mass is greater than the current mass tag by more than the tolerance.
@@ -199,27 +212,28 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 // Iterate through the list of target featrues or until the observed feature is too great.
                 while( targetIndex < shortTargetList.Count && continueLoop )
                 {
-                    // Store the current target feature locally.
-                    U shiftedTag = shortTargetList[targetIndex];
                     // Add any shift to the mass tag.
-                    double shiftedTagMass = shiftedTag.MassMonoisotopicAligned + shiftAmount;
-                    // Store the masses of both features locally.
-                    double observedMass = observedFeature.MassMonoisotopicAligned;
+                    U targetFeature = shortTargetList[targetIndex];
                     // Check to see that the features are within the mass tolearance of one another.
-                    if (MathUtilities.MassDifferenceInPPM(shiftedTagMass, observedMass) <= massTolerancePPM)
+                    if (WithinMassTolerance<T,U>(observedFeature,targetFeature,massTolerancePPM,shiftAmount))
                     {
-                        // Create a temporary matche between the two and check it against all tolerances before adding to the match list.
-                        FeatureMatch<T, U> match = new FeatureMatch<T, U>();
-                        match.AddFeatures(observedFeature, shiftedTag, m_matchParameters.UseDriftTime, (shiftAmount > 0));
-                        if (match.InRegion(tolerances, useEllipsoid))
+                        bool withinTolerances = WithinNETTolerance<T, U>(observedFeature, targetFeature, netTolerance);
+                        if (m_matchParameters.UseDriftTime)
                         {
+                            withinTolerances = withinTolerances & withinDriftTimeTolerance<T, U>(observedFeature, targetFeature, driftTimeTolerance);
+                        }
+                        // Create a temporary match between the two and check it against all tolerances before adding to the match list.
+                        if (withinTolerances)
+                        {
+                            FeatureMatch<T, U> match = new FeatureMatch<T, U>();
+                            match.AddFeatures(observedFeature, targetFeature, m_matchParameters.UseDriftTime, (shiftAmount > 0));
                             matchList.Add(match);
                         }
                     }
                     else
                     {
                         // Increase the lower bound if the the MassTag masses are too low or set the continueLoop flag to false if they are too high.
-                        if (shiftedTagMass < observedMass)
+                        if (WithinMassTolerance<T,U>(observedFeature,targetFeature,massTolerancePPM,shiftAmount))
                         {
                             lowerBound++;
                         }
@@ -428,6 +442,141 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 }
             }
             m_errorHistogramFDR = countInBounds/((upperBound-lowerBound)*threshold);
+        }
+        /// <summary>
+        /// TODO:  Fill this in...
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="observedFeature"></param>
+        /// <param name="targetFeature"></param>
+        /// <param name="massTolerancePPM"></param>
+        /// <returns></returns>
+        private bool WithinMassTolerance<T, U>(T observedFeature, U targetFeature, double massTolerancePPM, double shiftAmount)
+            where T : Feature, new()
+            where U : Feature, new()
+        {
+            if (massTolerancePPM > 0)
+            {
+                double observedMass = 0; 
+                double targetMass = 0;
+                if (observedFeature.MassMonoisotopicAligned == double.NaN)
+                {
+                    observedMass = observedFeature.MassMonoisotopic;
+                }
+                else
+                {
+                    observedMass = observedFeature.MassMonoisotopicAligned;
+                }
+                if (targetFeature.MassMonoisotopicAligned == double.NaN)
+                {
+                    targetMass = targetFeature.MassMonoisotopic;
+                }
+                else
+                {
+                    targetMass = targetFeature.MassMonoisotopicAligned;
+                }
+                double difference = (targetMass + shiftAmount - observedMass) / targetMass * 1E6;
+                return (Math.Abs(difference)< massTolerancePPM);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// TODO:  Fill this in...
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="observedFeature"></param>
+        /// <param name="targetFeature"></param>
+        /// <param name="netTolerance"></param>
+        /// <returns></returns>
+        private bool WithinNETTolerance<T, U>(T observedFeature, U targetFeature, double netTolerance)
+            where T : Feature, new()
+            where U : Feature, new()
+        {
+            if (netTolerance > 0)
+            {
+                double targetNET = 0;
+                double observedNET = 0;
+                if (targetFeature.NETAligned == double.NaN)
+                {
+                    targetNET = targetFeature.NET;
+                }
+                else
+                {
+                    targetNET = targetFeature.NETAligned;
+                }
+                if (observedFeature.NETAligned == double.NaN)
+                {
+                    observedNET = observedFeature.NET;
+                }
+                else
+                {
+                    observedNET = observedFeature.NETAligned;
+                }
+                double difference = Math.Abs(targetNET - observedNET);
+                return (difference < netTolerance);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// TODO:  Another summary...
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="observedFeature"></param>
+        /// <param name="targetFeature"></param>
+        /// <param name="driftTimeTolerance"></param>
+        /// <returns></returns>
+        private bool withinDriftTimeTolerance<T, U>(T observedFeature, U targetFeature, float driftTimeTolerance) where T: Feature, new() where U:Feature, new()
+        {
+            if (driftTimeTolerance > 0)
+            {
+                float targetDriftTime = targetFeature.DriftTime;
+                float observedDriftTime = observedFeature.DriftTime;
+                float difference = Math.Abs(targetDriftTime - observedDriftTime);
+                return (difference < driftTimeTolerance);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// TODO:  You're gonna hate this...
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="observedFeature"></param>
+        /// <param name="targetFeature"></param>
+        /// <param name="driftTimeTolerance"></param>
+        /// <returns></returns>
+        private bool withDriftTimeTolerance<T>(T observedFeature, MassTag targetFeature, float driftTimeTolerance) where T : Feature, new()
+        {
+            if (driftTimeTolerance > 0)
+            {
+                float targetDriftTime = 0;
+                float observedDriftTime = observedFeature.DriftTime;
+                if (targetFeature.DriftTimePredicted > 0)
+                {
+                    targetDriftTime = (float)targetFeature.DriftTimePredicted;
+                }
+                else
+                {
+                    targetDriftTime = targetFeature.DriftTime;
+                }
+                float difference = Math.Abs(targetDriftTime - observedDriftTime);
+                return (difference < driftTimeTolerance);
+            }
+            else
+            {
+                return false;
+            }
         }
         #endregion
 
