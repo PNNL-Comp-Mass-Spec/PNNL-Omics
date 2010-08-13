@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8A934DC1-3418-449F-ADF6-9962499F49B2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -111,68 +111,29 @@
     </Compile>
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\ConformationDetection\Data\Conformation.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Alanine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Arginine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Asparagine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\AsparticAcid.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Cysteine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\GlutamicAcid.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Glutamine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Glycine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Histidine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Isoleucine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Leucine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Lysine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Methionine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Phenylalanine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Proline.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Serine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Threonine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Tryptophan.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Tyrosine.cs" />
-    <Compile Include="Constants\ConstantsData\AminoAcidData\Valine.cs" />
-    <Compile Include="Constants\ConstantsData\ElementData\Carbon.cs" />
-    <Compile Include="Constants\ConstantsData\ElementData\Hydrogen.cs" />
-    <Compile Include="Constants\ConstantsData\ElementData\Nitrogen.cs" />
-    <Compile Include="Constants\ConstantsData\ElementData\Oxygen.cs" />
-    <Compile Include="Constants\ConstantsData\ElementData\Phosphorus.cs" />
-    <Compile Include="Constants\ConstantsData\ElementData\Potassium.cs" />
-    <Compile Include="Constants\ConstantsData\ElementData\Sodium.cs" />
-    <Compile Include="Constants\ConstantsData\ElementData\Sulfur.cs" />
-    <Compile Include="Constants\ConstantsData\MonosaccharideData\Deoxyhexose.cs" />
-    <Compile Include="Constants\ConstantsData\MonosaccharideData\Hexose.cs" />
-    <Compile Include="Constants\ConstantsData\MonosaccharideData\HexuronicAcid.cs" />
-    <Compile Include="Constants\ConstantsData\MonosaccharideData\KDNDeaminatedNeuraminicAcid.cs" />
-    <Compile Include="Constants\ConstantsData\MonosaccharideData\NAcetylhexosamine.cs" />
-    <Compile Include="Constants\ConstantsData\MonosaccharideData\NeuraminicAcid.cs" />
-    <Compile Include="Constants\ConstantsData\MonosaccharideData\NGlycolylNeuraminicAcid.cs" />
-    <Compile Include="Constants\ConstantsData\MonosaccharideData\Pentose.cs" />
-    <Compile Include="Constants\ConstantsData\OtherMoleculesData\Aldehyde.cs" />
-    <Compile Include="Constants\ConstantsData\OtherMoleculesData\Alditol.cs" />
-    <Compile Include="Constants\ConstantsData\OtherMoleculesData\Ammonia.cs" />
-    <Compile Include="Constants\ConstantsData\OtherMoleculesData\Ammonium.cs" />
-    <Compile Include="Constants\ConstantsData\OtherMoleculesData\KMinusH.cs" />
-    <Compile Include="Constants\ConstantsData\OtherMoleculesData\NaMinusH.cs" />
-    <Compile Include="Constants\ConstantsData\OtherMoleculesData\Sulfate.cs" />
-    <Compile Include="Constants\ConstantsData\OtherMoleculesData\Water.cs" />
-    <Compile Include="Constants\ConstantsData\PhysicalConstantData\Electron.cs" />
-    <Compile Include="Constants\ConstantsData\PhysicalConstantData\Neutron.cs" />
-    <Compile Include="Constants\ConstantsData\PhysicalConstantData\Proton.cs" />
-    <Compile Include="Constants\ConstantsUtilities\AminoAcidUtilities\AminoAcid.cs" />
-    <Compile Include="Constants\ConstantsUtilities\AminoAcidUtilities\AminoAcidConstantsTable.cs" />
-    <Compile Include="Constants\ConstantsUtilities\AminoAcidUtilities\AminoAcidUtilities.cs" />
-    <Compile Include="Constants\ConstantsUtilities\CompoundComponent.cs" />
-    <Compile Include="Constants\ConstantsUtilities\ElementUtilities\Element.cs" />
-    <Compile Include="Constants\ConstantsUtilities\ElementUtilities\ElementConstantTable.cs" />
-    <Compile Include="Constants\ConstantsUtilities\ElementUtilities\ElementQuantity.cs" />
-    <Compile Include="Constants\ConstantsUtilities\IsotopeUtilities\Isotope.cs" />
-    <Compile Include="Constants\ConstantsUtilities\MonosaccharideUtilities\Monosaccharide.cs" />
-    <Compile Include="Constants\ConstantsUtilities\MonosaccharideUtilities\MonosaccharideConstantsTable.cs" />
-    <Compile Include="Constants\ConstantsUtilities\MonosaccharideUtilities\MonosaccharideUtilities.cs" />
-    <Compile Include="Constants\ConstantsUtilities\OtherMoleculeUtilites\OtherMolecule.cs" />
-    <Compile Include="Constants\ConstantsUtilities\OtherMoleculeUtilites\OtherMoleculeConstantsTable.cs" />
-    <Compile Include="Constants\ConstantsUtilities\PhysicalConstantsUtilities\PhysicalConstant.cs" />
-    <Compile Include="Constants\ConstantsUtilities\PhysicalConstantsUtilities\PhysicalConstantsTable.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\AminoAcidConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\AminoAcidLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\AtomConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\AtomLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\CrossRingConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\CrossRingLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\CrossRingMass.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\ElementConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\ElementLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\MonosaccharideConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\MonosaccharideLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\OtherMoleculeConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\OtherMoleculeLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataLibraries\OtherMoleculeMass.cs" />
+    <Compile Include="Constants\ConstantsObjects\AbstractCompound.cs" />
+    <Compile Include="Constants\ConstantsObjects\AbstractMatter.cs" />
+    <Compile Include="Constants\ConstantsObjects\AminoAcidObject.cs" />
+    <Compile Include="Constants\ConstantsObjects\AtomObject.cs" />
+    <Compile Include="Constants\ConstantsObjects\CrossRingObject.cs" />
+    <Compile Include="Constants\ConstantsObjects\ElementObject.cs" />
+    <Compile Include="Constants\ConstantsObjects\IsotopeObject.cs" />
+    <Compile Include="Constants\ConstantsObjects\MonosaccharideObject.cs" />
+    <Compile Include="Constants\ConstantsObjects\OtherMoleculeObject.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\MSMSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
@@ -254,10 +215,24 @@
     <None Include="ClassDiagrams\DataLayer.cd" />
     <None Include="ClassDiagrams\PNNLOmics.cd" />
     <None Include="ClassDiagrams\UtilityLayer.cd" />
+    <None Include="Constants\ConstantsObjects\.svn\all-wcprops" />
+    <None Include="Constants\ConstantsObjects\.svn\entries" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\AbstractCompound.cs.svn-base" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\AbstractMatter.cs.svn-base" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\AminoAcidObject.cs.svn-base" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\AtomObject.cs.svn-base" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\CrossRingObject.cs.svn-base" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\ElementObject.cs.svn-base" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\IsotopeObject.cs.svn-base" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\MonosaccharideObject.cs.svn-base" />
+    <None Include="Constants\ConstantsObjects\.svn\text-base\OtherMoleculeObject.cs.svn-base" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Constants\ConstantsData\AminoAcidFragments\" />
-    <Folder Include="Constants\ConstantsData\MonosaccharideFragments\" />
+    <Folder Include="Constants\ConstantsObjects\.svn\prop-base\" />
+    <Folder Include="Constants\ConstantsObjects\.svn\props\" />
+    <Folder Include="Constants\ConstantsObjects\.svn\tmp\prop-base\" />
+    <Folder Include="Constants\ConstantsObjects\.svn\tmp\props\" />
+    <Folder Include="Constants\ConstantsObjects\.svn\tmp\text-base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
