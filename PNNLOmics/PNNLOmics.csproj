@@ -111,29 +111,29 @@
     </Compile>
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\ConformationDetection\Data\Conformation.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\AminoAcidConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\AminoAcidLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\AtomConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\AtomLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\CrossRingConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\CrossRingLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\CrossRingMass.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\ElementConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\ElementLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\MonosaccharideConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\MonosaccharideLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\OtherMoleculeConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\OtherMoleculeLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataLibraries\OtherMoleculeMass.cs" />
-    <Compile Include="Constants\ConstantsObjects\AbstractCompound.cs" />
-    <Compile Include="Constants\ConstantsObjects\AbstractMatter.cs" />
-    <Compile Include="Constants\ConstantsObjects\AminoAcidObject.cs" />
-    <Compile Include="Constants\ConstantsObjects\AtomObject.cs" />
-    <Compile Include="Constants\ConstantsObjects\CrossRingObject.cs" />
-    <Compile Include="Constants\ConstantsObjects\ElementObject.cs" />
-    <Compile Include="Constants\ConstantsObjects\IsotopeObject.cs" />
-    <Compile Include="Constants\ConstantsObjects\MonosaccharideObject.cs" />
-    <Compile Include="Constants\ConstantsObjects\OtherMoleculeObject.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\AminoAcidConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\AminoAcidLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\AtomConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\AtomLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\CrossRingConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\CrossRingLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\CrossRingMass.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\ElementConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\ElementLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\MonosaccharideConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\MonosaccharideLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\OtherMoleculeConstantsStaticLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\OtherMoleculeLibrary.cs" />
+    <Compile Include="Constants\ConstantsDataUtilities\OtherMoleculeMass.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\AbstractCompound.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\AbstractMatter.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\AminoAcidObject.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\AtomObject.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\CrossRingObject.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\ElementObject.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\IsotopeObject.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\MonosaccharideObject.cs" />
+    <Compile Include="Constants\ConstantsObjectsDataLayer\OtherMoleculeObject.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\MSMSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
@@ -212,27 +212,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagrams\AlgorithmLayer.cd" />
+    <None Include="ClassDiagrams\ConstantsSubStructure.cd" />
     <None Include="ClassDiagrams\DataLayer.cd" />
     <None Include="ClassDiagrams\PNNLOmics.cd" />
     <None Include="ClassDiagrams\UtilityLayer.cd" />
-    <None Include="Constants\ConstantsObjects\.svn\all-wcprops" />
-    <None Include="Constants\ConstantsObjects\.svn\entries" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\AbstractCompound.cs.svn-base" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\AbstractMatter.cs.svn-base" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\AminoAcidObject.cs.svn-base" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\AtomObject.cs.svn-base" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\CrossRingObject.cs.svn-base" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\ElementObject.cs.svn-base" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\IsotopeObject.cs.svn-base" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\MonosaccharideObject.cs.svn-base" />
-    <None Include="Constants\ConstantsObjects\.svn\text-base\OtherMoleculeObject.cs.svn-base" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Constants\ConstantsObjects\.svn\prop-base\" />
-    <Folder Include="Constants\ConstantsObjects\.svn\props\" />
-    <Folder Include="Constants\ConstantsObjects\.svn\tmp\prop-base\" />
-    <Folder Include="Constants\ConstantsObjects\.svn\tmp\props\" />
-    <Folder Include="Constants\ConstantsObjects\.svn\tmp\text-base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
