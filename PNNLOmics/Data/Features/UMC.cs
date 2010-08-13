@@ -13,7 +13,7 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// True if the the UMC should be removed from the working List of UMCs.
 		/// </summary>
-		public bool Remove { get; set; }
+		public bool ToBeRemoved { get; set; }
 		/// <summary>
 		/// True if the the UMC has been corrected using Dalton Error Correction.
 		/// </summary>
@@ -110,7 +110,7 @@ namespace PNNLOmics.Data.Features
 		public override void Clear()
 		{
 			base.Clear();
-			this.Remove = false;
+			this.ToBeRemoved = false;
 			this.ConformationIndex = -1;
 			this.ChargeMaximum = 0;
 			this.AbundanceMaximum = 0;

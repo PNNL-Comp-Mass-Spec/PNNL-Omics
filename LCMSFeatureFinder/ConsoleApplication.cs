@@ -348,8 +348,9 @@ namespace LCMSFeatureFinder
 		private static string ProcessFileLocation(string fileLocation)
 		{
 			// Replace all slashes to backslashes since we are working with a Windows directory 
+            //TODO: System file separator?
 			fileLocation = fileLocation.Replace("/", "\\");
-
+                
 			// If the string does not contain ":\" or "\\", move on.
 			if (!fileLocation.Contains(":\\") && !fileLocation.StartsWith("\\\\"))
 			{

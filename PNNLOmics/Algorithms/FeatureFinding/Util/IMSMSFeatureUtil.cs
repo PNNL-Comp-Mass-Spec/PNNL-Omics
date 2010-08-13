@@ -163,9 +163,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					// When the IMS Scan changes, we still need to process the Current MSFeature
 					msFeatureCount++;
 				}
-
-                // TODO: Kevin - STOPPED CODE REVIEW HERE
-
+s
 				// If we get to a new LC Scan, then Close all IMS-MS Features
 				if (currentMSFeature.ScanLC != currentScanLC)
 				{
@@ -176,6 +174,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					if (m_settings.IMSDaltonCorrectionMax > 0)
 					{
 						imsmsFeatureListForLCScan = AppendIMSMSFeatures(imsmsFeatureListForLCScan);
+                        // TODO: Kevin - STOPPED CODE REVIEW HERE
 						imsmsFeatureListForLCScan = FillGaps(imsmsFeatureListForLCScan);
 					}
 
@@ -486,7 +485,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				IMSMSFeature gappedIMSMSFeature = gapQuery.ElementAt(i);
 
 				// If the current IMS-MS Feature has not been involved in a gap fill
-				if (!gappedIMSMSFeature.Remove)
+				if (!gappedIMSMSFeature.ToBeRemoved)
 				{
 					IMSMSFeature featureToRemove = null;
 
@@ -578,7 +577,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 								gappedIMSMSFeature.Recalculate();
 
 								featureToRemove = imsmsFeatureToFillGap;
-								imsmsFeatureToFillGap.Remove = true;
+								imsmsFeatureToFillGap.ToBeRemoved = true;
 
 								// After filling the gap, if the current IMS-MS Feature contains more gaps, process it again
 								if (gappedIMSMSFeature.GapList.Count != 0)
@@ -633,7 +632,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				LCIMSMSFeature gappedLCIMSMSFeature = gappedLCIMSMSFeatureList[i];
 
 				// If the current LC-IMS-MS Feature has not been involved in a gap fill
-				if (!gappedLCIMSMSFeature.Remove)
+				if (!gappedLCIMSMSFeature.ToBeRemoved)
 				{
 					int indexOfFeatureToRemove = -1;
 
@@ -651,7 +650,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					{
 						LCIMSMSFeature lcimsmsFeatureToFillGap = lcimsmsFeatureList[index];
 
-						if (!lcimsmsFeatureToFillGap.Remove)
+						if (!lcimsmsFeatureToFillGap.ToBeRemoved)
 						{
 
 							if (!m_settings.UseCharge || gappedLCIMSMSFeature.ChargeState == lcimsmsFeatureToFillGap.ChargeState)
@@ -729,7 +728,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 												gappedLCIMSMSFeature.CalculateGapList();
 
 												indexOfFeatureToRemove = index;
-												lcimsmsFeatureToFillGap.Remove = true;
+												lcimsmsFeatureToFillGap.ToBeRemoved = true;
 
 												// After filling the gap, if the current LC-IMS-MS Feature contains more gaps, process it again
 												if (gappedLCIMSMSFeature.GapLCList.Count != 0)
@@ -750,7 +749,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 
 			var query = from LCIMSMSFeature lcimsmsFeature in lcimsmsFeatureList
-						where !lcimsmsFeature.Remove
+						where !lcimsmsFeature.ToBeRemoved
 						select lcimsmsFeature;
 
 			return query.ToList();
@@ -764,6 +763,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		private List<IMSMSFeature> AppendIMSMSFeatures(List<IMSMSFeature> imsmsFeatureList)
 		{
 			// Sort all MS Feature Lists by IMS Scan
+            // TODO: Is this necessary?
 			foreach (IMSMSFeature imsmsFeature in imsmsFeatureList)
 			{
 				imsmsFeature.MSFeatureList.Sort(MSFeature.ScanIMSComparison);
@@ -774,26 +774,27 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				IMSMSFeature currentIMSMSFeature = imsmsFeatureList[i];
 
 				// If the current IMS-MS Feature has not been involved in an Append
-				if (!currentIMSMSFeature.Remove)
+				if (!currentIMSMSFeature.ToBeRemoved)
 				{
 					double massTolerance = m_settings.MassMonoisotopicConstraint * currentIMSMSFeature.MassOfMaxAbundance / 1000000 * 1.25;
 
 					for (int j = 1; j <= m_settings.IMSDaltonCorrectionMax; j++)
 					{
+                        // TODO: Explain the order by, with an example
 						var appendQuery = from IMSMSFeature imsmsFeatureToAppend in imsmsFeatureList
 										  where imsmsFeatureToAppend.ScanLC == currentIMSMSFeature.ScanLC
 												  && imsmsFeatureToAppend.ChargeState == currentIMSMSFeature.ChargeState
 												  && (Math.Abs(imsmsFeatureToAppend.MassOfMaxAbundance - currentIMSMSFeature.MassOfMaxAbundance) < (j + massTolerance) && Math.Abs(imsmsFeatureToAppend.MassOfMaxAbundance - currentIMSMSFeature.MassOfMaxAbundance) > (j - massTolerance))
 												  && ((imsmsFeatureToAppend.ScanIMSEnd < currentIMSMSFeature.ScanIMSStart && (int)currentIMSMSFeature.ScanIMSStart - (int)imsmsFeatureToAppend.ScanIMSEnd - 1 <= m_settings.IMSGapSizeMax)
 														  || (imsmsFeatureToAppend.ScanIMSStart > currentIMSMSFeature.ScanIMSEnd && (int)imsmsFeatureToAppend.ScanIMSStart - (int)currentIMSMSFeature.ScanIMSEnd - 1 <= m_settings.IMSGapSizeMax))
-												  && !imsmsFeatureToAppend.Remove
-										  orderby Math.Abs(imsmsFeatureToAppend.MassOfMaxAbundance - currentIMSMSFeature.MassOfMaxAbundance)
+												  && !imsmsFeatureToAppend.ToBeRemoved
+										  orderby Math.Abs(Math.Abs(imsmsFeatureToAppend.MassOfMaxAbundance - currentIMSMSFeature.MassOfMaxAbundance) - j)
 										  select imsmsFeatureToAppend;
 
 						if (appendQuery.Count() > 0)
 						{
 							IMSMSFeature imsmsFeatureToAppend = appendQuery.First();
-							imsmsFeatureToAppend.Remove = true;
+							imsmsFeatureToAppend.ToBeRemoved = true;
 
 							currentIMSMSFeature.DaError = true;
 							currentIMSMSFeature.AddMSFeatureList(imsmsFeatureToAppend.MSFeatureList);
@@ -809,7 +810,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 
 			var query = from IMSMSFeature imsmsFeature in imsmsFeatureList
-						where !imsmsFeature.Remove
+						where !imsmsFeature.ToBeRemoved
 						select imsmsFeature;
 
 			return query.ToList();
@@ -832,7 +833,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			{
 				LCIMSMSFeature currentLCIMSMSFeature = lcimsmsFeatureList[i];
 
-				if (!currentLCIMSMSFeature.Remove)
+				if (!currentLCIMSMSFeature.ToBeRemoved)
 				{
 					double massTolerance = m_settings.MassMonoisotopicConstraint * currentLCIMSMSFeature.MassOfMaxAbundance / 1000000 * 1.25;
 
@@ -844,14 +845,14 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 												  && Math.Abs(lcimsmsFeatureToAppend.DriftTime - currentLCIMSMSFeature.DriftTime) < (0.1 * (double)m_settings.IMSGapSizeMax)
 												  && ((lcimsmsFeatureToAppend.ScanLCEnd < currentLCIMSMSFeature.ScanLCStart && (int)currentLCIMSMSFeature.ScanLCStart - (int)lcimsmsFeatureToAppend.ScanLCEnd - 1 <= m_settings.LCGapSizeMax)
 														  || (lcimsmsFeatureToAppend.ScanLCStart > currentLCIMSMSFeature.ScanLCEnd && (int)lcimsmsFeatureToAppend.ScanLCStart - (int)currentLCIMSMSFeature.ScanLCEnd - 1 <= m_settings.LCGapSizeMax))
-												  && !lcimsmsFeatureToAppend.Remove
+												  && !lcimsmsFeatureToAppend.ToBeRemoved
 										  orderby Math.Abs(lcimsmsFeatureToAppend.MassOfMaxAbundance - currentLCIMSMSFeature.MassOfMaxAbundance)
 										  select lcimsmsFeatureToAppend;
 
 						if (appendQuery.Count() > 0)
 						{
 							LCIMSMSFeature lcimsmsFeatureToAppend = appendQuery.First();
-							lcimsmsFeatureToAppend.Remove = true;
+							lcimsmsFeatureToAppend.ToBeRemoved = true;
 
 							currentLCIMSMSFeature.DaError = true;
 							currentLCIMSMSFeature.AddIMSMSFeatureList(lcimsmsFeatureToAppend.IMSMSFeatureList);
@@ -867,7 +868,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 
 			var query = from LCIMSMSFeature lcimsmsFeature in lcimsmsFeatureList
-						where !lcimsmsFeature.Remove
+						where !lcimsmsFeature.ToBeRemoved
 						select lcimsmsFeature;
 
 			return query.ToList();

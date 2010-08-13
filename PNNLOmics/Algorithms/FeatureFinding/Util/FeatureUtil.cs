@@ -184,11 +184,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					{
 						msFeature.MassMonoisotopic += differenceInt;
 						//msFeature.Mz = (msFeature.MassMonoisotopic / msFeature.Charge) + 1.00727849;
+                        // TODO: Kevin 1.00727849 should be a constant
+                        // TODO: Kevin Remove MZCorrected completely?
 						msFeature.MZCorrected = (msFeature.MassMonoisotopic / msFeature.ChargeState) + 1.00727849;
 						msFeature.Corrected = true;
-
-						if (msFeature.Corrected) msFeature.MassOffset += differenceInt;
-						else msFeature.MassOffset = differenceInt;
+                        msFeature.MassOffset += differenceInt;
 					}
 				}
 			}
