@@ -13,6 +13,7 @@ namespace PNNLOmics.Data.Features
         where U : Feature, new()
     {
         #region Members
+        private bool m_useDriftTime;
         private bool m_useDriftTimePredicted;
         private bool m_withinRefinedRegion;
         private bool m_shiftedMatch;
@@ -203,9 +204,7 @@ namespace PNNLOmics.Data.Features
             Clear();
             m_observedFeature = observedFeature;
             m_targetFeature = targetFeature;
-            m_reducedDifferenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime);
-            m_differenceVector = MatrixUtilities.Differences<T, U>(observedFeature, targetFeature, useDriftTime, true);
-            SetFlags(useDriftTime);
+            m_useDriftTime = useDriftTime;
             m_shiftedMatch = shiftedMatch;
         }
         /// <summary>
@@ -220,27 +219,57 @@ namespace PNNLOmics.Data.Features
             {
                 throw new InvalidOperationException("Match must be populated before using functions involving the match.");
             }
-            int dimensions = m_reducedDifferenceVector.RowCount;
             Matrix toleranceMatrix = tolerances.AsVector(true);
-            if (useElllipsoid)
+            if (m_reducedDifferenceVector != new Matrix(2, 1, 0.0))
             {
-                double distance = 0;
-                for (int i = 0; i < dimensions; i++)
+                int dimensions = m_reducedDifferenceVector.RowCount;
+
+                if (useElllipsoid)
                 {
-                    distance += m_reducedDifferenceVector[i, 0] * m_reducedDifferenceVector[i, 0] / toleranceMatrix[i, 0] / toleranceMatrix[i, 0];
+                    double distance = 0;
+                    for (int i = 0; i < dimensions; i++)
+                    {
+                        distance += m_reducedDifferenceVector[i, 0] * m_reducedDifferenceVector[i, 0] / toleranceMatrix[i, 0] / toleranceMatrix[i, 0];
+                    }
+                    m_withinRefinedRegion = (distance <= 1);
                 }
-                m_withinRefinedRegion = (distance <= 1);
+                else
+                {
+                    bool truthValue = true;
+                    for (int i = 0; i < dimensions; i++)
+                    {
+                        truthValue = (truthValue && Math.Abs(m_reducedDifferenceVector[i, 0]) <= toleranceMatrix[i, 0]);
+                    }
+                    m_withinRefinedRegion = truthValue;
+                }
             }
             else
             {
-                bool truthValue = true;
-                for (int i = 0; i < dimensions; i++)
+                if (useElllipsoid)
                 {
-                    truthValue = (truthValue && Math.Abs(m_reducedDifferenceVector[i, 0]) <= toleranceMatrix[i, 0]);
+                    double distance = 0;
+                    double massDiff = m_observedFeature.MassMonoisotopicAligned - m_targetFeature.MassMonoisotopicAligned;
+                    double netDiff = m_observedFeature.NETAligned - m_targetFeature.NETAligned;
+                    distance += massDiff * massDiff / toleranceMatrix[1, 0] / toleranceMatrix[1, 0];
+                    distance += netDiff * netDiff / toleranceMatrix[2, 0] / toleranceMatrix[2, 0];
+                    // Add drift time difference.
+                    m_withinRefinedRegion = (distance <= 1);
                 }
-                m_withinRefinedRegion = truthValue;
+                else
+                {
+                    //bool truthValue = true;
+                    //truthValue = (truthValue && Math.Abs(m_reducedDifferenceVector[i, 0]) <= toleranceMatrix[i, 0]);
+                    //m_withinRefinedRegion = truthValue;
+                }
             }
             return m_withinRefinedRegion;
+        }
+
+        public void SetDifferenceMatrices()
+        {
+            m_reducedDifferenceVector = MatrixUtilities.Differences<T, U>(m_observedFeature, m_targetFeature, m_useDriftTime);
+            m_differenceVector = MatrixUtilities.Differences<T, U>(m_observedFeature, m_targetFeature, m_useDriftTime, true);
+            SetFlags(m_useDriftTime);
         }
         #endregion
     }
