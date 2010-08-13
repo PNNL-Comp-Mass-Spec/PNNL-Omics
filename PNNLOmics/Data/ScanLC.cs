@@ -8,6 +8,7 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Encapsulates Scan information of the LC dimension
     /// </summary>
+    //TODO: what is the difference between this and an LCMSFeature?
     public class ScanLC: Scan
     {
         /// <summary>

@@ -2,6 +2,7 @@
 
 namespace PNNLOmics.Data
 {
+    //TODO: what is this?
     public class ScanIMS: Scan
     {
         private float m_driftTime;
