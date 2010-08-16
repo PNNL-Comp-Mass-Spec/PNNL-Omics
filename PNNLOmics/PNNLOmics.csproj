@@ -111,29 +111,6 @@
     </Compile>
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\ConformationDetection\Data\Conformation.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\AminoAcidConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\AminoAcidLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\AtomConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\AtomLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\CrossRingConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\CrossRingLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\CrossRingMass.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\ElementConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\ElementLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\MonosaccharideConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\MonosaccharideLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\OtherMoleculeConstantsStaticLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\OtherMoleculeLibrary.cs" />
-    <Compile Include="Constants\ConstantsDataUtilities\OtherMoleculeMass.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\AbstractCompound.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\AbstractMatter.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\AminoAcidObject.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\AtomObject.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\CrossRingObject.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\ElementObject.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\IsotopeObject.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\MonosaccharideObject.cs" />
-    <Compile Include="Constants\ConstantsObjectsDataLayer\OtherMoleculeObject.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\MSMSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
@@ -216,6 +193,9 @@
     <None Include="ClassDiagrams\DataLayer.cd" />
     <None Include="ClassDiagrams\PNNLOmics.cd" />
     <None Include="ClassDiagrams\UtilityLayer.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Constants\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
