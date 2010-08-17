@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 
 
@@ -18,7 +18,7 @@ using PNNLOmics.Constants.ConstantsDataLayer;
 //{
 //    massPeptide += AminoAcidConstantsStaticLibrary.GetMonoisotopicMass(peptideSequence[y]);
 //}//massPeptide = 484.27578094385393
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class AminoAcidConstantsStaticLibrary
     {

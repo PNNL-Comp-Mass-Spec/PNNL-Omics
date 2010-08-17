@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //dictionary implementation
 //Dictionary<char, AminoAcidObject> AminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
@@ -11,7 +11,7 @@ using PNNLOmics.Constants.ConstantsDataLayer;
 //string AAFormula = AminoAcidsDictionary['A'].ChemicalFormula;
 
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class AminoAcidLibrary
     {

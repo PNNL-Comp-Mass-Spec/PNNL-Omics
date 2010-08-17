@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //dictionary implementation
 //Dictionary<string, MonosaccharideObject> OligosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
@@ -10,7 +10,7 @@ using PNNLOmics.Constants.ConstantsDataLayer;
 //string OSname = OligosacchaideDictionary["Hex"].Name;
 //string OSformula = OligosacchaideDictionary["Hex"].ChemicalFormula;
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class MonosaccharideLibrary
     {

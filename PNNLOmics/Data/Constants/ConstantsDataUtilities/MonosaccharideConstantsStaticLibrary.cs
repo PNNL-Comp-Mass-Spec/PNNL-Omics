@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //one line implementaiton
 //double OSmass2 = MonosaccharideConstantsStaticLibrary.GetMonoisotopicMass("Hex");
 //string OSname2 = MonosaccharideConstantsStaticLibrary.GetName("Hex");
 //string OSformula2 = MonosaccharideConstantsStaticLibrary.GetFormula("Hex");
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
 
     //TODO: SRK Add XML comments to all methods and class

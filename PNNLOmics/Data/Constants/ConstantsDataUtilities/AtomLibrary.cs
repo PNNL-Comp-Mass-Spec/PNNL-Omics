@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //http://physics.nist.gov/cuu/Constants/index.html  NIST CODATA 2006  
 
@@ -12,7 +12,7 @@ using PNNLOmics.Constants.ConstantsDataLayer;
 //string AtomName = AtomDictionary["e"].Name;
 //string AtomSymbol = AtomDictionary["e"].Symbol;
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class AtomLibrary
     {

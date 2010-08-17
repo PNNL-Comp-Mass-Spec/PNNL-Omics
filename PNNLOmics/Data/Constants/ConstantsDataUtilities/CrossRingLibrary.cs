@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //dictionarty implementation
 //Dictionary<string, CrossRingObject> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
@@ -10,7 +10,7 @@ using PNNLOmics.Constants.ConstantsDataLayer;
 //string crformula = CrossRingDictionary["crfNeu5Ac_03_X1"].ChemicalFormula;
 //string CRName = CrossRingDictionary["crfNeu5Ac_03_X1"].Name;
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class CrossRingLibrary
     {

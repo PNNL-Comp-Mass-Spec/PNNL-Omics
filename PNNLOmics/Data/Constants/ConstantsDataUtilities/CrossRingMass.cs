@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 //this is not finshed yey
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class CrossRingMass
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //dictionary implementation                        
 //Dictionary<string,ElementObject> ElementDictionary = ElementLibrary.LoadElementData();
@@ -14,7 +14,7 @@ using PNNLOmics.Constants.ConstantsDataLayer;
 //string elementName = ElementDictionary["C"].Name;
 //string elementSymbol = ElementDictionary["C"].Symbol;                     
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class ElementLibrary
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PNNLOmics.Constants.ConstantsDataLayer
+namespace PNNLOmics.Data.Constants.ConstantsDataLayer
 {
     /// <summary>
     /// This is a Class designed to inherit from matter and detail the information for elements from the periodic table.

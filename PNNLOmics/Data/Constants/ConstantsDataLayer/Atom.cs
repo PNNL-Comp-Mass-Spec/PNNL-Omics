@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PNNLOmics.Constants.ConstantsDataLayer
+namespace PNNLOmics.Data.Constants.ConstantsDataLayer
 {
     /// <summary>
     /// This is an empty Class designed to inherit from matter and behave like other inherited objects from matter such as elements.

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //One line implementation
 //double elementMonoMass = ElementConstantsStaticLibrary.GetMonoisotopicMass("C");
 //string elementName = ElementConstantsStaticLibrary.GetName("C");
 //string elementSymbol = ElementConstantsStaticLibrary.GetSymbol("C");
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class ElementConstantsStaticLibrary
     {

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //One line implememtation
 //double OtherMass2 = OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Aldehyde");
 //string OtherName2 = OtherMoleculeConstantsStaticLibrary.GetName("Aldehyde");
 //string OtherFormula2 = OtherMoleculeConstantsStaticLibrary.GetFormula("Aldehyde");
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class OtherMoleculeConstantsStaticLibrary
     {

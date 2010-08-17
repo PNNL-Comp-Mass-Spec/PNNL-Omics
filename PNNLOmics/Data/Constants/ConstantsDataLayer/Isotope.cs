@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PNNLOmics.Constants.ConstantsDataLayer
+namespace PNNLOmics.Data.Constants.ConstantsDataLayer
 {
     public class Isotope
     {

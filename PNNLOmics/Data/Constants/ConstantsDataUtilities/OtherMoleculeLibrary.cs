@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //dictionarty implementation
 //Dictionary<string, OtherMoleculeObject> OtherMoleculeDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
@@ -10,7 +10,7 @@ using PNNLOmics.Constants.ConstantsDataLayer;
 //string OtherName = OtherMoleculeDictionary["Aldehyde"].Name;
 //string OtherFormula = OtherMoleculeDictionary["Aldehyde"].ChemicalFormula;
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class OtherMoleculeLibrary
     {

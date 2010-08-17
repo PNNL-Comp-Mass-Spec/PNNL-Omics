@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataUtilities;
+using PNNLOmics.Data.Constants.ConstantsDataUtilities;
 
-namespace PNNLOmics.Constants.ConstantsDataLayer
+namespace PNNLOmics.Data.Constants.ConstantsDataLayer
 {
     /// <summary>
     /// This is an abstract Class designed to cover the most basic parameters of compound objects.

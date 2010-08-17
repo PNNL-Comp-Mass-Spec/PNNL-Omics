@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PNNLOmics.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 //one line implementation
 //double AtomMass2 = AtomConstantsStaticLibrary.GetMonoisotopicMass("e");
 //string AtomName2 = AtomConstantsStaticLibrary.GetName("e");
 //string AtomSymbol2 = AtomConstantsStaticLibrary.GetSymbol("e");
 
-namespace PNNLOmics.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class AtomConstantsStaticLibrary
     {
