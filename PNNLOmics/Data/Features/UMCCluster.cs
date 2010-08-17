@@ -33,7 +33,7 @@ namespace PNNLOmics.Data.Features
             
             Abundance       = cluster.Abundance;
             ChargeState     = cluster.ChargeState;
-            Corrected       = cluster.Corrected;
+            IsDaltonCorrected       = cluster.IsDaltonCorrected;
             DriftTime       = cluster.DriftTime;
             ElutionTime     = cluster.ElutionTime;
             GroupID         = cluster.GroupID;
@@ -43,7 +43,7 @@ namespace PNNLOmics.Data.Features
             NETAligned      = cluster.NET; 
             ScanLC          = cluster.ScanLC;
             ScanLCAligned   = cluster.ScanLCAligned; 
-            Suspicious      = cluster.Suspicious;            
+            IsSuspicious      = cluster.IsSuspicious;            
         }
 
         #region Properties

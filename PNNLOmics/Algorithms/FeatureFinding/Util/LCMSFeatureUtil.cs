@@ -235,7 +235,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			double massTolerance = m_settings.MassMonoisotopicConstraint * msFeature.MassMonoisotopic / 1000000;
 
 			// If this is the first Mass going into this bin
-			if (uniqueMass.MSFeatureList.Count == 0 && (lcmsFeature.Suspicious || msFeature.Suspicious))
+			if (uniqueMass.MSFeatureList.Count == 0 && (lcmsFeature.IsSuspicious || msFeature.IsSuspicious))
 			{
 				// Adjust the mass so that it is within 1 Da of the middle bin for this LC-MS Feature and calculate the Difference
 				double massAdjusted = msFeature.MassMonoisotopic - differenceInt;
@@ -264,7 +264,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 						}
 					}
 
-					lcmsFeature.DaError = true;
+					lcmsFeature.HasDaltonError = true;
 
 					return true;
 				}

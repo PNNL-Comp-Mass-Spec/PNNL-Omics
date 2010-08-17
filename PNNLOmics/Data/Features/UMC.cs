@@ -17,7 +17,7 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// True if the the UMC has been corrected using Dalton Error Correction.
 		/// </summary>
-		public bool DaError { get; set; }
+		public bool HasDaltonError { get; set; }
 		/// <summary>
 		/// The maximum charge state of the UMC.
 		/// </summary>

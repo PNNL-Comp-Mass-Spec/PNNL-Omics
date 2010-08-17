@@ -112,12 +112,12 @@ namespace LCMSFeatureFinder
 
 				foreach (LCMSFeature lcmsFeature in lcmsFeatureList)
 				{
-					if (lcmsFeature.DaError)
+					if (lcmsFeature.HasDaltonError)
 					{
 						featuresWithDaErrors++;
 						foreach (MSFeature msFeature in lcmsFeature.MSFeatureList)
 						{
-							if (msFeature.Corrected)
+							if (msFeature.IsDaltonCorrected)
 							{
 								while (corrections.Count <= Math.Abs(msFeature.MassOffset))
 								{
@@ -126,7 +126,7 @@ namespace LCMSFeatureFinder
 
 								corrections[Math.Abs(msFeature.MassOffset)]++;
 
-								msFeature.Corrected = false;
+								msFeature.IsDaltonCorrected = false;
 								numberOfCorrections++;
 							}
 						}
@@ -197,12 +197,12 @@ namespace LCMSFeatureFinder
 
 				foreach (IMSMSFeature imsmsFeature in imsmsFeatureList)
 				{
-					if (imsmsFeature.DaError)
+					if (imsmsFeature.HasDaltonError)
 					{
 						featuresWithDaErrors++;
 						foreach (MSFeature msFeature in imsmsFeature.MSFeatureList)
 						{
-							if (msFeature.Corrected)
+							if (msFeature.IsDaltonCorrected)
 							{
 								while (corrections.Count <= Math.Abs(msFeature.MassOffset))
 								{
@@ -211,7 +211,7 @@ namespace LCMSFeatureFinder
 
 								corrections[Math.Abs(msFeature.MassOffset)]++;
 
-								msFeature.Corrected = false;
+								msFeature.IsDaltonCorrected = false;
 								numberOfCorrections++;
 							}
 						}
@@ -226,7 +226,7 @@ namespace LCMSFeatureFinder
 					logger.Log(i + " Da Corrections = " + corrections[i]);
 				}
 			}
-
+            //TODO: STOPPED CODE REVIEW HERE
 			if (settings.UseConformationDetection)
 			{
 				logger.Log("Drift Time Conformer Detection...");
@@ -262,12 +262,12 @@ namespace LCMSFeatureFinder
 
 				foreach (LCIMSMSFeature lcimsmsFeature in lcimsmsFeatureList)
 				{
-					if (lcimsmsFeature.DaError)
+					if (lcimsmsFeature.HasDaltonError)
 					{
 						featuresWithDaErrors++;
 						foreach (MSFeature msFeature in lcimsmsFeature.MSFeatureList)
 						{
-							if (msFeature.Corrected)
+							if (msFeature.IsDaltonCorrected)
 							{
 								while (corrections.Count <= Math.Abs(msFeature.MassOffset))
 								{
@@ -276,7 +276,7 @@ namespace LCMSFeatureFinder
 
 								corrections[Math.Abs(msFeature.MassOffset)]++;
 
-								msFeature.Corrected = false;
+								msFeature.IsDaltonCorrected = false;
 								numberOfCorrections++;
 							}
 						}

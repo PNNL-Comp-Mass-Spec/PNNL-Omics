@@ -172,7 +172,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		/// <param name="feature">The UMC to be corrected</param>
 		public static void CorrectMassMostAbundant<T>(T umc) where T : UMC
 		{
-			if (umc.DaError)
+			if (umc.HasDaltonError)
 			{
 				double massReference = umc.MassOfMaxAbundance;
 
@@ -187,7 +187,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
                         // TODO: Kevin 1.00727849 should be a constant
                         // TODO: Kevin Remove MZCorrected completely?
 						msFeature.MZCorrected = (msFeature.MassMonoisotopic / msFeature.ChargeState) + 1.00727849;
-						msFeature.Corrected = true;
+						msFeature.IsDaltonCorrected = true;
                         msFeature.MassOffset += differenceInt;
 					}
 				}
@@ -219,7 +219,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					msFeatureWriter.WriteLine(feature.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID + "\t" + ScanLCMapHolder.ScanLCMap[msFeature.ScanLC] + "\t" +
 												msFeature.MassMonoisotopic + "\t" + msFeature.ChargeState + "\t" + msFeature.Abundance + "\t" +
-												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious);
+												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.IsSuspicious);
 				}
 			}
 
@@ -255,7 +255,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					msFeatureWriter.WriteLine(imsmsFeature.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID + "\t" + ScanLCMapHolder.ScanLCMap[msFeature.ScanLC] + "\t" + msFeature.ScanIMS + "\t" +
 												msFeature.MassMonoisotopic + "\t" + msFeature.ChargeState + "\t" + msFeature.DriftTime + "\t" + msFeature.Abundance + "\t" +
-												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious + "\t" + msFeature.Corrected + "\t" + msFeature.MassOffset);
+												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.IsSuspicious + "\t" + msFeature.IsDaltonCorrected + "\t" + msFeature.MassOffset);
 				}
 			}
 
@@ -295,7 +295,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					{
 						msFeatureWriter.WriteLine(lcimsmsFeature.ID + "\t" + imsmsFeature.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID + "\t" + ScanLCMapHolder.ScanLCMap[msFeature.ScanLC] + "\t" + msFeature.ScanIMS + "\t" +
 													msFeature.MassMonoisotopic + "\t" + msFeature.ChargeState + "\t" + msFeature.DriftTime + "\t" + msFeature.Abundance + "\t" +
-													msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious + "\t" + msFeature.Corrected + "\t" + msFeature.MassOffset);
+													msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.IsSuspicious + "\t" + msFeature.IsDaltonCorrected + "\t" + msFeature.MassOffset);
 					}
 				}
 			}
@@ -387,7 +387,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					msFeatureWriter.WriteLine(umc.ID + "\t" + msFeature.IndexInFile + "\t" + msFeature.ID + "\t" + ScanLCMapHolder.ScanLCMap[msFeature.ScanLC] + "\t" +
 												msFeature.MassMonoisotopic + "\t" + msFeature.ChargeState + "\t" + msFeature.Abundance + "\t" +
-												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.Suspicious);
+												msFeature.IntensityOriginal + "\t" + msFeature.Fit + "\t" + msFeature.IsSuspicious);
 				}
 			}
 

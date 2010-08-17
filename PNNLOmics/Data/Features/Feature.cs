@@ -27,11 +27,11 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// True if the MSFeature was marked as Suspicious by Deconvolution algorithm.
 		/// </summary>
-		public bool Suspicious { get; set; }
+		public bool IsSuspicious { get; set; }
 		/// <summary>
 		/// True if the MSFeature was marked corrected by the Da Correction algorithm.
 		/// </summary>
-		public bool Corrected { get; set; }
+		public bool IsDaltonCorrected { get; set; }
         /// <summary>
         /// The drift time of the feature.
         /// </summary>

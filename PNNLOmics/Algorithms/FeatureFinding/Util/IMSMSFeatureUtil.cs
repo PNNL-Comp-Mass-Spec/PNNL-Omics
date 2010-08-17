@@ -174,7 +174,6 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					if (m_settings.IMSDaltonCorrectionMax > 0)
 					{
 						imsmsFeatureListForLCScan = AppendIMSMSFeatures(imsmsFeatureListForLCScan);
-                        // TODO: Kevin - STOPPED CODE REVIEW HERE
 						imsmsFeatureListForLCScan = FillGaps(imsmsFeatureListForLCScan);
 					}
 
@@ -188,7 +187,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					// Allow for IMS Gap
 					var query = from IMSMSFeature imsmsFeature in openIMSMSFeatureList
-								where (int)currentScanIMS - (int)imsmsFeature.ScanIMSEnd - 1 <= m_settings.IMSGapSizeMax
+								where currentScanIMS - imsmsFeature.ScanIMSEnd <= m_settings.IMSGapSizeMax
 								select imsmsFeature;
 
 					openIMSMSFeatureList = query.ToList<IMSMSFeature>();
@@ -208,7 +207,6 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			}
 
 			completeIMSMSFeatureList.AddRange(imsmsFeatureListForLCScan);
-			imsmsFeatureListForLCScan.Clear();
 
 			return completeIMSMSFeatureList;
 		}
@@ -467,7 +465,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		}
 
 		/// <summary>
-		/// Part of the Dalton Correction algrotihm. This method fills in IMS-MS Feature that have "gaps" in the IMS dimension with
+		/// Part of the Dalton Correction algrotihm. This method fills in IMS-MS Features that have "gaps" in the IMS dimension with
 		/// IMS-MS Features that fit the gap.
 		/// </summary>
 		/// <param name="imsmsFeatureList">List of IMS-MS Features</param>
@@ -480,6 +478,8 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 						   where imsmsFeature.GapList.Count > 0
 						   select imsmsFeature;
 
+            // TODO: Kevin Check to see if Count() is called every time we iterate through the for loop
+            // TODO: Kevin change to iterator
 			for (int i = 0; i < gapQuery.Count(); i++)
 			{
 				IMSMSFeature gappedIMSMSFeature = gapQuery.ElementAt(i);
@@ -489,13 +489,16 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				{
 					IMSMSFeature featureToRemove = null;
 
-					var query = from IMSMSFeature imsmsFeatureToFillGap in imsmsFeatureList
-								where imsmsFeatureToFillGap.ScanLC == gappedIMSMSFeature.ScanLC
-										&& imsmsFeatureToFillGap.ChargeState == gappedIMSMSFeature.ChargeState
-										&& ((imsmsFeatureToFillGap.ScanIMSStart > gappedIMSMSFeature.ScanIMSStart && imsmsFeatureToFillGap.ScanIMSStart < gappedIMSMSFeature.ScanIMSEnd)
-											|| (imsmsFeatureToFillGap.ScanIMSEnd < gappedIMSMSFeature.ScanIMSEnd && imsmsFeatureToFillGap.ScanIMSEnd > gappedIMSMSFeature.ScanIMSStart))
-								orderby Math.Abs(imsmsFeatureToFillGap.MassMonoisotopicMedian - gappedIMSMSFeature.MassMonoisotopicMedian)
-								select imsmsFeatureToFillGap;
+                    // TODO: Kevin Comment this
+                    var query = from IMSMSFeature imsmsFeatureToFillGap in imsmsFeatureList
+                                where imsmsFeatureToFillGap.ScanLC == gappedIMSMSFeature.ScanLC
+                                        && imsmsFeatureToFillGap.ChargeState == gappedIMSMSFeature.ChargeState
+                                        && ((imsmsFeatureToFillGap.ScanIMSStart > gappedIMSMSFeature.ScanIMSStart
+                                                && imsmsFeatureToFillGap.ScanIMSStart < gappedIMSMSFeature.ScanIMSEnd)
+                                        || (imsmsFeatureToFillGap.ScanIMSEnd < gappedIMSMSFeature.ScanIMSEnd
+                                                && imsmsFeatureToFillGap.ScanIMSEnd > gappedIMSMSFeature.ScanIMSStart))
+                                orderby Math.Abs(imsmsFeatureToFillGap.MassMonoisotopicMedian - gappedIMSMSFeature.MassMonoisotopicMedian)
+                                select imsmsFeatureToFillGap;
 
 					foreach (IMSMSFeature imsmsFeatureToFillGap in query)
 					{
@@ -570,7 +573,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 							// Only fill the Gap if all tests pass
 							if (canFillGap)
 							{
-								gappedIMSMSFeature.DaError = true;
+								gappedIMSMSFeature.HasDaltonError = true;
 								gappedIMSMSFeature.AddMSFeatureList(imsmsFeatureToFillGap.MSFeatureList);
 
 								FeatureUtil.CorrectMassMostAbundant(gappedIMSMSFeature);
@@ -716,7 +719,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 											// Only fill the Gap if all tests pass
 											if (canFillGap)
 											{
-												gappedLCIMSMSFeature.DaError = true;
+												gappedLCIMSMSFeature.HasDaltonError = true;
 												gappedLCIMSMSFeature.AddIMSMSFeatureList(lcimsmsFeatureToFillGap.IMSMSFeatureList);
 
 												FeatureUtil.CorrectMassMostAbundant(gappedLCIMSMSFeature);
@@ -796,7 +799,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 							IMSMSFeature imsmsFeatureToAppend = appendQuery.First();
 							imsmsFeatureToAppend.ToBeRemoved = true;
 
-							currentIMSMSFeature.DaError = true;
+							currentIMSMSFeature.HasDaltonError = true;
 							currentIMSMSFeature.AddMSFeatureList(imsmsFeatureToAppend.MSFeatureList);
 
 							FeatureUtil.CorrectMassMostAbundant(currentIMSMSFeature);
@@ -854,7 +857,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 							LCIMSMSFeature lcimsmsFeatureToAppend = appendQuery.First();
 							lcimsmsFeatureToAppend.ToBeRemoved = true;
 
-							currentLCIMSMSFeature.DaError = true;
+							currentLCIMSMSFeature.HasDaltonError = true;
 							currentLCIMSMSFeature.AddIMSMSFeatureList(lcimsmsFeatureToAppend.IMSMSFeatureList);
 
 							FeatureUtil.CorrectMassMostAbundant(currentLCIMSMSFeature);

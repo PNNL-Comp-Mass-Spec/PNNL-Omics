@@ -14,6 +14,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 		public string InputFileName { get; set; }
 		public string OutputDirectory { get; set; }
 
+        // TODO: Kevin Change to int
 		public short FeatureLengthMin { get; set; }
 		public short MinimumDifferenceInMedianPpmMassToSplit { get; set; }
 		public short LCGapSizeMax { get; set; }
@@ -27,6 +28,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 		public int ScanLCMax { get; set; }
 		public int PeakWidthMinimum { get; set; }
 
+        //TODO: Kevin Change to double
 		public float FitMax { get; set; }
 		public float IntensityMin { get; set; }
 		public float MassMonoisotopicConstraint { get; set; }

@@ -196,7 +196,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Control
 					if (ColumnMap.ContainsKey("MSFeature.IntensityOriginal")) msFeature.IntensityOriginal = float.Parse(columns[ColumnMap["MSFeature.IntensityOriginal"]], System.Globalization.NumberStyles.Any);
 					if (ColumnMap.ContainsKey("MSFeature.IntensityOriginalTIA")) msFeature.IntensityOriginalTIA = float.Parse(columns[ColumnMap["MSFeature.IntensityOriginalTIA"]], System.Globalization.NumberStyles.Any);
 					if (ColumnMap.ContainsKey("MSFeature.DriftTimeIMS")) msFeature.DriftTime = float.Parse(columns[ColumnMap["MSFeature.DriftTimeIMS"]], System.Globalization.NumberStyles.Any);
-					if (ColumnMap.ContainsKey("MSFeature.ErrorFlag")) msFeature.Suspicious = columns[ColumnMap["MSFeature.ErrorFlag"]].Equals("") ? false : Int32.Parse(columns[ColumnMap["MSFeature.ErrorFlag"]], System.Globalization.NumberStyles.Any) == 1;
+					if (ColumnMap.ContainsKey("MSFeature.ErrorFlag")) msFeature.IsSuspicious = columns[ColumnMap["MSFeature.ErrorFlag"]].Equals("") ? false : Int32.Parse(columns[ColumnMap["MSFeature.ErrorFlag"]], System.Globalization.NumberStyles.Any) == 1;
 
 					if (PassesFilters(msFeature, ref settings))
 					{

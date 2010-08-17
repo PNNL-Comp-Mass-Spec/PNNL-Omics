@@ -86,7 +86,7 @@ namespace PNNLOmics.Data.Features
 		public override void Clear()
 		{
 			base.Clear();
-			this.Suspicious             = false;
+			this.IsSuspicious             = false;
 			this.IndexInFile            = -1;
 			this.AbundanceMono          = 0;
 			this.AbundancePlus2         = 0;
