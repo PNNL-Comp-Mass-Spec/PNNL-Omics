@@ -27,9 +27,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(formula, "C4H6N2O2");
             
             //one line implementation
-            double mass2 = AminoAcidConstantsStaticLibrary.GetMonoisotopicMass(aminoAcidKey);
-            string name2 = AminoAcidConstantsStaticLibrary.GetName(aminoAcidKey);
-            string formula2 = AminoAcidConstantsStaticLibrary.GetFormula(aminoAcidKey);
+            double mass2 = AminoAcidStaticLibrary.GetMonoisotopicMass(aminoAcidKey);
+            string name2 = AminoAcidStaticLibrary.GetName(aminoAcidKey);
+            string formula2 = AminoAcidStaticLibrary.GetFormula(aminoAcidKey);
 
             Assert.AreEqual(mass2, 114.04292745124599);
             Assert.AreEqual(name2, "Asparagine");
@@ -39,7 +39,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             string peptideSequence = "NRTL";
             for (int y = 0; y < peptideSequence.Length; y++)
             {
-                massPeptide += AminoAcidConstantsStaticLibrary.GetMonoisotopicMass(peptideSequence[y]);
+                massPeptide += AminoAcidStaticLibrary.GetMonoisotopicMass(peptideSequence[y]);
             }//massPeptide = 484.27578094385393
 
             Assert.AreEqual(massPeptide, 484.27578094385393);         
@@ -60,9 +60,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(formula, "C6H10O5");
 
             //one line implementaiton
-            double mass2 = MonosaccharideConstantsStaticLibrary.GetMonoisotopicMass(monosaccharideKey);
-            string name2 = MonosaccharideConstantsStaticLibrary.GetName(monosaccharideKey);
-            string formula2 = MonosaccharideConstantsStaticLibrary.GetFormula(monosaccharideKey);
+            double mass2 = MonosaccharideStaticLibrary.GetMonoisotopicMass(monosaccharideKey);
+            string name2 = MonosaccharideStaticLibrary.GetName(monosaccharideKey);
+            string formula2 = MonosaccharideStaticLibrary.GetFormula(monosaccharideKey);
 
             Assert.AreEqual(mass2, 162.05282343122502);
             Assert.AreEqual(name2, "Hexose");
@@ -96,9 +96,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
 
             //One line implementation
 
-            double elementMass2 = ElementConstantsStaticLibrary.GetMonoisotopicMass(elementKey);
-            string elementName2 = ElementConstantsStaticLibrary.GetName(elementKey);
-            string elementSymbol2 = ElementConstantsStaticLibrary.GetSymbol(elementKey);
+            double elementMass2 = ElementStaticLibrary.GetMonoisotopicMass(elementKey);
+            string elementName2 = ElementStaticLibrary.GetName(elementKey);
+            string elementSymbol2 = ElementStaticLibrary.GetSymbol(elementKey);
 
             Assert.AreEqual(elementMass2, 12.0);
             Assert.AreEqual(elementName2, "Carbon");
@@ -121,9 +121,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(atomSymbol, "e");
 
             //one line implementation
-            double atomMass2 = AtomConstantsStaticLibrary.GetMonoisotopicMass(atomKey);
-            string atomName2 = AtomConstantsStaticLibrary.GetName(atomKey);
-            string atomSymbol2 = AtomConstantsStaticLibrary.GetSymbol(atomKey);
+            double atomMass2 = AtomStaticLibrary.GetMonoisotopicMass(atomKey);
+            string atomName2 = AtomStaticLibrary.GetName(atomKey);
+            string atomSymbol2 = AtomStaticLibrary.GetSymbol(atomKey);
 
             Assert.AreEqual(atomMass2, 0.00054857990943);
             Assert.AreEqual(atomName2, "Electron");
@@ -145,9 +145,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(otherFormula, "H2O");
 
             //One line implememtation
-            double otherMass2 = OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass(otherKey);
-            string otherName2 = OtherMoleculeConstantsStaticLibrary.GetName(otherKey);
-            string otherFormula2 = OtherMoleculeConstantsStaticLibrary.GetFormula(otherKey);
+            double otherMass2 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(otherKey);
+            string otherName2 = OtherMoleculeStaticLibrary.GetName(otherKey);
+            string otherFormula2 = OtherMoleculeStaticLibrary.GetFormula(otherKey);
 
             Assert.AreEqual(otherMass2, 18.010564686245);
             Assert.AreEqual(otherName2, "Aldehyde");
@@ -175,9 +175,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(name, "CRFNeu5Ac_03_X1");
 
             //one line implementation
-            double mass2 = CrossRingConstantsStaticLibrary.GetMonoisotopicMass(crossRingKey);
-            string formula2 = CrossRingConstantsStaticLibrary.GetFormula(crossRingKey);
-            string name2 = CrossRingConstantsStaticLibrary.GetName(crossRingKey);
+            double mass2 = CrossRingStaticLibrary.GetMonoisotopicMass(crossRingKey);
+            string formula2 = CrossRingStaticLibrary.GetFormula(crossRingKey);
+            string name2 = CrossRingStaticLibrary.GetName(crossRingKey);
 
             Assert.AreEqual(mass, 100.01604399481499);
             Assert.AreEqual(formula, "C4H4O3");

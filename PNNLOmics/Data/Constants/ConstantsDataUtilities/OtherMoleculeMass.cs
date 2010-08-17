@@ -10,35 +10,35 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     {
         public static double Aldehyde()
         {
-            return OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Aldehyde");
+            return OtherMoleculeStaticLibrary.GetMonoisotopicMass("Aldehyde");
         }
         public static double Alditol()
         {
-            return OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Alditol");
+            return OtherMoleculeStaticLibrary.GetMonoisotopicMass("Alditol");
         }
         public static double Ammonia()
         {
-            return OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Ammonia");
+            return OtherMoleculeStaticLibrary.GetMonoisotopicMass("Ammonia");
         }
         public static double Ammonium()
         {
-            return OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Ammonium");
+            return OtherMoleculeStaticLibrary.GetMonoisotopicMass("Ammonium");
         }
         public static double KMinusH()
         {
-            return OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("KMinusH");
+            return OtherMoleculeStaticLibrary.GetMonoisotopicMass("KMinusH");
         }
         public static double NaMinusH()
         {
-            return OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("NaMinusH");
+            return OtherMoleculeStaticLibrary.GetMonoisotopicMass("NaMinusH");
         }
         public static double Sulfate()
         {
-            return OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Sulfate");
+            return OtherMoleculeStaticLibrary.GetMonoisotopicMass("Sulfate");
         }
         public static double Water()
         {
-            return OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Water");
+            return OtherMoleculeStaticLibrary.GetMonoisotopicMass("Water");
         }
     }
 }
