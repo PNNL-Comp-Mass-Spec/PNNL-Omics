@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using PNNLOmics.Constants.ConstantsDataLayer;
-using PNNLOmics.Constants.ConstantsDataUtilities;
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.ConstantsDataUtilities;
 
 
 namespace PNNLOmics.UnitTests.ConstantsTests
