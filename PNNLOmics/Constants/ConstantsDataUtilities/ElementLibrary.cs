@@ -18,10 +18,11 @@ namespace PNNLOmics.Constants.ConstantsDataUtilities
 {
     public class ElementLibrary
     {
+        //TODO: SRK Add XML comments
         public static Dictionary<string, Element> LoadElementData()
         {
             Dictionary<string, Element> ElementDictionary = new Dictionary<string, Element>();
-
+            //TODO: SRK dont use regions in internal methods
             #region Carbon
                 Element carbon = new Element();
                 Dictionary<string, Isotope> carbonIsotopes = new Dictionary<string, Isotope>();

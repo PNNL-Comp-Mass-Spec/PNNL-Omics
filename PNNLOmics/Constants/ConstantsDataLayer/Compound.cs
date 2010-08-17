@@ -13,7 +13,8 @@ namespace PNNLOmics.Constants.ConstantsDataLayer
     public abstract class Compound : Matter
     {
         public string ChemicalFormula { get; set; }
-        
+        //TODO: SRK Update these names, they do not meet the coding standard
+        //TODO: SRK Add XML comments
         public int nCarbonNumber { get; set; }
         public int nHydrogenNumber { get; set; }
         public int nNitrogenNumber { get; set; }
@@ -22,7 +23,7 @@ namespace PNNLOmics.Constants.ConstantsDataLayer
         public int nPhosphorusNumber { get; set; }
         public int nPotassium { get; set; }
         public int nSodium { get; set; }
-
+        
         public static double GetMonoisotopicMass(Compound GeneralCompound)
         {
             Dictionary<string, Element> ElementDictionary = ElementLibrary.LoadElementData();
@@ -39,7 +40,7 @@ namespace PNNLOmics.Constants.ConstantsDataLayer
 
             return ExactMass;
         }
-
+        
         public void NewElements(int C, int H, int N, int O, int S, int P)
         {
             nCarbonNumber = C;
