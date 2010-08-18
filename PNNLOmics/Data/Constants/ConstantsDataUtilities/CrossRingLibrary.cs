@@ -14,6 +14,11 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class CrossRingLibrary
     {
+        /// <summary>
+        /// This is a Class designed to create cross ring fragments objects of monosaccharides from the elements.
+        /// The cross ring fragments are added to a Dictionary searchable with string keys such as "CRFNeu5Ac_02_X1" for the 
+        /// X1 cross ring fragment which breaks across the 0 and 2 ring bonds of a Neuraminic acid monosachcaride
+        /// </summary>
         public static Dictionary<string, CrossRing> LoadCrossRingData()
         {
             Dictionary<string, CrossRing> crossRingDictionary = new Dictionary<string, CrossRing>();

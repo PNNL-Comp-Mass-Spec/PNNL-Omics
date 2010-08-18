@@ -14,6 +14,10 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
+    /// <summary>
+    /// This is a Class designed to convert tabulated data into a atom objects which are similar to physical constants.
+    /// Electron, Neutron and Protons are created here and added to a Dictionarty with string keys such as "e" for electron
+    /// </summary>
     public class AtomLibrary
     {
         public static Dictionary<string, Atom> LoadAtomicData()

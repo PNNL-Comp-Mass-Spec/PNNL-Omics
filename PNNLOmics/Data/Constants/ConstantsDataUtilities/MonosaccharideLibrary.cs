@@ -14,6 +14,10 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class MonosaccharideLibrary
     {
+        /// <summary>
+        /// This is a Class designed to create monosaccharide objects from the elements.
+        /// The monosacchadies are added to a Dictionary searchable by string keys such as "DxyHex" for Deoxyhexose
+        /// </summary>
         public static Dictionary<string, Monosaccharide> LoadMonosaccharideData()
         {
             Dictionary<string, Monosaccharide> monosachcarideDictionary = new Dictionary<string, Monosaccharide>();

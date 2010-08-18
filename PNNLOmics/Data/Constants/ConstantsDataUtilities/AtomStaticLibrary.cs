@@ -11,6 +11,9 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
+    /// <summary>
+    /// This is a Class designed to convert dictionary calls for Atoms in one line static method calls.
+    /// </summary>
     public class AtomStaticLibrary
     {
         public static double GetMonoisotopicMass(string constantKey)

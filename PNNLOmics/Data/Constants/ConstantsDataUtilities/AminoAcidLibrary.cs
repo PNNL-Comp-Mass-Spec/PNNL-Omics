@@ -15,8 +15,12 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class AminoAcidLibrary
     {
-        //TODO: SRK Method name should start with a capital letter.
-        public static Dictionary<char, AminoAcid> loadAminoAcidData()
+        /// <summary>
+        /// This is a Class designed to create amino acids objects from the elements.
+        /// The amino acids are added to a Dictionary searchable by char keys such as 'A' for Alanine.
+        /// This is the only library with char keys.
+        /// </summary>
+        public static Dictionary<char, AminoAcid> LoadAminoAcidData()
         {
             Dictionary<char, AminoAcid> aminoAcidsDictionary = new Dictionary<char, AminoAcid>();
 

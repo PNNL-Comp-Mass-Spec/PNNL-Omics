@@ -14,6 +14,10 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class OtherMoleculeLibrary
     {
+        /// <summary>
+        /// This is a Class designed to create other molecules from the elements.
+        /// The other molecules are added to a Dictionary searchable by char keys such as "Aldehyde" for Aldehyde group
+        /// </summary>
         public static Dictionary<string, OtherMolecule> LoadOtherMoleculeData()
         {
             Dictionary<string, OtherMolecule> otherMoleculeDictionary = new Dictionary<string, OtherMolecule>();

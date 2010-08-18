@@ -13,8 +13,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     public abstract class Compound : Matter
     {
         public string ChemicalFormula { get; set; }
-        //TODO: SRK Update these names, they do not meet the coding standard
-        //TODO: SRK Add XML comments
+        //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
         public int nCarbonNumber { get; set; }
         public int nHydrogenNumber { get; set; }
         public int nNitrogenNumber { get; set; }
@@ -23,7 +22,10 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
         public int nPhosphorusNumber { get; set; }
         public int nPotassium { get; set; }
         public int nSodium { get; set; }
-        
+
+        /// <summary>
+        /// This static class is used to calculate the Monoisotopic mass from the element values.
+        /// </summary>
         public static double GetMonoisotopicMass(Compound GeneralCompound)
         {
             Dictionary<string, Element> ElementDictionary = ElementLibrary.LoadElementData();

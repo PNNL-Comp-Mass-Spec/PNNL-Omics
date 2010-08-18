@@ -11,8 +11,9 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
-
-    //TODO: SRK Add XML comments to all methods and class
+    /// <summary>
+    /// This is a Class designed to convert dictionary calls for Monosaccharides in one line static method calls.
+    /// </summary>
     public class MonosaccharideStaticLibrary
     {
         public static double GetMonoisotopicMass(string constantKey)

@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-//this is not finshed yey
+//There are more cross ring fragments possible than this list
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
+    /// <summary>
+    /// This is a Class designed to convert one line lookup calls to a monoisotopic mass object
+    /// with Intelli Sense so you can select the one you want.  This way you don'y need to remember the compelex name
+    /// to get the monoisotopic mass.
+    /// </summary>
     public class CrossRingMass
     {
         public static double CRFHex_02_A2()

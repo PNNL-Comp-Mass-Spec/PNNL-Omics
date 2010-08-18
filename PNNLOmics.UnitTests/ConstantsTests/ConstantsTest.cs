@@ -11,13 +11,12 @@ namespace PNNLOmics.UnitTests.ConstantsTests
 {
     class ConstantsTest
     {
-
         [Test]
         public void TestAminoAcid()//test amino acid calls
         {
             char aminoAcidKey = 'N';
             //dictionary implementation
-            Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.loadAminoAcidData();
+            Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
             double mass = aminoAcidsDictionary[aminoAcidKey].MonoIsotopicMass;
             string name = aminoAcidsDictionary[aminoAcidKey].Name;
             string formula = aminoAcidsDictionary[aminoAcidKey].ChemicalFormula;
