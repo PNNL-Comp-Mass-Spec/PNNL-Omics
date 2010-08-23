@@ -11,13 +11,28 @@ namespace PNNLOmics.Utilities.Importers
     /// <typeparam name="T">the import data type... i.e UMC or MassTag </typeparam>
     public abstract class ImporterBase<T>
     {
+        protected char m_delimiter = '\t';
+        protected List<string> m_columnHeaders = new List<string>();
+
         //TODO: Gord - finish cleaning up this before harsh code review
 
+        /// <summary>
+        /// Name of this class. 
+        /// </summary>
+        public virtual string Name
+        {
+            get { return this.ToString(); }
+            set { ;}
+        }
+
+        #region Public Methods
 
         public abstract T Import();
+        
+        #endregion
 
-        protected char m_delimiter = '\t';
-        protected List<string> m_columnHeaders= new List<string>();
+        #region Protected Methods
+
 
         /// <summary>
         /// This method retrieves a single cell of data (row, column) in the form of a string.  
@@ -42,7 +57,7 @@ namespace PNNLOmics.Utilities.Importers
             bool result = false;
             if (bool.TryParse(inputstring, out result))
                 return result;
-            else return false;     
+            else return false;
         }
 
         protected short ParseShortField(string inputstring)
@@ -110,7 +125,7 @@ namespace PNNLOmics.Utilities.Importers
             }
             return parsedLine;
         }
-        
+
         protected int GetColumnIndexForHeader(string target, bool ignoreCase)
         {
             for (int i = 0; i < m_columnHeaders.Count; i++)
@@ -135,7 +150,8 @@ namespace PNNLOmics.Utilities.Importers
             }
             return -1;     //didn't find header!
         }
-
+        
+        #endregion
 
     }
 }
