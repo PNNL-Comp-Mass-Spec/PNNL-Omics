@@ -40,7 +40,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		/// </summary>
 		/// <param name="msFeatureList">List of MS Features to be clustered</param>
 		/// <returns>List of IMS-MS Features</returns>
-		public List<IMSMSFeature> ProcessMSFeatures(List<MSFeature> msFeatureList)
+		public List<IMSMSFeature> CreateIMSMSFeatures(List<MSFeature> msFeatureList)
 		{
 			/*
 			 * These lists will be used to hold different sets of IMS-MS Features based on the current state of the Feature:
@@ -328,7 +328,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		/// </summary>
 		/// <param name="imsmsFeatureList">List of IMS-MS Features to be clustered</param>
 		/// <returns>A List of LC-IMS-MS Features</returns>
-		public List<LCIMSMSFeature> ProcessIMSMSFeatures(List<IMSMSFeature> imsmsFeatureList)
+		public List<LCIMSMSFeature> CreateLCIMSMSFeatures(List<IMSMSFeature> imsmsFeatureList)
 		{
 			IMSMSFeature currentIMSMSFeature = new IMSMSFeature();
 
@@ -344,7 +344,9 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 			imsmsFeatureList.Sort(new Comparison<IMSMSFeature>(UMC.ScanLCAndMassOfMaxAbundanceComparison));
 
 			int i = 0;
-			while (i < imsmsFeatureList.Count)
+            int numIMSMSFeatures = imsmsFeatureList.Count;
+
+            while (i < numIMSMSFeatures)
 			{
 				// Grab the current IMS-MS Feature and keep track of its LC Scan
 				currentIMSMSFeature = imsmsFeatureList[i];
@@ -353,13 +355,10 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				// Keeps track of how many IMS-MS Features we process for the current LC Scan
 				int imsmsFeatureCount = 0;
 
-				for (int j = i; j < imsmsFeatureList.Count; j++)
+                for (int j = i; j < numIMSMSFeatures; j++)
 				{
-					// If this is not the first iteration, get the current IMS-MS Feature
-					if (j != i)
-					{
-						currentIMSMSFeature = imsmsFeatureList[j];
-					}
+					// Get the current IMS-MS Feature
+					currentIMSMSFeature = imsmsFeatureList[j];
 
 					// Keep going as long as we are still in the same LC Scan
 					if (currentIMSMSFeature.ScanLC == currentScanLC)
@@ -370,17 +369,18 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 						double massToleranceHigh = currentIMSMSFeature.MassOfMaxAbundance + massTolerance;
 
 						// Keeps track of if the Current IMS-MS Feature finds an LC-IMS-MS Feature to live in
-						Boolean found = false;
+						bool found = false;
 
 						// Iterate over all Open LC-IMS-MS Features
 						foreach (LCIMSMSFeature lcimsmsFeature in openLCIMSMSFeatureList)
 						{
-							// Stop if we find an LC-IMS-MS feature with too high of a Median Mass
+							// Stop if we find an LC-IMS-MS feature with too high of a Mass of Max Abundance
 							if (lcimsmsFeature.MassOfMaxAbundance > massToleranceHigh)
 							{
 								break;
 							}
 
+                            // TODO: Kevin Update to LINQ
 							// Only consider this LC-IMS-MS Feature if it has not already been combined with an IMS-MS Feature from this LC Scan
 							else if (lcimsmsFeature.ScanLCEnd != currentScanLC)
 							{
@@ -436,7 +436,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 				List<LCIMSMSFeature> lcimsmsFeaturesToLeaveOpen = new List<LCIMSMSFeature>();
 				foreach (LCIMSMSFeature lcimsmsFeature in openLCIMSMSFeatureList)
 				{
-					if ((int)currentScanLC - (int)lcimsmsFeature.ScanLCEnd - 1 <= m_settings.LCGapSizeMax)
+					if (currentScanLC - lcimsmsFeature.ScanLCEnd <= m_settings.LCGapSizeMax)
 					{
 						FeatureUtil.SearchAndInsert(lcimsmsFeaturesToLeaveOpen, lcimsmsFeature, comparer);
 					}
@@ -878,12 +878,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		}
 
 		/// <summary>
-		/// Calculates statistics of the given IMS-MS Features.
-		/// Currently, this only includes attaching an ID to the Feature.
+		/// Attaches an ID to each IMS-MS Feature.
 		/// </summary>
 		/// <param name="imsmsFeatureList">List of IMS-MS Features</param>
-		/// <returns>New List of IMS-MS Features that have statistics calculated</returns>
-		public List<IMSMSFeature> CalculateIMSMSFeatureStatistics(List<IMSMSFeature> imsmsFeatureList)
+		/// <returns>New sorted (LC Scan and Mono Mass) List of IMS-MS Features that have IDs</returns>
+		public List<IMSMSFeature> CreateIMSMSFeatureIDs(List<IMSMSFeature> imsmsFeatureList)
 		{
 			imsmsFeatureList.Sort(new Comparison<IMSMSFeature>(Feature.ScanLCAndMassComparison));
 
@@ -902,7 +901,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 		/// Calculates statistics of the given LC-IMS-MS Features.
 		/// </summary>
 		/// <param name="lcimsmsFeatureList">List of LC-IMS-MS Features</param>
-		/// <returns>New List of LC-IMS-MS Features that have statistics calculated</returns>
+		/// <returns>New sorted (LC Scan and Mono Mass) List of LC-IMS-MS Features that have statistics calculated</returns>
 		public List<LCIMSMSFeature> CalculateLCIMSMSFeatureStatistics(List<LCIMSMSFeature> lcimsmsFeatureList)
 		{
 			lcimsmsFeatureList.Sort(new Comparison<LCIMSMSFeature>(UMC.ScanLCStartAndMassComparison));
@@ -917,13 +916,11 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 
 				List<double> massMonoisotopicList = new List<double>();
 				int abundanceSum = 0;
-				int msFeatureCount = 0;
 
 				foreach (MSFeature msFeature in lcimsmsFeature.MSFeatureList)
 				{
 					massMonoisotopicList.Add(msFeature.MassMonoisotopic);
 					abundanceSum += msFeature.Abundance;
-					msFeatureCount++;
 				}
 
 				massMonoisotopicList.Sort();
@@ -937,6 +934,7 @@ namespace PNNLOmics.Algorithms.FeatureFinding.Util
 					lcimsmsFeature.MassMonoisotopicMedian = 0.5 * (massMonoisotopicList[massMonoisotopicList.Count / 2 - 1] + massMonoisotopicList[massMonoisotopicList.Count / 2]);
 				}
 
+                lcimsmsFeature.AbundanceSum = abundanceSum;
 				lcimsmsFeature.MassMonoisotopicMinimum = massMonoisotopicList[0];
 				lcimsmsFeature.MassMonoisotopicMaximum = massMonoisotopicList[massMonoisotopicList.Count - 1];
 			}

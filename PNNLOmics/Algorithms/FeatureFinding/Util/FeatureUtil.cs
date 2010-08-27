@@ -11,8 +11,11 @@ using PNNLOmics.Generic;
 
 namespace PNNLOmics.Algorithms.FeatureFinding.Util
 {
+    // TODO: Kevin XML comment here
 	public static class FeatureUtil
 	{
+        // TODO: Kevin Refactor namespace and class names to be Utility instead of Util
+        // TODO: Kevin Outputers should possibly go to an exporter class?
 		/// <summary>
 		/// Writes a list of UMCs to a tab-delimited file for use in VIPER or MultiAlign.
 		/// </summary>

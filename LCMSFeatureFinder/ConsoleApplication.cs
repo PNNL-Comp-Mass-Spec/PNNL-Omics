@@ -179,7 +179,7 @@ namespace LCMSFeatureFinder
 
 			// A smart method is still needed in this step.
 			logger.Log("Creating IMS-MS Features...");
-			List<IMSMSFeature> imsmsFeatureList = imsmsFeatureUtil.ProcessMSFeatures(isosReader.MSFeatureList);
+			List<IMSMSFeature> imsmsFeatureList = imsmsFeatureUtil.CreateIMSMSFeatures(isosReader.MSFeatureList);
 			logger.Log("Total Number of Unfiltered IMS-MS Features = " + imsmsFeatureList.Count);
 
 			logger.Log("Filtering out short IMS-MS Features...");
@@ -226,7 +226,7 @@ namespace LCMSFeatureFinder
 					logger.Log(i + " Da Corrections = " + corrections[i]);
 				}
 			}
-            //TODO: STOPPED CODE REVIEW HERE
+            //TODO: Da Code Review for Conformation Detection
 			if (settings.UseConformationDetection)
 			{
 				logger.Log("Drift Time Conformer Detection...");
@@ -235,13 +235,13 @@ namespace LCMSFeatureFinder
 			}
 
 			logger.Log("Calculating IMS-MS Feature statistics...");
-			imsmsFeatureList = imsmsFeatureUtil.CalculateIMSMSFeatureStatistics(imsmsFeatureList);
+			imsmsFeatureList = imsmsFeatureUtil.CreateIMSMSFeatureIDs(imsmsFeatureList);
 			//FeatureUtil.WriteMSFeaturesToFile(imsmsFeatureList, settings);
 
 			//imsmsFeatureUtil.WriteIMSMSFeaturesToFile(imsmsFeatureList);
 
 			logger.Log("Creating LC-IMS-MS Features...");
-			List<LCIMSMSFeature> lcimsmsFeatureList = imsmsFeatureUtil.ProcessIMSMSFeatures(imsmsFeatureList);
+			List<LCIMSMSFeature> lcimsmsFeatureList = imsmsFeatureUtil.CreateLCIMSMSFeatures(imsmsFeatureList);
 			logger.Log("Total Number of Unfiltered LC-IMS-MS Features = " + lcimsmsFeatureList.Count);
 
 			if (settings.UseConformationDetection)

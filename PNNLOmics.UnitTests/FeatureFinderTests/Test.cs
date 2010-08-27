@@ -173,7 +173,7 @@ namespace PNNLOmics.UnitTests.FeatureFinderTests
 			IsosReader isosReader = new IsosReader(ref settings, logger);
 
 			IMSMSFeatureUtil imsmsFeatureUtil = new IMSMSFeatureUtil(settings, logger);
-			List<IMSMSFeature> imsmsFeatureList = imsmsFeatureUtil.ProcessMSFeatures(isosReader.MSFeatureList);
+			List<IMSMSFeature> imsmsFeatureList = imsmsFeatureUtil.CreateIMSMSFeatures(isosReader.MSFeatureList);
 			Assert.AreEqual(20, imsmsFeatureList.Count);
 
 			imsmsFeatureList = imsmsFeatureUtil.RefineIMSMSFeaturesByFeatureLength(imsmsFeatureList);
@@ -197,12 +197,12 @@ namespace PNNLOmics.UnitTests.FeatureFinderTests
 			IsosReader isosReader = new IsosReader(ref settings, logger);
 
 			IMSMSFeatureUtil imsmsFeatureUtil = new IMSMSFeatureUtil(settings, logger);
-			List<IMSMSFeature> imsmsFeatureList = imsmsFeatureUtil.ProcessMSFeatures(isosReader.MSFeatureList);
-			List<LCIMSMSFeature> lcimsmsFeatureList = imsmsFeatureUtil.ProcessIMSMSFeatures(imsmsFeatureList);
+			List<IMSMSFeature> imsmsFeatureList = imsmsFeatureUtil.CreateIMSMSFeatures(isosReader.MSFeatureList);
+			List<LCIMSMSFeature> lcimsmsFeatureList = imsmsFeatureUtil.CreateLCIMSMSFeatures(imsmsFeatureList);
 			Assert.AreEqual(11, lcimsmsFeatureList.Count);
 
 			imsmsFeatureList = imsmsFeatureUtil.RefineIMSMSFeaturesByFeatureLength(imsmsFeatureList);
-			lcimsmsFeatureList = imsmsFeatureUtil.ProcessIMSMSFeatures(imsmsFeatureList);
+			lcimsmsFeatureList = imsmsFeatureUtil.CreateLCIMSMSFeatures(imsmsFeatureList);
 			Assert.AreEqual(4, lcimsmsFeatureList.Count);
 
 			// Clean-up created files
