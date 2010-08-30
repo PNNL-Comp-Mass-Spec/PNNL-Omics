@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
 using PNNLOmics.Data.Constants.ConstantsXMLInput;
+using System.IO;
 
 //dictionary implementation                        
 //Dictionary<string,ElementObject> ElementDictionary = ElementLibrary.LoadElementData();
@@ -27,12 +28,13 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             Dictionary<string, Element> ElementDictionary = new Dictionary<string, Element>();
 
-            bool loadFromFile = false;
+            bool loadFromFile = true;
 
             if (loadFromFile)
             {
-                //string constantsFileXMLName = @"d:\Csharp\PNNLOmicsElementData2.xml";
-                string constantsFileXMLName = "..\\..\\..\\..\\lib\\data files\\PNNLOmicsElementData.xml";
+                string currentDirectory = Directory.GetCurrentDirectory();
+                string constantsFileXMLName = currentDirectory + "\\PNNLOmicsElementData.xml";
+
                 List<string> elementSymbolList = new List<string>();
                 List<Element> elementList = new List<Element>();
 
