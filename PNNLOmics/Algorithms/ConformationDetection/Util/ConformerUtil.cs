@@ -259,7 +259,7 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 			int globalStartBin = (int)((Math.Sqrt(minMZ) / calibrationSlope + calibrationIntercept) * 1000 / binWidth);
 			int globalEndBin = (int)Math.Ceiling(((Math.Sqrt(maxMZ) / calibrationSlope + calibrationIntercept) * 1000 / binWidth));
 
-			int[][] allIntensities = m_uimfReader.GetIntensityBlock(frameNum, 0, startScan, endScan, globalStartBin, globalEndBin);
+			//int[][] allIntensities = m_uimfReader.GetIntensityBlock(frameNum, 0, startScan, endScan, globalStartBin, globalEndBin);
 
 			// Save the m/z vs. intensity data
 			for (int i = 0; i <= (endScan - startScan); i++)
@@ -284,7 +284,7 @@ namespace PNNLOmics.Algorithms.ConformationDetection.Util
 
 					for (int k = adjustedStartBin; k <= adjustedEndBin; k++)
 					{
-						intensitySumMZRange += allIntensities[i][k];
+						//intensitySumMZRange += allIntensities[i][k];
 					}
 				}
 				intensityList.Add(intensitySumMZRange);

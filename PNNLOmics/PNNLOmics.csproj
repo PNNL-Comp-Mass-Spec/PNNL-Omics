@@ -177,6 +177,7 @@
     <Compile Include="Generic\AnonymousComparer.cs" />
     <Compile Include="Algorithms\FeatureFinding\Control\IniReader.cs" />
     <Compile Include="IonType.cs" />
+    <Compile Include="Data\Constants\ConstantsXMLInput\LoadConstantsXML.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
     <Compile Include="Organism.cs" />
@@ -223,4 +224,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>
