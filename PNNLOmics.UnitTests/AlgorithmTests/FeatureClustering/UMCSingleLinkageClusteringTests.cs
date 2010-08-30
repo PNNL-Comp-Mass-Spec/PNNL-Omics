@@ -36,7 +36,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void BadDataClusterNull()
         {
             // Sends a null reference to the clustering object.
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
             clustering.Cluster(null);
         }
         /// <summary>
@@ -50,7 +50,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void BadDataClusterNullInList()
         {
             // Sends a null reference to the clustering object.
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
             List<UMC> list = new List<UMC>();
             list.Add(new UMC());
             list.Add(null);
@@ -78,7 +78,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
@@ -147,7 +147,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
@@ -215,7 +215,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
@@ -280,7 +280,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
@@ -339,7 +339,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         {    /*             
              *     x1 x2 ... x3 
              */
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
@@ -398,7 +398,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         {    /*             
              *     x1 ... x2, x3 
              */
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
@@ -461,7 +461,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("This test makes a set of UMC's whose only varying dimension is NET.")]
         public void EdgeSingleClusterTest()
         {
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
@@ -513,7 +513,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("Cluster a single feature.")]
         public void EdgeSingleFeatureTest()
         {
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
@@ -568,8 +568,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Test]
         [Description("This test makes sure two dataset features are not clustered together.")]
         public void ClusterOverlapMergeTest()
-        {            
-            UMCSingleLinkageClusterer clustering = new UMCSingleLinkageClusterer();
+        {
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();

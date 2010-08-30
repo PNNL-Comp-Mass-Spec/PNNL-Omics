@@ -63,7 +63,7 @@ namespace PNNLOmics.Data.Features
             
             Abundance       = umc.Abundance;
             ChargeState     = umc.ChargeState;
-            Corrected       = umc.Corrected;
+            IsDaltonCorrected = umc.IsDaltonCorrected;
             DriftTime       = umc.DriftTime;
             ElutionTime     = umc.ElutionTime;
             GroupID         = umc.GroupID;
@@ -75,7 +75,7 @@ namespace PNNLOmics.Data.Features
             NETAligned      = umc.NET; 
             ScanLC          = umc.ScanLC;
             ScanLCAligned   = umc.ScanLCAligned; 
-            Suspicious      = umc.Suspicious;
+            IsSuspicious      = umc.IsSuspicious;
 
             
         }

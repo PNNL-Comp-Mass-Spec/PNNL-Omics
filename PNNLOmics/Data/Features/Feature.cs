@@ -93,7 +93,7 @@ namespace PNNLOmics.Data.Features
 			this.Abundance                  = 0;
 			this.ChargeState                = 0;
 			this.DriftTime                  = 0;            
-            this.Corrected                  = false;
+            this.IsDaltonCorrected                  = false;
             this.ElutionTime                = 0;
             this.GroupID                    = -1;
 			this.ID                         = -1;
@@ -105,7 +105,7 @@ namespace PNNLOmics.Data.Features
 			this.NETAligned                 = 0;
 			this.ScanLC                     = CONST_DEFAULT_SCAN_VALUE;
 			this.ScanLCAligned              = CONST_DEFAULT_SCAN_VALUE;
-            this.Suspicious                 = false;
+            this.IsSuspicious                 = false;
             
      
             //TODO: Intialize all of the new members
@@ -305,7 +305,7 @@ namespace PNNLOmics.Data.Features
             {
                 return false;
             }
-            if (!this.Corrected.Equals(other.Corrected))
+            if (!this.IsDaltonCorrected.Equals(other.IsDaltonCorrected))
             {
                 return false;
             }
@@ -357,7 +357,7 @@ namespace PNNLOmics.Data.Features
             {
                 return false;
             }
-            if (!this.Suspicious.Equals(other.Suspicious))
+            if (!this.IsSuspicious.Equals(other.IsSuspicious))
             {
                 return false;
             }
@@ -372,7 +372,7 @@ namespace PNNLOmics.Data.Features
             int hashCode =
                 Abundance.GetHashCode() ^
                 ChargeState.GetHashCode() ^
-                Corrected.GetHashCode() ^
+                IsDaltonCorrected.GetHashCode() ^
                 DriftTime.GetHashCode() ^
                 ElutionTime.GetHashCode() ^
                 GroupID.GetHashCode() ^
@@ -383,7 +383,7 @@ namespace PNNLOmics.Data.Features
                 NET.GetHashCode() ^
                 ScanLC.GetHashCode() ^
                 ScanLCAligned.GetHashCode() ^
-                Suspicious.GetHashCode();   
+                IsSuspicious.GetHashCode();   
 
             return hashCode;
         }
