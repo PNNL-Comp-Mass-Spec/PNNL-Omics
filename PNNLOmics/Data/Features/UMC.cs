@@ -13,6 +13,7 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// True if the the UMC should be removed from the working List of UMCs.
 		/// </summary>
+        //TODO: data is algorithm structure specific
 		public bool ToBeRemoved { get; set; }
 		/// <summary>
 		/// True if the the UMC has been corrected using Dalton Error Correction.
@@ -299,18 +300,45 @@ namespace PNNLOmics.Data.Features
 		};
 		#endregion
 
+        #region Overriden Base Methods
         /// <summary>
-        /// Returns a string representation of this object based on its aligned
-        /// data values and feature ID.
+        /// Returns a basic string representation of the cluster.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("ID: {0} Mono-Mass: {1} NET {2} Drift {3}",
-                                    ID, 
-                                    MassMonoisotopicAligned,
-                                    NETAligned, 
-                                    DriftTime);
+            return "UMC " + base.ToString();
         }
+        /// <summary>
+        /// Compares two objects' values to each other.
+        /// </summary>
+        /// <param name="obj">Object to compare to.</param>
+        /// <returns>True if similar, False if not.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            UMC umc = obj as UMC;
+            if (umc == null)
+                return false;
+
+            bool isBaseEqual = base.Equals(umc);
+            if (!isBaseEqual)
+                return false;
+
+            //TODO: Add other data ScanLCEnd etc.
+
+            return true;
+        }
+        /// <summary>
+        /// Computes a hash code for the cluster.
+        /// </summary>
+        /// <returns>Hashcode as an integer.</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
 	}
 }

@@ -20,7 +20,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Clusters UMC's (LC-MS Features, LC-IMS-MS Features) into UMC Clusters.
     /// </summary>
-    public class UMCSingleLinkageClusterer: IClusterer<UMC, UMCCluster>
+    public class UMCSingleLinkageClusterer<T> : IClusterer<UMC, T> where T: UMCCluster, new()
     {
         #region Members
         #endregion
@@ -51,7 +51,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="clusterX">Cluster x.</param>
         /// <param name="clusterY">Cluster y.</param>
         /// <returns>True if the clusters overlap based on group ID or false if they do not.</returns>
-        private bool DoClustersHaveGroupOverlap(UMCCluster clusterX, UMCCluster clusterY)
+        private bool DoClustersHaveGroupOverlap(T clusterX, T clusterY)
         {            
             foreach (UMC umcX in clusterX.UMCList)
             {
@@ -71,7 +71,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="data">Data to cluster on.</param>
         /// <param name="distances">pairwise distance between UMC's.</param>
         /// <returns>List of UMC clusters.</returns>
-        private List<UMCCluster> LinkUMCs(List<PairwiseUMCDistance> distances, List<UMCCluster> clusters)
+        private List<T> LinkUMCs(List<PairwiseUMCDistance> distances, List<T> clusters)
         {
             // We assume that the features have already been put into singleton
             // clusters or have a cluster already associated with them.  Otherwise
@@ -86,8 +86,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 UMC featureX = distance.FeatureX;
                 UMC featureY = distance.FeatureY;
 
-                UMCCluster clusterX = featureX.UmcCluster;
-                UMCCluster clusterY = featureY.UmcCluster;                
+                T clusterX = featureX.UmcCluster as T;
+                T clusterY = featureY.UmcCluster as T;                
                  
                 // Determine if they are already clustered into the same cluster                                 
                 if (clusterX == clusterY && clusterX != null)
@@ -126,19 +126,19 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="start">Start UMC index.</param>
         /// <param name="stop">Stop UMC Index.</param>
         /// <returns>List of singleton clusters.</returns>
-        private List<UMCCluster> CreateSingletonClusters(List<UMC> data, int start, int stop)
+        private List<T> CreateSingletonClusters(List<UMC> data, int start, int stop)
         {
-            List<UMCCluster> clusters = new List<UMCCluster>();
+            List<T> clusters = new List<T>();
             for (int i = start; i < stop; i++)
             {
                 UMC umc = data[i];
                 
                 // Double-reference between cluster and UMC so both can point to each other.
-                umc.UmcCluster = new UMCCluster();
+                umc.UmcCluster = new T() as UMCCluster;
                 umc.UmcCluster.UMCList.Add(umc);
 
                 // Add to output list...
-                clusters.Add(umc.UmcCluster);
+                clusters.Add(umc.UmcCluster as T);
             }
             return clusters;
         }
@@ -214,13 +214,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         }
         #endregion
 
-        #region IClusterer<UMC,UMCCluster> Methods
+        #region IClusterer<UMC, T> Methods
         /// <summary>
         /// Clusters UMC's into UMC Clusters.
         /// </summary>
         /// <param name="data">List of data to cluster.</param>
         /// <returns>List of clustered data.</returns>
-        public List<UMCCluster> Cluster(List<UMC> data, List<UMCCluster> clusters)
+        public List<T> Cluster(List<UMC> data, List<T> clusters)
         {
             //  This clustering algorithm first sorts the list of input UMC's by mass.  It then
             //  iterates through this list partitioning the data into blocks of UMC's based on a 
@@ -268,7 +268,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     // could not find any other features near it within the mass tolerance specified.
                     if (startUMCIndex == i)
                     {
-                        UMCCluster cluster  = new UMCCluster();
+                        T cluster  = new T();
                         umcX.UmcCluster = cluster; 
                         cluster.UMCList.Add(umcX);
                         clusters.Add(cluster);
@@ -278,8 +278,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                         // Otherwise we have more than one feature to cluster to consider.
 
                         List<PairwiseUMCDistance> distances = CalculatePairWiseDistances(startUMCIndex, i, data);
-                        List<UMCCluster> localClusters      = CreateSingletonClusters(data, startUMCIndex, i);                        
-                        List<UMCCluster>  blockClusters     = LinkUMCs(distances, clusters);
+                        List<T> localClusters      = CreateSingletonClusters(data, startUMCIndex, i);                        
+                        List<T>  blockClusters     = LinkUMCs(distances, clusters);
                         clusters.AddRange(blockClusters);
                     }
                     startUMCIndex = i + 1;
@@ -290,8 +290,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             if (startUMCIndex < totalFeatures)
             {
                 List<PairwiseUMCDistance> distances = CalculatePairWiseDistances(startUMCIndex, totalFeatures, data);
-                List<UMCCluster> localClusters = CreateSingletonClusters(data, startUMCIndex, totalFeatures);
-                List<UMCCluster> blockClusters = LinkUMCs(distances, localClusters);
+                List<T> localClusters = CreateSingletonClusters(data, startUMCIndex, totalFeatures);
+                List<T> blockClusters = LinkUMCs(distances, localClusters);
                 clusters.AddRange(blockClusters);
             }
 
@@ -302,10 +302,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         /// <param name="data">Data to cluster.</param>
         /// <returns>List of UMC clusters.</returns>
-        public List<UMCCluster> Cluster(List<UMC> data)
+        public List<T> Cluster(List<UMC> data)
         {            
-            return this.Cluster(data, new List<UMCCluster>());
+            return this.Cluster(data, new List<T>());
         }
-        #endregion
+        #endregion        
     }
 }
