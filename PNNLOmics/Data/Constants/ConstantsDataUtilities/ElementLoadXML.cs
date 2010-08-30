@@ -8,7 +8,7 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 namespace PNNLOmics.Data.Constants.ConstantsXMLInput
 {
-    public class ElementsLoadXML
+    public class ElementLoadXML
     {
         /// <summary>
         /// This is a Class designed to load periodic table of the elements data from a XML file PNNLOmicsElementData.xml

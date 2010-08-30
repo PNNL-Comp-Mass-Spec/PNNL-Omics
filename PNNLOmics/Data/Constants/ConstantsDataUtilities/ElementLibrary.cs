@@ -38,7 +38,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 List<string> elementSymbolList = new List<string>();
                 List<Element> elementList = new List<Element>();
 
-                LoadConstantsXML.LoadXML(constantsFileXMLName, out elementSymbolList, out elementList);
+                ElementLoadXML.LoadXML(constantsFileXMLName, out elementSymbolList, out elementList);
 
                 for (int i = 0; i < elementSymbolList.Count; i++)
                 {
