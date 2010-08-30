@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
-using PNNLOmics.Data.Constants.ConstantsXMLInput;
 using System.IO;
 
 //dictionary implementation                        

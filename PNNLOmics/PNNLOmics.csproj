@@ -107,6 +107,7 @@
     <Compile Include="Data\Constants\ConstantsDataUtilities\CrossRingMass.cs" />
     <Compile Include="Data\Constants\ConstantsDataUtilities\ElementStaticLibrary.cs" />
     <Compile Include="Data\Constants\ConstantsDataUtilities\ElementLibrary.cs" />
+    <Compile Include="Data\Constants\ConstantsDataUtilities\ElementLoadXML.cs" />
     <Compile Include="Data\Constants\ConstantsDataUtilities\MonosaccharideStaticLibrary.cs" />
     <Compile Include="Data\Constants\ConstantsDataUtilities\MonosaccharideLibrary.cs" />
     <Compile Include="Data\Constants\ConstantsDataUtilities\OtherMoleculeStaticLibrary.cs" />
@@ -154,7 +155,6 @@
     <Compile Include="Generic\AnonymousComparer.cs" />
     <Compile Include="Algorithms\FeatureFinding\Control\IniReader.cs" />
     <Compile Include="IonType.cs" />
-    <Compile Include="Data\Constants\ConstantsXMLInput\LoadConstantsXML.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
     <Compile Include="Organism.cs" />

@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
-namespace PNNLOmics.Data.Constants.ConstantsXMLInput
+namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class ElementLoadXML
     {
