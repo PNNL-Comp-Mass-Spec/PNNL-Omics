@@ -18,20 +18,23 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     {
         public static double GetMonoisotopicMass(string constantKey)
         {
-            Dictionary<string, CrossRing> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
-            return CrossRingDictionary[constantKey].MonoIsotopicMass;      
+            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
+            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].MonoIsotopicMass;
         }
 
         public static string GetFormula(string constantKey)
         {
-            Dictionary<string, CrossRing> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
-            return CrossRingDictionary[constantKey].ChemicalFormula;             
+            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
+            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].ChemicalFormula;
         }
 
         public static string GetName(string constantKey)
         {
-            Dictionary<string, CrossRing> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
-            return CrossRingDictionary[constantKey].Name;
+            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
+            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
         }
     }
 }

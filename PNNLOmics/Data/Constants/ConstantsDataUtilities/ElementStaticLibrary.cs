@@ -18,20 +18,22 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     {
         public static double GetMonoisotopicMass(string constantKey)
         {
-            Dictionary<string, Element> ElementDictionary = ElementLibrary.LoadElementData();
-            return ElementDictionary[constantKey].MonoIsotopicMass;      
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].MonoIsotopicMass;
         }
-
         public static string GetSymbol(string constantKey)
         {
-            Dictionary<string, Element> ElementDictionary = ElementLibrary.LoadElementData();
-            return ElementDictionary[constantKey].Symbol;             
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Symbol;
         }
 
         public static string GetName(string constantKey)
         {
-            Dictionary<string, Element> ElementDictionary = ElementLibrary.LoadElementData();
-            return ElementDictionary[constantKey].Name;
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
         }
     }
 }

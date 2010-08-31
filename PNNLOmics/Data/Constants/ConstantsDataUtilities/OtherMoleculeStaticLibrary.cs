@@ -18,25 +18,31 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     {
         public static double GetMonoisotopicMass(string constantKey)
         {
-            Dictionary<string, OtherMolecule> OtherDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
-            return OtherDictionary[constantKey].MonoIsotopicMass;          
+            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
+            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].MonoIsotopicMass;
         }
 
         public static string GetFormula(string constantKey)
         {
-            Dictionary<string, OtherMolecule> OtherDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
-            return OtherDictionary[constantKey].ChemicalFormula;             
+            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
+            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].ChemicalFormula;
         }
 
         public static string GetName(string constantKey)
         {
-            Dictionary<string, OtherMolecule> OtherDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
-            return OtherDictionary[constantKey].Name;
+            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
+            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
         }
+
         public static string GetName6(string constantKey)
         {
-            Dictionary<string, OtherMolecule> OtherDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
-            return OtherDictionary[constantKey].SixLetterCode;
+            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
+            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].SixLetterCode;
         }
+
     }
 }

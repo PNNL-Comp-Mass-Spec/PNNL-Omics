@@ -26,20 +26,23 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     {
         public static double GetMonoisotopicMass(char constantKey)
         {
-            Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
-            return aminoAcidsDictionary[constantKey].MonoIsotopicMass;      
+            AminoAcidSingleton NewSingleton = AminoAcidSingleton.Instance;
+            Dictionary<char, AminoAcid> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].MonoIsotopicMass;
         }
 
         public static string GetFormula(char constantKey)
         {
-            Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
-            return aminoAcidsDictionary[constantKey].ChemicalFormula;             
+            AminoAcidSingleton NewSingleton = AminoAcidSingleton.Instance;
+            Dictionary<char, AminoAcid> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].ChemicalFormula;
         }
 
         public static string GetName(char constantKey)
         {
-            Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
-            return aminoAcidsDictionary[constantKey].Name;
+            AminoAcidSingleton NewSingleton = AminoAcidSingleton.Instance;
+            Dictionary<char, AminoAcid> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
         }
     }
 }

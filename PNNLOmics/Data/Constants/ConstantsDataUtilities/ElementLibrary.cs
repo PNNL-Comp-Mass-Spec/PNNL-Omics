@@ -27,7 +27,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             Dictionary<string, Element> ElementDictionary = new Dictionary<string, Element>();
 
-            bool loadFromFile = true;
+            bool loadFromFile = true;//if file is missing you can load a few elemets that are hard coded (C H N O P K Na S)
 
             if (loadFromFile)
             {

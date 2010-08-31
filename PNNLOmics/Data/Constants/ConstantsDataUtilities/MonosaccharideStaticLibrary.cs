@@ -18,32 +18,37 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     {
         public static double GetMonoisotopicMass(string constantKey)
         {
-            Dictionary<string, Monosaccharide> monosacchcarideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
-            return monosacchcarideDictionary[constantKey].MonoIsotopicMass;          
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].MonoIsotopicMass;
         }
 
         public static string GetFormula(string constantKey)
         {
-            Dictionary<string, Monosaccharide> monosacchcarideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
-            return monosacchcarideDictionary[constantKey].ChemicalFormula;             
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].ChemicalFormula;
         }
 
         public static string GetName(string constantKey)
         {
-            Dictionary<string, Monosaccharide> monosacchcarideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
-            return monosacchcarideDictionary[constantKey].Name;
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
         }
 
         public static string GetNameShort(string constantKey)
         {
-            Dictionary<string, Monosaccharide> monosacchcarideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
-            return monosacchcarideDictionary[constantKey].ShortName;
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].ShortName;
         }
 
         public static string GetName6(string constantKey)
         {
-            Dictionary<string, Monosaccharide> monosacchcarideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
-            return monosacchcarideDictionary[constantKey].SixLetterCode;
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].SixLetterCode;
         }
     }
 }
