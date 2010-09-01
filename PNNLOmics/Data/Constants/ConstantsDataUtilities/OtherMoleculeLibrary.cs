@@ -22,38 +22,39 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             Dictionary<string, OtherMolecule> otherMoleculeDictionary = new Dictionary<string, OtherMolecule>();
 
-            //Aldehyde.NewElements(C H N O S P)
+            //each integer stands for the number of atoms in the compound -->X.NewElements(C H N O S P)
+            //aldehyde.NewElements(C H N O S P)
 
             OtherMolecule aldehyde = new OtherMolecule();
-            aldehyde.NewElements(0, 2, 0, 1, 0, 0);
+            aldehyde.NewElements(0, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             aldehyde.Name = "Aldehyde";
             aldehyde.SixLetterCode = "Aldhyd";
             aldehyde.ChemicalFormula = "H2O";
             aldehyde.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(aldehyde);
 
             OtherMolecule alditol = new OtherMolecule();
-            alditol.NewElements(0, 4, 0, 1, 0, 0);
+            alditol.NewElements(0, 4, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             alditol.Name = "Alditol";
             alditol.SixLetterCode = "Aldtol";
             alditol.ChemicalFormula = "H4O";
             alditol.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(alditol);
 
             OtherMolecule ammonia = new OtherMolecule();
-            ammonia.NewElements(0, 3, 1, 0, 0, 0);
+            ammonia.NewElements(0, 3, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             ammonia.Name = "Ammonia";
             ammonia.SixLetterCode = "NH3   ";
             ammonia.ChemicalFormula = "NH3";
             ammonia.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(ammonia);
 
             OtherMolecule ammonium = new OtherMolecule();
-            ammonium.NewElements(0, 4, 1, 0, 0, 0);
+            ammonium.NewElements(0, 4, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             ammonium.Name = "Ammonium";
             ammonium.SixLetterCode = "NH4+  ";
             ammonium.ChemicalFormula = "NH4+";
             ammonium.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(ammonium);
 
             OtherMolecule KMinusH = new OtherMolecule();
-            KMinusH.NewElements(0, -1, 0, 0, 0, 0);
+            KMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             KMinusH.nPotassium = 1;
             KMinusH.Name = "KMinusH";
             KMinusH.SixLetterCode = "KminH ";
@@ -61,7 +62,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             KMinusH.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(KMinusH);
 
             OtherMolecule NaMinusH = new OtherMolecule();
-            NaMinusH.NewElements(0, -1, 0, 0, 0, 0);
+            NaMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             NaMinusH.nSodium = 1;
             NaMinusH.Name = "NaMinusH";
             NaMinusH.SixLetterCode = "NaminH";
@@ -69,21 +70,21 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             NaMinusH.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(NaMinusH);
 
             OtherMolecule sulfate = new OtherMolecule();
-            sulfate.NewElements(0, 0, 0, 4, 2, 0);
+            sulfate.NewElements(0, 0, 0, 4, 2, 0);//-->X.NewElements(C H N O S P)
             sulfate.Name = "Sulfate";
             sulfate.SixLetterCode = "SO4   ";
             sulfate.ChemicalFormula = "S04";
             sulfate.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(sulfate);
 
             OtherMolecule water = new OtherMolecule();
-            water.NewElements(0, 2, 0, 1, 0, 0);
+            water.NewElements(0, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             water.Name = "Water";
             water.SixLetterCode = "Water ";
             water.ChemicalFormula = "H2O";
             water.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(water);
 
             OtherMolecule aminoGlycan = new OtherMolecule();
-            aminoGlycan.NewElements(0, 3, 1, 0, 0, 0);
+            aminoGlycan.NewElements(0, 3, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             aminoGlycan.Name = "AminoGlycan";
             aminoGlycan.SixLetterCode = "NH3Gly ";
             aminoGlycan.ChemicalFormula = "NH3";
