@@ -9,6 +9,8 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 //string AAName2 = AminoAcidConstantsStaticLibrary.GetName('A');
 //string AAFormula2 = AminoAcidConstantsStaticLibrary.GetFormula('A');
 
+//double mass3 = AminoAcidStaticLibrary.GetMonoisotopicMass(SelectAminoAcid.GlutamicAcid);
+
 //how to calculate the mass of a peptide
 //double massPeptide=0;
 //string peptideSequence = "NRTL";
@@ -42,6 +44,34 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             AminoAcidSingleton NewSingleton = AminoAcidSingleton.Instance;
             Dictionary<char, AminoAcid> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
+        }
+
+        //overload to allow for SelectElement
+        public static double GetMonoisotopicMass(SelectAminoAcid selectKey)
+        {
+            AminoAcidSingleton NewSingleton = AminoAcidSingleton.Instance;
+            Dictionary<char, AminoAcid> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, char> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            char constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].MonoIsotopicMass;
+        }
+
+        public static string GetFormula(SelectAminoAcid selectKey)
+        {
+            AminoAcidSingleton NewSingleton = AminoAcidSingleton.Instance;
+            Dictionary<char, AminoAcid> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, char> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            char constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].ChemicalFormula;
+        }
+
+        public static string GetName(SelectAminoAcid selectKey)
+        {
+            AminoAcidSingleton NewSingleton = AminoAcidSingleton.Instance;
+            Dictionary<char, AminoAcid> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, char> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            char constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Name;
         }
     }

@@ -9,6 +9,8 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 //string OtherName2 = OtherMoleculeConstantsStaticLibrary.GetName("Aldehyde");
 //string OtherFormula2 = OtherMoleculeConstantsStaticLibrary.GetFormula("Aldehyde");
 
+//double mass5 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
+
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     /// <summary>
@@ -44,5 +46,41 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].SixLetterCode;
         }
 
+        //overload to allow for SelectElement
+        public static double GetMonoisotopicMass(SelectOtherMolecule selectKey)
+        {
+            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
+            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].MonoIsotopicMass;
+        }
+
+        public static string GetFormula(SelectOtherMolecule selectKey)
+        {
+            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
+            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].ChemicalFormula;
+        }
+
+        public static string GetName(SelectOtherMolecule selectKey)
+        {
+            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
+            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].Name;
+        }
+
+        public static string GetName6(SelectOtherMolecule selectKey)
+        {
+            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
+            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].SixLetterCode;
+        }
     }
 }

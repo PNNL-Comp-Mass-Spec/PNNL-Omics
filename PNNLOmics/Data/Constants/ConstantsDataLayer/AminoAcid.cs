@@ -9,7 +9,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     /// This is a Class designed to inherit from compound and detail the information for amino acid residues.
     /// </summary>
     public class AminoAcid : Compound
-    { 
+    {
         public char SingleLetterCode { get; set; }
 
         public override string ToString()
@@ -17,6 +17,4 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
             return this.SingleLetterCode.ToString();
         }
     }
-
-    
 }

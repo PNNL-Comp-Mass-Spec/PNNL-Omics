@@ -45,6 +45,10 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 
             return atomicDictionary;
         }
+    }
 
+    public enum SelectAtom
+    {
+        Electron, Neutron, Proton
     }
 }

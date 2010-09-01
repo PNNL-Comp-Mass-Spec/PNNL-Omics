@@ -9,6 +9,8 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 //string elementName = ElementConstantsStaticLibrary.GetName("C");
 //string elementSymbol = ElementConstantsStaticLibrary.GetSymbol("C");
 
+//double elementMass3 = ElementStaticLibrary.GetMonoisotopicMass(SelectElement.Hydrogen);
+
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     /// <summary>
@@ -33,6 +35,34 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             ElementSingleton NewSingleton = ElementSingleton.Instance;
             Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
+        }
+
+        //overload to allow for SelectElement
+        public static double GetMonoisotopicMass(SelectElement selectKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].MonoIsotopicMass;
+        }
+
+        public static string GetSymbol(SelectElement selectKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].Symbol;
+        }
+
+        public static string GetName(SelectElement selectKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Name;
         }
     }

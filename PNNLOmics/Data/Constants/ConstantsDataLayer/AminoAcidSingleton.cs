@@ -28,8 +28,25 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
         {
             Dictionary<char, AminoAcid> aminoAcidDictionary = AminoAcidLibrary.LoadAminoAcidData();
             this.ConstantsDictionary = aminoAcidDictionary;//accessable outside by getter below
+
+            int count = 0;
+            string names = "";
+            Dictionary<int, char> enumDictionary = new Dictionary<int, char>();
+            foreach (KeyValuePair<char, AminoAcid> item in aminoAcidDictionary)
+            {
+                names += item.Key + ",";
+                enumDictionary.Add(count, item.Key);
+                count++;
+            }
+            names = "";
+            for (int i = 0; i < aminoAcidDictionary.Count; i++)
+            {
+                names += ConstantsDictionary[enumDictionary[i]].Name + ",";
+            }
+            this.ConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
         }
 
         public Dictionary<char, AminoAcid> ConstantsDictionary { get; set; }
+        public Dictionary<int, char> ConstantsEnumDictionary { get; set; }
     }
 }

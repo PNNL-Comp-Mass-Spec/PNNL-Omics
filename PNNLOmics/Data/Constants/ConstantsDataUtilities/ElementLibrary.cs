@@ -17,6 +17,7 @@ using System.IO;
 
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
+    //enum is at bottom of class
     public class ElementLibrary
     {
         /// <summary>
@@ -183,5 +184,18 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 
             return ElementDictionary;
         }
+    }
+
+    public enum SelectElement
+    {
+        Hydrogen, Helium, Lithium, Berellium, Boron, Carbon, Nitrogen, Oxygen, Fluorine, Neon, Sodium, Magnesium,
+        Almunium, Silicon, Phosphrous, Sulphur, Chlorine, Argon, Potassium, Calcium, Scandium, Titanium, Vanadium, Chromium,
+        Manganese, Iron, Cobalt, Nickle, Copper, Zinc, Galium, Germanium, Arsenic, Selenium, Bromine, Krypton,
+        Rubidium, Strontium, Yttrium, Zirconium, Niobium, Molybdenum, Technetium, Ruthenium, Rhodium, Palladium, Silver, Cadmium,
+        Indium, Tin, Antimony, Tellerium, Iodine, Xenon, Caesium, Barium, Lanthanum, Cerium, Praseodymium, Neodynium,
+        Promethium, Samarium, Europium, Gadolinium, Terbium, Dysprosium, Holmium, Erbium, Thulium, Ytterbium, Lutetium, Hafnium,
+        Tantalum, Tungsten, Rhenium, Osmium, Iridium, Platinum, Gold, Mercury, Thallium, Lead, Bismuth, Polonium,
+        Astatine, Radon, Francium, Radium, Actinium, Thorium, Protactinium, Uranium, Neptunium, Plutonium, Americium,
+        Curium, Berkelium, Californium, Einsteinium, Fernium, Medelevium, Nobelium, Lawrencium
     }
 }

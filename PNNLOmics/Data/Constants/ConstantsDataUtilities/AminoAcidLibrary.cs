@@ -209,6 +209,11 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
            
             return aminoAcidsDictionary;
         }
+    }
 
+    public enum SelectAminoAcid
+    {
+        Alanine, Arginine, Asparagine, AsparticAcid, Cysteine, GlutamicAcid, Glutamine, Glycine, Histidine, Isoleucine,
+        Leucine, Lysine, Methionine, Phenylalanine, Proline, Serine, Threonine, Tryptophan, Tyrosine, Valine
     }
 }

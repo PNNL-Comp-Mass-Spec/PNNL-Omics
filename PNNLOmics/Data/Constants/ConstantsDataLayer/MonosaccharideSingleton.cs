@@ -28,8 +28,25 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
         {
             Dictionary<string, Monosaccharide> monosaccharideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
             this.ConstantsDictionary = monosaccharideDictionary;//accessable outside by getter below
+
+            int count = 0;
+            string names = "";
+            Dictionary<int, string> enumDictionary = new Dictionary<int, string>();
+            foreach (KeyValuePair<string, Monosaccharide> item in monosaccharideDictionary)
+            {
+                names += item.Key + ",";
+                enumDictionary.Add(count, item.Key);
+                count++;
+            }
+            names = "";
+            for (int i = 0; i < monosaccharideDictionary.Count; i++)
+            {
+                names += ConstantsDictionary[enumDictionary[i]].Name + ",";
+            }
+            this.ConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
         }
 
         public Dictionary<string, Monosaccharide> ConstantsDictionary { get; set; }
+        public Dictionary<int, string> ConstantsEnumDictionary { get; set; }
     }
 }

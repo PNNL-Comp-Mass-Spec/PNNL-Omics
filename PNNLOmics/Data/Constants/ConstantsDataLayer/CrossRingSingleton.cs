@@ -28,8 +28,25 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
         {
             Dictionary<string, CrossRing> crossRingDictionary = CrossRingLibrary.LoadCrossRingData();
             this.ConstantsDictionary = crossRingDictionary;//accessable outside by getter below
+
+            int count = 0;
+            string names = "";
+            Dictionary<int, string> enumDictionary = new Dictionary<int, string>();
+            foreach (KeyValuePair<string, CrossRing> item in crossRingDictionary)
+            {
+                names += item.Key + ",";
+                enumDictionary.Add(count, item.Key);
+                count++;
+            }
+            names = "";
+            for (int i = 0; i < crossRingDictionary.Count; i++)
+            {
+                names += ConstantsDictionary[enumDictionary[i]].Name + ",";
+            }
+            this.ConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
         }
 
         public Dictionary<string, CrossRing> ConstantsDictionary { get; set; }
+        public Dictionary<int, string> ConstantsEnumDictionary { get; set; }
     }
 }

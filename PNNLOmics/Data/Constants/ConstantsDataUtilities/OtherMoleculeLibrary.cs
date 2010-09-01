@@ -82,6 +82,13 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             water.ChemicalFormula = "H2O";
             water.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(water);
 
+            OtherMolecule aminoGlycan = new OtherMolecule();
+            aminoGlycan.NewElements(0, 3, 1, 0, 0, 0);
+            aminoGlycan.Name = "AminoGlycan";
+            aminoGlycan.SixLetterCode = "NH3Gly ";
+            aminoGlycan.ChemicalFormula = "NH3";
+            aminoGlycan.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(aminoGlycan);
+
             otherMoleculeDictionary.Add(aldehyde.Name, aldehyde);
             otherMoleculeDictionary.Add(alditol.Name, alditol);
             otherMoleculeDictionary.Add(ammonia.Name, ammonia);
@@ -90,9 +97,14 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             otherMoleculeDictionary.Add(NaMinusH.Name, NaMinusH);
             otherMoleculeDictionary.Add(sulfate.Name, sulfate);
             otherMoleculeDictionary.Add(water.Name, water);
+            otherMoleculeDictionary.Add(aminoGlycan.Name, aminoGlycan);
             
             return otherMoleculeDictionary;
         }
+    }
 
+    public enum SelectOtherMolecule
+    {
+        Aldehyde, Alditol, Ammonia, Ammonium, KMinusH, NaMinusH, Sulfate, Water, AminoGlycan
     }
 }

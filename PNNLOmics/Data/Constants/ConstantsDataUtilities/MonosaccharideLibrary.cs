@@ -100,6 +100,10 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             
             return monosachcarideDictionary;
         }
+    }
 
+    public enum SelectMonosaccharide
+    {
+        Deoxyhexose, Hexose, HexuronicAcid, KDN, NAcetylhexosamine, NeuraminicAcid, NGlycolylneuraminicAcid, Pentose
     }
 }

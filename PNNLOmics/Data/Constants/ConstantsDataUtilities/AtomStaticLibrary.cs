@@ -9,6 +9,8 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 //string AtomName2 = AtomConstantsStaticLibrary.GetName("e");
 //string AtomSymbol2 = AtomConstantsStaticLibrary.GetSymbol("e");
 
+//double atomMass3 = AtomStaticLibrary.GetMonoisotopicMass(SelectAtom.Proton);
+
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     /// <summary>
@@ -34,6 +36,34 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             AtomSingleton NewSingleton = AtomSingleton.Instance;
             Dictionary<string, Atom> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
+        }
+
+        //overload to allow for SelectElement
+        public static double GetMonoisotopicMass(SelectAtom selectKey)
+        {
+            AtomSingleton NewSingleton = AtomSingleton.Instance;
+            Dictionary<string, Atom> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].MonoIsotopicMass;
+        }
+
+        public static string GetSymbol(SelectAtom selectKey)
+        {
+            AtomSingleton NewSingleton = AtomSingleton.Instance;
+            Dictionary<string, Atom> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].Symbol;
+        }
+
+        public static string GetName(SelectAtom selectKey)
+        {
+            AtomSingleton NewSingleton = AtomSingleton.Instance;
+            Dictionary<string, Atom> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Name;
         }
     }

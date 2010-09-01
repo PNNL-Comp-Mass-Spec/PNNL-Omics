@@ -9,6 +9,9 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 //string OSname2 = MonosaccharideConstantsStaticLibrary.GetName("Hex");
 //string OSformula2 = MonosaccharideConstantsStaticLibrary.GetFormula("Hex");
 
+//double mass3 = MonosaccharideStaticLibrary.GetMonoisotopicMass(SelectMonosaccharide.NeuraminicAcid);
+            
+
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     /// <summary>
@@ -48,6 +51,52 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
             Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].SixLetterCode;
+        }
+
+        //overload to allow for SelectElement
+        public static double GetMonoisotopicMass(SelectMonosaccharide selectKey)
+        {
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].MonoIsotopicMass;
+        }
+
+        public static string GetFormula(SelectMonosaccharide selectKey)
+        {
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].ChemicalFormula;
+        }
+
+        public static string GetName(SelectMonosaccharide selectKey)
+        {
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].Name;
+        }
+
+        public static string GetNameShort(SelectMonosaccharide selectKey)
+        {
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].ShortName;
+        }
+
+        public static string GetName6(SelectMonosaccharide selectKey)
+        {
+            MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
+            Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].SixLetterCode;
         }
     }

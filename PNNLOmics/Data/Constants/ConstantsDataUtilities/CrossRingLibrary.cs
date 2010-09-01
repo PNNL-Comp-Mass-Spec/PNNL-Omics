@@ -167,6 +167,12 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 
             return crossRingDictionary;
         }
+    }
 
+    public enum SelectCrossRing
+    {
+        CRFHex_02_A2, CRFHex_02_X1, CRFHex_03_A2, CRFHex_03_X1, CRFHex_24_A2, CRFHex_24_X1,
+        CRFHexNAc_02_A2, CRFHexNAc_02_X1, CRFHexNAc_03_A2, CRFHexNAc_03_X1, CRFHexNAc_24_A2, CRFHexNAc_24_X1,
+        CRFNeu5Ac_02_X1, CRFNeu5Ac_03_X1, CRFNeu5Ac_24_X1, CRFNeu5Ac_25_X1
     }
 }
