@@ -14,12 +14,12 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     {
         public string ChemicalFormula { get; set; }
         //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
-        public int nCarbonNumber { get; set; }
-        public int nHydrogenNumber { get; set; }
-        public int nNitrogenNumber { get; set; }
-        public int nOxygenNumber { get; set; }
-        public int nSulfurNumber { get; set; }
-        public int nPhosphorusNumber { get; set; }
+        public int nCarbon { get; set; }
+        public int nHydrogen { get; set; }
+        public int nNitrogen { get; set; }
+        public int nOxygen { get; set; }
+        public int nSulfur { get; set; }
+        public int nPhosphorus { get; set; }
         public int nPotassium { get; set; }
         public int nSodium { get; set; }
 
@@ -28,29 +28,29 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
         /// </summary>
         public static double GetMonoisotopicMass(Compound GeneralCompound)
         {
-            Dictionary<string, Element> ElementDictionary = ElementLibrary.LoadElementData();
+            Dictionary<string, Element> elementDictionary = ElementLibrary.LoadElementData();
 
             double ExactMass =
-                GeneralCompound.nCarbonNumber * ElementDictionary["C"].MonoIsotopicMass +
-                GeneralCompound.nHydrogenNumber * ElementDictionary["H"].MonoIsotopicMass +
-                GeneralCompound.nNitrogenNumber * ElementDictionary["N"].MonoIsotopicMass +
-                GeneralCompound.nOxygenNumber * ElementDictionary["O"].MonoIsotopicMass +
-                GeneralCompound.nSulfurNumber * ElementDictionary["S"].MonoIsotopicMass +
-                GeneralCompound.nPotassium * ElementDictionary["K"].MonoIsotopicMass +
-                GeneralCompound.nSodium * ElementDictionary["Na"].MonoIsotopicMass +
-                GeneralCompound.nPhosphorusNumber * ElementDictionary["P"].MonoIsotopicMass;
+                GeneralCompound.nCarbon * elementDictionary["C"].MonoIsotopicMass +
+                GeneralCompound.nHydrogen * elementDictionary["H"].MonoIsotopicMass +
+                GeneralCompound.nNitrogen * elementDictionary["N"].MonoIsotopicMass +
+                GeneralCompound.nOxygen * elementDictionary["O"].MonoIsotopicMass +
+                GeneralCompound.nSulfur * elementDictionary["S"].MonoIsotopicMass +
+                GeneralCompound.nPotassium * elementDictionary["K"].MonoIsotopicMass +
+                GeneralCompound.nSodium * elementDictionary["Na"].MonoIsotopicMass +
+                GeneralCompound.nPhosphorus * elementDictionary["P"].MonoIsotopicMass;
 
             return ExactMass;
         }
         
         public void NewElements(int C, int H, int N, int O, int S, int P)
         {
-            nCarbonNumber = C;
-            nHydrogenNumber = H;
-            nNitrogenNumber = N;
-            nOxygenNumber = O;
-            nSulfurNumber = S;
-            nPhosphorusNumber = P;
+            nCarbon = C;
+            nHydrogen = H;
+            nNitrogen = N;
+            nOxygen = O;
+            nSulfur = S;
+            nPhosphorus = P;
         }
     }
 

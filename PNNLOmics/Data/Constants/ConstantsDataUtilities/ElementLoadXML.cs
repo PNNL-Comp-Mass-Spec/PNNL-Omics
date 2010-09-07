@@ -15,9 +15,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         /// IUPAC 2000 Atomic Weights of the Elements (published 2003) was used.
         /// Differences from the old version:  Elements H, B, C, N, O, Na, P, S, Cl, K, Ca were updated.  Table 5 in the paper has the probabilities (best measurement column was used).
         /// </summary>
-        public static void LoadXML(string constantsFileXMLName, out List<string> elementSymbolList, out List<Element> elementList)
+        public static void LoadXML(string constantsFileName, out List<string> elementSymbolList, out List<Element> elementList)
         {
-            XmlReader Xreader = XmlReader.Create(constantsFileXMLName);
+            XmlReader readerXML = XmlReader.Create(constantsFileName);
 
             int numberOfIsotopes = 0;
             int atomicity = 0;
@@ -28,52 +28,52 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             elementSymbolList = new List<string>();
             elementList = new List<Element>();
 
-            while (Xreader.Read())
+            while (readerXML.Read())
             {
-                if (Xreader.NodeType == XmlNodeType.Element)
+                if (readerXML.NodeType == XmlNodeType.Element)
                 {
-                    if (Xreader.Name == "NumElements")
+                    if (readerXML.Name == "NumElements")
                     {
-                        int totalNumberOfElements = Xreader.ReadElementContentAsInt();// Parse(Xreader.GetAttribute("Symbol"));
+                        int numElements = readerXML.ReadElementContentAsInt();// Parse(Xreader.GetAttribute("Symbol"));
                     }
 
-                    if (Xreader.Name == "Element")
+                    if (readerXML.Name == "Element")
                     {
                         Element newElement = new Element();
                         Dictionary<string, Isotope> newIsotopeDictionary = new Dictionary<string, Isotope>();
 
-                        Xreader.ReadToFollowing("Symbol");
-                        newElement.Symbol = Xreader.ReadElementContentAsString();
+                        readerXML.ReadToFollowing("Symbol");
+                        newElement.Symbol = readerXML.ReadElementContentAsString();
                         
-                        Xreader.ReadToFollowing("Name");
-                        newElement.Name = Xreader.ReadElementContentAsString();
+                        readerXML.ReadToFollowing("Name");
+                        newElement.Name = readerXML.ReadElementContentAsString();
 
-                        Xreader.ReadToFollowing("NumIsotopes");
-                        numberOfIsotopes = Xreader.ReadElementContentAsInt();
+                        readerXML.ReadToFollowing("NumIsotopes");
+                        numberOfIsotopes = readerXML.ReadElementContentAsInt();
 
-                        Xreader.ReadToFollowing("Atomicity");
-                        atomicity = Xreader.ReadElementContentAsInt();
+                        readerXML.ReadToFollowing("Atomicity");
+                        atomicity = readerXML.ReadElementContentAsInt();
 
                         //for each isotope
                         for (int i = 0; i < numberOfIsotopes; i++)
                         {
-                            Xreader.ReadToFollowing("Isotope");
+                            readerXML.ReadToFollowing("Isotope");
                             
-                            Xreader.ReadToFollowing("IsotopeNumber");
+                            readerXML.ReadToFollowing("IsotopeNumber");
                             
-                            isotopeNumber = Xreader.ReadElementContentAsInt();
+                            isotopeNumber = readerXML.ReadElementContentAsInt();
 
-                            Xreader.ReadToFollowing("Mass");
+                            readerXML.ReadToFollowing("Mass");
 
-                            isotopeMass = Xreader.ReadElementContentAsDouble();
+                            isotopeMass = readerXML.ReadElementContentAsDouble();
 
                             if(i==0)
                             {
                                 monoIsotopicMass=isotopeMass;
                             }
 
-                            Xreader.ReadToFollowing("Probability");
-                            isotopeProbability = Xreader.ReadElementContentAsDouble();
+                            readerXML.ReadToFollowing("Probability");
+                            isotopeProbability = readerXML.ReadElementContentAsDouble();
 
                             Isotope NewIsotope = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
 
@@ -82,12 +82,12 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                         }
                         newElement.IsotopeDictionary = newIsotopeDictionary;
                         newElement.MonoIsotopicMass = monoIsotopicMass;
-                        newElement.MassAverage = 0;//not used yet//1.007947;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
+                        newElement.MassAverage = 0;//not used yet//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
 
                         elementList.Add(newElement);
                         elementSymbolList.Add(newElement.Symbol);
 
-                        Xreader.Skip();//skip white space
+                        readerXML.Skip();//skip white space
                     }       
                 }
             }
