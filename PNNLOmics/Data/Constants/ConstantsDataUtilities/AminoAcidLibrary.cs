@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
-
+  
 //dictionary implementation
 //Dictionary<char, AminoAcidObject> AminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
 //double AAmass = AminoAcidsDictionary['A'].MonoIsotopicMass;
 //string AAName = AminoAcidsDictionary['A'].Name;
 //string AAFormula = AminoAcidsDictionary['A'].ChemicalFormula;
 
-
+//TODO:  Convert to XML comment
+///<example>   
+///</example>
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class AminoAcidLibrary

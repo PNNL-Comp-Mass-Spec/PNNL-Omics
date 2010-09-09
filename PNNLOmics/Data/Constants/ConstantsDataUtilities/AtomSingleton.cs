@@ -11,6 +11,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     /// </summary> 
     public sealed class AtomSingleton
     {
+        //TODO:  this one is not needed
         /// <summary>
         /// Utilizes the get and set auto implemented properties.
         /// Note that set; can be any other operator as long as it's

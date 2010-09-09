@@ -27,6 +27,8 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 
         public static string GetSymbol(string constantKey)
         {
+            //TODO: newSingleton
+            //TODO: incoming
             AtomSingleton NewSingleton = AtomSingleton.Instance;
             Dictionary<string, Atom> incommingDictionary = NewSingleton.ConstantsDictionary;
             return incommingDictionary[constantKey].Symbol;

@@ -14,6 +14,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         [Test]
         public void TestAminoAcid()//test amino acid calls
         {
+            
+            double massProton = ElementStaticLibrary.GetMonoisotopicMass(SelectAtom.Proton);
+            
             char aminoAcidKey = 'N';
             //dictionary implementation
             Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
