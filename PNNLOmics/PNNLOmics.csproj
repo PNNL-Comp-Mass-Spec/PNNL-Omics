@@ -95,6 +95,7 @@
     <Compile Include="Data\Constants\ConstantsDataUtilities\AtomSingleton.cs" />
     <Compile Include="Data\Constants\ConstantsDataLayer\Compound.cs" />
     <Compile Include="Data\Constants\ConstantsDataUtilities\CrossRingSingleton.cs" />
+    <Compile Include="Data\Constants\ConstantsDataUtilities\GenericSingleton.cs" />
     <Compile Include="Data\Constants\ConstantsDataUtilities\MonosaccharideSingleton.cs" />
     <Compile Include="Data\Constants\ConstantsDataLayer\CrossRing.cs" />
     <Compile Include="Data\Constants\ConstantsDataLayer\Element.cs" />

@@ -15,6 +15,14 @@ using System.IO;
 //string elementName = ElementDictionary["C"].Name;
 //string elementSymbol = ElementDictionary["C"].Symbol;                     
 
+//One line implementation
+//double elementMonoMass = ElementConstantsStaticLibrary.GetMonoisotopicMass("C");
+//string elementName = ElementConstantsStaticLibrary.GetName("C");
+//string elementSymbol = ElementConstantsStaticLibrary.GetSymbol("C");
+
+//double elementMass3 = ElementStaticLibrary.GetMonoisotopicMass(SelectElement.Hydrogen);
+
+
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     //enum is at bottom of class
@@ -183,6 +191,60 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             }
 
             return ElementDictionary;
+        }
+    }
+
+    /// <summary>
+    /// This is a Class designed to convert dictionary calls for Elements in one line static method calls.
+    /// </summary>
+    public class ElementStaticLibrary
+    {
+        public static double GetMonoisotopicMass(string constantKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].MonoIsotopicMass;
+        }
+        public static string GetSymbol(string constantKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Symbol;
+        }
+
+        public static string GetName(string constantKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            return incommingDictionary[constantKey].Name;
+        }
+
+        //overload to allow for SelectElement
+        public static double GetMonoisotopicMass(SelectElement selectKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].MonoIsotopicMass;
+        }
+
+        public static string GetSymbol(SelectElement selectKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].Symbol;
+        }
+
+        public static string GetName(SelectElement selectKey)
+        {
+            ElementSingleton NewSingleton = ElementSingleton.Instance;
+            Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].Name;
         }
     }
 

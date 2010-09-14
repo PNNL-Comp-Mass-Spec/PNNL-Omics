@@ -14,7 +14,11 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         [Test]
         public void TestAminoAcid()//test amino acid calls
         {
-            
+            //GenericSingleton<Atom> NewSingleton = GenericSingleton<Atom>.Instance;
+            //Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            //string constantKey = enumConverter[(int)selectKey];
+            //String G = incommingDictionary[constantKey].Symbol;
+
             char aminoAcidKey = 'N';
             //dictionary implementation
             Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
