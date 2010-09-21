@@ -81,7 +81,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                             //newIsotopeDictionary.Add(newElement.Symbol + i.ToString(), NewIsotope);//used for interating through
                         }
                         newElement.IsotopeDictionary = newIsotopeDictionary;
-                        newElement.MonoIsotopicMass = monoIsotopicMass;
+                        newElement.MassMonoIsotopic = monoIsotopicMass;
                         newElement.MassAverage = 0;//not used yet//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
 
                         elementList.Add(newElement);

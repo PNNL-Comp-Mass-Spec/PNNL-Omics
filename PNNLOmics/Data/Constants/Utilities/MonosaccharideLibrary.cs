@@ -38,7 +38,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             deoxyhexose.ShortName = "DxyHex";
             deoxyhexose.SixLetterCode = "DxyHex";
             deoxyhexose.ChemicalFormula = "C6H10O4";
-            deoxyhexose.MonoIsotopicMass = Monosaccharide.GetMonoisotopicMass(deoxyhexose);
+            deoxyhexose.MassMonoIsotopic = Monosaccharide.GetMonoisotopicMass(deoxyhexose);
 
             Monosaccharide hexose = new Monosaccharide();
             hexose.NewElements(6, 10, 0, 5, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
@@ -46,7 +46,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             hexose.ShortName = "Hex";
             hexose.SixLetterCode = "Hexose";
             hexose.ChemicalFormula = "C6H10O5";
-            hexose.MonoIsotopicMass = Monosaccharide.GetMonoisotopicMass(hexose);
+            hexose.MassMonoIsotopic = Monosaccharide.GetMonoisotopicMass(hexose);
 
             Monosaccharide hexA = new Monosaccharide();
             hexA.NewElements(6, 8, 0, 6, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
@@ -54,7 +54,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             hexA.ShortName = "HexA";
             hexA.SixLetterCode = "Hex A ";
             hexA.ChemicalFormula = "C6H8O6";
-            hexA.MonoIsotopicMass = Monosaccharide.GetMonoisotopicMass(hexA);
+            hexA.MassMonoIsotopic = Monosaccharide.GetMonoisotopicMass(hexA);
 
             //2-Keto-3-Deoxy-D-Glycero-D-Galacto-Nononic-Acid
             Monosaccharide KDNDeaminatedNeuraminicAcid = new Monosaccharide();
@@ -63,7 +63,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             KDNDeaminatedNeuraminicAcid.ShortName = "KDN";
             KDNDeaminatedNeuraminicAcid.SixLetterCode = "KDN   ";
             KDNDeaminatedNeuraminicAcid.ChemicalFormula = "C9H14O8";
-            KDNDeaminatedNeuraminicAcid.MonoIsotopicMass = Monosaccharide.GetMonoisotopicMass(KDNDeaminatedNeuraminicAcid);
+            KDNDeaminatedNeuraminicAcid.MassMonoIsotopic = Monosaccharide.GetMonoisotopicMass(KDNDeaminatedNeuraminicAcid);
 
             Monosaccharide NAcetylhexosamine = new Monosaccharide();
             NAcetylhexosamine.NewElements(8, 13, 1, 5, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
@@ -71,7 +71,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             NAcetylhexosamine.ShortName = "HexNAc";
             NAcetylhexosamine.SixLetterCode = "HexNAc";
             NAcetylhexosamine.ChemicalFormula = "C8H13NO5";
-            NAcetylhexosamine.MonoIsotopicMass = Monosaccharide.GetMonoisotopicMass(NAcetylhexosamine);
+            NAcetylhexosamine.MassMonoIsotopic = Monosaccharide.GetMonoisotopicMass(NAcetylhexosamine);
 
             Monosaccharide neuraminicAcid = new Monosaccharide();
             neuraminicAcid.NewElements(11, 17, 1, 8, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
@@ -79,7 +79,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             neuraminicAcid.ShortName = "NeuAc";
             neuraminicAcid.SixLetterCode = "Neu5Ac";
             neuraminicAcid.ChemicalFormula = "C11H17NO8";
-            neuraminicAcid.MonoIsotopicMass = Monosaccharide.GetMonoisotopicMass(neuraminicAcid);
+            neuraminicAcid.MassMonoIsotopic = Monosaccharide.GetMonoisotopicMass(neuraminicAcid);
 
             Monosaccharide NGlycolylNeuraminicAcid = new Monosaccharide();
             NGlycolylNeuraminicAcid.NewElements(11, 17, 1, 9, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
@@ -87,7 +87,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             NGlycolylNeuraminicAcid.ShortName = "NeuGc";
             NGlycolylNeuraminicAcid.SixLetterCode = "Neu5Gc";
             NGlycolylNeuraminicAcid.ChemicalFormula = "C11H17NO9";
-            NGlycolylNeuraminicAcid.MonoIsotopicMass = Monosaccharide.GetMonoisotopicMass(NGlycolylNeuraminicAcid);
+            NGlycolylNeuraminicAcid.MassMonoIsotopic = Monosaccharide.GetMonoisotopicMass(NGlycolylNeuraminicAcid);
 
             Monosaccharide pentose = new Monosaccharide();
             pentose.NewElements(6, 10, 5, 0, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
@@ -95,7 +95,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             pentose.ShortName = "Pent";
             pentose.SixLetterCode = "Pentos";
             pentose.ChemicalFormula = "C6H10O5";
-            pentose.MonoIsotopicMass = Monosaccharide.GetMonoisotopicMass(pentose);
+            pentose.MassMonoIsotopic = Monosaccharide.GetMonoisotopicMass(pentose);
 
             monosachcarideDictionary.Add(deoxyhexose.ShortName, deoxyhexose);
             monosachcarideDictionary.Add(hexose.ShortName, hexose);
@@ -119,7 +119,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             MonosaccharideSingleton NewSingleton = MonosaccharideSingleton.Instance;
             Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
-            return incommingDictionary[constantKey].MonoIsotopicMass;
+            return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetFormula(string constantKey)
@@ -157,7 +157,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             Dictionary<string, Monosaccharide> incommingDictionary = NewSingleton.ConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].MonoIsotopicMass;
+            return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetFormula(SelectMonosaccharide selectKey)

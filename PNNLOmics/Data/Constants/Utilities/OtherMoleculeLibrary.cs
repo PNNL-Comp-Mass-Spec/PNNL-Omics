@@ -38,28 +38,28 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             aldehyde.Name = "Aldehyde";
             aldehyde.SixLetterCode = "Aldhyd";
             aldehyde.ChemicalFormula = "H2O";
-            aldehyde.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(aldehyde);
+            aldehyde.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(aldehyde);
 
             OtherMolecule alditol = new OtherMolecule();
             alditol.NewElements(0, 4, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             alditol.Name = "Alditol";
             alditol.SixLetterCode = "Aldtol";
             alditol.ChemicalFormula = "H4O";
-            alditol.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(alditol);
+            alditol.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(alditol);
 
             OtherMolecule ammonia = new OtherMolecule();
             ammonia.NewElements(0, 3, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             ammonia.Name = "Ammonia";
             ammonia.SixLetterCode = "NH3   ";
             ammonia.ChemicalFormula = "NH3";
-            ammonia.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(ammonia);
+            ammonia.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(ammonia);
 
             OtherMolecule ammonium = new OtherMolecule();
             ammonium.NewElements(0, 4, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             ammonium.Name = "Ammonium";
             ammonium.SixLetterCode = "NH4+  ";
             ammonium.ChemicalFormula = "NH4+";
-            ammonium.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(ammonium);
+            ammonium.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(ammonium);
 
             OtherMolecule KMinusH = new OtherMolecule();
             KMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
@@ -67,7 +67,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             KMinusH.Name = "KMinusH";
             KMinusH.SixLetterCode = "KminH ";
             KMinusH.ChemicalFormula = "K-H";
-            KMinusH.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(KMinusH);
+            KMinusH.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(KMinusH);
 
             OtherMolecule NaMinusH = new OtherMolecule();
             NaMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
@@ -75,28 +75,28 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             NaMinusH.Name = "NaMinusH";
             NaMinusH.SixLetterCode = "NaminH";
             NaMinusH.ChemicalFormula = "Na-H";
-            NaMinusH.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(NaMinusH);
+            NaMinusH.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(NaMinusH);
 
             OtherMolecule sulfate = new OtherMolecule();
             sulfate.NewElements(0, 0, 0, 4, 2, 0);//-->X.NewElements(C H N O S P)
             sulfate.Name = "Sulfate";
             sulfate.SixLetterCode = "SO4   ";
             sulfate.ChemicalFormula = "S04";
-            sulfate.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(sulfate);
+            sulfate.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(sulfate);
 
             OtherMolecule water = new OtherMolecule();
             water.NewElements(0, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             water.Name = "Water";
             water.SixLetterCode = "Water ";
             water.ChemicalFormula = "H2O";
-            water.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(water);
+            water.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(water);
 
             OtherMolecule aminoGlycan = new OtherMolecule();
             aminoGlycan.NewElements(0, 3, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             aminoGlycan.Name = "AminoGlycan";
             aminoGlycan.SixLetterCode = "NH3Gly ";
             aminoGlycan.ChemicalFormula = "NH3";
-            aminoGlycan.MonoIsotopicMass = OtherMolecule.GetMonoisotopicMass(aminoGlycan);
+            aminoGlycan.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(aminoGlycan);
 
             otherMoleculeDictionary.Add(aldehyde.Name, aldehyde);
             otherMoleculeDictionary.Add(alditol.Name, alditol);
@@ -121,7 +121,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
             Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
-            return incommingDictionary[constantKey].MonoIsotopicMass;
+            return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetFormula(string constantKey)
@@ -152,7 +152,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].MonoIsotopicMass;
+            return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetFormula(SelectOtherMolecule selectKey)

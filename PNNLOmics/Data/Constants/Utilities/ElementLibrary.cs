@@ -65,7 +65,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 carbonIsotopes.Add("C13", C13);
 
                 carbon.IsotopeDictionary = carbonIsotopes;
-                carbon.MonoIsotopicMass = 12.0000000000;
+                carbon.MassMonoIsotopic = 12.0000000000;
                 carbon.Name = "Carbon";
                 carbon.Symbol = "C";
                 carbon.MassAverage = 12.01078;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -80,7 +80,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 hydrogenIsotopes.Add("H2", H2);
 
                 hydrogen.IsotopeDictionary = hydrogenIsotopes;
-                hydrogen.MonoIsotopicMass = 1.00782503196;
+                hydrogen.MassMonoIsotopic = 1.00782503196;
                 hydrogen.Name = "Hydrogen";
                 hydrogen.Symbol = "H";
                 hydrogen.MassAverage = 1.007947;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -95,7 +95,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 nitrogenIsotopes.Add("N15", N15);
 
                 nitrogen.IsotopeDictionary = nitrogenIsotopes;
-                nitrogen.MonoIsotopicMass = 14.003074007418;
+                nitrogen.MassMonoIsotopic = 14.003074007418;
                 nitrogen.Name = "Nitrogen";
                 nitrogen.Symbol = "N";
                 nitrogen.MassAverage = 14.00672;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -112,7 +112,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 oxygenIsotopes.Add("O18", O18);
 
                 oxygen.IsotopeDictionary = oxygenIsotopes;
-                oxygen.MonoIsotopicMass = 15.994914622325;
+                oxygen.MassMonoIsotopic = 15.994914622325;
                 oxygen.Name = "Oxygen";
                 oxygen.Symbol = "O";
                 oxygen.MassAverage = 15.99943;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -125,7 +125,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 phosphorusIsotopes.Add("P31", P31);
 
                 phosphorus.IsotopeDictionary = phosphorusIsotopes;
-                phosphorus.MonoIsotopicMass = 30.9737622;
+                phosphorus.MassMonoIsotopic = 30.9737622;
                 phosphorus.Name = "Phosphorus";
                 phosphorus.Symbol = "P";
                 phosphorus.MassAverage = 30.9737622;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -142,7 +142,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 potassiumIsotopes.Add("K41", K41);
 
                 potassium.IsotopeDictionary = potassiumIsotopes;
-                potassium.MonoIsotopicMass = 38.9637069;
+                potassium.MassMonoIsotopic = 38.9637069;
                 potassium.Name = "Potassium";
                 potassium.Symbol = "K";
                 potassium.MassAverage = 39.09831;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -155,7 +155,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 sodiumIsotopes.Add("Na23", Na23);
 
                 sodium.IsotopeDictionary = sodiumIsotopes;
-                sodium.MonoIsotopicMass = 22.98976967;
+                sodium.MassMonoIsotopic = 22.98976967;
                 sodium.Name = "Sodium";
                 sodium.Symbol = "Na";
                 sodium.MassAverage = 22.989769282;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -174,7 +174,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
                 sulfurIsotopes.Add("S36", S36);
 
                 sulfur.IsotopeDictionary = sulfurIsotopes;
-                sulfur.MonoIsotopicMass = 31.9720707315;
+                sulfur.MassMonoIsotopic = 31.9720707315;
                 sulfur.Name = "Sulfur";
                 sulfur.Symbol = "S";
                 sulfur.MassAverage = 32.0655;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -203,7 +203,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             ElementSingleton NewSingleton = ElementSingleton.Instance;
             Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
-            return incommingDictionary[constantKey].MonoIsotopicMass;
+            return incommingDictionary[constantKey].MassMonoIsotopic;
         }
         public static string GetSymbol(string constantKey)
         {
@@ -226,7 +226,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].MonoIsotopicMass;
+            return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetSymbol(SelectElement selectKey)

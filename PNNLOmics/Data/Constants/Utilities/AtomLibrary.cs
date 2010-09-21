@@ -34,17 +34,17 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 
             Atom electron = new Atom();
             electron.Name = "Electron";
-            electron.MonoIsotopicMass = 0.00054857990943;//units of u a.k.a.Da.  NIST CODATA 2006 
+            electron.MassMonoIsotopic = 0.00054857990943;//units of u a.k.a.Da.  NIST CODATA 2006 
             electron.Symbol = "e";
 
             Atom neutron = new Atom();
             neutron.Name = "Neutron";
-            neutron.MonoIsotopicMass = 1.00866491597;//units of u a.k.a.Da.  NIST CODATA 2006
+            neutron.MassMonoIsotopic = 1.00866491597;//units of u a.k.a.Da.  NIST CODATA 2006
             neutron.Symbol = "n";
 
             Atom proton = new Atom();
             proton.Name = "Proton";
-            proton.MonoIsotopicMass = 1.00727646677;//units of u a.k.a.Da.  NIST CODATA 2006
+            proton.MassMonoIsotopic = 1.00727646677;//units of u a.k.a.Da.  NIST CODATA 2006
             proton.Symbol = "p";
 
             atomicDictionary.Add(electron.Symbol, electron);
@@ -64,7 +64,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             AtomSingleton NewSingleton = AtomSingleton.Instance;
             Dictionary<string, Atom> incommingDictionary = NewSingleton.ConstantsDictionary;
-            return incommingDictionary[constantKey].MonoIsotopicMass;
+            return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetSymbol(string constantKey)
@@ -90,7 +90,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             Dictionary<string, Atom> incommingDictionary = NewSingleton.ConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].MonoIsotopicMass;
+            return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetSymbol(SelectAtom selectKey)

@@ -22,7 +22,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             char aminoAcidKey = 'N';
             //dictionary implementation
             Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
-            double aminoAcidMass = aminoAcidsDictionary[aminoAcidKey].MonoIsotopicMass;
+            double aminoAcidMass = aminoAcidsDictionary[aminoAcidKey].MassMonoIsotopic;
             string aminoAcidName = aminoAcidsDictionary[aminoAcidKey].Name;
             string aminoAcidFormula = aminoAcidsDictionary[aminoAcidKey].ChemicalFormula;
 
@@ -64,7 +64,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             string monosaccharideKey = "Hex";
             //dictionary implementation
             Dictionary<string, Monosaccharide> monosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
-            double monoSaccharideMass = monosacchaideDictionary[monosaccharideKey].MonoIsotopicMass;
+            double monoSaccharideMass = monosacchaideDictionary[monosaccharideKey].MassMonoIsotopic;
             string monoSaccharideName = monosacchaideDictionary[monosaccharideKey].Name;
             string monoSaccharideFormula = monosacchaideDictionary[monosaccharideKey].ChemicalFormula;
 
@@ -108,7 +108,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(elementC12Abund, 0.98892228);
             Assert.AreEqual(elementC13Abund, 0.01107828);
 
-            double elementMass = elementDictionary[elementKey].MonoIsotopicMass;
+            double elementMass = elementDictionary[elementKey].MassMonoIsotopic;
             string elementName = elementDictionary[elementKey].Name;
             string elementSymbol = elementDictionary[elementKey].Symbol;
 
@@ -142,7 +142,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             //dictinoary implementation
 
             Dictionary<string, Atom> atomDictionary = AtomLibrary.LoadAtomicData();
-            double atomMass = atomDictionary[atomKey].MonoIsotopicMass;
+            double atomMass = atomDictionary[atomKey].MassMonoIsotopic;
             string atomName = atomDictionary[atomKey].Name;
             string atomSymbol = atomDictionary[atomKey].Symbol;
 
@@ -175,7 +175,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             string otherKey = "Aldehyde";
             //dictionarty implementation
             Dictionary<string, OtherMolecule> otherMoleculeDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
-            double otherMass = otherMoleculeDictionary[otherKey].MonoIsotopicMass;
+            double otherMass = otherMoleculeDictionary[otherKey].MassMonoIsotopic;
             string otherName = otherMoleculeDictionary[otherKey].Name;
             string otherFormula = otherMoleculeDictionary[otherKey].ChemicalFormula;
 
@@ -213,7 +213,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             string crossRingKey = "CRFNeu5Ac_03_X1";
             //dictionarty implementation
             Dictionary<string, CrossRing> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
-            double crossRingMass = CrossRingDictionary[crossRingKey].MonoIsotopicMass;
+            double crossRingMass = CrossRingDictionary[crossRingKey].MassMonoIsotopic;
             string crossRingFormula = CrossRingDictionary[crossRingKey].ChemicalFormula;
             string crossRingName = CrossRingDictionary[crossRingKey].Name;
 

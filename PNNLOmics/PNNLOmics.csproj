@@ -101,7 +101,6 @@
     <Compile Include="Data\Constants\Element.cs" />
     <Compile Include="Data\Constants\Utilities\ElementSingleton.cs" />
     <Compile Include="Data\Constants\Isotope.cs" />
-    <Compile Include="Data\Constants\Matter.cs" />
     <Compile Include="Data\Constants\Monosaccharide.cs" />
     <Compile Include="Data\Constants\OtherMolecule.cs" />
     <Compile Include="Data\Constants\Utilities\OtherMoleculeSingleton.cs" />

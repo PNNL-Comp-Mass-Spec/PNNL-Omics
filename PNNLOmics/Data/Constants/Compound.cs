@@ -10,8 +10,12 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     /// This is an abstract Class designed to cover the most basic parameters of compound objects.
     /// Compounds are made up of elements.
     /// </summary>
-    public abstract class Compound : Matter
+    public abstract class Compound
     {
+        public string Name { get; set; }
+        public double MassMonoIsotopic { get; set; }
+        public string Symbol { get; set; } 
+
         public string ChemicalFormula { get; set; }
         //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
         public int nCarbon { get; set; }
@@ -31,14 +35,14 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
             Dictionary<string, Element> elementDictionary = ElementLibrary.LoadElementData();
 
             double ExactMass =
-                GeneralCompound.nCarbon * elementDictionary["C"].MonoIsotopicMass +
-                GeneralCompound.nHydrogen * elementDictionary["H"].MonoIsotopicMass +
-                GeneralCompound.nNitrogen * elementDictionary["N"].MonoIsotopicMass +
-                GeneralCompound.nOxygen * elementDictionary["O"].MonoIsotopicMass +
-                GeneralCompound.nSulfur * elementDictionary["S"].MonoIsotopicMass +
-                GeneralCompound.nPotassium * elementDictionary["K"].MonoIsotopicMass +
-                GeneralCompound.nSodium * elementDictionary["Na"].MonoIsotopicMass +
-                GeneralCompound.nPhosphorus * elementDictionary["P"].MonoIsotopicMass;
+                GeneralCompound.nCarbon * elementDictionary["C"].MassMonoIsotopic +
+                GeneralCompound.nHydrogen * elementDictionary["H"].MassMonoIsotopic +
+                GeneralCompound.nNitrogen * elementDictionary["N"].MassMonoIsotopic +
+                GeneralCompound.nOxygen * elementDictionary["O"].MassMonoIsotopic +
+                GeneralCompound.nSulfur * elementDictionary["S"].MassMonoIsotopic +
+                GeneralCompound.nPotassium * elementDictionary["K"].MassMonoIsotopic +
+                GeneralCompound.nSodium * elementDictionary["Na"].MassMonoIsotopic +
+                GeneralCompound.nPhosphorus * elementDictionary["P"].MassMonoIsotopic;
 
             return ExactMass;
         }
