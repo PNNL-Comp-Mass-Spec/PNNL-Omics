@@ -46,7 +46,14 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
             this.ConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
         }
 
+        /// <summary>
+        /// get/set a dictionary of <char,AminoAcid> where char is a single letter code
+        /// </summary>
         public Dictionary<char, AminoAcid> ConstantsDictionary { get; set; }
+
+        /// <summary>
+        /// get/set a dictionary of <int,char> where char is a single letter code.  This dictionary can be iterated through to return char keys.
+        /// </summary>
         public Dictionary<int, char> ConstantsEnumDictionary { get; set; }
     }
 }
