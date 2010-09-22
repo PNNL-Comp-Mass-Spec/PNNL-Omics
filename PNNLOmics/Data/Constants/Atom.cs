@@ -8,10 +8,8 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     /// <summary>
     /// This is an empty Class designed to inherit from matter and behave like other inherited objects from matter such as elements.
     /// </summary>
-    public class Atom
+    public class Atom : Matter
     {
-        public string Name { get; set; }
-        public double MassMonoIsotopic { get; set; }
-        public string Symbol { get; set; } 
+        //empty class deriving from Matter
     }
 }

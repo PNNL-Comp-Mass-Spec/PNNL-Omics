@@ -96,6 +96,7 @@
     <Compile Include="Data\Constants\Compound.cs" />
     <Compile Include="Data\Constants\Utilities\CrossRingSingleton.cs" />
     <Compile Include="Data\Constants\Utilities\GenericSingleton.cs" />
+    <Compile Include="Data\Constants\Matter.cs" />
     <Compile Include="Data\Constants\Utilities\MonosaccharideSingleton.cs" />
     <Compile Include="Data\Constants\CrossRing.cs" />
     <Compile Include="Data\Constants\Element.cs" />

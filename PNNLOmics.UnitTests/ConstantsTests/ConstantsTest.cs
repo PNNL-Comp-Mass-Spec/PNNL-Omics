@@ -15,7 +15,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         public void TestCyclingThroughDictionary()
         {
             //Generating a List of keys
-            GenericSingleton<Atom> atomSingleton = GenericSingleton<Atom>.Instance;
+            AtomSingleton atomSingleton = AtomSingleton.Instance;
             Dictionary<int, string> cycleConverterDictionary = atomSingleton.ConstantsEnumDictionary;
             Dictionary<string, Atom> atomGeneratorDictionary = atomSingleton.ConstantsDictionary;
             

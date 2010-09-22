@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Comment CommentText="Data Layer">
-    <Position X="1.489" Y="1.729" Height="0.312" Width="7.502" />
+    <Position X="1.531" Y="0.698" Height="0.312" Width="7.502" />
   </Comment>
   <Comment CommentText="Utility Layer">
     <Position X="1.479" Y="4.823" Height="0.312" Width="7.544" />
@@ -58,7 +58,7 @@
   <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.Compound" Collapsed="true">
     <Position X="3.75" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAAECAAAAACAAEAgIAgAAAQAAAAAAABACAAAIgAACAA=</HashCode>
+      <HashCode>EAAECAAAAACAAEAgIAgAAAAAAAAAAABACAAAIAAAAAA=</HashCode>
       <FileName>Data\Constants\Compound.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -86,7 +86,7 @@
   <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.Atom" Collapsed="true">
     <Position X="5.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAgAACAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Constants\Atom.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -100,7 +100,7 @@
   <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.Element" Collapsed="true">
     <Position X="7.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAAAAAAAAAAAAAAAEQAAAIAAAAAAAAAAgAACAA=</HashCode>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAEAAAAIAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Constants\Element.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -151,6 +151,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQACAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>Data\Constants\Utilities\ElementSingleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.Matter" Collapsed="true">
+    <Position X="5.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAgAACAA=</HashCode>
+      <FileName>Data\Constants\Matter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
