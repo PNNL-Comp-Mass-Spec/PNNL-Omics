@@ -70,7 +70,7 @@
     <Compile Include="AlgorithmTests\FeatureClustering\UMCSingleLinkageClusterParametersTest.cs" />
     <Compile Include="AlgorithmTests\STACTests.cs" />
     <Compile Include="DataTests\Features\UMCClusterTests.cs" />
-    <Compile Include="FeatureFinderTests\Test.cs" />
+    <Compile Include="FeatureFinderTests\FeatureFinderTests.cs" />
     <Compile Include="DataTests\Features\FeatureTests.cs" />
     <Compile Include="FileReferences.cs" />
     <Compile Include="ImporterExporterTests\MassTagTextFileImporterTests.cs" />

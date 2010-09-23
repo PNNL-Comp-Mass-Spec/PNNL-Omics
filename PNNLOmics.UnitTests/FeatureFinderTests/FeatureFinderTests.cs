@@ -13,7 +13,7 @@ using PNNLOmics.Algorithms.ConformationDetection.Util;
 
 namespace PNNLOmics.UnitTests.FeatureFinderTests
 {
-	public class Test
+	public class FeatureFinderTests
 	{
 		[Test]
 		public void PrintExampleSettings()
