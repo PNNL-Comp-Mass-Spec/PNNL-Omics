@@ -59,14 +59,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         }
         #endregion
 
-        #region Mass Difference Edge Cases
+        #region Mass Tests
         /// <summary>
         /// Only produces a single cluster because all features should have the same mass.
         /// </summary>
         [Test]
+        [Category("Edge")]
         [Description("This tests to make sure that given a set of UMCs that are close, " +
-                     "and one feature that is far away in mass it gets it's own cluster.")]
-        public void EdgeEndMassDifferenceWithTwoFeatures()
+                     "and one feature that is far away in mass it gets it's own cluster.")]        
+        public void MassDifferenceWithTwoFeatures()
         {
             /*
              *     x4 x5
@@ -101,21 +102,21 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             List<UMC> features = new List<UMC>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature = new UMC();
-                feature.ID = i;
-                feature.UmcCluster = null;
-                feature.NETAligned = startNET;
+                UMC feature         = new UMC();
+                feature.ID          = i;
+                feature.UmcCluster  = null;
+                feature.NETAligned  = startNET;
                 feature.MassMonoisotopicAligned = startMass;
-                feature.DriftTime = Convert.ToSingle(startDrift);
-                feature.GroupID = i % totalDatasets;
+                feature.DriftTime   = Convert.ToSingle(startDrift);
+                feature.GroupID     = i % totalDatasets;
                 features.Add(feature);
 
-                startMass += deltaMass;
-                startDrift += deltaDrift;
-                startNET += deltaNET;
+                startMass   += deltaMass;
+                startDrift  += deltaDrift;
+                startNET    += deltaNET;
             }
 
-            // Now make the one UMC that is far away from home.
+            // Now make the two UMC's that are far away from home.
             features[features.Count - 2].MassMonoisotopicAligned = (startMass + 100.0);
             features[features.Count - 1].MassMonoisotopicAligned = (startMass + 100.0);
 
@@ -133,9 +134,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         /// Only produces a single cluster because all features should have the same mass.
         /// </summary>
         [Test]
+        [Category("Edge")]
         [Description("This tests to make sure that given a set of UMCs that are close, " +
                      "and one feature that is far away in mass it gets it's own cluster.")]
-        public void EdgeEndMassDifference()
+        public void MassDifference()
         {
             /*
              *     x4
@@ -150,12 +152,12 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
-            parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances = new UMCTolerances();
+            UMCSingleLinkageClustererParameters parameters  = new UMCSingleLinkageClustererParameters();
+            parameters.OnlyClusterSameChargeStates          = false;
+            parameters.Tolerances           = new UMCTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET = .06;
-            parameters.Tolerances.Mass = 3;
+            parameters.Tolerances.NET       = .06;
+            parameters.Tolerances.Mass      = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
             int totalDatasets = 100;
@@ -198,12 +200,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.AreEqual(totalFeatures - 1, clusters[0].UMCList.Count);
         }
         /// <summary>
-        /// Only produces a single cluster because all features should have the same mass.
+        /// Produces two clusters with approximately the same mass within, and then
+        /// separate nets.
         /// </summary>
         [Test]
+        [Category("Edge")]
         [Description("This tests to make sure that given a set of UMCs that are close, " +
                      "and one feature that is far away in mass it gets it's own cluster.")]
-        public void EdgeStartMassDifferenceWithTwoFeatures()
+        public void MassDifferenceWithMultipleFeatures()
         {
             /*
              *     x3 x4 x5
@@ -266,10 +270,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.AreEqual(3, clusters[1].UMCList.Count);
             Assert.AreEqual(totalFeatures - 3, clusters[0].UMCList.Count);
         }
-        [Test]
+        [Test]        
         [Description("This tests to make sure that given a set of UMCs that are close, " +
                      "and one feature that is far away in mass it gets it's own cluster.")]
-        public void EdgeStartMassDifference()
+        public void MassDifferenceTests()
         {
             /*
              *     x2 x3 x4
@@ -332,10 +336,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         }
         #endregion
 
-        #region NET Difference edge cases
+        #region NET Tests
         [Test]
+        [Category("Edge")]
         [Description("")]
-        public void EdgeNETTest()
+        public void NETTest()
         {    /*             
              *     x1 x2 ... x3 
              */
@@ -393,8 +398,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.AreEqual(totalFeatures - 1, clusters[1].UMCList.Count);
         }
         [Test]
+        [Category("Edge")]
         [Description("")]
-        public void EdgeNETTestReversed()
+        public void NETTestReversed()
         {    /*             
              *     x1 ... x2, x3 
              */
@@ -453,31 +459,31 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         }
         #endregion
 
-        #region Valid Cluster Tests
+        #region Single Clusters
         /// <summary>
         /// Only produces a single cluster because all features should have the same mass.
         /// </summary>
         [Test]
+        [TestCase(0, .05, Description = "Delta Mass = 0")]
+        [TestCase(.00000001, 0, Description = "Delta NET  = 0")]
         [Description("This test makes a set of UMC's whose only varying dimension is NET.")]
-        public void EdgeSingleClusterTest()
+        public void CreateSingleClusterTests(double deltaMass, double deltaNET)
         {
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
-            parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances = new UMCTolerances();
-            parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET = .06;
-            parameters.Tolerances.Mass = 3;
+            parameters.OnlyClusterSameChargeStates  = false;
+            parameters.Tolerances                   = new UMCTolerances();
+            parameters.Tolerances.DriftTime         = 1;
+            parameters.Tolerances.NET               = .06;
+            parameters.Tolerances.Mass              = 50;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
             int totalDatasets   = 6;
             int totalFeatures   = 5;
-            double startMass    = 4;
-            double deltaMass    = 0;
+            double startMass    = 4;            
             double startNET     = 0.10;
-            double deltaNET     = 0.05;
             double startDrift   = 10;
             double deltaDrift   = 0;
 
@@ -506,48 +512,109 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.IsNotNull(clusters);
             Assert.AreEqual(1, clusters.Count);
         }
+        #endregion
+
+
+        #region Singleton Clusters
         /// <summary>
-        /// Only produces a single cluster because all features should have the same mass.
+        /// Creates features who are clearly not clusterable based on tolerances.
         /// </summary>
         [Test]
-        [Description("Cluster a single feature.")]
-        public void EdgeSingleFeatureTest()
+        [Category("Edge")]
+        public void CreateSingletonTests()
         {
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
             UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
-            parameters.OnlyClusterSameChargeStates  = false;
-            parameters.Tolerances                   = new UMCTolerances();
-            parameters.Tolerances.DriftTime         = 1;
-            parameters.Tolerances.NET               = .06;
-            parameters.Tolerances.Mass              = 3;
+            parameters.OnlyClusterSameChargeStates         = false;
+            parameters.Tolerances           = new UMCTolerances();
+            parameters.Tolerances.DriftTime = 1;
+            parameters.Tolerances.NET       = .06;
+            parameters.Tolerances.Mass      = 50;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
-            int totalDatasets = 6;
-            int totalFeatures = 1;
-            double startMass  = 4;
-            double deltaMass  = 0;
-            double startNET   = .1;
-            double deltaNET   = .05;
-            double startDrift = 10;
-            double deltaDrift = 0;
+            int totalDatasets   = 100;
+            int totalFeatures   = 5;
+            double startMass    = 500;
+            double startNET     = 0.10;
+            double startDrift   = 10;
+
+            double deltaNet   = parameters.Tolerances.NET * 2;
+            double deltaDrift = parameters.Tolerances.DriftTime * 2;
 
             List<UMC> features = new List<UMC>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature = new UMC();
-                feature.ID = i;
-                feature.UmcCluster = null;
-                feature.NETAligned = startNET;
+                UMC feature             = new UMC();
+                feature.ID              = i;
+                feature.UmcCluster      = null;
+                feature.NETAligned      = startNET;
                 feature.MassMonoisotopicAligned = startMass;
-                feature.DriftTime = Convert.ToSingle(startDrift);
-                feature.GroupID = i % totalDatasets;
-                features.Add(feature);
+                feature.DriftTime       = Convert.ToSingle(startDrift);
+                feature.GroupID         = i % totalDatasets;
+                feature.ChargeState     = i;
 
-                startMass += deltaMass;
+                feature.DriftTime               = Convert.ToSingle(startDrift);
+                feature.NETAligned              = startNET;
+                feature.MassMonoisotopicAligned = startMass;
+
+                // Always put it just outside of the next feature.
+                startMass   = Feature.ComputeDaDifferenceFromPPM(startMass, parameters.Tolerances.Mass * 1.5);
+                startNET   += deltaNet;
                 startDrift += deltaDrift;
-                startNET += deltaNET;
+
+                features.Add(feature);
+            }
+            
+            clustering.Parameters     = parameters;
+            List<UMCCluster> clusters = clustering.Cluster(features);
+
+            // Make sure we have only one cluster.
+            Assert.IsNotNull(clusters);
+            Assert.AreEqual(totalFeatures, clusters.Count);
+        }
+        #endregion
+
+        #region Charge State
+        /// <summary>
+        /// Tests clustering features with like charges if IMS data.  Otherwise clusters normally.
+        /// </summary>
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        [Description("This test will separate clusteres based on charge.")]
+        public void ChargeStatesTests(bool onlyClusterCharges)
+        {
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+
+            // Setup the parameters to work with the data.
+            UMCSingleLinkageClustererParameters parameters  = new UMCSingleLinkageClustererParameters();
+            parameters.OnlyClusterSameChargeStates          = onlyClusterCharges;
+            parameters.Tolerances                           = new UMCTolerances();
+            parameters.Tolerances.DriftTime                 = 1;
+            parameters.Tolerances.NET                       = .06;
+            parameters.Tolerances.Mass                      = 50;
+
+            // Setup the test so that we have the same mass and drift data, but change in NET.
+            int totalDatasets = 100;
+            int totalFeatures = 5;
+            double startMass  = 500;
+            double startNET   = 0.10;
+            double startDrift = 10;
+
+            List<UMC> features = new List<UMC>();
+            for (int i = 0; i < totalFeatures; i++)
+            {
+                UMC feature         = new UMC();
+                feature.ID          = i;
+                feature.UmcCluster  = null;
+                feature.NETAligned  = startNET;
+                feature.MassMonoisotopicAligned = startMass;
+                feature.DriftTime   = Convert.ToSingle(startDrift);
+                feature.GroupID     = i % totalDatasets;
+                feature.ChargeState = i;
+                features.Add(feature);                
             }
 
             // Cluster
@@ -556,19 +623,32 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
-            Assert.AreEqual(1, clusters.Count);
-            Assert.AreEqual(1, clusters[0].UMCList.Count);
+            if (onlyClusterCharges)
+            {
+                Assert.AreEqual(totalFeatures, clusters.Count);
+            }
+            else
+            {
+                Assert.AreNotEqual(totalFeatures, clusters.Count);
+                Assert.AreEqual(1, clusters.Count);
+            }
         }
         #endregion
     
-        #region Overlap Tests
+        #region Dataset Overlap and Merging Tests
         /// <summary>
         /// Only produces a single cluster because all features should have the same mass.
         /// </summary>
         [Test]
         [Description("This test makes sure two dataset features are not clustered together.")]
-        public void ClusterOverlapMergeTest()
+        public void OverlapDatasetExclusionTest1()
         {
+            /*
+             *
+             *  x1-d1 x2-d2 x3-d3 x4-d1 x5-d2
+             * 
+             */
+
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
@@ -601,9 +681,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
 
-                startMass += deltaMass;
+                startMass  += deltaMass;
                 startDrift += deltaDrift;
-                startNET += deltaNET;
+                startNET   += deltaNET;
             }
 
             // Cluster
@@ -613,6 +693,75 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
             Assert.AreEqual(3, clusters.Count);
+        }
+        /// <summary>
+        /// Only produces a single cluster because all features should have the same mass.
+        /// </summary>
+        [Test]
+        [Description("This test makes sure two dataset features are not clustered together.")]
+        public void OverlapDatasetExclusionTest2()
+        {
+            /*
+             *  Cluster configuration
+             * 
+             *      x1-d1 x2-d2 x3-d2 x4-d1
+             * 
+             */
+            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+
+            // Setup the parameters to work with the data.
+            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            parameters.OnlyClusterSameChargeStates = false;
+            parameters.Tolerances           = new UMCTolerances();
+            parameters.Tolerances.DriftTime = 1;
+            parameters.Tolerances.NET       = .06;
+            parameters.Tolerances.Mass      = 3;
+
+            // Setup the test so that we have the same mass and drift data, but change in NET.            
+            int totalFeatures   = 4;
+            double startMass    = 5;
+            double deltaMass    = 0;
+            double startNET     = .1;
+            double deltaNET     = .05;
+            double startDrift   = 10;
+            double deltaDrift   = 0;
+
+            // Create all features.
+            List<UMC> features = new List<UMC>();
+            for (int i = 0; i < totalFeatures; i++)
+            {
+                UMC feature         = new UMC();
+                feature.ID          = i;
+                feature.UmcCluster  = null;
+                feature.NETAligned  = startNET;
+                feature.MassMonoisotopicAligned = startMass;
+                feature.DriftTime   = Convert.ToSingle(startDrift);
+                feature.GroupID     = 0;
+                features.Add(feature);
+
+                startMass   += deltaMass;
+                startDrift  += deltaDrift;
+                startNET    += deltaNET;
+            }
+
+            features[0].GroupID = 1;
+            features[1].GroupID = 2;
+            features[2].GroupID = 2;
+            features[3].GroupID = 1;
+
+            // Cluster
+            clustering.Parameters     = parameters;
+            List<UMCCluster> clusters = clustering.Cluster(features);
+
+            // Make sure we have only one cluster.
+            Assert.IsNotNull(clusters);
+            Assert.AreEqual(2, clusters.Count);
+            
+            Assert.AreEqual(2, clusters[0].UMCList.Count);
+            Assert.AreEqual(2, clusters[1].UMCList.Count);
+
+            Assert.AreNotEqual(clusters[0].UMCList[0].GroupID, clusters[0].UMCList[1].GroupID);
+            Assert.AreNotEqual(clusters[1].UMCList[0].GroupID, clusters[1].UMCList[1].GroupID);
         }
         #endregion
     }

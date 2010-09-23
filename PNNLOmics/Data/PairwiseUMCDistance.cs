@@ -19,31 +19,53 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Holds the distance between two features and indices.
     /// </summary>
-    public class PairwiseUMCDistance : IComparer<PairwiseUMCDistance>
+    public class PairwiseDistance<T> : IComparer<PairwiseDistance<T>>
+        where T : Feature, new()
     {
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public PairwiseDistance()
+        {
+            Distance = double.NaN;
+        }
+        /// <summary>
+        /// Constructor that builds a distance between two features.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="distance"></param>
+        public PairwiseDistance(T x, T y, double distance)
+        {
+            FeatureX = x;
+            FeatureY = y;
+            Distance = distance;
+        }
+        
         #region Properties
         /// <summary>
         /// Gets or sets the x feature.
         /// </summary>
-        public UMC FeatureX { get; set; }
+        public T FeatureX { get; set; }
         /// <summary>
         /// Gets or sets the y feature.
         /// </summary>
-        public UMC FeatureY { get; set; }
+        public T FeatureY { get; set; }
         /// <summary>
         /// Gets or sets the distance between the two features.
         /// </summary>
         public double Distance { get; set; }
         #endregion
-
-        #region IComparer<PairwiseUMCDistance> Members
+        
+        #region IComparer<PairwiseDistance> Members
         /// <summary>
         /// Compares the distance between x and y.
         /// </summary>
         /// <param name="x">Feature x.</param>
         /// <param name="y">Feature y.</param>
         /// <returns>Returns an integer value determining if x is greater than, less than, or equal to y.</returns>
-        public int Compare(PairwiseUMCDistance x, PairwiseUMCDistance y)
+        public int Compare(PairwiseDistance<T> x, PairwiseDistance<T> y)
         {
             return x.Distance.CompareTo(y.Distance);
         }

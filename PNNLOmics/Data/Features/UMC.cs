@@ -9,7 +9,65 @@ namespace PNNLOmics.Data.Features
 	/// <remarks>UMC stands for Unique Mass Class - see Advances in Proteomics Data Analysis and Display Using An Accurate Mass and Time Tag Approach in Mass Spectrometry Reviews, 2006. Zimmer et. al.</remarks>
 	public class UMC : Feature, IComparable<UMC>
 	{
-		#region AutoProperties and Properties
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public UMC()
+        {
+            Clear();
+        }
+        /// <summary>
+        /// Copy Constructor.
+        /// </summary>
+        /// <param name="feature">Feature to copy data from.</param>
+        public UMC(UMC feature)
+        {
+            Clear();
+            ToBeRemoved                     = feature.ToBeRemoved;
+            HasDaltonError                  = feature.HasDaltonError;
+            ChargeMaximum                   = feature.ChargeMaximum;
+            ChargeMinimum                   = feature.ChargeMinimum;
+            this.ChargeState                = feature.ChargeState;
+            this.ConformationFitScore       = feature.ConformationFitScore;
+            this.ConformationIndex          = feature.ConformationIndex;
+            this.DaltonCorrectionMax        = feature.DaltonCorrectionMax;
+            this.DriftTime                  = feature.DriftTime;
+            this.ElutionTime                = feature.ElutionTime;
+            this.FitScoreAverage            = feature.FitScoreAverage;
+            this.GroupID                    = feature.GroupID;
+            this.HasDaltonError             = feature.HasDaltonError;
+            this.ID                         = feature.ID;
+            this.IsDaltonCorrected          = feature.IsDaltonCorrected;
+            this.IsSuspicious               = feature.IsSuspicious;
+            this.MassMonoisotopic           = feature.MassMonoisotopic;
+            this.MassMonoisotopicAligned    = feature.MassMonoisotopicAligned;
+            this.MassMonoisotopicAverage    = feature.MassMonoisotopicAverage;
+            this.MassMonoisotopicMaximum    = feature.MassMonoisotopicMaximum;
+            this.MassMonoisotopicMedian     = feature.MassMonoisotopicMedian;
+            this.MassMonoisotopicMinimum    = feature.MassMonoisotopicMinimum;
+            this.MassMonoisotopicStandardDeviation  = feature.MassMonoisotopicStandardDeviation;
+            this.MassOfMaxAbundance                 = feature.MassOfMaxAbundance;
+
+            //TODO: Make this more than a reference copy?             
+            this.MSFeatureList          = feature.MSFeatureList;
+            this.MZ                     = feature.MZ;
+            this.MZCorrected            = feature.MZCorrected;
+            this.NET                    = feature.NET;
+            this.NETAligned             = feature.NETAligned;
+            this.ScanLC                 = feature.ScanLC;
+            this.ScanLCAligned          = feature.ScanLCAligned;
+            this.ScanLCEnd              = feature.ScanLCEnd;
+            this.ScanLCOfMaxAbundance   = feature.ScanLCOfMaxAbundance;
+            this.ScanLCStart            = feature.ScanLCStart;
+            this.ToBeRemoved            = feature.ToBeRemoved;
+            this.UmcCluster             = feature.UmcCluster;                        
+        }
+
+        #region AutoProperties and Properties
+        /// <summary>
+        /// The ID of the group the feature belongs to.  Where a group could be a dataset or factor.
+        /// </summary>
+        public int GroupID { get; set; }
 		/// <summary>
 		/// True if the the UMC should be removed from the working List of UMCs.
 		/// </summary>

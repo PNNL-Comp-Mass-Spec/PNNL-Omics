@@ -38,6 +38,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         }
 
         #region Properties
+        public UMCClusterCentroidRepresentation CentroidRepresentation
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets or sets the tolerance values for the clustering algorithm.
         /// </summary>
@@ -72,6 +77,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             Tolerances                      = new UMCTolerances();
             OnlyClusterSameChargeStates     = CONST_DEFAULT_ONLY_CLUSTER_SAME_CHARGE_STATES;
             DistanceFunction                = new DistanceFunction(EuclideanDistance);
+            CentroidRepresentation          = UMCClusterCentroidRepresentation.Median;
         }
 
         #region Distance Functions

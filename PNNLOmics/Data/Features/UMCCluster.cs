@@ -36,8 +36,7 @@ namespace PNNLOmics.Data.Features
             ChargeState     = cluster.ChargeState;
             IsDaltonCorrected       = cluster.IsDaltonCorrected;
             DriftTime       = cluster.DriftTime;
-            ElutionTime     = cluster.ElutionTime;
-            GroupID         = cluster.GroupID;
+            ElutionTime     = cluster.ElutionTime;            
             ID              = cluster.ID;
             MassMonoisotopic        = cluster.MassMonoisotopic;
             MassMonoisotopicAligned = cluster.MassMonoisotopicAligned;
@@ -65,8 +64,7 @@ namespace PNNLOmics.Data.Features
             ChargeState     = umc.ChargeState;
             IsDaltonCorrected = umc.IsDaltonCorrected;
             DriftTime       = umc.DriftTime;
-            ElutionTime     = umc.ElutionTime;
-            GroupID         = umc.GroupID;
+            ElutionTime     = umc.ElutionTime;            
             ID              = umc.ID;
             MassMonoisotopic        = umc.MassMonoisotopic;
             MassMonoisotopicAligned = umc.MassMonoisotopicAligned;
@@ -109,6 +107,101 @@ namespace PNNLOmics.Data.Features
         }
         #endregion
 
+        /// <summary>
+        /// Calculates the centroid and other statistics about the cluster.
+        /// </summary>
+        /// <param name="centroid"></param>
+        public void CalculateStatistics(UMCClusterCentroidRepresentation centroid)
+        {
+            if (UMCList == null)
+                throw new NullReferenceException("The UMC list was not set to an object reference.");
+
+            if (UMCList.Count < 1)
+                throw new Exception("No data to compute statistics over.");
+
+            // Lists for holding onto masses etc.
+            List<double> net        = new List<double>();
+            List<double> mass       = new List<double>();
+            List<double> driftTime  = new List<double>();
+
+            // Histogram of representative charge states
+            Dictionary<int, int> chargeStates = new Dictionary<int, int>(); 
+
+            double sumNet       = 0;
+            double sumMass      = 0;
+            double sumDrifttime = 0;
+
+            foreach (UMC umc in UMCList)
+            {
+
+                if (umc == null)
+                    throw new NullReferenceException("A UMC was null when trying to calculate cluster statistics.");
+
+                net.Add(umc.NETAligned);
+                mass.Add(umc.MassMonoisotopicAligned);
+                driftTime.Add(umc.DriftTime);
+
+                sumNet          += umc.NETAligned;
+                sumMass         += umc.MassMonoisotopicAligned;
+                sumDrifttime    += umc.DriftTime;
+
+                // Calculate charge states.
+                if (!chargeStates.ContainsKey(umc.ChargeState))
+                {
+                    chargeStates.Add(umc.ChargeState, 1);
+                }
+                else
+                {
+                    chargeStates[umc.ChargeState]++;
+                }
+            }
+            
+            int numUMCs = UMCList.Count;
+            int median = 0;
+
+            // Calculate the centroid of the cluster.
+            switch (centroid)
+            {
+                case UMCClusterCentroidRepresentation.Mean:
+                    this.MassMonoisotopic   = (sumMass / numUMCs);
+                    this.NET                = (sumNet / numUMCs);
+                    this.DriftTime          = Convert.ToSingle(sumDrifttime / numUMCs);
+                    break;
+                case UMCClusterCentroidRepresentation.Median:
+                    net.Sort();
+                    mass.Sort();
+                    driftTime.Sort();
+
+                    // If the median index is odd.  Then take the average.
+                    if ((numUMCs % 2) == 0)
+                    {
+                        median                  = Convert.ToInt32(numUMCs / 2);
+                        this.MassMonoisotopic   = (mass[median] + mass[median - 1]) / 2;
+                        this.NET                = (net[median] + net[median - 1]) / 2;
+                        this.DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
+                    }
+                    else
+                    {
+                        median                  = Convert.ToInt32((numUMCs) / 2);
+                        this.MassMonoisotopic   = mass[median];
+                        this.NET                = net[median];
+                        this.DriftTime          = Convert.ToSingle(driftTime[median]);
+                    }                    
+                    break;
+            }
+
+
+            // Calculate representative charge state as the mode.
+            int maxCharge = int.MinValue;            
+            foreach (int charge in chargeStates.Keys)
+            {
+                if (maxCharge == int.MinValue || chargeStates[charge] > chargeStates[maxCharge])
+                {
+                    maxCharge = charge;
+                }
+            }
+            this.ChargeState = maxCharge;
+        }
 
         #region Overriden Base Methods
         public override string ToString()

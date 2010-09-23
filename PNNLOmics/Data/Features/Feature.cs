@@ -17,10 +17,6 @@ namespace PNNLOmics.Data.Features
 
         #region AutoProperties
         /// <summary>
-        /// The ID of the group the feature belongs to.  Where a group could be a dataset or factor.
-        /// </summary>
-        public int GroupID { get; set; }
-        /// <summary>
         /// The ID for a feature.
         /// </summary>
         public int ID { get; set; }
@@ -94,8 +90,7 @@ namespace PNNLOmics.Data.Features
 			this.ChargeState                = 0;
 			this.DriftTime                  = 0;            
             this.IsDaltonCorrected                  = false;
-            this.ElutionTime                = 0;
-            this.GroupID                    = -1;
+            this.ElutionTime                = 0;            
 			this.ID                         = -1;
 			this.MassMonoisotopic           = 0;
 			this.MassMonoisotopicAligned    = 0;
@@ -267,7 +262,7 @@ namespace PNNLOmics.Data.Features
         /// <returns>Mass difference in parts per million (ppm).</returns>
         public static double ComputeDaDifferenceFromPPM(double massX, double ppm)
         {
-            return massX - (ppm * 1e-6 * massX);
+            return massX - (ppm * 1e-6 * massX);            
         }
 		#endregion
 
@@ -316,11 +311,7 @@ namespace PNNLOmics.Data.Features
             if (!this.ElutionTime.Equals(other.ElutionTime))
             {
                 return false;
-            }
-            if (!this.GroupID.Equals(other.GroupID))
-            {
-                return false;
-            }
+            }            
             if (!this.ID.Equals(other.ID))
             {
                 return false;
@@ -374,8 +365,7 @@ namespace PNNLOmics.Data.Features
                 ChargeState.GetHashCode() ^
                 IsDaltonCorrected.GetHashCode() ^
                 DriftTime.GetHashCode() ^
-                ElutionTime.GetHashCode() ^
-                GroupID.GetHashCode() ^
+                ElutionTime.GetHashCode() ^                
                 ID.GetHashCode() ^
                 MZ.GetHashCode() ^
                 MZCorrected.GetHashCode() ^
