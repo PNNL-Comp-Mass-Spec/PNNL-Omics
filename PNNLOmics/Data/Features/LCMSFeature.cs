@@ -49,9 +49,12 @@ namespace PNNLOmics.Data.Features
 		public override void Clear()
 		{
 			base.Clear();
-			foreach (UniqueMass uniqueMass in this.MassList)
+			if (this.MassList != null)
 			{
-				uniqueMass.Clear();
+				foreach (UniqueMass uniqueMass in this.MassList)
+				{
+					uniqueMass.Clear();
+				}
 			}
 		}
 		#endregion
