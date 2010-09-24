@@ -31,15 +31,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("Sends a null list of UMC's to the clustering algorithm.")]
         public void ClearMethodTest()
         {
-            UMCSingleLinkageClustererParameters parameters  = new UMCSingleLinkageClustererParameters();
-            parameters.CentroidRepresentation               = UMCClusterCentroidRepresentation.Mean;
+            FeatureClusterParameters parameters  = new FeatureClusterParameters();
+            parameters.CentroidRepresentation               = ClusterCentroidRepresentation.Mean;
             parameters.DistanceFunction                     = null;
             bool useCharges                                 = parameters.OnlyClusterSameChargeStates;
             parameters.OnlyClusterSameChargeStates          = parameters.OnlyClusterSameChargeStates == false;
             parameters.Tolerances                           = null;
             parameters.Clear();
 
-            Assert.AreEqual(parameters.CentroidRepresentation, UMCClusterCentroidRepresentation.Median);
+            Assert.AreEqual(parameters.CentroidRepresentation, ClusterCentroidRepresentation.Median);
             Assert.NotNull(parameters.Tolerances);
             Assert.AreEqual(useCharges, parameters.OnlyClusterSameChargeStates);
             Assert.NotNull(parameters.DistanceFunction);            

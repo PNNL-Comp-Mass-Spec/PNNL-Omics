@@ -137,7 +137,7 @@
     <Compile Include="Data\Constants\Utilities\OtherMoleculeLibrary.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Features\UMCClusterCentroidRepresentation.cs" />
+    <Compile Include="Data\Features\ClusterCentroidRepresentation.cs" />
     <Compile Include="Data\MSMSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
     <Compile Include="Generic\Pair.cs" />
@@ -146,8 +146,8 @@
     <Compile Include="Algorithms\ConformationDetection\Data\Pair.cs" />
     <Compile Include="Algorithms\ConformationDetection\Util\MathUtil.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />
-    <Compile Include="Algorithms\FeatureClustering\UMCSingleLinkageClustererParameters.cs" />
-    <Compile Include="Algorithms\UMCTolerances.cs" />
+    <Compile Include="Algorithms\FeatureClustering\FeatureClusterParameters.cs" />
+    <Compile Include="Algorithms\FeatureTolerances.cs" />
     <Compile Include="Algorithms\FeatureClustering\IClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCSingleLinkageClusterer.cs" />
     <Compile Include="Algorithms\FeatureFinding\CodeExamples\BinarySearchExample.cs" />
@@ -222,6 +222,9 @@
     <Content Include="PNNLOmicsElementData.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IO\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

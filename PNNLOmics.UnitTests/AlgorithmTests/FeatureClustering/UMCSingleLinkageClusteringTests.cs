@@ -1,13 +1,15 @@
 ﻿/*////////////////////////////////////////////////////////////////////////////////////////////////////////////
  * 
- * Name:    UMC Single Linkage Clusterer 
- * File:    UMCSingleLinkageClustering.cs
+ * Name:    UMC Single Linkage Clusterer Tests
+ * File:    UMCSingleLinkageClusteringTests.cs
  * Author:  Brian LaMarche 
- * Purpose: Perform clustering of UMC features across datasets into UMC Clusters.
+ * Purpose: Tests Perform clustering of UMC features across datasets into UMC Clusters.
  * Date:    8-02-2010
  * Revisions:
  *          8-02-2010 - BLL - Created mass and edge case tests.
  *          8-02-2010 - BLL - Added more NET edge case tests.
+ *          9-22-2010 - BLL - Added more Mass and NET as well as singleton edge case tests for code coverage.
+ *          
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 using System;
 using System.Collections.Generic;
@@ -82,9 +84,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances = new UMCTolerances();
+            parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET = .06;
             parameters.Tolerances.Mass = 3;
@@ -152,9 +154,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters  = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters  = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates          = false;
-            parameters.Tolerances           = new UMCTolerances();
+            parameters.Tolerances           = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET       = .06;
             parameters.Tolerances.Mass      = 3;
@@ -222,9 +224,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances = new UMCTolerances();
+            parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET = .06;
             parameters.Tolerances.Mass = 3;
@@ -287,9 +289,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances = new UMCTolerances();
+            parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET = .06;
             parameters.Tolerances.Mass = 3;
@@ -347,9 +349,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances = new UMCTolerances();
+            parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET = .06;
             parameters.Tolerances.Mass = 3;
@@ -407,9 +409,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances = new UMCTolerances();
+            parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET = .06;
             parameters.Tolerances.Mass = 3;
@@ -472,9 +474,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates  = false;
-            parameters.Tolerances                   = new UMCTolerances();
+            parameters.Tolerances                   = new FeatureTolerances();
             parameters.Tolerances.DriftTime         = 1;
             parameters.Tolerances.NET               = .06;
             parameters.Tolerances.Mass              = 50;
@@ -526,9 +528,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates         = false;
-            parameters.Tolerances           = new UMCTolerances();
+            parameters.Tolerances           = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET       = .06;
             parameters.Tolerances.Mass      = 50;
@@ -589,9 +591,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters  = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters  = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates          = onlyClusterCharges;
-            parameters.Tolerances                           = new UMCTolerances();
+            parameters.Tolerances                           = new FeatureTolerances();
             parameters.Tolerances.DriftTime                 = 1;
             parameters.Tolerances.NET                       = .06;
             parameters.Tolerances.Mass                      = 50;
@@ -652,9 +654,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances = new UMCTolerances();
+            parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET = .06;
             parameters.Tolerances.Mass = 3;
@@ -710,9 +712,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
 
             // Setup the parameters to work with the data.
-            UMCSingleLinkageClustererParameters parameters = new UMCSingleLinkageClustererParameters();
+            FeatureClusterParameters parameters = new FeatureClusterParameters();
             parameters.OnlyClusterSameChargeStates = false;
-            parameters.Tolerances           = new UMCTolerances();
+            parameters.Tolerances           = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
             parameters.Tolerances.NET       = .06;
             parameters.Tolerances.Mass      = 3;

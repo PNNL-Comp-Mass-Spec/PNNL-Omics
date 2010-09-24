@@ -111,7 +111,7 @@ namespace PNNLOmics.Data.Features
         /// Calculates the centroid and other statistics about the cluster.
         /// </summary>
         /// <param name="centroid"></param>
-        public void CalculateStatistics(UMCClusterCentroidRepresentation centroid)
+        public void CalculateStatistics(ClusterCentroidRepresentation centroid)
         {
             if (UMCList == null)
                 throw new NullReferenceException("The UMC list was not set to an object reference.");
@@ -162,12 +162,12 @@ namespace PNNLOmics.Data.Features
             // Calculate the centroid of the cluster.
             switch (centroid)
             {
-                case UMCClusterCentroidRepresentation.Mean:
+                case ClusterCentroidRepresentation.Mean:
                     this.MassMonoisotopic   = (sumMass / numUMCs);
                     this.NET                = (sumNet / numUMCs);
                     this.DriftTime          = Convert.ToSingle(sumDrifttime / numUMCs);
                     break;
-                case UMCClusterCentroidRepresentation.Median:
+                case ClusterCentroidRepresentation.Median:
                     net.Sort();
                     mass.Sort();
                     driftTime.Sort();

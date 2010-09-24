@@ -251,7 +251,7 @@ namespace PNNLOmics.Data.Features
         /// <param name="massY">Mass of feature Y.</param>
         /// <returns>Mass difference in parts per million (ppm).</returns>
         public static double ComputeMassPPMDifference(double massX, double massY)
-        {
+        {			
             return (massX - massY) * 1e6 / massX;
         }
         /// <summary>

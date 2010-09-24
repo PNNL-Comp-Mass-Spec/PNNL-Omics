@@ -23,7 +23,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         {
             UMCCluster cluster      = new UMCCluster();
             cluster.UMCList         = null;
-            cluster.CalculateStatistics(UMCClusterCentroidRepresentation.Median);
+            cluster.CalculateStatistics(ClusterCentroidRepresentation.Median);
         }
         /// <summary>
         /// Calculates statistics for a empty UMC list.
@@ -34,20 +34,20 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         {
             UMCCluster cluster = new UMCCluster();
             cluster.UMCList = new List<UMC>();
-            cluster.CalculateStatistics(UMCClusterCentroidRepresentation.Median);
+            cluster.CalculateStatistics(ClusterCentroidRepresentation.Median);
         }
         /// <summary>
         /// Calculates statistics for a empty UMC list.
         /// </summary>
         [Test]
-        [TestCase(100, 100, 50, 2, 15000, UMCClusterCentroidRepresentation.Median)]
-        [TestCase(100, 100, 50, 2, 15000, UMCClusterCentroidRepresentation.Mean)]
+        [TestCase(100, 100, 50, 2, 15000, ClusterCentroidRepresentation.Median)]
+        [TestCase(100, 100, 50, 2, 15000, ClusterCentroidRepresentation.Mean)]
         public void CalculateStatisticsTestSingleUMC(   double  umcMass, 
                                                         double  umcNET,
                                                         float   umcDrifTime,
                                                         int     umcCharge, 
                                                         int     umcAbundance,
-                                                        UMCClusterCentroidRepresentation representation)
+                                                        ClusterCentroidRepresentation representation)
         {
             UMCCluster cluster          = new UMCCluster();
             cluster.UMCList             = new List<UMC>();            
@@ -72,14 +72,14 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         /// Calculates statistics for a empty UMC list.
         /// </summary>
         [Test]
-        [TestCase(100, 100, 50, 2, 15000, 2, 2, UMCClusterCentroidRepresentation.Median)]
-        [TestCase(100, 100, 50, 2, 15000, 2, 2, UMCClusterCentroidRepresentation.Mean)]
-        [TestCase(100, 100, 50, 2, 15000, 2, 3, UMCClusterCentroidRepresentation.Median)]
-        [TestCase(100, 100, 50, 2, 15000, 2, 3, UMCClusterCentroidRepresentation.Mean)]
-        [TestCase(100, 100, 50, 2, 15000, 2, 4, UMCClusterCentroidRepresentation.Median)]
-        [TestCase(100, 100, 50, 2, 15000, 2, 4, UMCClusterCentroidRepresentation.Mean)]
-        [TestCase(100, 100, 50, 2, 15000, 2, 100, UMCClusterCentroidRepresentation.Median)]
-        [TestCase(100, 100, 50, 2, 15000, 2, 100, UMCClusterCentroidRepresentation.Mean)]
+        [TestCase(100, 100, 50, 2, 15000, 2, 2, ClusterCentroidRepresentation.Median)]
+        [TestCase(100, 100, 50, 2, 15000, 2, 2, ClusterCentroidRepresentation.Mean)]
+        [TestCase(100, 100, 50, 2, 15000, 2, 3, ClusterCentroidRepresentation.Median)]
+        [TestCase(100, 100, 50, 2, 15000, 2, 3, ClusterCentroidRepresentation.Mean)]
+        [TestCase(100, 100, 50, 2, 15000, 2, 4, ClusterCentroidRepresentation.Median)]
+        [TestCase(100, 100, 50, 2, 15000, 2, 4, ClusterCentroidRepresentation.Mean)]
+        [TestCase(100, 100, 50, 2, 15000, 2, 100, ClusterCentroidRepresentation.Median)]
+        [TestCase(100, 100, 50, 2, 15000, 2, 100, ClusterCentroidRepresentation.Mean)]
         public void CalculateStatisticsTestMultipleUMCs(      double  umcMass,
                                                         double  umcNET,
                                                         float   umcDrifTime,
@@ -87,7 +87,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                                                         int     umcAbundance,
                                                         int     multiplier,
                                                         int     numUMCs,
-                                                        UMCClusterCentroidRepresentation representation)
+                                                        ClusterCentroidRepresentation representation)
         {
             UMCCluster cluster  = new UMCCluster();
             cluster.UMCList     = new List<UMC>();
@@ -107,7 +107,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                 umc.Abundance               = umcAbundance + multiplier * i;
                 cluster.UMCList.Add(umc);
 
-                if (representation == UMCClusterCentroidRepresentation.Mean)
+                if (representation == ClusterCentroidRepresentation.Mean)
                 {
                     medianMass      += umc.MassMonoisotopicAligned;
                     medianNET       += umc.NETAligned;
@@ -146,7 +146,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             }
 
             // We make sure that we calculate the mean correctly here.
-            if (representation == UMCClusterCentroidRepresentation.Mean)
+            if (representation == ClusterCentroidRepresentation.Mean)
             {
                 medianMass      /= numUMCs;
                 medianNET       /= numUMCs;

@@ -30,14 +30,14 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         public UMCSingleLinkageClusterer()
         {
-            Parameters = new UMCSingleLinkageClustererParameters();            
+            Parameters = new FeatureClusterParameters();            
         }
 
         #region Properties
         /// <summary>
         /// Gets or sets the parameters used 
         /// </summary>
-        public UMCSingleLinkageClustererParameters Parameters
+        public FeatureClusterParameters Parameters
         {
             get;
             set;
