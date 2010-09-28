@@ -11,5 +11,6 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     public class Atom : Matter
     {
         //empty class deriving from Matter
+        //TODO:  SubAtomicParticle
     }
 }

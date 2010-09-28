@@ -46,6 +46,8 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
             this.ConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
         }
 
+        //TODO:  XML comments on properties
+        //TODO:  add interface.  Include anyting that is required from a library.  one interface for a ImatterLirary.  each library extends the interface. 
         public Dictionary<string, CrossRing> ConstantsDictionary { get; set; }
         public Dictionary<int, string> ConstantsEnumDictionary { get; set; }
     }
