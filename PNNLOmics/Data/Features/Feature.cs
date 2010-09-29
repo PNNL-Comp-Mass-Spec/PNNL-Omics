@@ -14,6 +14,15 @@ namespace PNNLOmics.Data.Features
 		/// Default value for any scan.
 		/// </summary>
         protected const int CONST_DEFAULT_SCAN_VALUE = -1;
+		/// <summary>
+		/// A cached version of the hash-code.
+		/// </summary>
+		protected int m_hashCode;
+
+		public Feature()
+		{
+			m_hashCode = int.MinValue;
+		}
 
         #region AutoProperties
         /// <summary>
@@ -292,6 +301,10 @@ namespace PNNLOmics.Data.Features
             if (other == null)
                 return false;
 
+			if (!this.ID.Equals(other.ID))
+			{
+				return false;
+			}
             if (!Abundance.Equals(other.Abundance))
             {
                 return false;
@@ -309,10 +322,6 @@ namespace PNNLOmics.Data.Features
                 return false;
             }
             if (!this.ElutionTime.Equals(other.ElutionTime))
-            {
-                return false;
-            }            
-            if (!this.ID.Equals(other.ID))
             {
                 return false;
             }
@@ -373,7 +382,9 @@ namespace PNNLOmics.Data.Features
                 NET.GetHashCode() ^
                 ScanLC.GetHashCode() ^
                 ScanLCAligned.GetHashCode() ^
-                IsSuspicious.GetHashCode();   
+                IsSuspicious.GetHashCode();
+			
+			m_hashCode = hashCode;
 
             return hashCode;
         }

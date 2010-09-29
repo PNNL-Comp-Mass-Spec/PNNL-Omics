@@ -516,7 +516,6 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         }
         #endregion
 
-
         #region Singleton Clusters
         /// <summary>
         /// Creates features who are clearly not clusterable based on tolerances.
