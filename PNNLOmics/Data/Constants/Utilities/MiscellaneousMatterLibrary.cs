@@ -148,7 +148,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         }
 
         //overload to allow for SelectElement
-        public static double GetMonoisotopicMass(SelectOtherMolecule selectKey)
+        public static double GetMonoisotopicMass(SelectMiscellaneousMatter selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
@@ -157,7 +157,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
-        public static string GetFormula(SelectOtherMolecule selectKey)
+        public static string GetFormula(SelectMiscellaneousMatter selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
@@ -166,7 +166,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].ChemicalFormula;
         }
 
-        public static string GetName(SelectOtherMolecule selectKey)
+        public static string GetName(SelectMiscellaneousMatter selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
@@ -175,7 +175,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].Name;
         }
 
-        public static string GetSymbol(SelectOtherMolecule selectKey)
+        public static string GetSymbol(SelectMiscellaneousMatter selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
@@ -185,7 +185,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         }
     }
 
-    public enum SelectOtherMolecule
+    public enum SelectMiscellaneousMatter
     {
         Aldehyde, Alditol, Ammonia, Ammonium, KMinusH, NaMinusH, Sulfate, Water, AminoGlycan
     }

@@ -26,23 +26,23 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     /// This is a Class designed to convert tabulated data into a atom objects which are similar to physical constants.
     /// Electron, Neutron and Protons are created here and added to a Dictionarty with string keys such as "e" for electron
     /// </summary>
-    public class AtomLibrary
+    public class SubatomicParticleLibrary
     {
-        public static Dictionary<string, SubAtomicParticle> LoadAtomicData()
+        public static Dictionary<string, SubatomicParticle> LoadAtomicData()
         {
-            Dictionary<string, SubAtomicParticle> atomicDictionary = new Dictionary<string, SubAtomicParticle>();
+            Dictionary<string, SubatomicParticle> atomicDictionary = new Dictionary<string, SubatomicParticle>();
 
-            SubAtomicParticle electron = new SubAtomicParticle();
+            SubatomicParticle electron = new SubatomicParticle();
             electron.Name = "Electron";
             electron.MassMonoIsotopic = 0.00054857990943;//units of u a.k.a.Da.  NIST CODATA 2006 
             electron.Symbol = "e";
 
-            SubAtomicParticle neutron = new SubAtomicParticle();
+            SubatomicParticle neutron = new SubatomicParticle();
             neutron.Name = "Neutron";
             neutron.MassMonoIsotopic = 1.00866491597;//units of u a.k.a.Da.  NIST CODATA 2006
             neutron.Symbol = "n";
 
-            SubAtomicParticle proton = new SubAtomicParticle();
+            SubatomicParticle proton = new SubatomicParticle();
             proton.Name = "Proton";
             proton.MassMonoIsotopic = 1.00727646677;//units of u a.k.a.Da.  NIST CODATA 2006
             proton.Symbol = "p";
@@ -58,12 +58,12 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     /// <summary>
     /// This is a Class designed to convert dictionary calls for Atoms in one line static method calls.
     /// </summary>
-    public class AtomStaticLibrary
+    public class SubatomicParticleStaticLibrary
     {
         public static double GetMonoisotopicMass(string constantKey)
         {
-            AtomSingleton NewSingleton = AtomSingleton.Instance;
-            Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
+            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
@@ -71,48 +71,48 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         {
             //TODO: newSingleton
             //TODO: incoming
-            AtomSingleton NewSingleton = AtomSingleton.Instance;
-            Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
+            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
             return incommingDictionary[constantKey].Symbol;
         }
 
         public static string GetName(string constantKey)
         {
-            AtomSingleton NewSingleton = AtomSingleton.Instance;
-            Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
+            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
             return incommingDictionary[constantKey].Name;
         }
 
         //overload to allow for SelectElement
-        public static double GetMonoisotopicMass(SelectAtom selectKey)
+        public static double GetMonoisotopicMass(SelectSubatomicParticle selectKey)
         {
-            AtomSingleton NewSingleton = AtomSingleton.Instance;
-            Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
+            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
-        public static string GetSymbol(SelectAtom selectKey)
+        public static string GetSymbol(SelectSubatomicParticle selectKey)
         {
-            AtomSingleton NewSingleton = AtomSingleton.Instance;
-            Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
+            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Symbol;
         }
 
-        public static string GetName(SelectAtom selectKey)
+        public static string GetName(SelectSubatomicParticle selectKey)
         {
-            AtomSingleton NewSingleton = AtomSingleton.Instance;
-            Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
+            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Name;
         }
     }
 
-    public enum SelectAtom
+    public enum SelectSubatomicParticle
     {
         Electron, Neutron, Proton
     }

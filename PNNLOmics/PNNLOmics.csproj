@@ -112,30 +112,21 @@
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\ConformationDetection\Data\Conformation.cs" />
     <Compile Include="Data\CollisionType.cs" />
-    <Compile Include="Data\Constants\AminoAcid.cs" />
-    <Compile Include="Data\Constants\Utilities\AminoAcidSingleton.cs" />
-    <Compile Include="Data\Constants\SubAtomicParticle.cs" />
+    <Compile Include="Data\Constants\SubatomicParticle.cs" />
     <Compile Include="Data\Constants\Utilities\CompoundSingleton.cs" />
-    <Compile Include="Data\Constants\Utilities\SubAtomicParticleSingleton.cs" />
+    <Compile Include="Data\Constants\Utilities\SubatomicParticleSingleton.cs" />
     <Compile Include="Data\Constants\Compound.cs" />
-    <Compile Include="Data\Constants\Utilities\CrossRingSingleton.cs" />
-    <Compile Include="Data\Constants\Utilities\GenericSingleton.cs" />
     <Compile Include="Data\Constants\Matter.cs" />
-    <Compile Include="Data\Constants\Utilities\MonosaccharideSingleton.cs" />
-    <Compile Include="Data\Constants\CrossRing.cs" />
     <Compile Include="Data\Constants\Element.cs" />
     <Compile Include="Data\Constants\Utilities\ElementSingleton.cs" />
     <Compile Include="Data\Constants\Isotope.cs" />
-    <Compile Include="Data\Constants\Monosaccharide.cs" />
-    <Compile Include="Data\Constants\OtherMolecule.cs" />
-    <Compile Include="Data\Constants\Utilities\OtherMoleculeSingleton.cs" />
     <Compile Include="Data\Constants\Utilities\AminoAcidLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\SubAtomicParticleLibrary.cs" />
+    <Compile Include="Data\Constants\Utilities\SubatomicParticleLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\CrossRingLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\ElementLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\ElementLoadXML.cs" />
     <Compile Include="Data\Constants\Utilities\MonosaccharideLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\OtherMoleculeLibrary.cs">
+    <Compile Include="Data\Constants\Utilities\MiscellaneousMatterLibrary.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data\Features\ClusterCentroidRepresentation.cs" />

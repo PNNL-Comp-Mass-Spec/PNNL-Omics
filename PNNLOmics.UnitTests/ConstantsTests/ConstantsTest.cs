@@ -14,9 +14,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         public void TestCyclingThroughDictionary()
         {
             //Generating a List of keys
-            AtomSingleton atomSingleton = AtomSingleton.Instance;
+            SubatomicParticleSingleton atomSingleton = SubatomicParticleSingleton.Instance;
             Dictionary<int, string> cycleConverterDictionary = atomSingleton.ConstantsEnumDictionary;
-            Dictionary<string, SubAtomicParticle> atomGeneratorDictionary = atomSingleton.ConstantsDictionary;
+            Dictionary<string, SubatomicParticle> atomGeneratorDictionary = atomSingleton.ConstantsDictionary;
 
             List<double> massList = new List<double>();
             for (int i = 0; i < cycleConverterDictionary.Count; i++)
@@ -163,7 +163,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         {
             //using a String Key with a dictionary
             string atomKey = "e";
-            Dictionary<string, SubAtomicParticle> atomDictionary = AtomLibrary.LoadAtomicData();
+            Dictionary<string, SubatomicParticle> atomDictionary = SubatomicParticleLibrary.LoadAtomicData();
 
             double atomMass = atomDictionary[atomKey].MassMonoIsotopic;
             string atomName = atomDictionary[atomKey].Name;
@@ -174,18 +174,18 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual("e", atomSymbol);
 
             //one line implementation
-            double atomMass2 = AtomStaticLibrary.GetMonoisotopicMass(atomKey);
-            string atomName2 = AtomStaticLibrary.GetName(atomKey);
-            string atomSymbol2 = AtomStaticLibrary.GetSymbol(atomKey);
+            double atomMass2 = SubatomicParticleStaticLibrary.GetMonoisotopicMass(atomKey);
+            string atomName2 = SubatomicParticleStaticLibrary.GetName(atomKey);
+            string atomSymbol2 = SubatomicParticleStaticLibrary.GetSymbol(atomKey);
 
             Assert.AreEqual(0.00054857990943, atomMass2);
             Assert.AreEqual("Electron", atomName2);
             Assert.AreEqual("e", atomSymbol2);
 
             //using a Select Key and Enum
-            double atomMass3 = AtomStaticLibrary.GetMonoisotopicMass(SelectAtom.Proton);
-            string atomName3 = AtomStaticLibrary.GetName(SelectAtom.Proton);
-            string atomSymbol3 = AtomStaticLibrary.GetSymbol(SelectAtom.Proton);
+            double atomMass3 = SubatomicParticleStaticLibrary.GetMonoisotopicMass(SelectSubatomicParticle.Proton);
+            string atomName3 = SubatomicParticleStaticLibrary.GetName(SelectSubatomicParticle.Proton);
+            string atomSymbol3 = SubatomicParticleStaticLibrary.GetSymbol(SelectSubatomicParticle.Proton);
 
             Assert.AreEqual(1.00727646677, atomMass3);
             Assert.AreEqual("Proton", atomName3);
@@ -217,8 +217,8 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual("H2O", otherFormula2);
 
             //using a Select Key and Enum 
-            double otherMass3 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
-            double otherMass4 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Sulfate);
+            double otherMass3 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectMiscellaneousMatter.Ammonia);
+            double otherMass4 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectMiscellaneousMatter.Sulfate);
 
             Assert.AreEqual(17.026549103298, otherMass3);
             Assert.AreEqual(127.9237999523, otherMass4);
@@ -226,8 +226,8 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             double otherMassAmino = otherMass - otherMass3;
             Assert.AreEqual(0.98401558294700209, otherMassAmino);
 
-            double otherMass5 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Water)
-                            - MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
+            double otherMass5 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectMiscellaneousMatter.Water)
+                            - MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectMiscellaneousMatter.Ammonia);
             Assert.AreEqual(0.98401558294700209, otherMass5);
         }
 
