@@ -4,18 +4,20 @@ using System.Linq;
 using System.Text;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
-//dictionary implementation
-//Dictionary<string, MonosaccharideObject> OligosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
-//double OSmass = OligosacchaideDictionary["Hex"].MonoIsotopicMass;
-//string OSname = OligosacchaideDictionary["Hex"].Name;
-//string OSformula = OligosacchaideDictionary["Hex"].ChemicalFormula;
-
-//one line implementaiton
-//double OSmass2 = MonosaccharideConstantsStaticLibrary.GetMonoisotopicMass("Hex");
-//string OSname2 = MonosaccharideConstantsStaticLibrary.GetName("Hex");
-//string OSformula2 = MonosaccharideConstantsStaticLibrary.GetFormula("Hex");
-
-//double mass3 = MonosaccharideStaticLibrary.GetMonoisotopicMass(SelectMonosaccharide.NeuraminicAcid);
+/// <example>
+/// dictionary implementation
+/// Dictionary<string, Compound> OligosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
+/// double OSmass = OligosacchaideDictionary["Hex"].MonoIsotopicMass;
+/// string OSname = OligosacchaideDictionary["Hex"].Name;
+/// string OSformula = OligosacchaideDictionary["Hex"].ChemicalFormula;
+///
+/// one line implementaiton
+/// double OSmass2 = MonosaccharideConstantsStaticLibrary.GetMonoisotopicMass("Hex");
+/// string OSname2 = MonosaccharideConstantsStaticLibrary.GetName("Hex");
+/// string OSformula2 = MonosaccharideConstantsStaticLibrary.GetFormula("Hex");
+///
+/// double mass3 = MonosaccharideStaticLibrary.GetMonoisotopicMass(SelectMonosaccharide.NeuraminicAcid);
+/// </example>
    
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
@@ -115,96 +117,106 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     /// </summary>
     public class MonosaccharideStaticLibrary
     {
+        /// <summary>
+        /// This returns the monoisotopic mass that corresponds to the dictionary key
+        /// </summary>
         public static double GetMonoisotopicMass(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMonosacharideLibrary();
+            NewSingleton.InitializeMonosaccharideLibrary();
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
-        public static string GetFormula(string constantKey)
+        /// <summary>
+        /// This returns the Symbol that corresponds to the dictionary key
+        /// </summary>
+        public static string GetSymbol(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMonosacharideLibrary();
+            NewSingleton.InitializeMonosaccharideLibrary();
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
-            return incommingDictionary[constantKey].ChemicalFormula;
+            return incommingDictionary[constantKey].Symbol;
         }
 
+        /// <summary>
+        /// This returns the name that cooresponds to the dictionary key
+        /// </summary>
         public static string GetName(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMonosacharideLibrary();
+            NewSingleton.InitializeMonosaccharideLibrary();
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
             return incommingDictionary[constantKey].Name;
         }
 
-        public static string GetNameShort(string constantKey)
+        /// <summary>
+        /// This returns the chemical formula that cooresponds to the dictionary key
+        /// </summary>
+        public static string GetFormula(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMonosacharideLibrary();
+            NewSingleton.InitializeMonosaccharideLibrary();
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
-            return incommingDictionary[constantKey].Symbol;
+            return incommingDictionary[constantKey].ChemicalFormula;
         }
 
-        //public static string GetName6(string constantKey)
-        //{
-        //    CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-        //    Dictionary<string, Compound> incommingDictionary = NewSingleton.ConstantsDictionary;
-        //    return incommingDictionary[constantKey].SixLetterCode;
-        //}
-
-        //overload to allow for SelectElement
+        /// <summary>
+        /// This returns the monoisotopic mass that cooresponds to the enumerated key
+        /// </summary>
         public static double GetMonoisotopicMass(SelectMonosaccharide selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMonosacharideLibrary();
+            NewSingleton.InitializeMonosaccharideLibrary();
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.MonosaccharideConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
-        public static string GetFormula(SelectMonosaccharide selectKey)
+        /// <summary>
+        /// This returns the Symbol that cooresponds to the enumerated key
+        /// </summary>
+        public static string GetSymbol(SelectMonosaccharide selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMonosacharideLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.MonosaccharideConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].ChemicalFormula;
-        }
-
-        public static string GetName(SelectMonosaccharide selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMonosacharideLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.MonosaccharideConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].Name;
-        }
-
-        public static string GetNameShort(SelectMonosaccharide selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMonosacharideLibrary();
+            NewSingleton.InitializeMonosaccharideLibrary();
             Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
             Dictionary<int, string> enumConverter = NewSingleton.MonosaccharideConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Symbol;
         }
 
-        //public static string GetName6(SelectMonosaccharide selectKey)
-        //{
-        //    CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-        //    Dictionary<string, Compound> incommingDictionary = NewSingleton.ConstantsDictionary;
-        //    Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
-        //    string constantKey = enumConverter[(int)selectKey];
-        //    return incommingDictionary[constantKey].SixLetterCode;
-        //}
+        /// <summary>
+        /// This returns the name that cooresponds to the enumerated key
+        /// </summary>
+        public static string GetName(SelectMonosaccharide selectKey)
+        {
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeMonosaccharideLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.MonosaccharideConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].Name;
+        }
+
+        /// <summary>
+        /// This returns the chemical formula that cooresponds to the enumerated key
+        /// </summary>
+        public static string GetFormula(SelectMonosaccharide selectKey)
+        {
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeMonosaccharideLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MonosaccharideConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.MonosaccharideConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].ChemicalFormula;
+        }
     }
 
+    /// <summary>
+    /// Enumeration of monosaccharide constants
+    /// </summary>
     public enum SelectMonosaccharide
     {
         Deoxyhexose, Hexose, HexuronicAcid, KDN, NAcetylhexosamine, NeuraminicAcid, NGlycolylneuraminicAcid, Pentose

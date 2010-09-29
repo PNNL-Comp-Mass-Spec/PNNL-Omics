@@ -4,21 +4,22 @@ using System.Linq;
 using System.Text;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
-//http://physics.nist.gov/cuu/Constants/index.html  NIST CODATA 2006  
+/// <example>
+/// http://physics.nist.gov/cuu/Constants/index.html  NIST CODATA 2006  
+/// 
+/// dictinoary implementation
+/// Dictionary<string,AtomObject> AtomDictionary = AtomLibrary.LoadAtomicData();
+/// double AtomMass = AtomDictionary["e"].MonoIsotopicMass;
+/// string AtomName = AtomDictionary["e"].Name;
+/// string AtomSymbol = AtomDictionary["e"].Symbol;
 
-//dictinoary implementation
-//Dictionary<string,AtomObject> AtomDictionary = AtomLibrary.LoadAtomicData();
-//double AtomMass = AtomDictionary["e"].MonoIsotopicMass;
-//string AtomName = AtomDictionary["e"].Name;
-//string AtomSymbol = AtomDictionary["e"].Symbol;
+/// one line implementation
+/// double AtomMass2 = AtomConstantsStaticLibrary.GetMonoisotopicMass("e");
+/// string AtomName2 = AtomConstantsStaticLibrary.GetName("e");
+/// string AtomSymbol2 = AtomConstantsStaticLibrary.GetSymbol("e");
 
-//one line implementation
-//double AtomMass2 = AtomConstantsStaticLibrary.GetMonoisotopicMass("e");
-//string AtomName2 = AtomConstantsStaticLibrary.GetName("e");
-//string AtomSymbol2 = AtomConstantsStaticLibrary.GetSymbol("e");
-
-//double atomMass3 = AtomStaticLibrary.GetMonoisotopicMass(SelectAtom.Proton);
-
+/// double atomMass3 = AtomStaticLibrary.GetMonoisotopicMass(SelectAtom.Proton);
+/// </example>
 
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
@@ -60,6 +61,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     /// </summary>
     public class SubatomicParticleStaticLibrary
     {
+        /// <summary>
+        /// This returns the monoisotopic mass that corresponds to the dictionary key
+        /// </summary>
         public static double GetMonoisotopicMass(string constantKey)
         {
             SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
@@ -67,15 +71,19 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
+        /// <summary>
+        /// This returns the Symbol that corresponds to the dictionary key
+        /// </summary>
         public static string GetSymbol(string constantKey)
         {
-            //TODO: newSingleton
-            //TODO: incoming
             SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
             Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
             return incommingDictionary[constantKey].Symbol;
         }
 
+        /// <summary>
+        /// This returns the name that cooresponds to the dictionary key
+        /// </summary>
         public static string GetName(string constantKey)
         {
             SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
@@ -83,7 +91,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].Name;
         }
 
-        //overload to allow for SelectElement
+        /// <summary>
+        /// This returns the monoisotopic mass that cooresponds to the enumerated key
+        /// </summary>
         public static double GetMonoisotopicMass(SelectSubatomicParticle selectKey)
         {
             SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
@@ -93,6 +103,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
+        /// <summary>
+        /// This returns the Symbol that cooresponds to the enumerated key
+        /// </summary>
         public static string GetSymbol(SelectSubatomicParticle selectKey)
         {
             SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
@@ -102,6 +115,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].Symbol;
         }
 
+        /// <summary>
+        /// This returns the name that cooresponds to the enumerated key
+        /// </summary>
         public static string GetName(SelectSubatomicParticle selectKey)
         {
             SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;

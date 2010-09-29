@@ -3,32 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
-  
-//dictionary implementation
-//Dictionary<char, AminoAcidObject> AminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
-//double AAmass = AminoAcidsDictionary['A'].MonoIsotopicMass;
-//string AAName = AminoAcidsDictionary['A'].Name;
-//string AAFormula = AminoAcidsDictionary['A'].ChemicalFormula;
 
-//one line implementation
-//double AAmass2 = AminoAcidConstantsStaticLibrary.GetMonoisotopicMass('A');
-//string AAName2 = AminoAcidConstantsStaticLibrary.GetName('A');
-//string AAFormula2 = AminoAcidConstantsStaticLibrary.GetFormula('A');
+/// <example>
+/// dictionary implementation
+/// Dictionary<string, Compound> AminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
+/// double AAmass = AminoAcidsDictionary["A"].MonoIsotopicMass;
+/// string AAName = AminoAcidsDictionary["A"].Name;
+/// string AAFormula = AminoAcidsDictionary["A"].ChemicalFormula;
+///
+/// one line implementation
+/// double AAmass2 = AminoAcidConstantsStaticLibrary.GetMonoisotopicMass("A");
+/// string AAName2 = AminoAcidConstantsStaticLibrary.GetName("A");
+/// string AAFormula2 = AminoAcidConstantsStaticLibrary.GetFormula("A");
+///
+/// double mass3 = AminoAcidStaticLibrary.GetMonoisotopicMass(SelectAminoAcid.GlutamicAcid);
+///
+/// how to calculate the mass of a peptide
+/// double massPeptide=0;
+/// string peptideSequence = "NRTL";
+/// {
+///     massPeptide += AminoAcidStaticLibrary.GetMonoisotopicMass(peptideSequence[y].ToString());
+/// }
+/// massPeptide = 484.27578094385393
+/// </example>
 
-//double mass3 = AminoAcidStaticLibrary.GetMonoisotopicMass(SelectAminoAcid.GlutamicAcid);
-
-//how to calculate the mass of a peptide
-//double massPeptide=0;
-//string peptideSequence = "NRTL";
-//for (int y = 0; y < peptideSequence.Length; y++)
-//{
-//    massPeptide += AminoAcidConstantsStaticLibrary.GetMonoisotopicMass(peptideSequence[y]);
-//}//massPeptide = 484.27578094385393
-
-
-//TODO:  Convert to XML comment
-///<example>   
-///</example>
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
     public class AminoAcidLibrary
@@ -224,14 +222,20 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
-        public static string GetFormula(string constantKey)
+        /// <summary>
+        /// This returns Symbol that corresponds to the dictionary key
+        /// </summary>
+        public static string GetSymbol(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
             NewSingleton.InitializeAminoAcidLibrary();
             Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            return incommingDictionary[constantKey].ChemicalFormula;
+            return incommingDictionary[constantKey].Symbol;
         }
 
+        /// <summary>
+        /// This returns the name that cooresponds to the dictionary key
+        /// </summary>
         public static string GetName(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
@@ -240,7 +244,20 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].Name;
         }
 
-        //overload to allow for SelectElement
+        /// <summary>
+        /// This returns the chemical formula that cooresponds to the dictionary key
+        /// </summary>
+        public static string GetFormula(string constantKey)
+        {
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeAminoAcidLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
+            return incommingDictionary[constantKey].ChemicalFormula;
+        }
+
+        /// <summary>
+        /// This returns the monoisotopic mass that cooresponds to the enumerated key
+        /// </summary>
         public static double GetMonoisotopicMass(SelectAminoAcid selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
@@ -251,16 +268,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
-        public static string GetFormula(SelectAminoAcid selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeAminoAcidLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].ChemicalFormula;
-        }
-
+        /// <summary>
+        /// This returns the name that cooresponds to the enumerated key
+        /// </summary>
         public static string GetName(SelectAminoAcid selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
@@ -270,8 +280,24 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Name;
         }
+
+        /// <summary>
+        /// This returns the chemical formula that cooresponds to the enumerated key
+        /// </summary>
+        public static string GetFormula(SelectAminoAcid selectKey)
+        {
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeAminoAcidLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].ChemicalFormula;
+        }
     }
 
+    /// <summary>
+    /// Enumeration of amino acid constants
+    /// </summary>
     public enum SelectAminoAcid
     {
         Alanine, Arginine, Asparagine, AsparticAcid, Cysteine, GlutamicAcid, Glutamine, Glycine, Histidine, Isoleucine,

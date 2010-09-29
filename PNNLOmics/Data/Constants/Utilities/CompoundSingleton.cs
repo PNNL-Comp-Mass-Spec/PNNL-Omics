@@ -7,9 +7,7 @@ using PNNLOmics.Data.Constants.ConstantsDataUtilities;
 namespace PNNLOmics.Data.Constants.ConstantsDataLayer
 {
     //TODO:  XML comments on properties
-    //TODO:  add interface.  Include anyting that is required from a library.  one interface for a ImatterLirary.  each library extends the interface. 
-
-
+    
     /// <summary>
     /// This class loads the monosaccharide constants once and is accessble through the dictionary property.  Thread-safe singleton example created at first call
     /// </summary> 
@@ -32,9 +30,24 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
             Instance.IsMiscellaneousMatterLibraryLoaded = false;
         }
 
+        /// <summary>
+        /// Have we loaded the Monosaccharide Library yet?
+        /// </summary>
         private bool IsMonosaccharideLibraryLoaded { get; set; }
+
+        /// <summary>
+        /// Have we loaded the AminoAcid Library yet?
+        /// </summary>
         private bool IsAminoAcidLibraryLoaded { get; set; }
+
+        /// <summary>
+        /// Have we loaded the CrossRing Library yet?
+        /// </summary>
         private bool IsCrossRingLibraryLoaded { get; set; }
+
+        /// <summary>
+        /// Have we loaded the MiscellaneousMatter Library yet?
+        /// </summary>
         private bool IsMiscellaneousMatterLibraryLoaded { get; set; }
 
         //the part of the singleton that does the work once.
@@ -54,8 +67,10 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
         public Dictionary<string, Compound> MiscellaneousMatterConstantsDictionary { get; set; }
         public Dictionary<int, string> MiscellaneousMatterConstantsEnumDictionary { get; set; }
 
-
-        public void InitializeMonosacharideLibrary()
+        /// <summary>
+        /// This method loads the MonosaccharideLibrary if it has not been loaded already.
+        /// </summary>
+        public void InitializeMonosaccharideLibrary()
         {
             if (!IsMonosaccharideLibraryLoaded)
             {
@@ -63,25 +78,21 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
                 this.MonosaccharideConstantsDictionary = compoundDictionary;//accessable outside by getter below
 
                 int count = 0;
-                string names = "";
                 Dictionary<int, string> enumDictionary = new Dictionary<int, string>();
                 foreach (KeyValuePair<string, Compound> item in compoundDictionary)
                 {
-                    names += item.Key + ",";
                     enumDictionary.Add(count, item.Key);
                     count++;
                 }
 
-                names = "";
-                for (int i = 0; i < compoundDictionary.Count; i++)
-                {
-                    names += MonosaccharideConstantsDictionary[enumDictionary[i]].Name + ",";
-                }
                 this.MonosaccharideConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
                 this.IsMonosaccharideLibraryLoaded = true;
             }
         }
 
+        /// <summary>
+        /// This method loads the AminoAcid Library if it has not been loaded already.
+        /// </summary>
         public void InitializeAminoAcidLibrary()
         {
             if (!IsAminoAcidLibraryLoaded)
@@ -90,25 +101,21 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
                 this.AminoAcidConstantsDictionary = compoundDictionary;//accessable outside by getter below
 
                 int count = 0;
-                string names = "";
                 Dictionary<int, string> enumDictionary = new Dictionary<int, string>();
                 foreach (KeyValuePair<string, Compound> item in compoundDictionary)
                 {
-                    names += item.Key + ",";
                     enumDictionary.Add(count, item.Key);
                     count++;
                 }
 
-                names = "";
-                for (int i = 0; i < compoundDictionary.Count; i++)
-                {
-                    names += AminoAcidConstantsDictionary[enumDictionary[i]].Name + ",";
-                }
                 this.AminoAcidConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
                 this.IsAminoAcidLibraryLoaded = true;
             }
         }
 
+        /// <summary>
+        /// This method loads the CrossRing Library if it has not been loaded already.
+        /// </summary>
         public void InitializeCrossRingLibrary()
         {
             if (!IsCrossRingLibraryLoaded)
@@ -117,25 +124,21 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
                 this.CrossRingConstantsDictionary = compoundDictionary;//accessable outside by getter below
 
                 int count = 0;
-                string names = "";
                 Dictionary<int, string> enumDictionary = new Dictionary<int, string>();
                 foreach (KeyValuePair<string, Compound> item in compoundDictionary)
                 {
-                    names += item.Key + ",";
                     enumDictionary.Add(count, item.Key);
                     count++;
                 }
 
-                names = "";
-                for (int i = 0; i < compoundDictionary.Count; i++)
-                {
-                    names += CrossRingConstantsDictionary[enumDictionary[i]].Name + ",";
-                }
                 this.CrossRingConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
                 this.IsCrossRingLibraryLoaded = true;
             }
         }
 
+        /// <summary>
+        /// This method loads the MiscellaneousMatter Library if it has not been loaded already.
+        /// </summary>
         public void InitializeMiscellaneousMatterLibrary()
         {
             if (!IsMiscellaneousMatterLibraryLoaded)
@@ -144,20 +147,13 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
                 this.MiscellaneousMatterConstantsDictionary = compoundDictionary;//accessable outside by getter below
 
                 int count = 0;
-                string names = "";
                 Dictionary<int, string> enumDictionary = new Dictionary<int, string>();
                 foreach (KeyValuePair<string, Compound> item in compoundDictionary)
                 {
-                    names += item.Key + ",";
                     enumDictionary.Add(count, item.Key);
                     count++;
                 }
 
-                names = "";
-                for (int i = 0; i < compoundDictionary.Count; i++)
-                {
-                    names += MiscellaneousMatterConstantsDictionary[enumDictionary[i]].Name + ",";
-                }
                 this.MiscellaneousMatterConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
                 this.IsMiscellaneousMatterLibraryLoaded = true;
             }

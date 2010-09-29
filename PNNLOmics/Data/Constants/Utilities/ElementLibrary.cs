@@ -5,23 +5,24 @@ using System.Text;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
 using System.IO;
 
-//dictionary implementation                        
-//Dictionary<string,ElementObject> ElementDictionary = ElementLibrary.LoadElementData();
-//double elementC12Mass = ElementDictionary["C"].IsotopeDictionary["C12"].Mass;
-//double elementC13Mass = ElementDictionary["C"].IsotopeDictionary["C13"].Mass;
-//double elementC12Abund = ElementDictionary["C"].IsotopeDictionary["C12"].NaturalAbundance;
-//double elementC13Abund = ElementDictionary["C"].IsotopeDictionary["C13"].NaturalAbundance;
-//double elemetMonoMass = ElementDictionary["C"].MonoIsotopicMass;
-//string elementName = ElementDictionary["C"].Name;
-//string elementSymbol = ElementDictionary["C"].Symbol;                     
-
-//One line implementation
-//double elementMonoMass = ElementConstantsStaticLibrary.GetMonoisotopicMass("C");
-//string elementName = ElementConstantsStaticLibrary.GetName("C");
-//string elementSymbol = ElementConstantsStaticLibrary.GetSymbol("C");
-
-//double elementMass3 = ElementStaticLibrary.GetMonoisotopicMass(SelectElement.Hydrogen);
-
+/// <example>
+/// dictionary implementation                        
+/// Dictionary<string,ElementObject> ElementDictionary = ElementLibrary.LoadElementData();
+/// double elementC12Mass = ElementDictionary["C"].IsotopeDictionary["C12"].Mass;
+/// double elementC13Mass = ElementDictionary["C"].IsotopeDictionary["C13"].Mass;
+/// double elementC12Abund = ElementDictionary["C"].IsotopeDictionary["C12"].NaturalAbundance;
+/// double elementC13Abund = ElementDictionary["C"].IsotopeDictionary["C13"].NaturalAbundance;
+/// double elemetMonoMass = ElementDictionary["C"].MonoIsotopicMass;
+/// string elementName = ElementDictionary["C"].Name;
+/// string elementSymbol = ElementDictionary["C"].Symbol;                     
+///
+/// One line implementation
+/// double elementMonoMass = ElementConstantsStaticLibrary.GetMonoisotopicMass("C");
+/// string elementName = ElementConstantsStaticLibrary.GetName("C");
+/// string elementSymbol = ElementConstantsStaticLibrary.GetSymbol("C");
+///
+/// double elementMass3 = ElementStaticLibrary.GetMonoisotopicMass(SelectElement.Hydrogen);
+/// </example>
 
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
@@ -199,12 +200,19 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     /// </summary>
     public class ElementStaticLibrary
     {
+        /// <summary>
+        /// This returns the monoisotopic mass that corresponds to the dictionary key
+        /// </summary>
         public static double GetMonoisotopicMass(string constantKey)
         {
             ElementSingleton NewSingleton = ElementSingleton.Instance;
             Dictionary<string, Element> incommingDictionary = NewSingleton.ConstantsDictionary;
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
+
+        /// <summary>
+        /// This returns the Symbol that corresponds to the dictionary key
+        /// </summary>
         public static string GetSymbol(string constantKey)
         {
             ElementSingleton NewSingleton = ElementSingleton.Instance;
@@ -212,6 +220,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].Symbol;
         }
 
+        /// <summary>
+        /// This returns the name that cooresponds to the dictionary key
+        /// </summary>
         public static string GetName(string constantKey)
         {
             ElementSingleton NewSingleton = ElementSingleton.Instance;
@@ -219,7 +230,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].Name;
         }
 
-        //overload to allow for SelectElement
+        /// <summary>
+        /// This returns the monoisotopic mass that cooresponds to the enumerated key
+        /// </summary>
         public static double GetMonoisotopicMass(SelectElement selectKey)
         {
             ElementSingleton NewSingleton = ElementSingleton.Instance;
@@ -229,6 +242,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
+        /// <summary>
+        /// This returns the Symbol that cooresponds to the enumerated key
+        /// </summary>
         public static string GetSymbol(SelectElement selectKey)
         {
             ElementSingleton NewSingleton = ElementSingleton.Instance;
@@ -238,6 +254,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].Symbol;
         }
 
+        /// <summary>
+        /// This returns the name that cooresponds to the enumerated key
+        /// </summary>
         public static string GetName(SelectElement selectKey)
         {
             ElementSingleton NewSingleton = ElementSingleton.Instance;
@@ -248,6 +267,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         }
     }
 
+    /// <summary>
+    /// Enumeration of elements constants
+    /// </summary>
     public enum SelectElement
     {
         Hydrogen, Helium, Lithium, Berellium, Boron, Carbon, Nitrogen, Oxygen, Fluorine, Neon, Sodium, Magnesium,

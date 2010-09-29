@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
-//dictionarty implementation
-//Dictionary<string, CrossRingObject> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
-//double CRMass = CrossRingDictionary["crfNeu5Ac_03_X1"].MonoIsotopicMass;
-//string crformula = CrossRingDictionary["crfNeu5Ac_03_X1"].ChemicalFormula;
-//string CRName = CrossRingDictionary["crfNeu5Ac_03_X1"].Name;
-
-//one line implementation
-//double CRMass2 = CrossRingConstantsStaticLibrary.GetMonoisotopicMass("crfNeu5Ac_03_X1");
-//string CRFormula2 = CrossRingConstantsStaticLibrary.GetFormula("crfNeu5Ac_03_X1");
-//string CRName2 = CrossRingConstantsStaticLibrary.GetName("crfNeu5Ac_03_X1");
-
-//double mass2 = CrossRingStaticLibrary.GetMonoisotopicMass(SelectCrossRing.CRFHex_02_A2);
-
+/// <example>
+/// dictionarty implementation
+/// Dictionary<string, Compound> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
+/// double CRMass = CrossRingDictionary["crfNeu5Ac_03_X1"].MonoIsotopicMass;
+/// string crformula = CrossRingDictionary["crfNeu5Ac_03_X1"].ChemicalFormula;
+/// string CRName = CrossRingDictionary["crfNeu5Ac_03_X1"].Name;
+///
+/// one line implementation
+/// double CRMass2 = CrossRingConstantsStaticLibrary.GetMonoisotopicMass("crfNeu5Ac_03_X1");
+/// string CRFormula2 = CrossRingConstantsStaticLibrary.GetFormula("crfNeu5Ac_03_X1");
+/// string CRName2 = CrossRingConstantsStaticLibrary.GetName("crfNeu5Ac_03_X1");
+///
+/// double mass2 = CrossRingStaticLibrary.GetMonoisotopicMass(SelectCrossRing.CRFHex_02_A2);
+/// </example>
 
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
@@ -182,6 +183,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     /// </summary>
     public class CrossRingStaticLibrary
     {
+        /// <summary>
+        /// This returns the monoisotopic mass that corresponds to the dictionary key
+        /// </summary>
         public static double GetMonoisotopicMass(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
@@ -190,14 +194,20 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
-        public static string GetFormula(string constantKey)
+        /// <summary>
+        /// This returns the Symbol that corresponds to the dictionary key
+        /// </summary>
+        public static string GetSymbol(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
             NewSingleton.InitializeCrossRingLibrary();
             Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
-            return incommingDictionary[constantKey].ChemicalFormula;
+            return incommingDictionary[constantKey].Symbol;
         }
 
+        /// <summary>
+        /// This returns the name that cooresponds to the dictionary key
+        /// </summary>
         public static string GetName(string constantKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
@@ -206,7 +216,20 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].Name;
         }
 
-        //overload to allow for SelectElement
+        /// <summary>
+        /// This returns the chemical formula that cooresponds to the dictionary key
+        /// </summary>
+        public static string GetFormula(string constantKey)
+        {
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeCrossRingLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
+            return incommingDictionary[constantKey].ChemicalFormula;
+        }
+
+        /// <summary>
+        /// This returns the monoisotopic mass that cooresponds to the enumerated key
+        /// </summary>
         public static double GetMonoisotopicMass(SelectCrossRing selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
@@ -217,16 +240,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
-        public static string GetFormula(SelectCrossRing selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeCrossRingLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.CrossRingConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].ChemicalFormula;
-        }
-
+        /// <summary>
+        /// This returns the name that cooresponds to the enumerated key
+        /// </summary>
         public static string GetName(SelectCrossRing selectKey)
         {
             CompoundSingleton NewSingleton = CompoundSingleton.Instance;
@@ -236,8 +252,24 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Name;
         }
+
+        /// <summary>
+        /// This returns the chemical formula that cooresponds to the enumerated key
+        /// </summary>
+        public static string GetFormula(SelectCrossRing selectKey)
+        {
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeCrossRingLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.CrossRingConstantsEnumDictionary;
+            string constantKey = enumConverter[(int)selectKey];
+            return incommingDictionary[constantKey].ChemicalFormula;
+        }        
     }
 
+    /// <summary>
+    /// Enumeration of CrossRing constants
+    /// </summary>
     public enum SelectCrossRing
     {
         CRFHex_02_A2, CRFHex_02_X1, CRFHex_03_A2, CRFHex_03_X1, CRFHex_24_A2, CRFHex_24_X1,
