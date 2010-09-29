@@ -11,11 +11,6 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     /// </summary> 
     public sealed class ElementSingleton
     {
-        /// <summary>
-        /// Utilizes the get and set auto implemented properties.
-        /// Note that set; can be any other operator as long as it's
-        /// less accessible than public.
-        /// </summary>
         public static ElementSingleton Instance { get; private set; }
 
         /// <summary>

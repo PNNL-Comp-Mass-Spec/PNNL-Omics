@@ -10,7 +10,7 @@
     <Position X="3" Y="6.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\AtomLibrary.cs</FileName>
+      <FileName>Data\Constants\Utilities\SubAtomicParticleLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PNNLOmics.Data.Constants.ConstantsDataUtilities.CrossRingLibrary" Collapsed="true">
@@ -58,7 +58,7 @@
   <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.Compound" Collapsed="true">
     <Position X="3.75" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAAECAAAAACAAEAgIAgAAAAAAAAAAABACAAAIAAAAAA=</HashCode>
+      <HashCode>EAAECAAAAACAAEAgIAggAAAAAAAAAABACAAAIAAAAAA=</HashCode>
       <FileName>Data\Constants\Compound.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -83,11 +83,11 @@
       <FileName>Data\Constants\CrossRing.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.Atom" Collapsed="true">
+  <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.SubAtomicParticle" Collapsed="true">
     <Position X="5.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Data\Constants\Atom.cs</FileName>
+      <FileName>Data\Constants\SubAtomicParticle.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.OtherMolecule" Collapsed="true">
@@ -118,11 +118,12 @@
       <FileName>Data\Constants\Utilities\AminoAcidSingleton.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.MonosaccharideSingleton" Collapsed="true">
+  <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.CompoundSingleton" Collapsed="true">
     <Position X="5.25" Y="8.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQACAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\MonosaccharideSingleton.cs</FileName>
+      <FileName>Data\Constants\Utilities\CompoundSingleton.cs</FileName>
+      <NewMemberFileName>Data\Constants\Utilities\MonosaccharideSingleton.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.OtherMoleculeSingleton" Collapsed="true">
@@ -136,7 +137,7 @@
     <Position X="5.25" Y="6.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQACAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\AtomSingleton.cs</FileName>
+      <FileName>Data\Constants\Utilities\SubAtomicParticleSingleton.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PNNLOmics.Data.Constants.ConstantsDataLayer.CrossRingSingleton" Collapsed="true">

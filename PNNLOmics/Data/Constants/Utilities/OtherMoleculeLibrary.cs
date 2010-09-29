@@ -20,84 +20,84 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 {
-    public class OtherMoleculeLibrary
+    public class MiscellaneousMatterLibrary
     {
         //TODO:  Miscellaneous?
         /// <summary>
         /// This is a Class designed to create other molecules from the elements.
         /// The other molecules are added to a Dictionary searchable by char keys such as "Aldehyde" for Aldehyde group
         /// </summary>
-        public static Dictionary<string, OtherMolecule> LoadOtherMoleculeData()
+        public static Dictionary<string, Compound> LoadMiscellaneousMatterData()
         {
-            Dictionary<string, OtherMolecule> otherMoleculeDictionary = new Dictionary<string, OtherMolecule>();
+            Dictionary<string, Compound> otherMoleculeDictionary = new Dictionary<string, Compound>();
 
             //each integer stands for the number of atoms in the compound -->X.NewElements(C H N O S P)
             //aldehyde.NewElements(C H N O S P)
 
-            OtherMolecule aldehyde = new OtherMolecule();
+            Compound aldehyde = new Compound();
             aldehyde.NewElements(0, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             aldehyde.Name = "Aldehyde";
-            aldehyde.SixLetterCode = "Aldhyd";
+            aldehyde.Symbol = "Aldhyd";
             aldehyde.ChemicalFormula = "H2O";
-            aldehyde.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(aldehyde);
+            aldehyde.MassMonoIsotopic = Compound.GetMonoisotopicMass(aldehyde);
 
-            OtherMolecule alditol = new OtherMolecule();
+            Compound alditol = new Compound();
             alditol.NewElements(0, 4, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             alditol.Name = "Alditol";
-            alditol.SixLetterCode = "Aldtol";
+            alditol.Symbol = "Aldtol";
             alditol.ChemicalFormula = "H4O";
-            alditol.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(alditol);
+            alditol.MassMonoIsotopic = Compound.GetMonoisotopicMass(alditol);
 
-            OtherMolecule ammonia = new OtherMolecule();
+            Compound ammonia = new Compound();
             ammonia.NewElements(0, 3, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             ammonia.Name = "Ammonia";
-            ammonia.SixLetterCode = "NH3   ";
+            ammonia.Symbol = "NH3   ";
             ammonia.ChemicalFormula = "NH3";
-            ammonia.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(ammonia);
+            ammonia.MassMonoIsotopic = Compound.GetMonoisotopicMass(ammonia);
 
-            OtherMolecule ammonium = new OtherMolecule();
+            Compound ammonium = new Compound();
             ammonium.NewElements(0, 4, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             ammonium.Name = "Ammonium";
-            ammonium.SixLetterCode = "NH4+  ";
+            ammonium.Symbol = "NH4+  ";
             ammonium.ChemicalFormula = "NH4+";
-            ammonium.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(ammonium);
+            ammonium.MassMonoIsotopic = Compound.GetMonoisotopicMass(ammonium);
 
-            OtherMolecule KMinusH = new OtherMolecule();
+            Compound KMinusH = new Compound();
             KMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             KMinusH.nPotassium = 1;
             KMinusH.Name = "KMinusH";
-            KMinusH.SixLetterCode = "KminH ";
+            KMinusH.Symbol = "KminH ";
             KMinusH.ChemicalFormula = "K-H";
-            KMinusH.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(KMinusH);
+            KMinusH.MassMonoIsotopic = Compound.GetMonoisotopicMass(KMinusH);
 
-            OtherMolecule NaMinusH = new OtherMolecule();
+            Compound NaMinusH = new Compound();
             NaMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             NaMinusH.nSodium = 1;
             NaMinusH.Name = "NaMinusH";
-            NaMinusH.SixLetterCode = "NaminH";
+            NaMinusH.Symbol = "NaminH";
             NaMinusH.ChemicalFormula = "Na-H";
-            NaMinusH.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(NaMinusH);
+            NaMinusH.MassMonoIsotopic = Compound.GetMonoisotopicMass(NaMinusH);
 
-            OtherMolecule sulfate = new OtherMolecule();
+            Compound sulfate = new Compound();
             sulfate.NewElements(0, 0, 0, 4, 2, 0);//-->X.NewElements(C H N O S P)
             sulfate.Name = "Sulfate";
-            sulfate.SixLetterCode = "SO4   ";
+            sulfate.Symbol = "SO4   ";
             sulfate.ChemicalFormula = "S04";
-            sulfate.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(sulfate);
+            sulfate.MassMonoIsotopic = Compound.GetMonoisotopicMass(sulfate);
 
-            OtherMolecule water = new OtherMolecule();
+            Compound water = new Compound();
             water.NewElements(0, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             water.Name = "Water";
-            water.SixLetterCode = "Water ";
+            water.Symbol = "Water ";
             water.ChemicalFormula = "H2O";
-            water.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(water);
+            water.MassMonoIsotopic = Compound.GetMonoisotopicMass(water);
 
-            OtherMolecule aminoGlycan = new OtherMolecule();
+            Compound aminoGlycan = new Compound();
             aminoGlycan.NewElements(0, 3, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             aminoGlycan.Name = "AminoGlycan";
-            aminoGlycan.SixLetterCode = "NH3Gly ";
+            aminoGlycan.Symbol = "NH3Gly ";
             aminoGlycan.ChemicalFormula = "NH3";
-            aminoGlycan.MassMonoIsotopic = OtherMolecule.GetMonoisotopicMass(aminoGlycan);
+            aminoGlycan.MassMonoIsotopic = Compound.GetMonoisotopicMass(aminoGlycan);
 
             otherMoleculeDictionary.Add(aldehyde.Name, aldehyde);
             otherMoleculeDictionary.Add(alditol.Name, alditol);
@@ -108,7 +108,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             otherMoleculeDictionary.Add(sulfate.Name, sulfate);
             otherMoleculeDictionary.Add(water.Name, water);
             otherMoleculeDictionary.Add(aminoGlycan.Name, aminoGlycan);
-            
+
             return otherMoleculeDictionary;
         }
     }
@@ -116,71 +116,72 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     /// <summary>
     /// This is a Class designed to convert dictionary calls for Other Molecules in one line static method calls.
     /// </summary>
-    public class OtherMoleculeStaticLibrary
+    public class MiscellaneousMatterStaticLibrary
     {
         public static double GetMonoisotopicMass(string constantKey)
         {
-            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
-            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeMiscellaneousMatterLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetFormula(string constantKey)
         {
-            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
-            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
             return incommingDictionary[constantKey].ChemicalFormula;
         }
 
         public static string GetName(string constantKey)
         {
-            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
-            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
             return incommingDictionary[constantKey].Name;
         }
 
-        public static string GetName6(string constantKey)
+        public static string GetSymbol(string constantKey)
         {
-            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
-            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
-            return incommingDictionary[constantKey].SixLetterCode;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+            return incommingDictionary[constantKey].Symbol;
         }
 
         //overload to allow for SelectElement
         public static double GetMonoisotopicMass(SelectOtherMolecule selectKey)
         {
-            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
-            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetFormula(SelectOtherMolecule selectKey)
         {
-            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
-            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].ChemicalFormula;
         }
 
         public static string GetName(SelectOtherMolecule selectKey)
         {
-            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
-            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Name;
         }
 
-        public static string GetName6(SelectOtherMolecule selectKey)
+        public static string GetSymbol(SelectOtherMolecule selectKey)
         {
-            OtherMoleculeSingleton NewSingleton = OtherMoleculeSingleton.Instance;
-            Dictionary<string, OtherMolecule> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].SixLetterCode;
+            return incommingDictionary[constantKey].Symbol;
         }
     }
 

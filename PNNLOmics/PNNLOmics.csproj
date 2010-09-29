@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8A934DC1-3418-449F-ADF6-9962499F49B2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -46,32 +46,32 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-	<Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-	  <SpecificVersion>True</SpecificVersion>
-	  <HintPath>..\lib\x86\System.Data.SQLite.dll</HintPath>
-	  <Private>True</Private>
-	</Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\lib\x86\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-	<Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
-	  <SpecificVersion>True</SpecificVersion>
-	  <HintPath>..\lib\x64\System.Data.SQLite.dll</HintPath>
-	  <Private>True</Private>
-	</Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\lib\x64\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-	<Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-	   <SpecificVersion>True</SpecificVersion>
-	   <HintPath>..\lib\x86\System.Data.SQLite.dll</HintPath>
-	   <Private>True</Private>
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\lib\x86\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-	<Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
-	   <SpecificVersion>True</SpecificVersion>
-	   <HintPath>..\lib\x64\System.Data.SQLite.dll</HintPath>
-	   <Private>True</Private>
-	</Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>True</SpecificVersion>
+      <HintPath>..\lib\x64\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mapack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -114,8 +114,9 @@
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\Constants\AminoAcid.cs" />
     <Compile Include="Data\Constants\Utilities\AminoAcidSingleton.cs" />
-    <Compile Include="Data\Constants\Atom.cs" />
-    <Compile Include="Data\Constants\Utilities\AtomSingleton.cs" />
+    <Compile Include="Data\Constants\SubAtomicParticle.cs" />
+    <Compile Include="Data\Constants\Utilities\CompoundSingleton.cs" />
+    <Compile Include="Data\Constants\Utilities\SubAtomicParticleSingleton.cs" />
     <Compile Include="Data\Constants\Compound.cs" />
     <Compile Include="Data\Constants\Utilities\CrossRingSingleton.cs" />
     <Compile Include="Data\Constants\Utilities\GenericSingleton.cs" />
@@ -129,7 +130,7 @@
     <Compile Include="Data\Constants\OtherMolecule.cs" />
     <Compile Include="Data\Constants\Utilities\OtherMoleculeSingleton.cs" />
     <Compile Include="Data\Constants\Utilities\AminoAcidLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\AtomLibrary.cs" />
+    <Compile Include="Data\Constants\Utilities\SubAtomicParticleLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\CrossRingLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\ElementLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\ElementLoadXML.cs" />

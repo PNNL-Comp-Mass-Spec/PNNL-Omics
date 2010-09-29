@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using PNNLOmics.Data.Constants.ConstantsDataLayer;
 using PNNLOmics.Data.Constants.ConstantsDataUtilities;
-
+using PNNLOmics.Data.Constants.ConstantsDataLayer;
 
 namespace PNNLOmics.UnitTests.ConstantsTests
 {
@@ -17,8 +16,8 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             //Generating a List of keys
             AtomSingleton atomSingleton = AtomSingleton.Instance;
             Dictionary<int, string> cycleConverterDictionary = atomSingleton.ConstantsEnumDictionary;
-            Dictionary<string, Atom> atomGeneratorDictionary = atomSingleton.ConstantsDictionary;
-            
+            Dictionary<string, SubAtomicParticle> atomGeneratorDictionary = atomSingleton.ConstantsDictionary;
+
             List<double> massList = new List<double>();
             for (int i = 0; i < cycleConverterDictionary.Count; i++)
             {
@@ -34,11 +33,12 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         [Test]
         public void TestAminoAcid()//test amino acid calls
         {
-            
+
 
             //using a Char key with a dictionary
-            char aminoAcidKey = 'N';
-            Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
+            string aminoAcidKey = "N";
+            Dictionary<string, Compound> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
+            //Dictionary<char, AminoAcid> aminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
 
             double aminoAcidMass = aminoAcidsDictionary[aminoAcidKey].MassMonoIsotopic;
             string aminoAcidName = aminoAcidsDictionary[aminoAcidKey].Name;
@@ -47,7 +47,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(114.04292745124599, aminoAcidMass);
             Assert.AreEqual("Asparagine", aminoAcidName);
             Assert.AreEqual("C4H6N2O2", aminoAcidFormula);
-            
+
             //one line implementation
             double aminoAcidMass2 = AminoAcidStaticLibrary.GetMonoisotopicMass(aminoAcidKey);
             string aminoAcidName2 = AminoAcidStaticLibrary.GetName(aminoAcidKey);
@@ -56,13 +56,13 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(114.04292745124599, aminoAcidMass2);
             Assert.AreEqual("Asparagine", aminoAcidName2);
             Assert.AreEqual("C4H6N2O2", aminoAcidFormula2);
-               
+
             //getting the mass of a string of amino acids
             double massPeptide = 0;
             string peptideSequence = "NRTL";
             for (int y = 0; y < peptideSequence.Length; y++)
             {
-                massPeptide += AminoAcidStaticLibrary.GetMonoisotopicMass(peptideSequence[y]);
+                massPeptide += AminoAcidStaticLibrary.GetMonoisotopicMass(peptideSequence[y].ToString());
             }
 
             Assert.AreEqual(massPeptide, 484.27578094385393);
@@ -82,7 +82,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         {
             //using a String Key with a dictionary
             string monosaccharideKey = "Hex";
-            Dictionary<string, Monosaccharide> monosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
+            //Dictionary<string, Monosaccharide> monosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
+            Dictionary<string, Compound> monosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
+
 
             double monoSaccharideMass = monosacchaideDictionary[monosaccharideKey].MassMonoIsotopic;
             string monoSaccharideName = monosacchaideDictionary[monosaccharideKey].Name;
@@ -161,7 +163,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         {
             //using a String Key with a dictionary
             string atomKey = "e";
-            Dictionary<string, Atom> atomDictionary = AtomLibrary.LoadAtomicData();
+            Dictionary<string, SubAtomicParticle> atomDictionary = AtomLibrary.LoadAtomicData();
 
             double atomMass = atomDictionary[atomKey].MassMonoIsotopic;
             string atomName = atomDictionary[atomKey].Name;
@@ -191,32 +193,32 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         }
 
         [Test]
-        public void TestOtherMolecule()
+        public void TestMiscellaneousMatter()
         {
             //using a String Key with a dictionary
             string otherKey = "Aldehyde";
-            Dictionary<string, OtherMolecule> otherMoleculeDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
-            
-            double otherMass = otherMoleculeDictionary[otherKey].MassMonoIsotopic;
-            string otherName = otherMoleculeDictionary[otherKey].Name;
-            string otherFormula = otherMoleculeDictionary[otherKey].ChemicalFormula;
+            Dictionary<string, Compound> MiscellaneousMatterDictionary = MiscellaneousMatterLibrary.LoadMiscellaneousMatterData();
+
+            double otherMass = MiscellaneousMatterDictionary[otherKey].MassMonoIsotopic;
+            string otherName = MiscellaneousMatterDictionary[otherKey].Name;
+            string otherFormula = MiscellaneousMatterDictionary[otherKey].ChemicalFormula;
 
             Assert.AreEqual(18.010564686245, otherMass);
             Assert.AreEqual("Aldehyde", otherName);
             Assert.AreEqual("H2O", otherFormula);
 
             //One line implememtation
-            double otherMass2 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(otherKey);
-            string otherName2 = OtherMoleculeStaticLibrary.GetName(otherKey);
-            string otherFormula2 = OtherMoleculeStaticLibrary.GetFormula(otherKey);
+            double otherMass2 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(otherKey);
+            string otherName2 = MiscellaneousMatterStaticLibrary.GetName(otherKey);
+            string otherFormula2 = MiscellaneousMatterStaticLibrary.GetFormula(otherKey);
 
             Assert.AreEqual(18.010564686245, otherMass2);
             Assert.AreEqual("Aldehyde", otherName2);
             Assert.AreEqual("H2O", otherFormula2);
 
             //using a Select Key and Enum 
-            double otherMass3 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
-            double otherMass4 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Sulfate);
+            double otherMass3 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
+            double otherMass4 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Sulfate);
 
             Assert.AreEqual(17.026549103298, otherMass3);
             Assert.AreEqual(127.9237999523, otherMass4);
@@ -224,8 +226,8 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             double otherMassAmino = otherMass - otherMass3;
             Assert.AreEqual(0.98401558294700209, otherMassAmino);
 
-            double otherMass5 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Water)
-                            -OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
+            double otherMass5 = MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Water)
+                            - MiscellaneousMatterStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
             Assert.AreEqual(0.98401558294700209, otherMass5);
         }
 
@@ -234,7 +236,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         {
             //using a String Key with a dictionary
             string crossRingKey = "CRFNeu5Ac_03_X1";
-            Dictionary<string, CrossRing> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
+            Dictionary<string, Compound> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
 
             double crossRingMass = CrossRingDictionary[crossRingKey].MassMonoIsotopic;
             string crossRingFormula = CrossRingDictionary[crossRingKey].ChemicalFormula;

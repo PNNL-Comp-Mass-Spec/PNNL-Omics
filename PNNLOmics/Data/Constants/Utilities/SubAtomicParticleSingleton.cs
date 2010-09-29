@@ -12,12 +12,6 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     public sealed class AtomSingleton
     {
         //TODO:  look for alternative structure for loading libraries
-        //TODO:  this one is not needed
-        /// <summary>
-        /// Utilizes the get and set auto implemented properties.
-        /// Note that set; can be any other operator as long as it's
-        /// less accessible than public.
-        /// </summary>
         public static AtomSingleton Instance { get; private set; }
 
         /// <summary>
@@ -28,13 +22,13 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
         //the part of the singleton that does the work once.
         AtomSingleton()
         {
-            Dictionary<string, Atom> atomDictionary = AtomLibrary.LoadAtomicData();
+            Dictionary<string, SubAtomicParticle> atomDictionary = AtomLibrary.LoadAtomicData();
             this.ConstantsDictionary = atomDictionary;//accessable outside by getter below
 
             int count = 0;
             string names = "";
             Dictionary<int, string> enumDictionary = new Dictionary<int, string>();
-            foreach (KeyValuePair<string, Atom> item in atomDictionary)
+            foreach (KeyValuePair<string, SubAtomicParticle> item in atomDictionary)
             {
                 names += item.Key + ",";
                 enumDictionary.Add(count, item.Key);
@@ -48,7 +42,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
             this.ConstantsEnumDictionary = enumDictionary;//accessable outside by getter below
         }
 
-        public Dictionary<string, Atom> ConstantsDictionary { get; set; }
+        public Dictionary<string, SubAtomicParticle> ConstantsDictionary { get; set; }
         public Dictionary<int, string> ConstantsEnumDictionary { get; set; }
     }
 }

@@ -10,9 +10,11 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     /// This is an abstract Class designed to cover the most basic parameters of compound objects.
     /// Compounds are made up of elements.
     /// </summary>
-    public abstract class Compound : Matter
+    public class Compound : Matter
     {
         public string ChemicalFormula { get; set; }
+        public string Code { get; set; }
+
         //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
         public int nCarbon { get; set; }
         public int nHydrogen { get; set; }

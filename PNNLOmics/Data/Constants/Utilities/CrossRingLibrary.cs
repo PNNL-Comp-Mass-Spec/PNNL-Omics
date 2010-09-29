@@ -27,9 +27,9 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         /// The cross ring fragments are added to a Dictionary searchable with string keys such as "CRFNeu5Ac_02_X1" for the 
         /// X1 cross ring fragment which breaks across the 0 and 2 ring bonds of a Neuraminic acid monosachcaride
         /// </summary>
-        public static Dictionary<string, CrossRing> LoadCrossRingData()
+        public static Dictionary<string, Compound> LoadCrossRingData()
         {
-            Dictionary<string, CrossRing> crossRingDictionary = new Dictionary<string, CrossRing>();
+            Dictionary<string, Compound> crossRingDictionary = new Dictionary<string, Compound>();
 
             //Deoxyhexose.NewElements(C H N O S P)
 
@@ -37,121 +37,121 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             //X ions keep the core and keep the aldehyde motif
 
             #region Hexose Cross Ring Fragments
-            CrossRing crfHex_02_A2 = new CrossRing();//102.0316906 Fragment
+            Compound crfHex_02_A2 = new Compound();//102.0316906 Fragment
             crfHex_02_A2.NewElements(4, 6, 0, 3, 0, 0);//Hex-C2H4O2//-->X.NewElements(C H N O S P) number of atoms
             crfHex_02_A2.Name = "CRFHex_02_A2";
-            crfHex_02_A2.SixLetterCode = "H-02A2";
+            crfHex_02_A2.Symbol = "H-02A2";
             crfHex_02_A2.ChemicalFormula = "C4H6O3";
-            crfHex_02_A2.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHex_02_A2);
+            crfHex_02_A2.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHex_02_A2);
 
-            CrossRing crfHex_02_X1 = new CrossRing();//42.0105612 Aldehyde
+            Compound crfHex_02_X1 = new Compound();//42.0105612 Aldehyde
             crfHex_02_X1.NewElements(2, 2, 0, 1, 0, 0);//Hex-C4H8O4//-->X.NewElements(C H N O S P) number of atoms
             crfHex_02_X1.Name = "CRFHex_02_X1";
-            crfHex_02_X1.SixLetterCode = "H-02X1";
+            crfHex_02_X1.Symbol = "H-02X1";
             crfHex_02_X1.ChemicalFormula = "C2H2O";
-            crfHex_02_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHex_02_X1);
+            crfHex_02_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHex_02_X1);
 
-            CrossRing crfHex_03_A2 = new CrossRing();//72.0211259 Aldehyde
+            Compound crfHex_03_A2 = new Compound();//72.0211259 Aldehyde
             crfHex_03_A2.NewElements(3, 4, 0, 2, 0, 0);//Hex-C3H6O3//-->X.NewElements(C H N O S P) number of atoms
             crfHex_03_A2.Name = "CRFHex_03_A2";
-            crfHex_03_A2.SixLetterCode = "H-03A2";
+            crfHex_03_A2.Symbol = "H-03A2";
             crfHex_03_A2.ChemicalFormula = "C3H4O2";
-            crfHex_03_A2.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHex_03_A2);
+            crfHex_03_A2.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHex_03_A2);
 
-            CrossRing crfHex_03_X1 = new CrossRing();//72.0211259 Aldehyde
+            Compound crfHex_03_X1 = new Compound();//72.0211259 Aldehyde
             crfHex_03_X1.NewElements(3, 4, 0, 2, 0, 0);//Hex-C3H6O3//-->X.NewElements(C H N O S P) number of atoms
             crfHex_03_X1.Name = "CRFHex_03_X1";
-            crfHex_03_X1.SixLetterCode = "H-03X1";
+            crfHex_03_X1.Symbol = "H-03X1";
             crfHex_03_X1.ChemicalFormula = "C3H4O2";
-            crfHex_03_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHex_03_X1);
+            crfHex_03_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHex_03_X1);
 
-            CrossRing crfHex_24_A2 = new CrossRing();//42.0105612 Fragment
+            Compound crfHex_24_A2 = new Compound();//42.0105612 Fragment
             crfHex_24_A2.NewElements(2, 2, 0, 1, 0, 0);//Hex-C4H8O4//-->X.NewElements(C H N O S P) number of atoms
             crfHex_24_A2.Name = "CRFHex_24_A2";
-            crfHex_24_A2.SixLetterCode = "H-24A2";
+            crfHex_24_A2.Symbol = "H-24A2";
             crfHex_24_A2.ChemicalFormula = "C2H2O";
-            crfHex_24_A2.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHex_24_A2);
+            crfHex_24_A2.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHex_24_A2);
 
-            CrossRing crfHex_24_X1 = new CrossRing();//102.0316906 Aldehyde
+            Compound crfHex_24_X1 = new Compound();//102.0316906 Aldehyde
             crfHex_24_X1.NewElements(4, 6, 0, 3, 0, 0);//Hex-C2H4O2//-->X.NewElements(C H N O S P) number of atoms
             crfHex_24_X1.Name = "CRFHex_24_X1";
-            crfHex_24_X1.SixLetterCode = "H-24X1";
+            crfHex_24_X1.Symbol = "H-24X1";
             crfHex_24_X1.ChemicalFormula = "C4H6O3";
-            crfHex_24_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHex_24_X1);
+            crfHex_24_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHex_24_X1);
             #endregion
 
             #region HexNAc Cross Ring Fragments
-            CrossRing crfHexNAc_02_A2 = new CrossRing();//102.031721493 Fragment
+            Compound crfHexNAc_02_A2 = new Compound();//102.031721493 Fragment
             crfHexNAc_02_A2.NewElements(4, 6, 0, 3, 0, 0);//HexNAc-C4H7NO2//-->X.NewElements(C H N O S P) number of atoms
             crfHexNAc_02_A2.Name = "CRFHexNAc_02_A2";
-            crfHexNAc_02_A2.SixLetterCode = "N-02A2";
+            crfHexNAc_02_A2.Symbol = "N-02A2";
             crfHexNAc_02_A2.ChemicalFormula = "C4H6O3";
-            crfHexNAc_02_A2.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHexNAc_02_A2);
+            crfHexNAc_02_A2.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHexNAc_02_A2);
 
-            CrossRing crfHexNAc_02_X1 = new CrossRing();//83.013331758 Aldehyde
+            Compound crfHexNAc_02_X1 = new Compound();//83.013331758 Aldehyde
             crfHexNAc_02_X1.NewElements(4, 5, 1, 1, 0, 0);//HexNAc-C4H8O4//-->X.NewElements(C H N O S P) number of atoms
             crfHexNAc_02_X1.Name = "CRFHexNAc_02_X1";
-            crfHexNAc_02_X1.SixLetterCode = "N-02X1";
+            crfHexNAc_02_X1.Symbol = "N-02X1";
             crfHexNAc_02_X1.ChemicalFormula = "C4H5NO";
-            crfHexNAc_02_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHexNAc_02_X1);
-            
-            CrossRing crfHexNAc_03_A2 = new CrossRing();// Fragment
+            crfHexNAc_02_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHexNAc_02_X1);
+
+            Compound crfHexNAc_03_A2 = new Compound();// Fragment
             crfHexNAc_03_A2.NewElements(3, 4, 0, 2, 0, 0);//HexNAc-C5H8NO3//-->X.NewElements(C H N O S P) number of atoms
             crfHexNAc_03_A2.Name = "CRFHexNAc_03_A2";
-            crfHexNAc_03_A2.SixLetterCode = "N-03A2";
+            crfHexNAc_03_A2.Symbol = "N-03A2";
             crfHexNAc_03_A2.ChemicalFormula = "C3H4O2";
-            crfHexNAc_03_A2.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHexNAc_03_A2);
+            crfHexNAc_03_A2.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHexNAc_03_A2);
 
-            CrossRing crfHexNAc_03_X1 = new CrossRing();// Aldehyde
+            Compound crfHexNAc_03_X1 = new Compound();// Aldehyde
             crfHexNAc_03_X1.NewElements(5, 6, 1, 2, 0, 0);//HexNAc-C3H6O3//-->X.NewElements(C H N O S P) number of atoms
             crfHexNAc_03_X1.Name = "CRFHexNAc_03_X1";
-            crfHexNAc_03_X1.SixLetterCode = "N-03X1";
+            crfHexNAc_03_X1.Symbol = "N-03X1";
             crfHexNAc_03_X1.ChemicalFormula = "C5H6NO2";
-            crfHexNAc_03_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHexNAc_03_X1);
-           
-            CrossRing crfHexNAc_24_A2 = new CrossRing();//42.01059293 Fragment
+            crfHexNAc_03_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHexNAc_03_X1);
+
+            Compound crfHexNAc_24_A2 = new Compound();//42.01059293 Fragment
             crfHexNAc_24_A2.NewElements(2, 2, 0, 1, 0, 0);//HexNAc-C6H11NO4//-->X.NewElements(C H N O S P) number of atoms
             crfHexNAc_24_A2.Name = "CRFHexNAc_24_A2";
-            crfHexNAc_24_A2.SixLetterCode = "N-24A2";
+            crfHexNAc_24_A2.Symbol = "N-24A2";
             crfHexNAc_24_A2.ChemicalFormula = "C2H2O";
-            crfHexNAc_24_A2.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHexNAc_24_A2);
+            crfHexNAc_24_A2.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHexNAc_24_A2);
 
-            CrossRing crfHexNAc_24_X1 = new CrossRing();//143.0582706 Aldehyde
+            Compound crfHexNAc_24_X1 = new Compound();//143.0582706 Aldehyde
             crfHexNAc_24_X1.NewElements(6, 9, 1, 3, 0, 0);//HexNAc-C2H4O2//-->X.NewElements(C H N O S P) number of atoms
             crfHexNAc_24_X1.Name = "CRFHexNAc_24_X1";
-            crfHexNAc_24_X1.SixLetterCode = "N-24X1";
+            crfHexNAc_24_X1.Symbol = "N-24X1";
             crfHexNAc_24_X1.ChemicalFormula = "C6H9NO3";
-            crfHexNAc_24_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfHexNAc_24_X1);  
+            crfHexNAc_24_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHexNAc_24_X1);
             #endregion
 
             #region Sialic Acid Cross Ring Framgnets
-            CrossRing crfNeu5Ac_02_X1 = new CrossRing();//70.0054793084 Aldehyde
+            Compound crfNeu5Ac_02_X1 = new Compound();//70.0054793084 Aldehyde
             crfNeu5Ac_02_X1.NewElements(3, 2, 0, 2, 0, 0);//Neu5Ac-C8H15NO6//-->X.NewElements(C H N O S P) number of atoms
             crfNeu5Ac_02_X1.Name = "CRFNeu5Ac_02_X1";
-            crfNeu5Ac_02_X1.SixLetterCode = "A-02X1";
+            crfNeu5Ac_02_X1.Symbol = "A-02X1";
             crfNeu5Ac_02_X1.ChemicalFormula = "C3H2O2";
-            crfNeu5Ac_02_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfNeu5Ac_02_X1);
+            crfNeu5Ac_02_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfNeu5Ac_02_X1);
 
-            CrossRing crfNeu5Ac_03_X1 = new CrossRing();// 100.01604399481499 Aldehyde
+            Compound crfNeu5Ac_03_X1 = new Compound();// 100.01604399481499 Aldehyde
             crfNeu5Ac_03_X1.NewElements(4, 4, 0, 3, 0, 0);//Neu5Ac-C7H13NO5//-->X.NewElements(C H N O S P) number of atoms
             crfNeu5Ac_03_X1.Name = "CRFNeu5Ac_03_X1";
-            crfNeu5Ac_03_X1.SixLetterCode = "A-03X1";
+            crfNeu5Ac_03_X1.Symbol = "A-03X1";
             crfNeu5Ac_03_X1.ChemicalFormula = "C4H4O3";
-            crfNeu5Ac_03_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfNeu5Ac_03_X1);
+            crfNeu5Ac_03_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfNeu5Ac_03_X1);
 
-            CrossRing crfNeu5Ac_24_X1 = new CrossRing();//190.0477380536 Aldehyde
+            Compound crfNeu5Ac_24_X1 = new Compound();//190.0477380536 Aldehyde
             crfNeu5Ac_24_X1.NewElements(7, 10, 0, 6, 0, 0);//HexNAc-C4H7NO2//-->X.NewElements(C H N O S P) number of atoms
             crfNeu5Ac_24_X1.Name = "CRFNeu5Ac_24_X1";
-            crfNeu5Ac_24_X1.SixLetterCode = "A-24X1";
+            crfNeu5Ac_24_X1.Symbol = "A-24X1";
             crfNeu5Ac_24_X1.ChemicalFormula = "C7H10O6";
-            crfNeu5Ac_24_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfNeu5Ac_24_X1);
+            crfNeu5Ac_24_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfNeu5Ac_24_X1);
 
-            CrossRing crfNeu5Ac_25_X1 = new CrossRing();//143.0582706 Aldehyde
+            Compound crfNeu5Ac_25_X1 = new Compound();//143.0582706 Aldehyde
             crfNeu5Ac_25_X1.NewElements(3, 2, 0, 3, 0, 0);//HexNAc-C8H15NO5//-->X.NewElements(C H N O S P) number of atoms
             crfNeu5Ac_25_X1.Name = "CRFNeu5Ac_25_X1";
-            crfNeu5Ac_25_X1.SixLetterCode = "A-25X1";
+            crfNeu5Ac_25_X1.Symbol = "A-25X1";
             crfNeu5Ac_25_X1.ChemicalFormula = "C3H2O3";
-            crfNeu5Ac_25_X1.MassMonoIsotopic = CrossRing.GetMonoisotopicMass(crfNeu5Ac_25_X1);  
+            crfNeu5Ac_25_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfNeu5Ac_25_X1);
             #endregion
 
             crossRingDictionary.Add(crfHex_02_A2.Name, crfHex_02_A2);
@@ -184,49 +184,55 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     {
         public static double GetMonoisotopicMass(string constantKey)
         {
-            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
-            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeCrossRingLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetFormula(string constantKey)
         {
-            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
-            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeCrossRingLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
             return incommingDictionary[constantKey].ChemicalFormula;
         }
 
         public static string GetName(string constantKey)
         {
-            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
-            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeCrossRingLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
             return incommingDictionary[constantKey].Name;
         }
 
         //overload to allow for SelectElement
         public static double GetMonoisotopicMass(SelectCrossRing selectKey)
         {
-            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
-            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeCrossRingLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.CrossRingConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].MassMonoIsotopic;
         }
 
         public static string GetFormula(SelectCrossRing selectKey)
         {
-            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
-            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeCrossRingLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.CrossRingConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].ChemicalFormula;
         }
 
         public static string GetName(SelectCrossRing selectKey)
         {
-            CrossRingSingleton NewSingleton = CrossRingSingleton.Instance;
-            Dictionary<string, CrossRing> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+            NewSingleton.InitializeCrossRingLibrary();
+            Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
+            Dictionary<int, string> enumConverter = NewSingleton.CrossRingConstantsEnumDictionary;
             string constantKey = enumConverter[(int)selectKey];
             return incommingDictionary[constantKey].Name;
         }
