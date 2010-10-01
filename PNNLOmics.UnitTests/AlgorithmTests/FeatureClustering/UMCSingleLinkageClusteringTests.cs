@@ -38,7 +38,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void BadDataClusterNull()
         {
             // Sends a null reference to the clustering object.
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
             clustering.Cluster(null);
         }
         /// <summary>
@@ -52,9 +52,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void BadDataClusterNullInList()
         {
             // Sends a null reference to the clustering object.
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
-            List<UMC> list = new List<UMC>();
-            list.Add(new UMC());
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			List<UMCLight> list = new List<UMCLight>();
+			list.Add(new UMCLight());
             list.Add(null);
 
             clustering.Cluster(list);
@@ -81,7 +81,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -101,14 +101,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startDrift = 10;
             double deltaDrift = 0;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature         = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID          = i;
-                feature.UmcCluster  = null;
-                feature.NETAligned  = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster  = null;
+                feature.NET  = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = i % totalDatasets;
                 features.Add(feature);
@@ -119,12 +119,12 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the two UMC's that are far away from home.
-            features[features.Count - 2].MassMonoisotopicAligned = (startMass + 100.0);
-            features[features.Count - 1].MassMonoisotopicAligned = (startMass + 100.0);
+            features[features.Count - 2].MassMonoisotopic = (startMass + 100.0);
+            features[features.Count - 1].MassMonoisotopic = (startMass + 100.0);
 
             // Cluster!
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -151,7 +151,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters  = new FeatureClusterParameters();
@@ -171,14 +171,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startDrift = 10;
             double deltaDrift = 0;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID = i;
-                feature.UmcCluster = null;
-                feature.NETAligned = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster = null;
+                feature.NET = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -189,11 +189,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[features.Count - 1].MassMonoisotopicAligned = (startMass + 100.0);
+            features[features.Count - 1].MassMonoisotopic = (startMass + 100.0);
 
             // Cluster!
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+            List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -221,7 +221,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -241,14 +241,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startDrift = 10;
             double deltaDrift = 0;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID = i;
-                feature.UmcCluster = null;
-                feature.NETAligned = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster = null;
+                feature.NET = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -259,12 +259,12 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[0].MassMonoisotopicAligned = (startMass - 100.0);
-            features[1].MassMonoisotopicAligned = (features[0].MassMonoisotopicAligned);
+            features[0].MassMonoisotopic = (startMass - 100.0);
+            features[1].MassMonoisotopic = (features[0].MassMonoisotopic);
 
             // Cluster!
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -286,7 +286,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -306,14 +306,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startDrift = 10;
             double deltaDrift = 0;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID = i;
-                feature.UmcCluster = null;
-                feature.NETAligned = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster = null;
+                feature.NET = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -324,11 +324,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[0].MassMonoisotopicAligned = (startMass - 100.0);
+            features[0].MassMonoisotopic = (startMass - 100.0);
 
             // Cluster!
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -346,7 +346,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         {    /*             
              *     x1 x2 ... x3 
              */
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -366,14 +366,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startDrift = 10;
             double deltaDrift = 0;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID = i;
-                feature.UmcCluster = null;
-                feature.NETAligned = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster = null;
+                feature.NET = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -384,11 +384,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[features.Count - 1].NETAligned = parameters.Tolerances.NET * 100;
+            features[features.Count - 1].NET = parameters.Tolerances.NET * 100;
 
             // Cluster!
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -396,8 +396,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Singletons will be the first in the list as the other clusters are merged.
             // This is why we check the first cluster for a size of one, and not the last one.            
-            Assert.AreEqual(1, clusters[0].UMCList.Count);
-            Assert.AreEqual(totalFeatures - 1, clusters[1].UMCList.Count);
+            Assert.AreEqual(1, clusters[1].UMCList.Count);
+            Assert.AreEqual(totalFeatures - 1, clusters[0].UMCList.Count);
         }
         [Test]
         [Category("Edge")]
@@ -406,7 +406,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         {    /*             
              *     x1 ... x2, x3 
              */
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -426,14 +426,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startDrift = 10;
             double deltaDrift = 0;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature                     = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID                      = i;
-                feature.UmcCluster              = null;
-                feature.NETAligned              = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster              = null;
+                feature.NET              = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime               = Convert.ToSingle(startDrift);
                 feature.GroupID                 = i % totalDatasets;
                 features.Add(feature);
@@ -444,11 +444,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[0].NETAligned = parameters.Tolerances.NET * 100;
+            features[0].NET = parameters.Tolerances.NET * 100;
 
             // Cluster!
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -456,8 +456,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Singletons will be the first in the list as the other clusters are merged.
             // This is why we check the first cluster for a size of one, and not the last one.            
-            Assert.AreEqual(1, clusters[1].UMCList.Count);
-            Assert.AreEqual(totalFeatures - 1, clusters[0].UMCList.Count);
+            Assert.AreEqual(1, clusters[0].UMCList.Count);
+            Assert.AreEqual(totalFeatures - 1, clusters[1].UMCList.Count);
         }
         #endregion
 
@@ -471,7 +471,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("This test makes a set of UMC's whose only varying dimension is NET.")]
         public void CreateSingleClusterTests(double deltaMass, double deltaNET)
         {
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -489,14 +489,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startDrift   = 10;
             double deltaDrift   = 0;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature                     = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID                      = i;
-                feature.UmcCluster              = null;
-                feature.NETAligned              = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster              = null;
+                feature.NET              = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime               = Convert.ToSingle(startDrift);
                 feature.GroupID                 = i % totalDatasets;
                 features.Add(feature);
@@ -508,7 +508,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Cluster
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -524,7 +524,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Category("Edge")]
         public void CreateSingletonTests()
         {
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -544,21 +544,21 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double deltaNet   = parameters.Tolerances.NET * 2;
             double deltaDrift = parameters.Tolerances.DriftTime * 2;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature             = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID              = i;
-                feature.UmcCluster      = null;
-                feature.NETAligned      = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster      = null;
+                feature.NET      = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime       = Convert.ToSingle(startDrift);
                 feature.GroupID         = i % totalDatasets;
                 feature.ChargeState     = i;
 
                 feature.DriftTime               = Convert.ToSingle(startDrift);
-                feature.NETAligned              = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.NET              = startNET;
+                feature.MassMonoisotopic = startMass;
 
                 // Always put it just outside of the next feature.
                 startMass   = Feature.ComputeDaDifferenceFromPPM(startMass, parameters.Tolerances.Mass * 1.5);
@@ -569,7 +569,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
             
             clustering.Parameters     = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -587,7 +587,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("This test will separate clusteres based on charge.")]
         public void ChargeStatesTests(bool onlyClusterCharges)
         {
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters  = new FeatureClusterParameters();
@@ -604,14 +604,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startNET   = 0.10;
             double startDrift = 10;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature         = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID          = i;
-                feature.UmcCluster  = null;
-                feature.NETAligned  = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster  = null;
+                feature.NET  = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = i % totalDatasets;
                 feature.ChargeState = i;
@@ -620,7 +620,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Cluster
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -650,7 +650,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              */
 
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -670,14 +670,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startDrift = 10;
             double deltaDrift = 0;
 
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID = i;
-                feature.UmcCluster = null;
-                feature.NETAligned = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster = null;
+                feature.NET = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -689,7 +689,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Cluster
             clustering.Parameters = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
@@ -708,7 +708,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              *      x1-d1 x2-d2 x3-d2 x4-d1
              * 
              */
-            UMCSingleLinkageClusterer<UMCCluster> clustering = new UMCSingleLinkageClusterer<UMCCluster>();
+			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
 
             // Setup the parameters to work with the data.
             FeatureClusterParameters parameters = new FeatureClusterParameters();
@@ -728,14 +728,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double deltaDrift   = 0;
 
             // Create all features.
-            List<UMC> features = new List<UMC>();
+			List<UMCLight> features = new List<UMCLight>();
             for (int i = 0; i < totalFeatures; i++)
             {
-                UMC feature         = new UMC();
+				UMCLight feature = new UMCLight();
                 feature.ID          = i;
-                feature.UmcCluster  = null;
-                feature.NETAligned  = startNET;
-                feature.MassMonoisotopicAligned = startMass;
+                feature.UMCCluster  = null;
+                feature.NET  = startNET;
+                feature.MassMonoisotopic = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = 0;
                 features.Add(feature);
@@ -752,7 +752,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Cluster
             clustering.Parameters     = parameters;
-            List<UMCCluster> clusters = clustering.Cluster(features);
+			List<UMCClusterLight> clusters = clustering.Cluster(features);
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);

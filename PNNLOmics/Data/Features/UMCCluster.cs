@@ -73,9 +73,7 @@ namespace PNNLOmics.Data.Features
             NETAligned      = umc.NET; 
             ScanLC          = umc.ScanLC;
             ScanLCAligned   = umc.ScanLCAligned; 
-            IsSuspicious      = umc.IsSuspicious;
-
-            
+            IsSuspicious      = umc.IsSuspicious;            
         }
 
         #region Properties
@@ -227,18 +225,7 @@ namespace PNNLOmics.Data.Features
             if (cluster == null)
                 return false;
 
-			if (m_hashCode == int.MinValue)
-			{
-				m_hashCode = GetHashCode();
-			
-			}
-			//return m_hashCode == cluster.GetHashCode();
-
-			/*
-			 * BLL Optimize using hash codes for equals not 
-			 * if' statements
-			 */ 
-            bool isBaseEqual = base.Equals(cluster);
+			bool isBaseEqual = base.Equals(cluster);
             if (!isBaseEqual)
                 return false;
 
@@ -256,7 +243,6 @@ namespace PNNLOmics.Data.Features
                 if (index < 0)
                     return false;
             }
-			//*/
             return true;
         }
         /// <summary>
@@ -265,13 +251,6 @@ namespace PNNLOmics.Data.Features
         /// <returns>Hashcode as an integer.</returns>
         public override int GetHashCode()
         {
-			/*
-			if (m_hashCode != int.MinValue)
-			{
-				return m_hashCode;
-			}
-			 */
-
             return base.GetHashCode();
         }
         #endregion

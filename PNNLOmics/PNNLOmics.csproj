@@ -130,6 +130,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data\Features\ClusterCentroidRepresentation.cs" />
+    <Compile Include="Data\Features\FeatureLight.cs" />
+    <Compile Include="Data\Features\UMCClusterLight.cs" />
+    <Compile Include="Data\Features\UMCLight.cs" />
     <Compile Include="Data\MSMSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
     <Compile Include="Generic\Pair.cs" />

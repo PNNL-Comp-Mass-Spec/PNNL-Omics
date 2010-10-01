@@ -14,14 +14,10 @@ namespace PNNLOmics.Data.Features
 		/// Default value for any scan.
 		/// </summary>
         protected const int CONST_DEFAULT_SCAN_VALUE = -1;
-		/// <summary>
-		/// A cached version of the hash-code.
-		/// </summary>
-		protected int m_hashCode;
-
+		
 		public Feature()
 		{
-			m_hashCode = int.MinValue;
+			Clear();
 		}
 
         #region AutoProperties
@@ -384,8 +380,6 @@ namespace PNNLOmics.Data.Features
                 ScanLCAligned.GetHashCode() ^
                 IsSuspicious.GetHashCode();
 			
-			m_hashCode = hashCode;
-
             return hashCode;
         }
         #endregion

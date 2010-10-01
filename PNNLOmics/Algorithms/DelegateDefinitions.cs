@@ -10,7 +10,7 @@ namespace PNNLOmics.Algorithms
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    public delegate double DistanceFunction(UMC x, UMC y);
+    public delegate double DistanceFunction(UMCLight x, UMCLight y);
     /// <summary>
     /// Weighted distance function for comparing the distance between two UMC's.
     /// </summary>
@@ -20,5 +20,5 @@ namespace PNNLOmics.Algorithms
     /// <param name="netWeight"></param>
     /// <param name="driftWeight"></param>
     /// <returns></returns>
-    public delegate double WeightedDistanceFunction(UMC x, UMC y,double massWeight, double netWeight, double driftWeight);
+    public delegate double WeightedDistanceFunction(UMCLight x, UMCLight y,double massWeight, double netWeight, double driftWeight);
 }

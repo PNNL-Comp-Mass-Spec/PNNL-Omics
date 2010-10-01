@@ -381,6 +381,9 @@ namespace PNNLOmics.Data.Features
             if (umc == null)
                 return false;
 
+			if (ID != umc.ID)
+				return false;
+
             bool isBaseEqual = base.Equals(umc);
             if (!isBaseEqual)
                 return false;

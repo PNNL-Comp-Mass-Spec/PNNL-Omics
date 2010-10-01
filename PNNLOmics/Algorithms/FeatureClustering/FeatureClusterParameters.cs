@@ -87,10 +87,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="x">Feature x.</param>
         /// <param name="y">Feature y.</param>
         /// <returns>Distance calculated as </returns>
-        public double EuclideanDistance(UMC x, UMC y)
+        public double EuclideanDistance(UMCLight x, UMCLight y)
         {
-            double massDifference  = UMC.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned);
-            double netDifference   = x.NETAligned - y.NETAligned;
+            double massDifference  = Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
+            double netDifference   = x.NET - y.NET;
             double driftDifference = x.DriftTime  - y.DriftTime;
             double sum             = (massDifference  * massDifference)  +
                                      (netDifference   * netDifference)   + 
@@ -105,10 +105,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="x">Feature x.</param>
         /// <param name="y">Feature y.</param>
         /// <returns>Distance calculated as </returns>
-        public double EuclideanDistance(UMC x, UMC y, double massWeight, double netWeight, double driftWeight)
+		public double EuclideanDistance(UMCLight x, UMCLight y, double massWeight, double netWeight, double driftWeight)
         {
-            double massDifference = UMC.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned);
-            double netDifference = x.NETAligned - y.NETAligned;
+			double massDifference = Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
+            double netDifference = x.NET - y.NET;
             double driftDifference = x.DriftTime - y.DriftTime;
             double sum = (massDifference * massDifference)*massWeight +
                                      (netDifference * netDifference)*netDifference +

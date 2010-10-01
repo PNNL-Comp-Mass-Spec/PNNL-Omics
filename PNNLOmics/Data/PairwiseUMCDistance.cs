@@ -20,7 +20,7 @@ namespace PNNLOmics.Data
     /// Holds the distance between two features and indices.
     /// </summary>
     public class PairwiseDistance<T> : IComparer<PairwiseDistance<T>>
-        where T : Feature, new()
+        where T : FeatureLight, new()
     {
 
         /// <summary>
