@@ -97,8 +97,7 @@ namespace PNNLOmics.Data
          */
         public override void Clear()
         {
-            base.Clear();
-            throw new NotImplementedException();
+            base.Clear();            
         }
         public static Comparison<MassTag> MassComparison = delegate(MassTag massTag1, MassTag massTag2)
         {
