@@ -279,13 +279,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 throw new NullReferenceException("The input UMC data list was null.  Cannot process this data.");
             }
 
-            /*// Make sure there is no null UMC data in the input list.
+            // Make sure there is no null UMC data in the input list.
             int nullIndex = data.FindIndex(delegate(UMCLight x) { return x == null; });            
             if (nullIndex > 0)
             {
                 throw new NullReferenceException("The UMC at index " + nullIndex.ToString() + " was null.  Cannot process this data.");
             }
-			*/
+			
 
 			// The first thing we do is to sort the features based on mass since we know that has the least
             // variability in the data across runs.

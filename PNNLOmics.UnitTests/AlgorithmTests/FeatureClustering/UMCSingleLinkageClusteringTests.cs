@@ -396,8 +396,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Singletons will be the first in the list as the other clusters are merged.
             // This is why we check the first cluster for a size of one, and not the last one.            
-            Assert.AreEqual(1, clusters[1].UMCList.Count);
-            Assert.AreEqual(totalFeatures - 1, clusters[0].UMCList.Count);
+            Assert.AreEqual(1, clusters[0].UMCList.Count);
+            Assert.AreEqual(totalFeatures - 1, clusters[1].UMCList.Count);
         }
         [Test]
         [Category("Edge")]
@@ -646,7 +646,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         {
             /*
              *
-             *  x1-d1 x2-d2 x3-d3 x4-d1 x5-d2
+             *  x1-d1 x2-d2 x3-d3 | x4-d1 x5-d2
              * 
              */
 
@@ -693,7 +693,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
-            Assert.AreEqual(3, clusters.Count);
+            Assert.AreEqual(2, clusters.Count);
         }
         /// <summary>
         /// Only produces a single cluster because all features should have the same mass.
