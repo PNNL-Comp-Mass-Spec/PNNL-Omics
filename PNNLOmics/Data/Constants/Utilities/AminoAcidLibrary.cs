@@ -209,95 +209,69 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         }
     }
 
-    /// <summary>
-    /// This is a Class designed to convert dictionary calls for amino acids in one line static method calls.
-    /// </summary>
-    public class AminoAcidStaticLibrary
-    {
-        public static double GetMonoisotopicMass(string constantKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeAminoAcidLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            return incommingDictionary[constantKey].MassMonoIsotopic;
-        }
+    #region old static library code
+    ///// <summary>
+    ///// This is a Class designed to convert dictionary calls for amino acids in one line static method calls.
+    ///// </summary>
+    //public class AminoAcidStaticLibrary
+    //{
+    //    public static double GetMonoisotopicMass(string constantKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        NewSingleton.InitializeAminoAcidLibrary();
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
+    //        return incommingDictionary[constantKey].MassMonoIsotopic;
+    //    }
 
-        /// <summary>
-        /// This returns Symbol that corresponds to the dictionary key
-        /// </summary>
-        public static string GetSymbol(string constantKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeAminoAcidLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            return incommingDictionary[constantKey].Symbol;
-        }
+    //    public static string GetFormula(string constantKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        NewSingleton.InitializeAminoAcidLibrary();
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
+    //        return incommingDictionary[constantKey].ChemicalFormula;
+    //    }
 
-        /// <summary>
-        /// This returns the name that cooresponds to the dictionary key
-        /// </summary>
-        public static string GetName(string constantKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeAminoAcidLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            return incommingDictionary[constantKey].Name;
-        }
+    //    public static string GetName(string constantKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        NewSingleton.InitializeAminoAcidLibrary();
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
+    //        return incommingDictionary[constantKey].Name;
+    //    }
 
-        /// <summary>
-        /// This returns the chemical formula that cooresponds to the dictionary key
-        /// </summary>
-        public static string GetFormula(string constantKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeAminoAcidLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            return incommingDictionary[constantKey].ChemicalFormula;
-        }
+    //    //overload to allow for SelectElement
+    //    public static double GetMonoisotopicMass(SelectAminoAcid selectKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        NewSingleton.InitializeAminoAcidLibrary();
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].MassMonoIsotopic;
+    //    }
 
-        /// <summary>
-        /// This returns the monoisotopic mass that cooresponds to the enumerated key
-        /// </summary>
-        public static double GetMonoisotopicMass(SelectAminoAcid selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeAminoAcidLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].MassMonoIsotopic;
-        }
+    //    public static string GetFormula(SelectAminoAcid selectKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        NewSingleton.InitializeAminoAcidLibrary();
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].ChemicalFormula;
+    //    }
 
-        /// <summary>
-        /// This returns the name that cooresponds to the enumerated key
-        /// </summary>
-        public static string GetName(SelectAminoAcid selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeAminoAcidLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].Name;
-        }
+    //    public static string GetName(SelectAminoAcid selectKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        NewSingleton.InitializeAminoAcidLibrary();
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].Name;
+    //    }
+    //}
+    #endregion
 
-        /// <summary>
-        /// This returns the chemical formula that cooresponds to the enumerated key
-        /// </summary>
-        public static string GetFormula(SelectAminoAcid selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeAminoAcidLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].ChemicalFormula;
-        }
-    }
-
-    /// <summary>
-    /// Enumeration of amino acid constants
-    /// </summary>
     public enum SelectAminoAcid
     {
         Alanine, Arginine, Asparagine, AsparticAcid, Cysteine, GlutamicAcid, Glutamine, Glycine, Histidine, Isoleucine,

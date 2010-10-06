@@ -27,23 +27,23 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     /// This is a Class designed to convert tabulated data into a atom objects which are similar to physical constants.
     /// Electron, Neutron and Protons are created here and added to a Dictionarty with string keys such as "e" for electron
     /// </summary>
-    public class SubatomicParticleLibrary
+    public class SubAtomicParticleLibrary
     {
-        public static Dictionary<string, SubatomicParticle> LoadAtomicData()
+        public static Dictionary<string, SubAtomicParticle> LoadSubAtomicParticleData()
         {
-            Dictionary<string, SubatomicParticle> atomicDictionary = new Dictionary<string, SubatomicParticle>();
+            Dictionary<string, SubAtomicParticle> atomicDictionary = new Dictionary<string, SubAtomicParticle>();
 
-            SubatomicParticle electron = new SubatomicParticle();
+            SubAtomicParticle electron = new SubAtomicParticle();
             electron.Name = "Electron";
             electron.MassMonoIsotopic = 0.00054857990943;//units of u a.k.a.Da.  NIST CODATA 2006 
             electron.Symbol = "e";
 
-            SubatomicParticle neutron = new SubatomicParticle();
+            SubAtomicParticle neutron = new SubAtomicParticle();
             neutron.Name = "Neutron";
             neutron.MassMonoIsotopic = 1.00866491597;//units of u a.k.a.Da.  NIST CODATA 2006
             neutron.Symbol = "n";
 
-            SubatomicParticle proton = new SubatomicParticle();
+            SubAtomicParticle proton = new SubAtomicParticle();
             proton.Name = "Proton";
             proton.MassMonoIsotopic = 1.00727646677;//units of u a.k.a.Da.  NIST CODATA 2006
             proton.Symbol = "p";
@@ -56,79 +56,64 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
         }
     }
 
-    /// <summary>
-    /// This is a Class designed to convert dictionary calls for Atoms in one line static method calls.
-    /// </summary>
-    public class SubatomicParticleStaticLibrary
-    {
-        /// <summary>
-        /// This returns the monoisotopic mass that corresponds to the dictionary key
-        /// </summary>
-        public static double GetMonoisotopicMass(string constantKey)
-        {
-            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
-            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
-            return incommingDictionary[constantKey].MassMonoIsotopic;
-        }
+    #region old static library code
+    ///// <summary>
+    ///// This is a Class designed to convert dictionary calls for Atoms in one line static method calls.
+    ///// </summary>
+    //public class AtomStaticLibrary
+    //{
+    //    public static double GetMonoisotopicMass(string constantKey)
+    //    {
+    //        AtomSingleton NewSingleton = AtomSingleton.Instance;
+    //        Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+    //        return incommingDictionary[constantKey].MassMonoIsotopic;
+    //    }
 
-        /// <summary>
-        /// This returns the Symbol that corresponds to the dictionary key
-        /// </summary>
-        public static string GetSymbol(string constantKey)
-        {
-            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
-            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
-            return incommingDictionary[constantKey].Symbol;
-        }
+    //    public static string GetSymbol(string constantKey)
+    //    {
+    //        AtomSingleton NewSingleton = AtomSingleton.Instance;
+    //        Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+    //        return incommingDictionary[constantKey].Symbol;
+    //    }
 
-        /// <summary>
-        /// This returns the name that cooresponds to the dictionary key
-        /// </summary>
-        public static string GetName(string constantKey)
-        {
-            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
-            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
-            return incommingDictionary[constantKey].Name;
-        }
+    //    public static string GetName(string constantKey)
+    //    {
+    //        AtomSingleton NewSingleton = AtomSingleton.Instance;
+    //        Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+    //        return incommingDictionary[constantKey].Name;
+    //    }
 
-        /// <summary>
-        /// This returns the monoisotopic mass that cooresponds to the enumerated key
-        /// </summary>
-        public static double GetMonoisotopicMass(SelectSubatomicParticle selectKey)
-        {
-            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
-            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].MassMonoIsotopic;
-        }
+    //    //overload to allow for SelectElement
+    //    public static double GetMonoisotopicMass(SelectSubAtomicParticle selectKey)
+    //    {
+    //        AtomSingleton NewSingleton = AtomSingleton.Instance;
+    //        Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].MassMonoIsotopic;
+    //    }
 
-        /// <summary>
-        /// This returns the Symbol that cooresponds to the enumerated key
-        /// </summary>
-        public static string GetSymbol(SelectSubatomicParticle selectKey)
-        {
-            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
-            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].Symbol;
-        }
+    //    public static string GetSymbol(SelectSubAtomicParticle selectKey)
+    //    {
+    //        AtomSingleton NewSingleton = AtomSingleton.Instance;
+    //        Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].Symbol;
+    //    }
 
-        /// <summary>
-        /// This returns the name that cooresponds to the enumerated key
-        /// </summary>
-        public static string GetName(SelectSubatomicParticle selectKey)
-        {
-            SubatomicParticleSingleton NewSingleton = SubatomicParticleSingleton.Instance;
-            Dictionary<string, SubatomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].Name;
-        }
-    }
+    //    public static string GetName(SelectSubAtomicParticle selectKey)
+    //    {
+    //        AtomSingleton NewSingleton = AtomSingleton.Instance;
+    //        Dictionary<string, SubAtomicParticle> incommingDictionary = NewSingleton.ConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.ConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].Name;
+    //    }
+    //}
+    #endregion
 
-    public enum SelectSubatomicParticle
+    public enum SelectSubAtomicParticle
     {
         Electron, Neutron, Proton
     }

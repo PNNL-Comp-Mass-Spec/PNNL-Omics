@@ -114,6 +114,7 @@
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\Constants\SubatomicParticle.cs" />
     <Compile Include="Data\Constants\Utilities\CompoundSingleton.cs" />
+    <Compile Include="Data\Constants\Utilities\Constants.cs" />
     <Compile Include="Data\Constants\Utilities\SubatomicParticleSingleton.cs" />
     <Compile Include="Data\Constants\Compound.cs" />
     <Compile Include="Data\Constants\Matter.cs" />

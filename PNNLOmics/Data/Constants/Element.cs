@@ -12,7 +12,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     {
         public double MassAverage { get; set; }
         
-        public double MassMostAbundantIsotope { get; set; }
+        //public double MassMostAbundantIsotope { get; set; }
         public Dictionary<string, Isotope> IsotopeDictionary { get; set; }
     }
 }

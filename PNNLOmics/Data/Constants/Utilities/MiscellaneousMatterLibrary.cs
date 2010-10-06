@@ -24,8 +24,8 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
     public class MiscellaneousMatterLibrary
     {
         /// <summary>
-        /// This is a Class designed to create miscellaneous matter from the elements.
-        /// The miscellaneous matter are added to a Dictionary searchable by char keys such as "Aldehyde" for Aldehyde group
+        /// This is a Class designed to create other molecules from the elements.
+        /// The other molecules are added to a Dictionary searchable by char keys such as "Aldehyde" for Aldehyde group
         /// </summary>
         public static Dictionary<string, Compound> LoadMiscellaneousMatterData()
         {
@@ -64,7 +64,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 
             Compound KMinusH = new Compound();
             KMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
-            KMinusH.nPotassium = 1;
+            KMinusH.NumPotassium = 1;
             KMinusH.Name = "KMinusH";
             KMinusH.Symbol = "KminH ";
             KMinusH.ChemicalFormula = "K-H";
@@ -72,7 +72,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
 
             Compound NaMinusH = new Compound();
             NaMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
-            NaMinusH.nSodium = 1;
+            NaMinusH.NumSodium = 1;
             NaMinusH.Name = "NaMinusH";
             NaMinusH.Symbol = "NaminH";
             NaMinusH.ChemicalFormula = "Na-H";
@@ -112,105 +112,80 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             return otherMoleculeDictionary;
         }
     }
+    #region old static library code
+    ///// <summary>
+    ///// This is a Class designed to convert dictionary calls for Other Molecules in one line static method calls.
+    ///// </summary>
+    //public class MiscellaneousMatterStaticLibrary
+    //{
+    //    public static double GetMonoisotopicMass(string constantKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        NewSingleton.InitializeMiscellaneousMatterLibrary();
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+    //        return incommingDictionary[constantKey].MassMonoIsotopic;
+    //    }
 
-    /// <summary>
-    /// This is a Class designed to convert dictionary calls for Other Molecules in one line static method calls.
-    /// </summary>
-    public class MiscellaneousMatterStaticLibrary
-    {
-        /// <summary>
-        /// This returns the monoisotopic mass that corresponds to the dictionary key
-        /// </summary>
-        public static double GetMonoisotopicMass(string constantKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            NewSingleton.InitializeMiscellaneousMatterLibrary();
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-            return incommingDictionary[constantKey].MassMonoIsotopic;
-        }
+    //    public static string GetFormula(string constantKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+    //        return incommingDictionary[constantKey].ChemicalFormula;
+    //    }
 
-        /// <summary>
-        /// This returns the Symbol that corresponds to the dictionary key
-        /// </summary>
-        public static string GetSymbol(string constantKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-            return incommingDictionary[constantKey].Symbol;
-        }
+    //    public static string GetName(string constantKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+    //        return incommingDictionary[constantKey].Name;
+    //    }
 
-        /// <summary>
-        /// This returns the name that cooresponds to the dictionary key
-        /// </summary>
-        public static string GetName(string constantKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-            return incommingDictionary[constantKey].Name;
-        }
+    //    public static string GetSymbol(string constantKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+    //        return incommingDictionary[constantKey].Symbol;
+    //    }
 
-        /// <summary>
-        /// This returns the chemical formula that cooresponds to the dictionary key
-        /// </summary>
-        public static string GetFormula(string constantKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-            return incommingDictionary[constantKey].ChemicalFormula;
-        }
+    //    //overload to allow for SelectElement
+    //    public static double GetMonoisotopicMass(SelectMiscellaneousMatter selectKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].MassMonoIsotopic;
+    //    }
 
-        /// <summary>
-        /// This returns the monoisotopic mass that cooresponds to the enumerated key
-        /// </summary>
-        public static double GetMonoisotopicMass(SelectMiscellaneousMatter selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].MassMonoIsotopic;
-        }
+    //    public static string GetFormula(SelectMiscellaneousMatter selectKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].ChemicalFormula;
+    //    }
 
-        /// <summary>
-        /// This returns the Symbol that cooresponds to the enumerated key
-        /// </summary>
-        public static string GetSymbol(SelectMiscellaneousMatter selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].Symbol;
-        }
+    //    public static string GetName(SelectMiscellaneousMatter selectKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].Name;
+    //    }
 
-        /// <summary>
-        /// This returns the name that cooresponds to the enumerated key
-        /// </summary>
-        public static string GetName(SelectMiscellaneousMatter selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].Name;
-        }
+    //    public static string GetSymbol(SelectMiscellaneousMatter selectKey)
+    //    {
+    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
+    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
+    //        Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
+    //        string constantKey = enumConverter[(int)selectKey];
+    //        return incommingDictionary[constantKey].Symbol;
+    //    }
+    //}
+    #endregion
 
-        /// <summary>
-        /// This returns the chemical formula that cooresponds to the enumerated key
-        /// </summary>
-        public static string GetFormula(SelectMiscellaneousMatter selectKey)
-        {
-            CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-            Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-            Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
-            string constantKey = enumConverter[(int)selectKey];
-            return incommingDictionary[constantKey].ChemicalFormula;
-        }  
-    }
-
-    /// <summary>
-    /// Enumeration of miscellaneous matter constants
-    /// </summary>
     public enum SelectMiscellaneousMatter
     {
         Aldehyde, Alditol, Ammonia, Ammonium, KMinusH, NaMinusH, Sulfate, Water, AminoGlycan
