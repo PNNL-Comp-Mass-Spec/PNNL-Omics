@@ -13,8 +13,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     public class Compound : Matter
     {
         public string ChemicalFormula { get; set; }
-        public string Code { get; set; }
-
+        
         //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
         public int NumCarbon { get; set; }
         public int NumHydrogen { get; set; }
