@@ -85,7 +85,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PNNLOmicsElementData.xml">
+    <Content Include="PNNLOmicsElementData2.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

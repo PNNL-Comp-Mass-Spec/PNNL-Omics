@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Constants.ConstantsDataUtilities;
+using PNNLOmics.Data.Constants.Utilities;
+using PNNLOmics.Data.Constants.Enumerations;
 
-namespace PNNLOmics.Data.Constants.ConstantsDataLayer
+namespace PNNLOmics.Data.Constants
 {
     /// <summary>
     /// This is an abstract Class designed to cover the most basic parameters of compound objects.
@@ -13,7 +12,7 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
     public class Compound : Matter
     {
         public string ChemicalFormula { get; set; }
-        
+
         //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
         public int NumCarbon { get; set; }
         public int NumHydrogen { get; set; }
@@ -29,21 +28,20 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
         /// </summary>
         public static double GetMonoisotopicMass(Compound GeneralCompound)
         {
-            Dictionary<string, Element> elementDictionary = ElementLibrary.LoadElementData();
 
             double ExactMass =
-                GeneralCompound.NumCarbon * elementDictionary["C"].MassMonoIsotopic +
-                GeneralCompound.NumHydrogen * elementDictionary["H"].MassMonoIsotopic +
-                GeneralCompound.NumNitrogen * elementDictionary["N"].MassMonoIsotopic +
-                GeneralCompound.NumOxygen * elementDictionary["O"].MassMonoIsotopic +
-                GeneralCompound.NumSulfur * elementDictionary["S"].MassMonoIsotopic +
-                GeneralCompound.NumPotassium * elementDictionary["K"].MassMonoIsotopic +
-                GeneralCompound.NumSodium * elementDictionary["Na"].MassMonoIsotopic +
-                GeneralCompound.NumPhosphorus * elementDictionary["P"].MassMonoIsotopic;
+                GeneralCompound.NumCarbon * Constants.Elements[ElementName.Carbon].MassMonoIsotopic +
+                GeneralCompound.NumHydrogen * Constants.Elements[ElementName.Hydrogen].MassMonoIsotopic +
+                GeneralCompound.NumNitrogen * Constants.Elements[ElementName.Nitrogen].MassMonoIsotopic +
+                GeneralCompound.NumOxygen * Constants.Elements[ElementName.Oxygen].MassMonoIsotopic +
+                GeneralCompound.NumSulfur * Constants.Elements[ElementName.Sulfur].MassMonoIsotopic +
+                GeneralCompound.NumPotassium * Constants.Elements[ElementName.Potassium].MassMonoIsotopic +
+                GeneralCompound.NumSodium * Constants.Elements[ElementName.Sodium].MassMonoIsotopic +
+                GeneralCompound.NumPhosphorus * Constants.Elements[ElementName.Phosphrous].MassMonoIsotopic;
 
             return ExactMass;
         }
-        
+
         public void NewElements(int C, int H, int N, int O, int S, int P)
         {
             NumCarbon = C;
@@ -54,6 +52,4 @@ namespace PNNLOmics.Data.Constants.ConstantsDataLayer
             NumPhosphorus = P;
         }
     }
-
-
 }

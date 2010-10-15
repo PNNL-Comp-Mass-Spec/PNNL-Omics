@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants.Enumerations;
 
 /// <example>
 /// dictionary implementation
@@ -27,18 +25,21 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 /// massPeptide = 484.27578094385393
 /// </example>
 
-namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.Utilities
 {
-    public class AminoAcidLibrary
+    public class AminoAcidLibrary : MatterLibrary<Compound, AminoAcidName>
     {
         /// <summary>
         /// This is a Class designed to create amino acids objects from the elements.
         /// The amino acids are added to a Dictionary searchable by char keys such as 'A' for Alanine.
         /// This is the only library with char keys.
-        /// </summary>
-        public static Dictionary<string, Compound> LoadAminoAcidData()
+        /// </summary>		
+        public override Dictionary<string, Compound> LoadLibrary()
         {
-            Dictionary<string, Compound> aminoAcidsDictionary = new Dictionary<string, Compound>();
+            //TODO: CONSTANTS Load data from XML - put this data into XML
+
+            m_symbolToCompoundMap = new Dictionary<string, Compound>();
+            m_enumToSymbolMap = new Dictionary<AminoAcidName, string>();
 
             //each integer stands for the number of atoms in the compound -->X.NewElements(C H N O S P)
             //alanine.NewElements(C H N O S P)
@@ -184,97 +185,50 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             valine.ChemicalFormula = "C5H9NO";
             valine.MassMonoIsotopic = Compound.GetMonoisotopicMass(valine);
 
-            aminoAcidsDictionary.Add(alanine.Symbol, alanine);
-            aminoAcidsDictionary.Add(arginine.Symbol, arginine);
-            aminoAcidsDictionary.Add(asparagine.Symbol, asparagine);
-            aminoAcidsDictionary.Add(asparticAcid.Symbol, asparticAcid);
-            aminoAcidsDictionary.Add(cysteine.Symbol, cysteine);
-            aminoAcidsDictionary.Add(glutamicAcid.Symbol, glutamicAcid);
-            aminoAcidsDictionary.Add(glutamine.Symbol, glutamine);
-            aminoAcidsDictionary.Add(glycine.Symbol, glycine);
-            aminoAcidsDictionary.Add(histidine.Symbol, histidine);
-            aminoAcidsDictionary.Add(isoleucine.Symbol, isoleucine);
-            aminoAcidsDictionary.Add(leucine.Symbol, leucine);
-            aminoAcidsDictionary.Add(lysine.Symbol, lysine);
-            aminoAcidsDictionary.Add(methionine.Symbol, methionine);
-            aminoAcidsDictionary.Add(phenylalanine.Symbol, phenylalanine);
-            aminoAcidsDictionary.Add(proline.Symbol, proline);
-            aminoAcidsDictionary.Add(serine.Symbol, serine);
-            aminoAcidsDictionary.Add(threonine.Symbol, threonine);
-            aminoAcidsDictionary.Add(tryptophan.Symbol, tryptophan);
-            aminoAcidsDictionary.Add(tyrosine.Symbol, tyrosine);
-            aminoAcidsDictionary.Add(valine.Symbol, valine);
+            m_symbolToCompoundMap.Add(alanine.Symbol, alanine);
+            m_symbolToCompoundMap.Add(arginine.Symbol, arginine);
+            m_symbolToCompoundMap.Add(asparagine.Symbol, asparagine);
+            m_symbolToCompoundMap.Add(asparticAcid.Symbol, asparticAcid);
+            m_symbolToCompoundMap.Add(cysteine.Symbol, cysteine);
+            m_symbolToCompoundMap.Add(glutamicAcid.Symbol, glutamicAcid);
+            m_symbolToCompoundMap.Add(glutamine.Symbol, glutamine);
+            m_symbolToCompoundMap.Add(glycine.Symbol, glycine);
+            m_symbolToCompoundMap.Add(histidine.Symbol, histidine);
+            m_symbolToCompoundMap.Add(isoleucine.Symbol, isoleucine);
+            m_symbolToCompoundMap.Add(leucine.Symbol, leucine);
+            m_symbolToCompoundMap.Add(lysine.Symbol, lysine);
+            m_symbolToCompoundMap.Add(methionine.Symbol, methionine);
+            m_symbolToCompoundMap.Add(phenylalanine.Symbol, phenylalanine);
+            m_symbolToCompoundMap.Add(proline.Symbol, proline);
+            m_symbolToCompoundMap.Add(serine.Symbol, serine);
+            m_symbolToCompoundMap.Add(threonine.Symbol, threonine);
+            m_symbolToCompoundMap.Add(tryptophan.Symbol, tryptophan);
+            m_symbolToCompoundMap.Add(tyrosine.Symbol, tyrosine);
+            m_symbolToCompoundMap.Add(valine.Symbol, valine);
 
-            return aminoAcidsDictionary;
+            m_enumToSymbolMap.Add(AminoAcidName.Alanine, alanine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Arginine, arginine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Asparagine, asparagine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.AsparticAcid, asparticAcid.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Cysteine, cysteine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.GlutamicAcid, glutamicAcid.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Glutamine, glutamine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Glycine, glycine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Histidine, histidine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Isoleucine, isoleucine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Leucine, leucine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Lysine, lysine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Methionine, methionine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Phenylalanine, phenylalanine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Proline, proline.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Serine, serine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Threonine, threonine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Tryptophan, tryptophan.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Tyrosine, tyrosine.Symbol);
+            m_enumToSymbolMap.Add(AminoAcidName.Valine, valine.Symbol);
+
+            return m_symbolToCompoundMap;
         }
     }
 
-    #region old static library code
-    ///// <summary>
-    ///// This is a Class designed to convert dictionary calls for amino acids in one line static method calls.
-    ///// </summary>
-    //public class AminoAcidStaticLibrary
-    //{
-    //    public static double GetMonoisotopicMass(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeAminoAcidLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-    //        return incommingDictionary[constantKey].MassMonoIsotopic;
-    //    }
-
-    //    public static string GetFormula(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeAminoAcidLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-    //        return incommingDictionary[constantKey].ChemicalFormula;
-    //    }
-
-    //    public static string GetName(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeAminoAcidLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-    //        return incommingDictionary[constantKey].Name;
-    //    }
-
-    //    //overload to allow for SelectElement
-    //    public static double GetMonoisotopicMass(SelectAminoAcid selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeAminoAcidLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].MassMonoIsotopic;
-    //    }
-
-    //    public static string GetFormula(SelectAminoAcid selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeAminoAcidLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].ChemicalFormula;
-    //    }
-
-    //    public static string GetName(SelectAminoAcid selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeAminoAcidLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.AminoAcidConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.AminoAcidConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].Name;
-    //    }
-    //}
-    #endregion
-
-    public enum SelectAminoAcid
-    {
-        Alanine, Arginine, Asparagine, AsparticAcid, Cysteine, GlutamicAcid, Glutamine, Glycine, Histidine, Isoleucine,
-        Leucine, Lysine, Methionine, Phenylalanine, Proline, Serine, Threonine, Tryptophan, Tyrosine, Valine
-    }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants;
+using PNNLOmics.Data.Constants.Enumerations;
 
 /// <example>
 /// dictionarty implementation
@@ -19,17 +18,18 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 /// double mass5 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
 /// </example>
 
-namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.Utilities
 {
-    public class MiscellaneousMatterLibrary
+    public class MiscellaneousMatterLibrary : MatterLibrary<Compound, MiscellaneousMatterName>
     {
         /// <summary>
         /// This is a Class designed to create other molecules from the elements.
         /// The other molecules are added to a Dictionary searchable by char keys such as "Aldehyde" for Aldehyde group
         /// </summary>
-        public static Dictionary<string, Compound> LoadMiscellaneousMatterData()
+        public override Dictionary<string, Compound> LoadLibrary()
         {
-            Dictionary<string, Compound> otherMoleculeDictionary = new Dictionary<string, Compound>();
+            m_symbolToCompoundMap = new Dictionary<string, Compound>();
+            m_enumToSymbolMap = new Dictionary<MiscellaneousMatterName, string>();
 
             //each integer stands for the number of atoms in the compound -->X.NewElements(C H N O S P)
             //aldehyde.NewElements(C H N O S P)
@@ -99,95 +99,27 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             aminoGlycan.ChemicalFormula = "NH3";
             aminoGlycan.MassMonoIsotopic = Compound.GetMonoisotopicMass(aminoGlycan);
 
-            otherMoleculeDictionary.Add(aldehyde.Name, aldehyde);
-            otherMoleculeDictionary.Add(alditol.Name, alditol);
-            otherMoleculeDictionary.Add(ammonia.Name, ammonia);
-            otherMoleculeDictionary.Add(ammonium.Name, ammonium);
-            otherMoleculeDictionary.Add(KMinusH.Name, KMinusH);
-            otherMoleculeDictionary.Add(NaMinusH.Name, NaMinusH);
-            otherMoleculeDictionary.Add(sulfate.Name, sulfate);
-            otherMoleculeDictionary.Add(water.Name, water);
-            otherMoleculeDictionary.Add(aminoGlycan.Name, aminoGlycan);
+            m_symbolToCompoundMap.Add(aldehyde.Symbol, aldehyde);
+            m_symbolToCompoundMap.Add(alditol.Symbol, alditol);
+            m_symbolToCompoundMap.Add(ammonia.Symbol, ammonia);
+            m_symbolToCompoundMap.Add(ammonium.Symbol, ammonium);
+            m_symbolToCompoundMap.Add(KMinusH.Symbol, KMinusH);
+            m_symbolToCompoundMap.Add(NaMinusH.Symbol, NaMinusH);
+            m_symbolToCompoundMap.Add(sulfate.Symbol, sulfate);
+            m_symbolToCompoundMap.Add(water.Symbol, water);
+            m_symbolToCompoundMap.Add(aminoGlycan.Symbol, aminoGlycan);
 
-            return otherMoleculeDictionary;
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.Aldehyde, aldehyde.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.Alditol, alditol.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.Ammonia, ammonia.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.Ammonium, ammonium.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.KMinusH, KMinusH.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.NaMinusH, NaMinusH.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.Sulfate, sulfate.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.Water, water.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.AminoGlycan, aminoGlycan.Symbol);
+
+            return m_symbolToCompoundMap;
         }
-    }
-    #region old static library code
-    ///// <summary>
-    ///// This is a Class designed to convert dictionary calls for Other Molecules in one line static method calls.
-    ///// </summary>
-    //public class MiscellaneousMatterStaticLibrary
-    //{
-    //    public static double GetMonoisotopicMass(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeMiscellaneousMatterLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-    //        return incommingDictionary[constantKey].MassMonoIsotopic;
-    //    }
-
-    //    public static string GetFormula(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-    //        return incommingDictionary[constantKey].ChemicalFormula;
-    //    }
-
-    //    public static string GetName(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-    //        return incommingDictionary[constantKey].Name;
-    //    }
-
-    //    public static string GetSymbol(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-    //        return incommingDictionary[constantKey].Symbol;
-    //    }
-
-    //    //overload to allow for SelectElement
-    //    public static double GetMonoisotopicMass(SelectMiscellaneousMatter selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].MassMonoIsotopic;
-    //    }
-
-    //    public static string GetFormula(SelectMiscellaneousMatter selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].ChemicalFormula;
-    //    }
-
-    //    public static string GetName(SelectMiscellaneousMatter selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].Name;
-    //    }
-
-    //    public static string GetSymbol(SelectMiscellaneousMatter selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.MiscellaneousMatterConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.MiscellaneousMatterConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].Symbol;
-    //    }
-    //}
-    #endregion
-
-    public enum SelectMiscellaneousMatter
-    {
-        Aldehyde, Alditol, Ammonia, Ammonium, KMinusH, NaMinusH, Sulfate, Water, AminoGlycan
     }
 }

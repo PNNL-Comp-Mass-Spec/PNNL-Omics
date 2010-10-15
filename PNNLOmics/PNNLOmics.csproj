@@ -112,17 +112,23 @@
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\ConformationDetection\Data\Conformation.cs" />
     <Compile Include="Data\CollisionType.cs" />
+    <Compile Include="Data\Constants\Constants.cs" />
+    <Compile Include="Data\Constants\Enumerations\AminoAcidName.cs" />
+    <Compile Include="Data\Constants\Enumerations\CrossRingName.cs" />
+    <Compile Include="Data\Constants\Enumerations\ElementName.cs" />
+    <Compile Include="Data\Constants\Enumerations\MiscellaneousMatterName.cs" />
+    <Compile Include="Data\Constants\Enumerations\MonosaccharideName.cs" />
+    <Compile Include="Data\Constants\Enumerations\SubAtomicParticleName.cs" />
     <Compile Include="Data\Constants\SubatomicParticle.cs" />
-    <Compile Include="Data\Constants\Utilities\Constants.cs" />
     <Compile Include="Data\Constants\Compound.cs" />
     <Compile Include="Data\Constants\Matter.cs" />
     <Compile Include="Data\Constants\Element.cs" />
     <Compile Include="Data\Constants\Isotope.cs" />
     <Compile Include="Data\Constants\Utilities\AminoAcidLibrary.cs" />
+    <Compile Include="Data\Constants\Utilities\MatterLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\SubatomicParticleLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\CrossRingLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\ElementLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\ElementLoadXML.cs" />
     <Compile Include="Data\Constants\Utilities\MonosaccharideLibrary.cs" />
     <Compile Include="Data\Constants\Utilities\MiscellaneousMatterLibrary.cs">
       <SubType>Code</SubType>
@@ -212,7 +218,7 @@
     <None Include="ClassDiagrams\UtilityLayer.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PNNLOmicsElementData.xml">
+    <Content Include="PNNLOmicsElementData2.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

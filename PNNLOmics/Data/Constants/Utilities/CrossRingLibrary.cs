@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Constants.ConstantsDataLayer;
+using PNNLOmics.Data.Constants;
+using PNNLOmics.Data.Constants.Enumerations;
 
 /// <example>
 /// dictionarty implementation
@@ -19,18 +18,19 @@ using PNNLOmics.Data.Constants.ConstantsDataLayer;
 /// double mass2 = CrossRingStaticLibrary.GetMonoisotopicMass(SelectCrossRing.CRFHex_02_A2);
 /// </example>
 
-namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
+namespace PNNLOmics.Data.Constants.Utilities
 {
-    public class CrossRingLibrary
+    public class CrossRingLibrary : MatterLibrary<Compound, CrossRingName>
     {
         /// <summary>
         /// This is a Class designed to create cross ring fragments objects of monosaccharides from the elements.
         /// The cross ring fragments are added to a Dictionary searchable with string keys such as "CRFNeu5Ac_02_X1" for the 
         /// X1 cross ring fragment which breaks across the 0 and 2 ring bonds of a Neuraminic acid monosachcaride
         /// </summary>
-        public static Dictionary<string, Compound> LoadCrossRingData()
+        public override Dictionary<string, Compound> LoadLibrary()
         {
-            Dictionary<string, Compound> crossRingDictionary = new Dictionary<string, Compound>();
+            m_symbolToCompoundMap = new Dictionary<string, Compound>();
+            m_enumToSymbolMap = new Dictionary<CrossRingName, string>();
 
             //Deoxyhexose.NewElements(C H N O S P)
 
@@ -155,96 +155,45 @@ namespace PNNLOmics.Data.Constants.ConstantsDataUtilities
             crfNeu5Ac_25_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfNeu5Ac_25_X1);
             #endregion
 
-            crossRingDictionary.Add(crfHex_02_A2.Name, crfHex_02_A2);
-            crossRingDictionary.Add(crfHex_02_X1.Name, crfHex_02_X1);
-            crossRingDictionary.Add(crfHex_03_A2.Name, crfHex_03_A2);
-            crossRingDictionary.Add(crfHex_03_X1.Name, crfHex_03_X1);
-            crossRingDictionary.Add(crfHex_24_A2.Name, crfHex_24_A2);
-            crossRingDictionary.Add(crfHex_24_X1.Name, crfHex_24_X1);
+            m_symbolToCompoundMap.Add(crfHex_02_A2.Symbol, crfHex_02_A2);
+            m_symbolToCompoundMap.Add(crfHex_02_X1.Symbol, crfHex_02_X1);
+            m_symbolToCompoundMap.Add(crfHex_03_A2.Symbol, crfHex_03_A2);
+            m_symbolToCompoundMap.Add(crfHex_03_X1.Symbol, crfHex_03_X1);
+            m_symbolToCompoundMap.Add(crfHex_24_A2.Symbol, crfHex_24_A2);
+            m_symbolToCompoundMap.Add(crfHex_24_X1.Symbol, crfHex_24_X1);
 
-            crossRingDictionary.Add(crfHexNAc_02_A2.Name, crfHexNAc_02_A2);
-            crossRingDictionary.Add(crfHexNAc_02_X1.Name, crfHexNAc_02_X1);
-            crossRingDictionary.Add(crfHexNAc_03_A2.Name, crfHexNAc_03_A2);
-            crossRingDictionary.Add(crfHexNAc_03_X1.Name, crfHexNAc_03_X1);
-            crossRingDictionary.Add(crfHexNAc_24_A2.Name, crfHexNAc_24_A2);
-            crossRingDictionary.Add(crfHexNAc_24_X1.Name, crfHexNAc_24_X1);
+            m_symbolToCompoundMap.Add(crfHexNAc_02_A2.Symbol, crfHexNAc_02_A2);
+            m_symbolToCompoundMap.Add(crfHexNAc_02_X1.Symbol, crfHexNAc_02_X1);
+            m_symbolToCompoundMap.Add(crfHexNAc_03_A2.Symbol, crfHexNAc_03_A2);
+            m_symbolToCompoundMap.Add(crfHexNAc_03_X1.Symbol, crfHexNAc_03_X1);
+            m_symbolToCompoundMap.Add(crfHexNAc_24_A2.Symbol, crfHexNAc_24_A2);
+            m_symbolToCompoundMap.Add(crfHexNAc_24_X1.Symbol, crfHexNAc_24_X1);
 
-            crossRingDictionary.Add(crfNeu5Ac_02_X1.Name, crfNeu5Ac_02_X1);
-            crossRingDictionary.Add(crfNeu5Ac_03_X1.Name, crfNeu5Ac_03_X1);
-            crossRingDictionary.Add(crfNeu5Ac_24_X1.Name, crfNeu5Ac_24_X1);
-            crossRingDictionary.Add(crfNeu5Ac_25_X1.Name, crfNeu5Ac_25_X1);
+            m_symbolToCompoundMap.Add(crfNeu5Ac_02_X1.Symbol, crfNeu5Ac_02_X1);
+            m_symbolToCompoundMap.Add(crfNeu5Ac_03_X1.Symbol, crfNeu5Ac_03_X1);
+            m_symbolToCompoundMap.Add(crfNeu5Ac_24_X1.Symbol, crfNeu5Ac_24_X1);
+            m_symbolToCompoundMap.Add(crfNeu5Ac_25_X1.Symbol, crfNeu5Ac_25_X1);
 
-            return crossRingDictionary;
+            m_enumToSymbolMap.Add(CrossRingName.CRFHex_02_A2, crfHex_02_A2.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHex_02_X1, crfHex_02_X1.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHex_03_A2, crfHex_03_A2.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHex_03_X1, crfHex_03_X1.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHex_24_A2, crfHex_24_A2.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHex_24_X1, crfHex_24_X1.Symbol);
+
+            m_enumToSymbolMap.Add(CrossRingName.CRFHexNAc_02_A2, crfHexNAc_02_A2.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHexNAc_02_X1, crfHexNAc_02_X1.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHexNAc_03_A2, crfHexNAc_03_A2.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHexNAc_03_X1, crfHexNAc_03_X1.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHexNAc_24_A2, crfHexNAc_24_A2.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFHexNAc_24_X1, crfHexNAc_24_X1.Symbol);
+
+            m_enumToSymbolMap.Add(CrossRingName.CRFNeu5Ac_02_X1, crfNeu5Ac_02_X1.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFNeu5Ac_03_X1, crfNeu5Ac_03_X1.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFNeu5Ac_24_X1, crfNeu5Ac_24_X1.Symbol);
+            m_enumToSymbolMap.Add(CrossRingName.CRFNeu5Ac_25_X1, crfNeu5Ac_25_X1.Symbol);
+
+            return m_symbolToCompoundMap;
         }
-    }
-
-    #region old static library code
-    ///// <summary>
-    ///// This is a Class designed to convert dictionary calls for Cross Ring Fragments in one line static method calls.
-    ///// </summary>
-    //public class CrossRingStaticLibrary
-    //{
-    //    public static double GetMonoisotopicMass(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeCrossRingLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
-    //        return incommingDictionary[constantKey].MassMonoIsotopic;
-    //    }
-
-    //    public static string GetFormula(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeCrossRingLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
-    //        return incommingDictionary[constantKey].ChemicalFormula;
-    //    }
-
-    //    public static string GetName(string constantKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeCrossRingLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
-    //        return incommingDictionary[constantKey].Name;
-    //    }
-
-    //    //overload to allow for SelectElement
-    //    public static double GetMonoisotopicMass(SelectCrossRing selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeCrossRingLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.CrossRingConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].MassMonoIsotopic;
-    //    }
-
-    //    public static string GetFormula(SelectCrossRing selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeCrossRingLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.CrossRingConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].ChemicalFormula;
-    //    }
-
-    //    public static string GetName(SelectCrossRing selectKey)
-    //    {
-    //        CompoundSingleton NewSingleton = CompoundSingleton.Instance;
-    //        NewSingleton.InitializeCrossRingLibrary();
-    //        Dictionary<string, Compound> incommingDictionary = NewSingleton.CrossRingConstantsDictionary;
-    //        Dictionary<int, string> enumConverter = NewSingleton.CrossRingConstantsEnumDictionary;
-    //        string constantKey = enumConverter[(int)selectKey];
-    //        return incommingDictionary[constantKey].Name;
-    //    }
-    //}
-    #endregion
-
-    public enum SelectCrossRing
-    {
-        CRFHex_02_A2, CRFHex_02_X1, CRFHex_03_A2, CRFHex_03_X1, CRFHex_24_A2, CRFHex_24_X1,
-        CRFHexNAc_02_A2, CRFHexNAc_02_X1, CRFHexNAc_03_A2, CRFHexNAc_03_X1, CRFHexNAc_24_A2, CRFHexNAc_24_X1,
-        CRFNeu5Ac_02_X1, CRFNeu5Ac_03_X1, CRFNeu5Ac_24_X1, CRFNeu5Ac_25_X1
     }
 }
