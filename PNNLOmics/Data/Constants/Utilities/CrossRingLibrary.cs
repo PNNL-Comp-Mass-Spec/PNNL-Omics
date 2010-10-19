@@ -20,6 +20,7 @@ using PNNLOmics.Data.Constants.Enumerations;
 
 namespace PNNLOmics.Data.Constants.Utilities
 {
+    //TODO: SCOTT - CR - add XML comments
     public class CrossRingLibrary : MatterLibrary<Compound, CrossRingName>
     {
         /// <summary>
@@ -125,6 +126,7 @@ namespace PNNLOmics.Data.Constants.Utilities
             crfHexNAc_24_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHexNAc_24_X1);
             #endregion
 
+            //TODO: SCOTT - CR - change fragments 
             #region Sialic Acid Cross Ring Framgnets
             Compound crfNeu5Ac_02_X1 = new Compound();//70.0054793084 Aldehyde
             crfNeu5Ac_02_X1.NewElements(3, 2, 0, 2, 0, 0);//Neu5Ac-C8H15NO6//-->X.NewElements(C H N O S P) number of atoms

@@ -98,7 +98,7 @@
     </TypeIdentifier>
   </Class>
   <Enum Name="PNNLOmics.Data.Constants.Enumerations.CrossRingName" Collapsed="true">
-    <Position X="3.25" Y="11" Width="1.5" />
+    <Position X="7.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABJBAAQCAAAAAAAAAAAAAAAACABAkAAAAA=</HashCode>
       <FileName>Data\Constants\Enumerations\CrossRingName.cs</FileName>

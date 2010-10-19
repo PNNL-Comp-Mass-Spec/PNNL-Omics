@@ -8,8 +8,7 @@ namespace PNNLOmics.Data.Constants.Enumerations
 	/// </summary>
 	public enum AminoAcidName
 	{
-		Alanine,
-		Foobar,
+		Alanine,		
 		Arginine, 
 		Asparagine, 
 		AsparticAcid, 

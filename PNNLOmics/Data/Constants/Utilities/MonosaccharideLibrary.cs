@@ -20,14 +20,18 @@ using PNNLOmics.Data.Constants.Enumerations;
 
 namespace PNNLOmics.Data.Constants.Utilities
 {
+    //TODO: SCOTT - CR - add XML comments
     public class MonosaccharideLibrary : MatterLibrary<Compound, MonosaccharideName>
-    {
+    {        
+        //TODO: SCOTT - CR - update XML comments, this is not accurate anymore.
         /// <summary>
         /// This is a Class designed to create Compound objects from the elements.
         /// The monosacchadies are added to a Dictionary searchable by string keys such as "DxyHex" for Deoxyhexose
         /// </summary>
         public override Dictionary<string, Compound> LoadLibrary()
         {
+            //TODO: SCOTT - CR - remove and commented code that is old 
+
             m_symbolToCompoundMap = new Dictionary<string, Compound>();
             m_enumToSymbolMap = new Dictionary<MonosaccharideName, string>();
 

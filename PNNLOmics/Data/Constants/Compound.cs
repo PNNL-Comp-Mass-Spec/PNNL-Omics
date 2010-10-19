@@ -11,8 +11,10 @@ namespace PNNLOmics.Data.Constants
     /// </summary>
     public class Compound : Matter
     {
+        //TODO: SCOTT - CR - add XML comments
         public string ChemicalFormula { get; set; }
 
+        //TODO: SCOTT - CR - add XML comments
         //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
         public int NumCarbon { get; set; }
         public int NumHydrogen { get; set; }
@@ -29,7 +31,7 @@ namespace PNNLOmics.Data.Constants
         public static double GetMonoisotopicMass(Compound GeneralCompound)
         {
 
-            double ExactMass =
+            double exactMass =
                 GeneralCompound.NumCarbon * Constants.Elements[ElementName.Carbon].MassMonoIsotopic +
                 GeneralCompound.NumHydrogen * Constants.Elements[ElementName.Hydrogen].MassMonoIsotopic +
                 GeneralCompound.NumNitrogen * Constants.Elements[ElementName.Nitrogen].MassMonoIsotopic +
@@ -39,9 +41,11 @@ namespace PNNLOmics.Data.Constants
                 GeneralCompound.NumSodium * Constants.Elements[ElementName.Sodium].MassMonoIsotopic +
                 GeneralCompound.NumPhosphorus * Constants.Elements[ElementName.Phosphrous].MassMonoIsotopic;
 
-            return ExactMass;
+            return exactMass;
         }
 
+        //TODO: SCOTT - CR - add XML comments
+        //TODO: SCOTT - CR - make names lower-case, and elaborate what the names are (C, H, N..etc)
         public void NewElements(int C, int H, int N, int O, int S, int P)
         {
             NumCarbon = C;

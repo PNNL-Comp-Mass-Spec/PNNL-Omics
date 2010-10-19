@@ -5,7 +5,8 @@ namespace PNNLOmics.Data.Constants.Enumerations
     /// <summary>
     /// Elements, updated spellings 10-8-10
     /// </summary>
-    public enum ElementName//the spelling of sulphur is "sulfur" in the USA and now that IUPAC has decided it has jurisdiction over the British English language (as distinct from American English) as well as nomenclature, so we in the UK are expected to use the f word.
+    public enum ElementName
+    //the spelling of sulphur is "sulfur" in the USA and now that IUPAC has decided it has jurisdiction over the British English language (as distinct from American English) as well as nomenclature, so we in the UK are expected to use the f word.
 	{
 		Hydrogen, 
         Helium, 

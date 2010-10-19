@@ -27,6 +27,7 @@ using PNNLOmics.Data.Constants.Enumerations;
 
 namespace PNNLOmics.Data.Constants.Utilities
 {
+    //TODO: SCOTT - CR - add XML comments
     public class AminoAcidLibrary : MatterLibrary<Compound, AminoAcidName>
     {
         /// <summary>

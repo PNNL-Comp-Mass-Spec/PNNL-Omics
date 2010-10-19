@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using PNNLOmics.Data.Constants.Enumerations;
 
 namespace PNNLOmics.Data.Constants
 {
     /// <summary>
-    /// This is an empty Class designed to inherit from matter and behave like other inherited objects from matter such as elements.
+    /// Encapsulates...
     /// </summary>
+    //TODO: SCOTT - CR - Fill in XML comment.
     public class SubAtomicParticle : Matter
     {
-        //empty class deriving from Matter
+        /// <summary>
+        /// Gets or sets the type of sub-atomic particle.
+        /// </summary>
+        public SubAtomicParticleName ParticleType
+        {
+            get;
+            set;
+        }
     }
 }

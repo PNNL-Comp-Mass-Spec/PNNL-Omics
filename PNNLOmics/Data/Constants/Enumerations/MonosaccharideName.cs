@@ -10,6 +10,7 @@ namespace PNNLOmics.Data.Constants.Enumerations
         Deoxyhexose,
         Hexose,
         HexuronicAcid,
+        //TODO: SCOTT - CR - add something here - xml comment or make the name ...long...
         KDN,
         NAcetylhexosamine,
         NeuraminicAcid,

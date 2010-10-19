@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace PNNLOmics.Data.Constants
 {
+    //TODO: SCOTT - CR - add XML comments
     public class Isotope
     {
         /// <summary>
@@ -14,6 +15,8 @@ namespace PNNLOmics.Data.Constants
             this.Mass = mass;
             this.NaturalAbundance = naturalAbundance;
         }
+
+        //TODO: SCOTT - CR - add XML comments
 
         public double Mass { get; set; }
         public int IsotopeNumber { get; set; }

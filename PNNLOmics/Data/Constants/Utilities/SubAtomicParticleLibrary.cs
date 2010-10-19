@@ -27,11 +27,13 @@ namespace PNNLOmics.Data.Constants.Utilities
     /// </summary>
     public class SubAtomicParticleLibrary : MatterLibrary<SubAtomicParticle, SubAtomicParticleName>
     {
+        //TODO: SCOTT - CR - Add XML comments.
         public override Dictionary<string, SubAtomicParticle> LoadLibrary()
         {
             m_symbolToCompoundMap = new Dictionary<string, SubAtomicParticle>();
             m_enumToSymbolMap = new Dictionary<SubAtomicParticleName, string>();
 
+            //TODO: SCOTT - CR - Add particle types to each electron, proton and neutron.
             SubAtomicParticle electron = new SubAtomicParticle();
             electron.Name = "Electron";
             electron.MassMonoIsotopic = 0.00054857990943;//units of u a.k.a.Da.  NIST CODATA 2006 
@@ -41,6 +43,7 @@ namespace PNNLOmics.Data.Constants.Utilities
             neutron.Name = "Neutron";
             neutron.MassMonoIsotopic = 1.00866491597;//units of u a.k.a.Da.  NIST CODATA 2006
             neutron.Symbol = "n";
+            neutron.ParticleType = SubAtomicParticleName.Neutron;
 
             SubAtomicParticle proton = new SubAtomicParticle();
             proton.Name = "Proton";

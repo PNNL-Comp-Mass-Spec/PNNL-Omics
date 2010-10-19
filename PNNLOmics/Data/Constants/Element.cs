@@ -8,8 +8,10 @@ namespace PNNLOmics.Data.Constants
     /// </summary>
     public class Element : Matter
     {
+        //TODO: SCOTT - CR - add XML comments
         public double MassAverage { get; set; }
 
+        //TODO: SCOTT - CR - remove this if not needed 
         //public double MassMostAbundantIsotope { get; set; }
         public Dictionary<string, Isotope> IsotopeDictionary { get; set; }
     }

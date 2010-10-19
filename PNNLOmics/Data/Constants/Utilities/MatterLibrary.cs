@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using PNNLOmics.Data.Constants;
+using PNNLOmics.Data.Constants.Enumerations;
 
 namespace PNNLOmics.Data.Constants.Utilities
 {
@@ -8,11 +10,10 @@ namespace PNNLOmics.Data.Constants.Utilities
 	/// This abstract class is used for accessing the mapping dictionaries that connect the enums and the data
 	/// </summary>
 	/// <typeparam name="T">Matter Type Type</typeparam>
-	/// <typeparam name="U">Enumeration Type</typeparam>
+	/// <typeparam name="U">Enumeration Type</typeparam>    
 	public abstract class MatterLibrary<T, U>
-	where T : Matter
-	where U : struct
-	
+	                                where T : Matter
+                                    where U : struct, IConvertible
     {
 		/// <summary>
 		/// Maps the symbols to Matter objects.  
@@ -45,7 +46,7 @@ namespace PNNLOmics.Data.Constants.Utilities
 		public T this[U key]
 		{
 			get
-			{
+			{                
 				return m_symbolToCompoundMap[m_enumToSymbolMap[key]];
 			}
 		}
@@ -54,6 +55,7 @@ namespace PNNLOmics.Data.Constants.Utilities
 		/// This abstract generic Dictionary Loads the data from a given Matter type T 
 		/// </summary>
 		/// <returns>Matter library</returns>
-        public abstract Dictionary<string, T> LoadLibrary();
+        //TODO: SCOTT - CR - make all libraries void return types.
+        public abstract void LoadLibrary();
 	}
 }

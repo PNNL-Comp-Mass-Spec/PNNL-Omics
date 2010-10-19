@@ -2,8 +2,9 @@
 
 namespace PNNLOmics.Data.Constants.Enumerations
 {
+    //TODO: SCOTT - CR - update XML comment for enumeration.
     /// <summary>
-    /// Monosaccharide Cross Ring Cleavages
+    /// Monosaccharide Cross Ring Cleavages (CRF = cross ring F?)
     /// </summary>
     public enum CrossRingName
     {

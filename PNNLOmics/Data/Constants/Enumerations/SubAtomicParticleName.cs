@@ -6,7 +6,7 @@ namespace PNNLOmics.Data.Constants.Enumerations
     /// Sub atomic particles
     /// </summary>
     public enum SubAtomicParticleName
-    {
+    {        
         Electron,
         Neutron,
         Proton

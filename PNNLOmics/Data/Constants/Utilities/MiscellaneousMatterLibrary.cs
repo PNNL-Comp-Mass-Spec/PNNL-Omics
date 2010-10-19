@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PNNLOmics.Data.Constants;
 using PNNLOmics.Data.Constants.Enumerations;
 
+//TODO: SCOTT - CR - Update all dictionary example xml comments.
 /// <example>
 /// dictionarty implementation
 /// Dictionary<string, Compound> OtherMoleculeDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
@@ -20,6 +21,7 @@ using PNNLOmics.Data.Constants.Enumerations;
 
 namespace PNNLOmics.Data.Constants.Utilities
 {
+    //TODO: SCOTT - CR - add XML comments
     public class MiscellaneousMatterLibrary : MatterLibrary<Compound, MiscellaneousMatterName>
     {
         /// <summary>
