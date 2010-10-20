@@ -19,7 +19,7 @@ using PNNLOmics.Data.Constants.Enumerations;
 /// double mass5 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
 /// </example>
 
-namespace PNNLOmics.Data.Constants.Utilities
+namespace PNNLOmics.Data.Constants.Libraries
 {
     //TODO: SCOTT - CR - add XML comments
     public class MiscellaneousMatterLibrary : MatterLibrary<Compound, MiscellaneousMatterName>
@@ -28,7 +28,7 @@ namespace PNNLOmics.Data.Constants.Utilities
         /// This is a Class designed to create other molecules from the elements.
         /// The other molecules are added to a Dictionary searchable by char keys such as "Aldehyde" for Aldehyde group
         /// </summary>
-        public override Dictionary<string, Compound> LoadLibrary()
+        public override void LoadLibrary()
         {
             m_symbolToCompoundMap = new Dictionary<string, Compound>();
             m_enumToSymbolMap = new Dictionary<MiscellaneousMatterName, string>();
@@ -120,8 +120,6 @@ namespace PNNLOmics.Data.Constants.Utilities
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Sulfate, sulfate.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Water, water.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.AminoGlycan, aminoGlycan.Symbol);
-
-            return m_symbolToCompoundMap;
         }
     }
 }

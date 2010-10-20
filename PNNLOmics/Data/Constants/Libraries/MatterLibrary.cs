@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using PNNLOmics.Data.Constants;
 using PNNLOmics.Data.Constants.Enumerations;
 
-namespace PNNLOmics.Data.Constants.Utilities
+namespace PNNLOmics.Data.Constants.Libraries
 {
 	/// <summary>
 	/// This abstract class is used for accessing the mapping dictionaries that connect the enums and the data
@@ -55,7 +55,6 @@ namespace PNNLOmics.Data.Constants.Utilities
 		/// This abstract generic Dictionary Loads the data from a given Matter type T 
 		/// </summary>
 		/// <returns>Matter library</returns>
-        //TODO: SCOTT - CR - make all libraries void return types.
         public abstract void LoadLibrary();
 	}
 }

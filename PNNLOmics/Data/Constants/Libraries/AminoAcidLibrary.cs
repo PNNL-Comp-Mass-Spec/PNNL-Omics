@@ -25,17 +25,18 @@ using PNNLOmics.Data.Constants.Enumerations;
 /// massPeptide = 484.27578094385393
 /// </example>
 
-namespace PNNLOmics.Data.Constants.Utilities
+namespace PNNLOmics.Data.Constants.Libraries
 {
     //TODO: SCOTT - CR - add XML comments
     public class AminoAcidLibrary : MatterLibrary<Compound, AminoAcidName>
     {
+       //TODO:  SCOTT this is not a class
         /// <summary>
         /// This is a Class designed to create amino acids objects from the elements.
         /// The amino acids are added to a Dictionary searchable by char keys such as 'A' for Alanine.
         /// This is the only library with char keys.
         /// </summary>		
-        public override Dictionary<string, Compound> LoadLibrary()
+        public override void LoadLibrary()
         {
             //TODO: CONSTANTS Load data from XML - put this data into XML
 
@@ -227,8 +228,6 @@ namespace PNNLOmics.Data.Constants.Utilities
             m_enumToSymbolMap.Add(AminoAcidName.Tryptophan, tryptophan.Symbol);
             m_enumToSymbolMap.Add(AminoAcidName.Tyrosine, tyrosine.Symbol);
             m_enumToSymbolMap.Add(AminoAcidName.Valine, valine.Symbol);
-
-            return m_symbolToCompoundMap;
         }
     }
 

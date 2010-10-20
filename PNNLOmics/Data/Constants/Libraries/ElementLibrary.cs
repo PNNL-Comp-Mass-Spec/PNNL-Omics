@@ -23,7 +23,7 @@ using PNNLOmics.Data.Constants.Enumerations;
 ///
 /// double elementMass3 = ElementStaticLibrary.GetMonoisotopicMass(SelectElement.Hydrogen);
 /// </example>
-namespace PNNLOmics.Data.Constants.Utilities
+namespace PNNLOmics.Data.Constants.Libraries
 {
     //enum is at bottom of class
     public class ElementLibrary : MatterLibrary<Element, ElementName>
@@ -115,8 +115,7 @@ namespace PNNLOmics.Data.Constants.Utilities
         /// This is a Class designed to convert raw values into element objects (including masses and isotope abundances)
         /// and create an element dictionary searchable by key string such as "C" for carbon.
         /// </summary>
-        public override Dictionary<string, Element> LoadLibrary()
-        //public override void LoadLibrary()
+        public override void LoadLibrary()
         {
             m_symbolToCompoundMap = new Dictionary<string, Element>();
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
@@ -137,11 +136,9 @@ namespace PNNLOmics.Data.Constants.Utilities
             int counter = 0;
             foreach (ElementName enumElement in Enum.GetValues(typeof(ElementName)))
             {
-
                 m_enumToSymbolMap.Add(enumElement, elementList[counter].Symbol);
                 counter++;
             }
-            return m_symbolToCompoundMap;
         }
         #endregion
     }

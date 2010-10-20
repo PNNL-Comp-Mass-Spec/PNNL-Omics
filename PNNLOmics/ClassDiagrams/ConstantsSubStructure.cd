@@ -3,9 +3,6 @@
   <Comment CommentText="Data Layer">
     <Position X="0.531" Y="0.521" Height="0.312" Width="9.169" />
   </Comment>
-  <Comment CommentText="Utility Layer">
-    <Position X="0.5" Y="6.342" Height="0.312" Width="9.054" />
-  </Comment>
   <Class Name="PNNLOmics.Data.Constants.Isotope" Collapsed="true">
     <Position X="3" Y="1" Width="1.5" />
     <TypeIdentifier>
@@ -37,7 +34,7 @@
   <Class Name="PNNLOmics.Data.Constants.SubAtomicParticle">
     <Position X="7.25" Y="2.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Constants\SubatomicParticle.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -48,53 +45,53 @@
       <FileName>Data\Constants\Constants.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.Utilities.AminoAcidLibrary">
-    <Position X="0.5" Y="9.5" Width="1.5" />
+  <Class Name="PNNLOmics.Data.Constants.Libraries.AminoAcidLibrary">
+    <Position X="5.25" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\AminoAcidLibrary.cs</FileName>
+      <FileName>Data\Constants\Libraries\AminoAcidLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.Utilities.CrossRingLibrary">
-    <Position X="3.25" Y="9.5" Width="1.5" />
+  <Class Name="PNNLOmics.Data.Constants.Libraries.CrossRingLibrary">
+    <Position X="1.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\CrossRingLibrary.cs</FileName>
+      <FileName>Data\Constants\Libraries\CrossRingLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.Utilities.ElementLibrary">
-    <Position X="6.5" Y="9.5" Width="1.5" />
+  <Class Name="PNNLOmics.Data.Constants.Libraries.ElementLibrary">
+    <Position X="3.25" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\ElementLibrary.cs</FileName>
+      <FileName>Data\Constants\Libraries\ElementLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.Utilities.MatterLibrary&lt;T, U&gt;">
-    <Position X="4.5" Y="6.75" Width="2.25" />
+  <Class Name="PNNLOmics.Data.Constants.Libraries.MatterLibrary&lt;T, U&gt;" Collapsed="true">
+    <Position X="4.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAQAAAAAI=</HashCode>
-      <FileName>Data\Constants\Utilities\MatterLibrary.cs</FileName>
+      <FileName>Data\Constants\Libraries\MatterLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.Utilities.MiscellaneousMatterLibrary">
-    <Position X="4.5" Y="11.75" Width="2.25" />
+  <Class Name="PNNLOmics.Data.Constants.Libraries.MiscellaneousMatterLibrary">
+    <Position X="7" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\MiscellaneousMatterLibrary.cs</FileName>
+      <FileName>Data\Constants\Libraries\MiscellaneousMatterLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.Utilities.MonosaccharideLibrary">
-    <Position X="7.75" Y="11.75" Width="2" />
+  <Class Name="PNNLOmics.Data.Constants.Libraries.MonosaccharideLibrary">
+    <Position X="10.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\MonosaccharideLibrary.cs</FileName>
+      <FileName>Data\Constants\Libraries\MonosaccharideLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PNNLOmics.Data.Constants.Utilities.SubAtomicParticleLibrary">
-    <Position X="1.5" Y="11.75" Width="2" />
+  <Class Name="PNNLOmics.Data.Constants.Libraries.SubAtomicParticleLibrary">
+    <Position X="8.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>Data\Constants\Utilities\SubatomicParticleLibrary.cs</FileName>
+      <FileName>Data\Constants\Libraries\SubAtomicParticleLibrary.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="PNNLOmics.Data.Constants.Enumerations.CrossRingName" Collapsed="true">
@@ -105,35 +102,35 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="PNNLOmics.Data.Constants.Enumerations.AminoAcidName" Collapsed="true">
-    <Position X="0.5" Y="11" Width="1.5" />
+    <Position X="0.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AABEAkABEAAAAAAAAAAACRAAAABAgQIACAgAQEAIAAI=</HashCode>
+      <HashCode>AABEAkABEAAAAAAAAAAACRAAAABAgAIACAgAQEAIAAI=</HashCode>
       <FileName>Data\Constants\Enumerations\AminoAcidName.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="PNNLOmics.Data.Constants.Enumerations.ElementName" Collapsed="true">
-    <Position X="6.5" Y="11" Width="1.5" />
+    <Position X="5.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>OgheGCRBrAMFIxIwWCUgQrBIpLgCIUgpKC4pkQEjAw8=</HashCode>
       <FileName>Data\Constants\Enumerations\ElementName.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="PNNLOmics.Data.Constants.Enumerations.MiscellaneousMatterName" Collapsed="true">
-    <Position X="4.5" Y="13" Width="2.25" />
+    <Position X="4.5" Y="6.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAQAAAgAAgAiAFgAAgAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Constants\Enumerations\MiscellaneousMatterName.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="PNNLOmics.Data.Constants.Enumerations.MonosaccharideName" Collapsed="true">
-    <Position X="7.75" Y="13" Width="2" />
+    <Position X="7" Y="6.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAQAAAAIAAAAIAgAAIAAAAAEAAACAAAAAAAAQA=</HashCode>
       <FileName>Data\Constants\Enumerations\MonosaccharideName.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="PNNLOmics.Data.Constants.Enumerations.SubAtomicParticleName" Collapsed="true">
-    <Position X="1.5" Y="13" Width="2" />
+    <Position X="2.25" Y="6.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACCAAAAAAAIAAAAA=</HashCode>
       <FileName>Data\Constants\Enumerations\SubAtomicParticleName.cs</FileName>

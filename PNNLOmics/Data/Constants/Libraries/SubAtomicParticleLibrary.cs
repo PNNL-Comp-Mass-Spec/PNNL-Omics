@@ -19,7 +19,7 @@ using PNNLOmics.Data.Constants.Enumerations;
 /// double atomMass3 = AtomStaticLibrary.GetMonoisotopicMass(SelectAtom.Proton);
 /// </example>
 
-namespace PNNLOmics.Data.Constants.Utilities
+namespace PNNLOmics.Data.Constants.Libraries
 {
     /// <summary>
     /// This is a Class designed to convert tabulated data into a atom objects which are similar to physical constants.
@@ -28,7 +28,7 @@ namespace PNNLOmics.Data.Constants.Utilities
     public class SubAtomicParticleLibrary : MatterLibrary<SubAtomicParticle, SubAtomicParticleName>
     {
         //TODO: SCOTT - CR - Add XML comments.
-        public override Dictionary<string, SubAtomicParticle> LoadLibrary()
+        public override void LoadLibrary()
         {
             m_symbolToCompoundMap = new Dictionary<string, SubAtomicParticle>();
             m_enumToSymbolMap = new Dictionary<SubAtomicParticleName, string>();
@@ -57,8 +57,6 @@ namespace PNNLOmics.Data.Constants.Utilities
             m_enumToSymbolMap.Add(SubAtomicParticleName.Electron, electron.Symbol);
             m_enumToSymbolMap.Add(SubAtomicParticleName.Neutron, neutron.Symbol);
             m_enumToSymbolMap.Add(SubAtomicParticleName.Proton, proton.Symbol);
-
-            return m_symbolToCompoundMap;
         }
     }
 }

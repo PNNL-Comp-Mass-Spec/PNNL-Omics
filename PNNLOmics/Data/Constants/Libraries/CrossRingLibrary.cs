@@ -18,7 +18,7 @@ using PNNLOmics.Data.Constants.Enumerations;
 /// double mass2 = CrossRingStaticLibrary.GetMonoisotopicMass(SelectCrossRing.CRFHex_02_A2);
 /// </example>
 
-namespace PNNLOmics.Data.Constants.Utilities
+namespace PNNLOmics.Data.Constants.Libraries
 {
     //TODO: SCOTT - CR - add XML comments
     public class CrossRingLibrary : MatterLibrary<Compound, CrossRingName>
@@ -28,7 +28,7 @@ namespace PNNLOmics.Data.Constants.Utilities
         /// The cross ring fragments are added to a Dictionary searchable with string keys such as "CRFNeu5Ac_02_X1" for the 
         /// X1 cross ring fragment which breaks across the 0 and 2 ring bonds of a Neuraminic acid monosachcaride
         /// </summary>
-        public override Dictionary<string, Compound> LoadLibrary()
+        public override void LoadLibrary()
         {
             m_symbolToCompoundMap = new Dictionary<string, Compound>();
             m_enumToSymbolMap = new Dictionary<CrossRingName, string>();
@@ -126,8 +126,7 @@ namespace PNNLOmics.Data.Constants.Utilities
             crfHexNAc_24_X1.MassMonoIsotopic = Compound.GetMonoisotopicMass(crfHexNAc_24_X1);
             #endregion
 
-            //TODO: SCOTT - CR - change fragments 
-            #region Sialic Acid Cross Ring Framgnets
+            #region Sialic Acid Cross Ring Fragments
             Compound crfNeu5Ac_02_X1 = new Compound();//70.0054793084 Aldehyde
             crfNeu5Ac_02_X1.NewElements(3, 2, 0, 2, 0, 0);//Neu5Ac-C8H15NO6//-->X.NewElements(C H N O S P) number of atoms
             crfNeu5Ac_02_X1.Name = "CRFNeu5Ac_02_X1";
@@ -194,8 +193,6 @@ namespace PNNLOmics.Data.Constants.Utilities
             m_enumToSymbolMap.Add(CrossRingName.CRFNeu5Ac_03_X1, crfNeu5Ac_03_X1.Symbol);
             m_enumToSymbolMap.Add(CrossRingName.CRFNeu5Ac_24_X1, crfNeu5Ac_24_X1.Symbol);
             m_enumToSymbolMap.Add(CrossRingName.CRFNeu5Ac_25_X1, crfNeu5Ac_25_X1.Symbol);
-
-            return m_symbolToCompoundMap;
         }
     }
 }

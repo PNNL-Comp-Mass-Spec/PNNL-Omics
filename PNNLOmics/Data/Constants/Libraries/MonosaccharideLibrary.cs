@@ -18,7 +18,7 @@ using PNNLOmics.Data.Constants.Enumerations;
 /// double mass3 = MonosaccharideStaticLibrary.GetMonoisotopicMass(SelectMonosaccharide.NeuraminicAcid);
 /// </example>
 
-namespace PNNLOmics.Data.Constants.Utilities
+namespace PNNLOmics.Data.Constants.Libraries
 {
     //TODO: SCOTT - CR - add XML comments
     public class MonosaccharideLibrary : MatterLibrary<Compound, MonosaccharideName>
@@ -28,7 +28,7 @@ namespace PNNLOmics.Data.Constants.Utilities
         /// This is a Class designed to create Compound objects from the elements.
         /// The monosacchadies are added to a Dictionary searchable by string keys such as "DxyHex" for Deoxyhexose
         /// </summary>
-        public override Dictionary<string, Compound> LoadLibrary()
+        public override void LoadLibrary()
         {
             //TODO: SCOTT - CR - remove and commented code that is old 
 
@@ -120,8 +120,6 @@ namespace PNNLOmics.Data.Constants.Utilities
             m_enumToSymbolMap.Add(MonosaccharideName.NeuraminicAcid, neuraminicAcid.Symbol);
             m_enumToSymbolMap.Add(MonosaccharideName.NGlycolylneuraminicAcid, NGlycolylNeuraminicAcid.Symbol);
             m_enumToSymbolMap.Add(MonosaccharideName.Pentose, pentose.Symbol);
-
-            return m_symbolToCompoundMap;
         }
     }
 }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8A934DC1-3418-449F-ADF6-9962499F49B2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -119,27 +119,24 @@
     <Compile Include="Data\Constants\Enumerations\MiscellaneousMatterName.cs" />
     <Compile Include="Data\Constants\Enumerations\MonosaccharideName.cs" />
     <Compile Include="Data\Constants\Enumerations\SubAtomicParticleName.cs" />
+    <Compile Include="Data\Constants\Libraries\AminoAcidLibrary.cs" />
+    <Compile Include="Data\Constants\Libraries\CrossRingLibrary.cs" />
+    <Compile Include="Data\Constants\Libraries\ElementLibrary.cs" />
+    <Compile Include="Data\Constants\Libraries\MatterLibrary.cs" />
+    <Compile Include="Data\Constants\Libraries\MiscellaneousMatterLibrary.cs" />
+    <Compile Include="Data\Constants\Libraries\MonosaccharideLibrary.cs" />
+    <Compile Include="Data\Constants\Libraries\SubAtomicParticleLibrary.cs" />
     <Compile Include="Data\Constants\SubatomicParticle.cs" />
     <Compile Include="Data\Constants\Compound.cs" />
     <Compile Include="Data\Constants\Matter.cs" />
     <Compile Include="Data\Constants\Element.cs" />
     <Compile Include="Data\Constants\Isotope.cs" />
-    <Compile Include="Data\Constants\Utilities\AminoAcidLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\MatterLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\SubatomicParticleLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\CrossRingLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\ElementLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\MonosaccharideLibrary.cs" />
-    <Compile Include="Data\Constants\Utilities\MiscellaneousMatterLibrary.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Data\Features\ClusterCentroidRepresentation.cs" />
     <Compile Include="Data\Features\FeatureLight.cs" />
     <Compile Include="Data\Features\UMCClusterLight.cs" />
     <Compile Include="Data\Features\UMCLight.cs" />
     <Compile Include="Data\MSMSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
-    <Compile Include="Generic\BinaryTree.cs" />
     <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\Alignment\SimilarityScore.cs" />
     <Compile Include="Algorithms\ConformationDetection\Data\CurveFit.cs" />
