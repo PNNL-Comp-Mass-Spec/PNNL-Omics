@@ -11,7 +11,7 @@ namespace PNNLOmics.Data.Constants.Enumerations
 		Hydrogen, 
         Helium, 
         Lithium, 
-        Berellium, 
+        Beryllium, 
         Boron,
         Carbon, 
         Nitrogen, 
