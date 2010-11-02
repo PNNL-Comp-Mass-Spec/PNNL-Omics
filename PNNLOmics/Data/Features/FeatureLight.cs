@@ -11,25 +11,49 @@ namespace PNNLOmics.Data.Features
 		public FeatureLight()
 		{
 			Clear();
-		}
-	
+		}	    
+        /// <summary>
+        /// Gets or sets the abundance.
+        /// </summary>
 		public long		Abundance			{ get; set; }
+        /// <summary>
+        /// Gets or sets the identification number of the feature.
+        /// </summary>
 		public int		ID					{ get; set; }
-		public double	MassMonoisotopic	{ get; set; }
-		public double	NET					{ get; set; }
+        /// <summary>
+        /// Gets or sets the monoisotopic mass of the feature.
+        /// </summary>
+		public double	MassMonoisotopic	{ get; set; }        
+        /// <summary>
+        /// Gets or sets the retention time of a feature.
+        /// </summary>
+        //TODO:  How can we convert the scan LC to time?  This should happen in Decon2ls
+        public double RetentionTime { get; set; }
+        /// <summary>
+        /// Gets or sets the drift time of a feature.
+        /// </summary>
 		public double	DriftTime			{ get; set; }		
+        /// <summary>
+        /// Gets or sets the charge state of a feature.
+        /// </summary>
 		public int		ChargeState			{ get; set; }
-		
+        /// <summary>
+        /// Gets or sets the score value for this feature.
+        /// </summary>
+        public float Score { get; set; }
+
+        /// <summary>
+        /// Resets the data structure back to its default state.
+        /// </summary>
 		public override void Clear()
 		{
-			this.Abundance = 0;
-			this.ChargeState = 0;
-			this.DriftTime = 0;
-			this.ID = -1;
-			this.MassMonoisotopic = 0;
-			this.NET = 0;			
+			this.Abundance          = 0;
+			this.ChargeState        = 0;
+			this.DriftTime          = 0;
+			this.ID                 = -1;
+			this.MassMonoisotopic   = 0;
+            this.RetentionTime      = 0;
 		}
-
 		/// <summary>
 		/// Compares the aligned monoisotopic mass of two Features
 		/// </summary>
@@ -37,6 +61,12 @@ namespace PNNLOmics.Data.Features
 		{
 			return x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
 		};
+
+        //TODO: Where to put this?
+        public static double CalculateMZFromMonoisotopicMass(double massMonoisotopic, int chargeState)
+        {
+            throw new NotImplementedException();            
+        }
 
 		#region Overriden Base Methods
 		/// <summary>

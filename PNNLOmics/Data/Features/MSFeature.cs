@@ -7,7 +7,7 @@ namespace PNNLOmics.Data.Features
 	/// MS Feature class that describes a raw or deisotoped feature.
 	/// </summary>
     //TODO: We need to think about what actually belongs in this class and what belongs elsewhere 
-	public class MSFeature : Feature, IComparable<MSFeature>
+	public class MSFeature : MSFeatureLight, IComparable<MSFeature>
 	{
         //TODO: WHO?  Fix the names of the properties and the comments.  Gets or sets needs to be in each.
         //TODO: How do we drill back to the MS/MS data.  The MSPeak data does not accurately do this.  Abundance mass and mono does not capture this.
@@ -66,20 +66,11 @@ namespace PNNLOmics.Data.Features
 		/// The Original TIA Intensity of the MSFeature.
 		/// </summary>      
         //TODO: Anyone need this? (most likely should be removed completely)
-		public float IntensityOriginalTIA { get; set; }
-		/// <summary>
-		/// The list of MSPeaks that make up the MSFeature.
-		/// </summary>
-        //TODO: Is this the key to all of our problems? 
-		public List<MSPeak> MSPeakList { get; set; }        
-		/// <summary>
-		/// The UMC associated with this MS Feature.
-		/// </summary>
-		public UMC UMC { get; set; }
+		public float IntensityOriginalTIA { get; set; }		
         /// <summary>
         /// Gets or sets the child fragmentation spectra if it was acquired.
         /// </summary>
-        public MSMSSpectra MSMSFragmentation
+        public MSSpectra MSMSFragmentation
         { get; set; }
 		#endregion
 

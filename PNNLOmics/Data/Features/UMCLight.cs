@@ -20,15 +20,18 @@ namespace PNNLOmics.Data.Features
 		{
 			Clear();			
 		}
-
 		/// <summary>
 		/// Gets or sets the group id (e.g. dataset) this feature originated from.
 		/// </summary>
-		public int GroupID					{ get; set; }
+		public int GroupID { get; set; }
 		/// <summary>
 		/// Gets or sets the UMC Cluster this feature is part of.
 		/// </summary>
 		public UMCClusterLight UMCCluster	{ get; set; }
+        /// <summary>
+        /// Gets or sets the list of MS features for the given UMC.
+        /// </summary>
+        public List<FeatureLight> MSFeatures { get; set; }
 
 		#region Overriden Base Methods
 		/// <summary>

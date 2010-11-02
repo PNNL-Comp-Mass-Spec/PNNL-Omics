@@ -8,7 +8,7 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Contains MSn data for a given parent m/z.
     /// </summary>
-    public class MSMSSpectra: BaseData
+    public class MSSpectra: BaseData
     {
         /// <summary>
         /// The default MSn level (MS/MS).
@@ -18,12 +18,20 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Default constructor
         /// </summary>
-        public MSMSSpectra ()
+        public MSSpectra ()
         {
             Clear();
         }
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the retention time.
+        /// </summary>
+        public double RetentionTime { get; set; }
+        /// <summary>
+        /// Gets or sets the charge state for this spectra.
+        /// </summary>
+        public int ChargeState { get; set; }
         /// <summary>
         /// Gets or sets the MS Level.
         /// </summary>
@@ -43,11 +51,15 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets any n + 1 level MSn child spectra.
         /// </summary>
-        public List<MSMSSpectra> ChildSpectra
+        public List<MSSpectra> ChildSpectra
         {
             get;
             set;
         }
+        /// <summary>
+        /// Gets or sets the parent spectra if MSLevel > 1.
+        /// </summary>
+        public MSSpectra ParentSpectra { get; set; }
         /// <summary>
         /// Gets or sets the collision type.
         /// </summary>
@@ -57,17 +69,9 @@ namespace PNNLOmics.Data
             set;
         }
         /// <summary>
-        /// Gets or sets the parent MS feature.
-        /// </summary>
-        public MSFeature ParentMSFeature
-        {
-            get;
-            set;
-        }
-        /// <summary>
         /// Gets or sets the parent precursor M/Z for this MSn spectra.
         /// </summary>
-        public double ParentMZ
+        public double PrecursorMZ
         {
             get;
             set;
@@ -81,7 +85,6 @@ namespace PNNLOmics.Data
         {
             MSLevel         = CONST_DEFAULT_MS_LEVEL;
             CollisionType   = CollisionType.Other;
-            ParentMSFeature = null;
         }
     }
 }

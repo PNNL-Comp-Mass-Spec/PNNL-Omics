@@ -31,8 +31,7 @@ namespace PNNLOmics.Data.Features
             DriftTime			= umc.DriftTime;
             ID					= umc.ID;
             MassMonoisotopic    = umc.MassMonoisotopic;            
-        }
-		
+        }		
         /// <summary>
         /// Copy constructor. 
         /// </summary>
