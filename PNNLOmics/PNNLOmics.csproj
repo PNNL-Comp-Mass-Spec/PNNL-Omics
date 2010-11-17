@@ -110,6 +110,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
+    <Compile Include="BinarySearchExample.cs" />
+    <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\Constants\Constants.cs" />
     <Compile Include="Data\Constants\Enumerations\AminoAcidName.cs" />
@@ -144,7 +146,6 @@
     <Compile Include="Algorithms\FeatureTolerances.cs" />
     <Compile Include="Algorithms\FeatureClustering\IClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCSingleLinkageClusterer.cs" />
-    <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\FeatureMatcherParameters.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\SLiCInformation.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\STACFDR.cs" />
