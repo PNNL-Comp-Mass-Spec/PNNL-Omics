@@ -110,7 +110,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
-    <Compile Include="BinarySearchExample.cs" />
     <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\Constants\Constants.cs" />
