@@ -88,7 +88,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET = .06;
+            parameters.Tolerances.RetentionTime = .06;
             parameters.Tolerances.Mass = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -107,7 +107,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID          = i;
                 feature.UMCCluster  = null;
-                feature.NET  = startNET;
+                feature.RetentionTime  = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = i % totalDatasets;
@@ -158,7 +158,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates          = false;
             parameters.Tolerances           = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET       = .06;
+            parameters.Tolerances.RetentionTime       = .06;
             parameters.Tolerances.Mass      = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -177,7 +177,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID = i;
                 feature.UMCCluster = null;
-                feature.NET = startNET;
+                feature.RetentionTime = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
@@ -228,7 +228,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET = .06;
+            parameters.Tolerances.RetentionTime = .06;
             parameters.Tolerances.Mass = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -247,7 +247,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID = i;
                 feature.UMCCluster = null;
-                feature.NET = startNET;
+                feature.RetentionTime = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
@@ -293,7 +293,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET = .06;
+            parameters.Tolerances.RetentionTime = .06;
             parameters.Tolerances.Mass = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -312,7 +312,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID = i;
                 feature.UMCCluster = null;
-                feature.NET = startNET;
+                feature.RetentionTime = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
@@ -353,7 +353,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET = .06;
+            parameters.Tolerances.RetentionTime = .06;
             parameters.Tolerances.Mass = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -372,7 +372,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID = i;
                 feature.UMCCluster = null;
-                feature.NET = startNET;
+                feature.RetentionTime = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
@@ -384,7 +384,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[features.Count - 1].NET = parameters.Tolerances.NET * 100;
+            features[features.Count - 1].RetentionTime = parameters.Tolerances.RetentionTime * 100;
 
             // Cluster!
             clustering.Parameters = parameters;
@@ -413,7 +413,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET = .06;
+            parameters.Tolerances.RetentionTime = .06;
             parameters.Tolerances.Mass = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -432,7 +432,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID                      = i;
                 feature.UMCCluster              = null;
-                feature.NET              = startNET;
+                feature.RetentionTime              = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime               = Convert.ToSingle(startDrift);
                 feature.GroupID                 = i % totalDatasets;
@@ -444,7 +444,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[0].NET = parameters.Tolerances.NET * 100;
+            features[0].RetentionTime = parameters.Tolerances.RetentionTime * 100;
 
             // Cluster!
             clustering.Parameters = parameters;
@@ -478,7 +478,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates  = false;
             parameters.Tolerances                   = new FeatureTolerances();
             parameters.Tolerances.DriftTime         = 1;
-            parameters.Tolerances.NET               = .06;
+            parameters.Tolerances.RetentionTime               = .06;
             parameters.Tolerances.Mass              = 50;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -495,7 +495,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID                      = i;
                 feature.UMCCluster              = null;
-                feature.NET              = startNET;
+                feature.RetentionTime              = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime               = Convert.ToSingle(startDrift);
                 feature.GroupID                 = i % totalDatasets;
@@ -531,7 +531,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates         = false;
             parameters.Tolerances           = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET       = .06;
+            parameters.Tolerances.RetentionTime       = .06;
             parameters.Tolerances.Mass      = 50;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -541,7 +541,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             double startNET     = 0.10;
             double startDrift   = 10;
 
-            double deltaNet   = parameters.Tolerances.NET * 2;
+            double deltaNet   = parameters.Tolerances.RetentionTime * 2;
             double deltaDrift = parameters.Tolerances.DriftTime * 2;
 
 			List<UMCLight> features = new List<UMCLight>();
@@ -550,14 +550,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID              = i;
                 feature.UMCCluster      = null;
-                feature.NET      = startNET;
+                feature.RetentionTime      = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime       = Convert.ToSingle(startDrift);
                 feature.GroupID         = i % totalDatasets;
                 feature.ChargeState     = i;
 
                 feature.DriftTime               = Convert.ToSingle(startDrift);
-                feature.NET              = startNET;
+                feature.RetentionTime              = startNET;
                 feature.MassMonoisotopic = startMass;
 
                 // Always put it just outside of the next feature.
@@ -594,7 +594,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates          = onlyClusterCharges;
             parameters.Tolerances                           = new FeatureTolerances();
             parameters.Tolerances.DriftTime                 = 1;
-            parameters.Tolerances.NET                       = .06;
+            parameters.Tolerances.RetentionTime                       = .06;
             parameters.Tolerances.Mass                      = 50;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -610,7 +610,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID          = i;
                 feature.UMCCluster  = null;
-                feature.NET  = startNET;
+                feature.RetentionTime  = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = i % totalDatasets;
@@ -657,7 +657,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET = .06;
+            parameters.Tolerances.RetentionTime = .06;
             parameters.Tolerances.Mass = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
@@ -676,7 +676,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID = i;
                 feature.UMCCluster = null;
-                feature.NET = startNET;
+                feature.RetentionTime = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
@@ -715,7 +715,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances           = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.NET       = .06;
+            parameters.Tolerances.RetentionTime       = .06;
             parameters.Tolerances.Mass      = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.            
@@ -734,7 +734,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 				UMCLight feature = new UMCLight();
                 feature.ID          = i;
                 feature.UMCCluster  = null;
-                feature.NET  = startNET;
+                feature.RetentionTime  = startNET;
                 feature.MassMonoisotopic = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = 0;

@@ -262,7 +262,7 @@ namespace PNNLOmics.Algorithms.Alignment
                 matches.Add(new Pair<Feature, Feature>(aligneeFeature, aligneeMatch));
 
                 // If both sets are LCMS features, do some additional matching
-                if ((aligneeFeature is LCMSFeature) && (aligneeMatch is LCMSFeature))
+                if ((aligneeFeature is UMC) && (aligneeMatch is UMC))
                 {
                     // TODO: implement additional matching for LCMS -> LCMS sets
                 }

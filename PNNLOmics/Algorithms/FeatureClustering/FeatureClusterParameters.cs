@@ -90,7 +90,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         public double EuclideanDistance(UMCLight x, UMCLight y)
         {
             double massDifference  = Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
-            double netDifference   = x.NET - y.NET;
+            double netDifference   = x.RetentionTime - y.RetentionTime;
             double driftDifference = x.DriftTime  - y.DriftTime;
             double sum             = (massDifference  * massDifference)  +
                                      (netDifference   * netDifference)   + 
@@ -108,7 +108,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		public double EuclideanDistance(UMCLight x, UMCLight y, double massWeight, double netWeight, double driftWeight)
         {
 			double massDifference = Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
-            double netDifference = x.NET - y.NET;
+            double netDifference = x.RetentionTime - y.RetentionTime;
             double driftDifference = x.DriftTime - y.DriftTime;
             double sum = (massDifference * massDifference)*massWeight +
                                      (netDifference * netDifference)*netDifference +

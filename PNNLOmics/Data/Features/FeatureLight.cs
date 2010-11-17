@@ -77,7 +77,7 @@ namespace PNNLOmics.Data.Features
 		{
 			return "Feature Light ID = " + ID.ToString() +
 					" Mono Mass = " + MassMonoisotopic.ToString() +
-					" NET = " + NET.ToString() +
+					" Retention Time = " + RetentionTime.ToString() +
 					" Drift Time = " + DriftTime.ToString();
 		}
 		/// <summary>
@@ -114,7 +114,7 @@ namespace PNNLOmics.Data.Features
 			{
 				return false;
 			}
-			if (!this.NET.Equals(other.NET))
+			if (!this.RetentionTime.Equals(other.RetentionTime))
 			{
 				return false;
 			}			
@@ -131,7 +131,7 @@ namespace PNNLOmics.Data.Features
 				ChargeState.GetHashCode() ^
 				DriftTime.GetHashCode() ^
 				ID.GetHashCode() ^
-				NET.GetHashCode();						
+				RetentionTime.GetHashCode();						
 			return hashCode;
 		}
 		#endregion

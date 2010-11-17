@@ -110,7 +110,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
-    <Compile Include="Algorithms\ConformationDetection\Data\Conformation.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\Constants\Constants.cs" />
     <Compile Include="Data\Constants\Enumerations\AminoAcidName.cs" />
@@ -140,26 +139,12 @@
     <Compile Include="Data\PairwiseUMCDistance.cs" />
     <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\Alignment\SimilarityScore.cs" />
-    <Compile Include="Algorithms\ConformationDetection\Data\CurveFit.cs" />
-    <Compile Include="Algorithms\ConformationDetection\Data\Pair.cs" />
-    <Compile Include="Algorithms\ConformationDetection\Util\MathUtil.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />
     <Compile Include="Algorithms\FeatureClustering\FeatureClusterParameters.cs" />
     <Compile Include="Algorithms\FeatureTolerances.cs" />
     <Compile Include="Algorithms\FeatureClustering\IClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCSingleLinkageClusterer.cs" />
-    <Compile Include="Algorithms\FeatureFinding\CodeExamples\BinarySearchExample.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Control\IsosReader.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Control\IsosWriter.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Control\Logger.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Control\Settings.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Data\MSFeatureGroup.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Data\ScanLCMapHolder.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Data\UniqueMass.cs" />
-    <Compile Include="Algorithms\ConformationDetection\Util\ConformerUtil.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Util\FeatureUtil.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Util\IMSMSFeatureUtil.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Util\LCMSFeatureUtil.cs" />
+    <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\FeatureMatcherParameters.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\SLiCInformation.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Data\STACFDR.cs" />
@@ -170,13 +155,9 @@
     <Compile Include="Algorithms\FeatureMatcher\Utilities\MatrixUtilities.cs" />
     <Compile Include="AMTTagDatabase.cs" />
     <Compile Include="Data\Features\FeatureMatch.cs" />
-    <Compile Include="Data\Features\IMSMSFeature.cs" />
     <Compile Include="Data\Features\UMC.cs" />
-    <Compile Include="Data\Features\LCIMSMSFeature.cs" />
-    <Compile Include="Data\Features\LCMSFeature.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
     <Compile Include="Generic\AnonymousComparer.cs" />
-    <Compile Include="Algorithms\FeatureFinding\Control\IniReader.cs" />
     <Compile Include="IonType.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
@@ -222,6 +203,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Algorithms\FeatureFinding\" />
     <Folder Include="IO\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

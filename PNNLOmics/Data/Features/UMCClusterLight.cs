@@ -46,8 +46,7 @@ namespace PNNLOmics.Data.Features
             DriftTime			 = cluster.DriftTime;
             ID					 = cluster.ID;
             MassMonoisotopic     = cluster.MassMonoisotopic;            
-        }
-        
+        }        
 
 		/// <summary>
 		/// Gets or sets the list of UMC's that comprise this cluster.
@@ -84,11 +83,11 @@ namespace PNNLOmics.Data.Features
 				if (umc == null)
 					throw new NullReferenceException("A UMC was null when trying to calculate cluster statistics.");
 
-				net.Add(umc.NET);
+				net.Add(umc.RetentionTime);
 				mass.Add(umc.MassMonoisotopic);
 				driftTime.Add(umc.DriftTime);
 
-				sumNet		 += umc.NET;
+				sumNet		 += umc.RetentionTime;
 				sumMass		 += umc.MassMonoisotopic;
 				sumDrifttime += umc.DriftTime;
 
@@ -111,7 +110,7 @@ namespace PNNLOmics.Data.Features
 			{
 				case ClusterCentroidRepresentation.Mean:
 					this.MassMonoisotopic = (sumMass / numUMCs);
-					this.NET = (sumNet / numUMCs);
+					this.RetentionTime = (sumNet / numUMCs);
 					this.DriftTime = Convert.ToSingle(sumDrifttime / numUMCs);
 					break;
 				case ClusterCentroidRepresentation.Median:
@@ -124,15 +123,15 @@ namespace PNNLOmics.Data.Features
 					{
 						median = Convert.ToInt32(numUMCs / 2);
 						this.MassMonoisotopic = (mass[median] + mass[median - 1]) / 2;
-						this.NET = (net[median] + net[median - 1]) / 2;
+						this.RetentionTime = (net[median] + net[median - 1]) / 2;
 						this.DriftTime = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
 					}
 					else
 					{
 						median = Convert.ToInt32((numUMCs) / 2);
 						this.MassMonoisotopic = mass[median];
-						this.NET = net[median];
-						this.DriftTime = Convert.ToSingle(driftTime[median]);
+						this.RetentionTime  = net[median];
+						this.DriftTime      = Convert.ToSingle(driftTime[median]);
 					}
 					break;
 			}

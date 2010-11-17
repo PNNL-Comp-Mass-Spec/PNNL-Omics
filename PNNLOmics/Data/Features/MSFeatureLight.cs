@@ -14,9 +14,7 @@ namespace PNNLOmics.Data.Features
         #region AutoProperties
         /// <summary>
 		/// The list of MSPeaks that make up the MSFeature.
-		/// </summary>
-        //TODO: Is this the key to all of our problems? 
-		public List<MSPeak> MSPeakList { get; set; }        
+        public List<MSPeak> MSPeakList { get; set; }        
 		/// <summary>
 		/// The UMC associated with this MS Feature.
 		/// </summary>
@@ -30,19 +28,6 @@ namespace PNNLOmics.Data.Features
 		public override void Clear()
 		{
 			base.Clear();
-			this.IsSuspicious             = false;
-			this.IndexInFile            = -1;
-			this.AbundanceMono          = 0;
-			this.AbundancePlus2         = 0;
-			this.IntensityOriginal      = 0;
-			this.IntensityOriginalTIA   = 0;
-			this.MassOffset             = 0;
-			this.ScanIMS                = CONST_DEFAULT_SCAN_VALUE;
-			this.Fit                    = float.NaN;
-			this.Fwhm                   = float.NaN;
-			this.SignalToNoiseRatio     = float.NaN;
-			this.MSPeakList             = new List<MSPeak>();
-            this.MSMSFragmentation      = null;
 		}
 		#endregion
 
@@ -50,7 +35,7 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// Default Comparer used for the MSFeature class. Sorts by Monoisotopic Mass descending.
 		/// </summary>
-		public int CompareTo(MSFeature other)
+		public int CompareTo(MSFeatureLight other)
 		{
 			return other.MassMonoisotopic.CompareTo(this.MassMonoisotopic);
 		}

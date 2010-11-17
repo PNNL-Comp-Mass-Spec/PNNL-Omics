@@ -81,14 +81,14 @@ namespace PNNLOmics.Data.Features
 		public override void Clear()
 		{
 			base.Clear();
-			this.IsSuspicious             = false;
+            //TODO: Was this removed?  Does this affect LCMS Feature Finder.
 			this.IndexInFile            = -1;
 			this.AbundanceMono          = 0;
 			this.AbundancePlus2         = 0;
 			this.IntensityOriginal      = 0;
 			this.IntensityOriginalTIA   = 0;
 			this.MassOffset             = 0;
-			this.ScanIMS                = CONST_DEFAULT_SCAN_VALUE;
+			this.ScanIMS                = 0;
 			this.Fit                    = float.NaN;
 			this.Fwhm                   = float.NaN;
 			this.SignalToNoiseRatio     = float.NaN;

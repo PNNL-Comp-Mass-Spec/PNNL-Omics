@@ -190,7 +190,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 																		List<UMCLight>	data)
         {
             double massTolerance    = Parameters.Tolerances.Mass;
-            double netTolerance     = Parameters.Tolerances.NET;            
+            double netTolerance     = Parameters.Tolerances.RetentionTime;            
             double driftTolerance   = Parameters.Tolerances.DriftTime;
 			bool onlyClusterSameChargeStates = Parameters.OnlyClusterSameChargeStates;
 
@@ -200,7 +200,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				
                 UMCLight featureX = data[i];
 				double driftTimeX	= featureX.DriftTime;
-				double netAlignedX	= featureX.NET;
+				double netAlignedX	= featureX.RetentionTime;
 				double massAlignedX = featureX.MassMonoisotopic;
 				int	   chargeStateX = featureX.ChargeState;
  
@@ -222,7 +222,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     // later is more related to determining a scalar value instead.
                     double massDiff  = Math.Abs(Feature.ComputeMassPPMDifference( massAlignedX, 
                                                                         featureY.MassMonoisotopic));
-                    double netDiff   = Math.Abs(netAlignedX - featureY.NET);
+                    double netDiff   = Math.Abs(netAlignedX - featureY.RetentionTime);
                     double driftDiff = Math.Abs(driftTimeX  - featureY.DriftTime);
 
                     // Make sure we fall within the distance range before computing...

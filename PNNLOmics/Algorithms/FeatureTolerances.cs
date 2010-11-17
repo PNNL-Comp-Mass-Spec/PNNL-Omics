@@ -25,15 +25,15 @@ namespace PNNLOmics.Algorithms
         /// <summary>
         /// Default drift time value in ms.
         /// </summary>
-        public const double CONST_DEFAULT_DRIFT_TIME = 10.0;
+        public const double DEFAULT_DRIFT_TIME = 10.0;
         /// <summary>
         /// Default normalized elution time (NET) value as % of total experiment.
         /// </summary>
-        public const double CONST_DEFAULT_NET        = .02;
+        public const double DEFAULT_RETENTION_TIME        = .02;
         /// <summary>
         /// Default mass value in parts per million (ppm).
         /// </summary>
-        public const double CONST_DEFAULT_MASS       = 15.0;
+        public const double DEFAULT_MASS       = 15.0;
 
 		/// <summary>
 		/// Default constructor.
@@ -63,7 +63,7 @@ namespace PNNLOmics.Algorithms
         /// <summary>
         /// Gets or sets the normalized elution time (NET) tolerance.
         /// </summary>
-        public double NET
+        public double RetentionTime
         {
             get;
             set;
@@ -75,9 +75,9 @@ namespace PNNLOmics.Algorithms
         /// </summary>
         public void Clear()
         {
-            DriftTime   = CONST_DEFAULT_DRIFT_TIME;
-            Mass        = CONST_DEFAULT_MASS;
-            NET         = CONST_DEFAULT_NET;
+            DriftTime   = DEFAULT_DRIFT_TIME;
+            Mass        = DEFAULT_MASS;
+            RetentionTime         = DEFAULT_RETENTION_TIME;
         }
     }
 }
