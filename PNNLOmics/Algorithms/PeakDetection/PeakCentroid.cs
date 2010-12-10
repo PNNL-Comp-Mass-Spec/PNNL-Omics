@@ -9,27 +9,18 @@ namespace PNNLOmics.Algorithms.PeakDetector
     public class PeakCentroidParameters
     {
         public bool IsXYDataCentroided {get;set;}
-        //public List<XYData> PeaksFound {get;set;}//correct peaks Npoints long
         public int NumberOfPoints {get;set;} //number of points to fit a parabola at the top to 3,5,7 centered around the max point
-        //public List<double> LocalShoulderNoiseFound { get; set; }//shoulder noise Npoints long
         public double DefaultShoulderNoiseValue { get; set; }
         public LowAbundanceFWHMPeakFit LowAbundanceFWHMPeakFitType { get; set; }
-        //public List<double> FWHMList { get; set; }//FWHM coorespoinding to each peak Npoints long
-        //public List<XYData> LocalMinimaIndexList { get; set; }
         public double DefaultFWHMForCentroidedData { get; set; }//since the data comes in as sticks-to-zero data we need to add a width
         public int ScanNumber { get; set; }//so we can attach a scan number to each peak
-
 
         public PeakCentroidParameters() 
         {
             this.IsXYDataCentroided = false;
-            //this.PeaksFound = new List<XYData>();
             this.NumberOfPoints = 3;//how many point to fit the parabola to
-            //this.LocalShoulderNoiseFound = new List<double>();
             this.DefaultShoulderNoiseValue = 1;//if the local minimum goes to 0 on both sides of the peak, return this value so signal/noise = signal
             this.LowAbundanceFWHMPeakFitType = LowAbundanceFWHMPeakFit.Lorentzian;//take log first
-            //this.FWHMList = new List<double>();
-            //this.LocalMinimaIndexList = new List<XYData>();
             this.DefaultFWHMForCentroidedData = 0.6;
             this.ScanNumber = 0;
         }
@@ -40,8 +31,6 @@ namespace PNNLOmics.Algorithms.PeakDetector
         Parabola,//uses the parabola fit directly to find the FWHM
         Lorentzian//takes the log first and then uses the parabola fit to find the FWHM
     }
-
-    
 
     /// <summary>
     /// Converts XYdata into peaks without thresholding.  Run a get XYdata before and a threshld after
@@ -95,58 +84,34 @@ namespace PNNLOmics.Algorithms.PeakDetector
                                 CentroidedPeak newcentroidPeak = new CentroidedPeak();
                                 newcentroidPeak.ScanNumber = parameters.ScanNumber;
 
-                                #region find local noise (or shoulder noise) by finding the average fo the local minima on each side of the peak
+                                //1.  find local noise (or shoulder noise) by finding the average fo the local minima on each side of the peak
                                 //XYData storeMinimaDataIndex = new XYData();//will contain the index of the locations where the surrounding local mnima are
                                 int shoulderNoiseToLeftIndex = 0;
                                 int shoulderNoiseToRightIndex = 0;
 
-                                //localNoiseValue = PeakCentroid.FindShoulderNoise(ref RawXYData, i - 1, parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLettIndex, ref shoulderNoiseToRightIndex);
-                                //parameters.LocalShoulderNoiseFound.Add(localNoiseValue);//because of the i+=1 above, the highest point index is located at i-1
-                                //parameters.LocalMinimaIndexList.Add(storeMinimaDataIndex);
-
                                 newcentroidPeak.LocalLowestMinimaHeight = PeakCentroid.FindShoulderNoise(ref RawXYData, i - 1, parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
                                 newcentroidPeak.MinimaOfLowerMassIndex = shoulderNoiseToLeftIndex;
                                 newcentroidPeak.MinimaOfHigherMassIndex = shoulderNoiseToRightIndex;
-                                #endregion
 
-                                #region centroid peaks
-                                //record points for parabolas
-                                //TODO decide if sending indexes is better becaus the modulariy of the parabola finder will be broken
+                                //2.   centroid peaks via fitting a parabola
+                                //TODO: decide if sending indexes is better becaus the modulariy of the parabola finder will be broken
+                                //store points to go to the parabola fitter
                                 for (int j = 0; j < parameters.NumberOfPoints; j += 1)
                                 {
                                     int index = i - 1 - (int)((float)parameters.NumberOfPoints / (float)2 - (float)0.5) + j;//since number of points is 3,5,7 it will divide nicely
                                     peakTopParabolaPoints[j] = RawXYData[index];
                                 }
 
-                                //calculate parabola apex returning int and MZ stored in Top_Int[0]  and Top_MZ[0]
-                                centroidedPeak = PeakCentroid.Parabola(peakTopParabolaPoints);  //< --------------------------------------------------------------------------------------------------------
+                                //calculate parabola apex returning int and centroided MZ
+                                centroidedPeak = PeakCentroid.Parabola(peakTopParabolaPoints);
                                 newcentroidPeak.XValue = centroidedPeak.X;
                                 newcentroidPeak.Intensity = centroidedPeak.Y;
-                                //newcentroidPeak.LocalSignalToNosie = centroidedPeak.X / newcentroidPeak.LocalLowestMinimaHeight;//assign in threshold
-
-                                #region print
-                                //for (int p = 0; p < parameters.NumberOfPoints; p += 1)
-                                //{
-                                //    Console.WriteLine(peakTopParabolaPoints[p].X + "," + peakTopParabolaPoints[p].Y);
-
-                                //}
-                                //Console.WriteLine(centroidMass + "," + centroidIntensity);
-                                #endregion
-
-                                //parameters.PeaksFound.Add(centroidedPeak);
-                                #endregion
-
-                                #region find FWHM
-                                // record points for FWHM 
+                                
+                                //3.  find FWHM
                                 int centerIndex = i-1;//this is the index in the raw data for the peak top (non centroided)
-                                //double FWHM = PeakCentroid.FindFWHM(RawXYData, centerIndex, centroidedPeak, storeMinimaDataIndex, parameters.LowAbundanceFWHMPeakFitType);
-                                //double FWHM = PeakCentroid.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, parameters.LowAbundanceFWHMPeakFitType);
-                                //parameters.FWHMList.Add(FWHM);
-
                                 newcentroidPeak.Width = PeakCentroid.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, parameters.LowAbundanceFWHMPeakFitType);
                                 
-                                #endregion
-
+                                //4.  add centroided peak
                                 ResultsListCentroid.Add(newcentroidPeak);
                             }
                         }

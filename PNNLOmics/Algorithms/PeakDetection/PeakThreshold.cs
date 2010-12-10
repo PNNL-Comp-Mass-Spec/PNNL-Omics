@@ -126,7 +126,6 @@ namespace PNNLOmics.Algorithms.PeakDetector
                 
                 for (int i = 0; i < numPoints; i++)
                 {
-                    //XYData thresholdedPeak = new XYData();
                     CentroidedPeak thresholdedPeak = new CentroidedPeak();
 
                     signaltoShoulder = peakList[i].Intensity / peakList[i].LocalLowestMinimaHeight;
@@ -134,9 +133,6 @@ namespace PNNLOmics.Algorithms.PeakDetector
                     signaltoNoise = peakList[i].Intensity / averagePeakNoise;
 
                     thresholdIntensity = parameters.SignalToShoulderCuttoff * stdevMAD + averagePeakNoise;
-                    //thresholdIntensity = signaltoShoulder;
-                    //thresholdIntensity = signaltoBackground;
-                    //thresholdIntensity = signaltoNoise;
 
                     if (peakList[i].Intensity >= thresholdIntensity)
                     {
@@ -145,32 +141,18 @@ namespace PNNLOmics.Algorithms.PeakDetector
                         thresholdedPeak.SignalToNoiseGlobal = signaltoNoise;
                         thresholdedPeak.SignalToNoiseLocalMinima = signaltoShoulder;
                         thresholdedPeak.SignalToBackground = signaltoBackground;
-                        //parameters.ThresholdedPeakData.Add(thresholdedPeak);
-                        //parameters.ThresholdedPeakFWHM.Add(FWHMList[i]);
-                        //parameters.ThresholdedPeakSNShoulder.Add(signaltoShoulder);
-                        //parameters.ThresholdedPeakSignalToBackground.Add(signaltoBackground);
-
                        
                         ResultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);
-                        //parameters.ThresholdedPeakFWHM.Add(FWHMList[i]);
-                        //parameters.ThresholdedPeakSNShoulder.Add(signaltoShoulder);
-                        //parameters.ThresholdedPeakSignalToBackground.Add(signaltoBackground);
-                        //ThresholdpeakObject realPeak = new ThresholdpeakObject();
-                        //realPeak.PeakData = peakList[i];
-                        //realPeak.PeakFWHM = FWHMList[i];
-                        //realPeak.PeakSignalToBackground = signaltoBackground;
-                        //realPeak.PeakSNShoulder = signaltoShoulder;
-                        //realPeak.PeakSN = signaltoNoise;
-                        //parameters.ThresholdedObjectlist.Add(realPeak);
                     }
                     else
                     {
-                        //deal with low abundant peaks base on FWHM.  Perhaps all data should be filtered on FWHM
-
+                        //TODO: deal with low abundant peaks base on FWHM or some other criteria.  Perhaps all data should be filtered on FWHM
                     }
                 }
 
+                //TODO: possible FWHM filtering
                 ////now that we have a global threshold, repeat filter by FWHM for the most abundant peaks so we can redraw the threshold line
+                //convert to similar triangles
                 //bool shouldWeThresholdByFWHM = false;
                 //if (shouldWeThresholdByFWHM)
                 //{
@@ -203,28 +185,19 @@ namespace PNNLOmics.Algorithms.PeakDetector
                 //    y = y * (int)standardFWHM;
                 //    #endregion
                 //}
-
             }
             else//add all peaks since the data is thresholded already ot setup some sort of other cuttoff
             {
                 for (int i = 0; i < numPoints; i++)
                 {
-                    //XYData thresholdedPeak = new XYData();
+                    //include all peaks
                     CentroidedPeak thresholdedPeak = new CentroidedPeak();
 
                     thresholdedPeak = peakList[i];
                     ResultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);
-                    //include all peaks
-                    
-                    
-                    //parameters.ThresholdedPeakData.Add(thresholdedPeak);
-                    //parameters.ThresholdedPeakFWHM.Add(FWHMList[i]);
-                    //parameters.ThresholdedPeakSNShoulder.Add(thresholdedPeak.Y / parameters.SignalToShoulderCuttoff);
                 }
             }
-
             return ResultListThresholded;
         }
-       
     }
 }
