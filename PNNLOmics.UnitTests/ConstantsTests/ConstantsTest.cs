@@ -257,9 +257,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         [Test]
         public void TestMasses()
         {
-            double totalMass = 0;
-            string textM = "";
-
+            
             AminoAcidLibrary newlibrary1 = new AminoAcidLibrary();
             //Dictionary<string, Compound> dictionaryIn1 = newlibrary1.LoadLibrary();
             //foreach (KeyValuePair<string, Compound> matterObject in dictionaryIn1)
@@ -271,8 +269,6 @@ namespace PNNLOmics.UnitTests.ConstantsTests
 
             //Assert.AreEqual(totalMass, 2475.1616262881598);
 
-            totalMass = 0;
-            textM = "";
             CrossRingLibrary newlibrary2 = new CrossRingLibrary();
             //Dictionary<string, Compound> dictionaryIn2 = newlibrary2.LoadLibrary();
             //foreach (KeyValuePair<string, Compound> matterObject in dictionaryIn2)
@@ -284,8 +280,6 @@ namespace PNNLOmics.UnitTests.ConstantsTests
 
             //Assert.AreEqual(totalMass, 1432.3950300356437);
 
-            totalMass = 0;
-            textM = "";
             ElementLibrary newlibrary3 = new ElementLibrary();
             //Dictionary<string, Element> dictionaryIn3 = newlibrary3.LoadLibrary();
             //foreach (KeyValuePair<string, Element> matterObject in dictionaryIn3)
@@ -297,8 +291,6 @@ namespace PNNLOmics.UnitTests.ConstantsTests
 
             //Assert.AreEqual(totalMass, 12899.589616552506);
 
-            totalMass = 0;
-            textM = "";
             MiscellaneousMatterLibrary newlibrary4 = new MiscellaneousMatterLibrary();
             //Dictionary<string, Compound> dictionaryIn4 = newlibrary4.LoadLibrary();
             //foreach (KeyValuePair<string, Compound> matterObject in dictionaryIn4)
@@ -310,8 +302,6 @@ namespace PNNLOmics.UnitTests.ConstantsTests
 
             //Assert.AreEqual(totalMass, 295.99644294548898);
 
-            totalMass = 0;
-            textM = "";
             MonosaccharideLibrary newlibrary5 = new MonosaccharideLibrary();
             //Dictionary<string, Compound> dictionaryIn5 = newlibrary5.LoadLibrary();
             //foreach (KeyValuePair<string, Compound> matterObject in dictionaryIn5)
@@ -323,8 +313,6 @@ namespace PNNLOmics.UnitTests.ConstantsTests
 
             //Assert.AreEqual(totalMass, 1687.5704282280092);
 
-            totalMass = 0;
-            textM = "";
             SubAtomicParticleLibrary newlibrary6 = new SubAtomicParticleLibrary();
             //Dictionary<string, SubAtomicParticle> dictionaryIn6 = newlibrary6.LoadLibrary();
             //foreach (KeyValuePair<string, SubAtomicParticle> matterObject in dictionaryIn6)

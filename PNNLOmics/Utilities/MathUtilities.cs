@@ -51,8 +51,8 @@ namespace PNNLOmics.Utilities
 
                 List<XYData> histogramValues = new List<XYData>(0);
 
-                XYData currentBin = new XYData();
-                currentBin.X = Math.Round(minValue - (binRange - range) / 2, 2);
+                XYData currentBin = new XYData(0, 0);
+                currentBin.X = Convert.ToSingle(Math.Round(minValue - (binRange - range) / 2, 2));
                 for (int i = 0; i < nValues; i++)
                 {
                     if (values[i] <= (currentBin.X + binWidth))
@@ -61,9 +61,9 @@ namespace PNNLOmics.Utilities
                     }
                     else
                     {
-                        currentBin.X += 0.5 * binWidth;
+                        currentBin.X += Convert.ToSingle(0.5 * binWidth);
                         histogramValues.Add(currentBin);
-                        currentBin = new XYData(currentBin.X + 0.5 * binWidth, 0);
+                        currentBin = new XYData(currentBin.X + Convert.ToSingle(0.5F * binWidth), 0);
                     }
                 }
                 histogramValues.Add(currentBin);

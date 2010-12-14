@@ -42,9 +42,9 @@ namespace PNNLOmics.Algorithms.PeakDetector
         /// </summary>
         /// <param name="RawXYData">List of PNNL Omics XYData</param>
         /// <param name="parameters">parameters needed for the fit</param>
-        public static List<CentroidedPeak> DiscoverPeaks(List<XYData> RawXYData, PeakCentroidParameters parameters)
+        public static List<ProcessedPeak> DiscoverPeaks(List<XYData> RawXYData, PeakCentroidParameters parameters)
         {
-            List<CentroidedPeak> ResultsListCentroid = new List<CentroidedPeak>();
+            List<ProcessedPeak> ResultsListCentroid = new List<ProcessedPeak>();
 
             int numPoints = RawXYData.Count;
             
@@ -52,10 +52,10 @@ namespace PNNLOmics.Algorithms.PeakDetector
             {
                 for (int i = 1; i < numPoints; i += 1)
                 {
-                    CentroidedPeak newPreCentroidedPeak = new CentroidedPeak();
+                    ProcessedPeak newPreCentroidedPeak = new ProcessedPeak();
                     newPreCentroidedPeak.XValue = RawXYData[i].X;
-                    newPreCentroidedPeak.Intensity = RawXYData[i].Y;
-                    newPreCentroidedPeak.Width = parameters.DefaultFWHMForCentroidedData;
+                    newPreCentroidedPeak.Height = RawXYData[i].Y;
+                    newPreCentroidedPeak.Width = Convert.ToSingle(parameters.DefaultFWHMForCentroidedData);
                     newPreCentroidedPeak.ScanNumber = parameters.ScanNumber;
                     ResultsListCentroid.Add(newPreCentroidedPeak);
                 } 
@@ -65,11 +65,11 @@ namespace PNNLOmics.Algorithms.PeakDetector
                 List<XYData> peakTopParabolaPoints = new List<XYData>();
                 for (int i = 0; i < parameters.NumberOfPoints; i++)//number of points must be 3,5,7
                 {
-                    XYData newPoint = new XYData();
+                    XYData newPoint = new XYData(0,0);
                     peakTopParabolaPoints.Add(newPoint);
                 }
    
-                XYData centroidedPeak = new XYData();
+                XYData centroidedPeak = new XYData(0,0);
 
                 for (int i = 1; i < numPoints; i += 1)
                 {
@@ -81,7 +81,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
                             if (RawXYData[i].Y < RawXYData[i - 1].Y)  // Is it Decreasing?
                             {
                                 //peak top data point is at location i-1
-                                CentroidedPeak newcentroidPeak = new CentroidedPeak();
+                                ProcessedPeak newcentroidPeak = new ProcessedPeak();
                                 newcentroidPeak.ScanNumber = parameters.ScanNumber;
 
                                 //1.  find local noise (or shoulder noise) by finding the average fo the local minima on each side of the peak
@@ -105,11 +105,11 @@ namespace PNNLOmics.Algorithms.PeakDetector
                                 //calculate parabola apex returning int and centroided MZ
                                 centroidedPeak = PeakCentroid.Parabola(peakTopParabolaPoints);
                                 newcentroidPeak.XValue = centroidedPeak.X;
-                                newcentroidPeak.Intensity = centroidedPeak.Y;
+                                newcentroidPeak.Height = centroidedPeak.Y;
                                 
                                 //3.  find FWHM
                                 int centerIndex = i-1;//this is the index in the raw data for the peak top (non centroided)
-                                newcentroidPeak.Width = PeakCentroid.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, parameters.LowAbundanceFWHMPeakFitType);
+                                newcentroidPeak.Width = Convert.ToSingle(PeakCentroid.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, parameters.LowAbundanceFWHMPeakFitType));
                                 
                                 //4.  add centroided peak
                                 ResultsListCentroid.Add(newcentroidPeak);
@@ -141,7 +141,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
 	        InitialX=peakTopList[0].X;
 	        for(int i = 0;i<numberOfPoints;i++)
             {
-                peakTopList[i].X=peakTopList[i].X-InitialX;
+                peakTopList[i].X=Convert.ToSingle(peakTopList[i].X-InitialX);
             }
 
 	        double T1=0, T2=0, T3=0;
@@ -253,12 +253,12 @@ namespace PNNLOmics.Algorithms.PeakDetector
             //TODO for printing we need to reset the parabola back to the correct m/z
             for (int i = 0; i < numberOfPoints; i++)
             {
-                peakTopList[i].X = peakTopList[i].X + InitialX;
+                peakTopList[i].X = (float)(peakTopList[i].X + InitialX);
             }
 
-            XYData centroidXYDataResults = new XYData();
-            centroidXYDataResults.X = apexMass;
-            centroidXYDataResults.Y = apexIntensity;
+            XYData centroidXYDataResults = new XYData(0, 0);
+            centroidXYDataResults.X = (float)apexMass;
+            centroidXYDataResults.Y = (float)apexIntensity;
 
             return centroidXYDataResults;
             //TODO unit test
@@ -310,7 +310,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
             InitialX = peakSideList[0].X;
             for (int i = 0; i < numberOfPoints; i++)
             {
-                peakSideList[i].X = peakSideList[i].X - InitialX;
+                peakSideList[i].X = (float)(peakSideList[i].X - InitialX);
             }
 
             double T1 = 0, T2 = 0, T3 = 0;
@@ -651,7 +651,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData();
+                                    XYData pointTransfer = new XYData(0, 0);
                                     pointTransfer = rawData[i];
                                     peakRightSideList.Add(pointTransfer);
                                 }
@@ -662,9 +662,9 @@ namespace PNNLOmics.Algorithms.PeakDetector
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData();
+                                    XYData pointTransfer = new XYData(0, 0);
                                     pointTransfer.X = rawData[i].X;
-                                    pointTransfer.Y = Math.Log10(rawData[i].Y);
+                                    pointTransfer.Y = (float)(Math.Log10(rawData[i].Y));
                                     peakRightSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Math.Log10(Y0HalfHeight);
@@ -674,7 +674,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData();
+                                    XYData pointTransfer = new XYData(0, 0);
                                     pointTransfer = rawData[i];
                                     peakRightSideList.Add(pointTransfer);
                                 }
@@ -754,7 +754,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData();
+                                    XYData pointTransfer = new XYData(0, 0);
                                     pointTransfer = rawData[i];
                                     peakLeftSideList.Add(pointTransfer);
                                 }
@@ -765,9 +765,9 @@ namespace PNNLOmics.Algorithms.PeakDetector
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData();
+                                    XYData pointTransfer = new XYData(0, 0);
                                     pointTransfer.X = rawData[i].X;
-                                    pointTransfer.Y = Math.Log10(rawData[i].Y);
+                                    pointTransfer.Y = (float)(Math.Log10(rawData[i].Y));
                                     peakLeftSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Math.Log10(Y0HalfHeight);
@@ -777,7 +777,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData();
+                                    XYData pointTransfer = new XYData(0, 0);
                                     pointTransfer = rawData[i];
                                     peakLeftSideList.Add(pointTransfer);
                                 }

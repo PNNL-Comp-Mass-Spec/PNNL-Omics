@@ -17,12 +17,12 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Highest peak found in the isotopic profile
         /// </summary>
-        private MSPeak m_basePeak;
+        private Peak m_basePeak;
 
         /// <summary>
         /// Gets or sets the highest MS Peak of the isotopic profile
         /// </summary>
-        public MSPeak BasePeak
+        public Peak BasePeak
         {
             get { return m_basePeak; }
             set { m_basePeak = value; }

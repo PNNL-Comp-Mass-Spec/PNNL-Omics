@@ -84,8 +84,8 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public double DelSLiC
         {
-            get { return m_slicScore; }
-            set { m_slicScore = value; }
+            get { return m_delSLiC; }
+            set { m_delSLiC = value; }
         }
 
         /// <summary>

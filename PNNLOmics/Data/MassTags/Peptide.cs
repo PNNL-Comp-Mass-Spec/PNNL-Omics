@@ -14,39 +14,30 @@ namespace PNNLOmics.Data
         {
             get { return m_id; }
             set { m_id = value; }
-        }
-
-        #region BaseData<Peptide> Members
-
-        public void Clear()
+        }        
+        public override void Clear()
         {
             throw new NotImplementedException();
-        }
-        #endregion        
-
-        private List<Protein> m_proteinList;
-
+        }        
         public List<Protein> ProteinList
         {
-            get { return m_proteinList; }
-            set { m_proteinList = value; }
-        }
-
-        private string m_sequence;
-
+            get;
+            set;
+        }        
         public string Sequence
         {
-            get { return m_sequence; }
-            set { m_sequence = value; }
+            get; 
+            set;
         }
-
-        private string m_extendedSequence;
-        private int m_cleavageState;
-
+        public string ExtendedSequence
+        {
+            get;
+            set;
+        }
         public int CleavageState
         {
-            get { return m_cleavageState; }
-            set { m_cleavageState = value; }
+            get;
+            set;            
         }
     }
 }

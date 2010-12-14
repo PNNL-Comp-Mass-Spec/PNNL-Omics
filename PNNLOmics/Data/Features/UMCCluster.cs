@@ -91,7 +91,7 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Resets the object to it's default values.
         /// </summary>
-        public void Clear()
+        public override void Clear()
         {
             base.Clear();
 

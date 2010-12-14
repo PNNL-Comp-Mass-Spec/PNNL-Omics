@@ -92,7 +92,7 @@ namespace PNNLOmics.Data.Features
 			this.Fit                    = float.NaN;
 			this.Fwhm                   = float.NaN;
 			this.SignalToNoiseRatio     = float.NaN;
-			this.MSPeakList             = new List<MSPeak>();
+			this.MSPeakList             = new List<Peak>();
             this.MSMSFragmentation      = null;
 		}
 		#endregion
@@ -105,17 +105,6 @@ namespace PNNLOmics.Data.Features
 		{
 			return other.MassMonoisotopic.CompareTo(this.MassMonoisotopic);
 		}
-		#endregion
-
-		#region Comparers
-		/// <summary>
-		/// Compares the IMS Scan of two MS Features
-		/// </summary>
-        //TODO: Move to Feature.cs?
-		public static Comparison<MSFeature> ScanIMSComparison = delegate(MSFeature x, MSFeature y)
-		{
-			return x.ScanIMS.CompareTo(y.ScanIMS);
-		};
-		#endregion
+		#endregion		
 	}
 }

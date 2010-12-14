@@ -7,6 +7,6 @@ namespace PNNLOmics
 {
     public class Organism
     {
-        private int m_organismName;
+        public string OrganismName { get; set; }
     }
 }

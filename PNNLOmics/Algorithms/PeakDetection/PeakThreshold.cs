@@ -42,7 +42,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
 
         public ThresholdpeakObject()
         {
-            this.PeakData = new XYData();
+            this.PeakData = new XYData(0, 0);
             this.PeakFWHM = 0;
             this.PeakSNShoulder = 0;
             this.PeakSignalToBackground = 0;
@@ -62,9 +62,9 @@ namespace PNNLOmics.Algorithms.PeakDetector
         /// <param name="localMinimaData">index of minima on each side of point X=left, Y=right</param>
         /// <param name="parameters">Peakthreshold parameters</param>
         //public static void ApplyThreshold(ref List<XYData> peakData, List<double> peakShoulderNoise, List<XYData> localMinimaData, List<double> FWHMList, PeakThresholdParameters parameters)
-        public static List<CentroidedPeak> ApplyThreshold(ref List<CentroidedPeak> peakList, PeakThresholdParameters parameters)
+        public static List<ProcessedPeak> ApplyThreshold(ref List<ProcessedPeak> peakList, PeakThresholdParameters parameters)
         {
-            List<CentroidedPeak> ResultListThresholded = new List<CentroidedPeak>();
+            List<ProcessedPeak> ResultListThresholded = new List<ProcessedPeak>();
             //int numPoints = peakData.Count;
             int numPoints = peakList.Count;
 
@@ -84,7 +84,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
                     //averageShoulderNoise += peakShoulderNoise[i];
                     //averagePeakNoise += peakData[i].Y;
                     averageShoulderNoise += peakList[i].LocalLowestMinimaHeight;
-                    averagePeakNoise += peakList[i].Intensity;
+                    averagePeakNoise += peakList[i].Height;
                 }
                 #endregion
                 averageShoulderNoise /= numPoints;//baseline
@@ -98,22 +98,22 @@ namespace PNNLOmics.Algorithms.PeakDetector
                 double MAD = 0; //Median Absolute Deviation
                 double stdevMAD = 0;//standard deviation derived from MAD
 
-                List<CentroidedPeak> sortedCentroidedPeak = new List<CentroidedPeak>();
+                List<ProcessedPeak> sortedCentroidedPeak = new List<ProcessedPeak>();
                 List<double> medanDeviationList = new List<double>();
 
-                sortedCentroidedPeak = peakList.OrderBy(p => p.Intensity).ToList();
+                sortedCentroidedPeak = peakList.OrderBy(p => p.Height).ToList();
 
-                double median = sortedCentroidedPeak[(int)(sortedCentroidedPeak.Count / 2)].Intensity;//if it is sorted.
+                double median = sortedCentroidedPeak[(int)(sortedCentroidedPeak.Count / 2)].Height;//if it is sorted.
 
                 double medianDeviations = 0;
 
                 for (int i = 0; i < numPoints; i++)
                 {
-                    stdevDeviations = (peakList[i].Intensity - averagePeakNoise);
+                    stdevDeviations = (peakList[i].Height - averagePeakNoise);
                     stdevDeviationsSquared = stdevDeviations * stdevDeviations;
                     stdevSumDeviationsSquared += stdevDeviationsSquared;
 
-                    medianDeviations = Math.Abs(peakList[i].Intensity - median);
+                    medianDeviations = Math.Abs(peakList[i].Height - median);
                     medanDeviationList.Add(medianDeviations);
                 }
                 medanDeviationList.Sort();
@@ -126,15 +126,15 @@ namespace PNNLOmics.Algorithms.PeakDetector
                 
                 for (int i = 0; i < numPoints; i++)
                 {
-                    CentroidedPeak thresholdedPeak = new CentroidedPeak();
+                    ProcessedPeak thresholdedPeak = new ProcessedPeak();
 
-                    signaltoShoulder = peakList[i].Intensity / peakList[i].LocalLowestMinimaHeight;
-                    signaltoBackground = peakList[i].Intensity / averageShoulderNoise;
-                    signaltoNoise = peakList[i].Intensity / averagePeakNoise;
+                    signaltoShoulder = peakList[i].Height / peakList[i].LocalLowestMinimaHeight;
+                    signaltoBackground = peakList[i].Height / averageShoulderNoise;
+                    signaltoNoise = peakList[i].Height / averagePeakNoise;
 
                     thresholdIntensity = parameters.SignalToShoulderCuttoff * stdevMAD + averagePeakNoise;
 
-                    if (peakList[i].Intensity >= thresholdIntensity)
+                    if (peakList[i].Height >= thresholdIntensity)
                     {
                         //include high abundant peaks
                         thresholdedPeak = peakList[i];
@@ -191,7 +191,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
                 for (int i = 0; i < numPoints; i++)
                 {
                     //include all peaks
-                    CentroidedPeak thresholdedPeak = new CentroidedPeak();
+                    ProcessedPeak thresholdedPeak = new ProcessedPeak();
 
                     thresholdedPeak = peakList[i];
                     ResultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);

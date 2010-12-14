@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PNNLOmics
+namespace PNNLOmics.Data
 {
-    public class SRMTransitions
+    public class CentroidPeak: Peak
     {
-        public int IonList { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Clears the 
         /// </summary>
-        public void Clear()
+        public override void Clear()
         {            
         }
     }
@@ -35,7 +35,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Clears the 
         /// </summary>
-        public void Clear()
+        public override void Clear()
         {
         }
     }

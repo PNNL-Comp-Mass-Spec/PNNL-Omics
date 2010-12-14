@@ -14,7 +14,7 @@ namespace PNNLOmics.Data.Features
         #region AutoProperties
         /// <summary>
 		/// The list of MSPeaks that make up the MSFeature.
-        public List<MSPeak> MSPeakList { get; set; }        
+        public List<Peak> MSPeakList { get; set; }        
 		/// <summary>
 		/// The UMC associated with this MS Feature.
 		/// </summary>

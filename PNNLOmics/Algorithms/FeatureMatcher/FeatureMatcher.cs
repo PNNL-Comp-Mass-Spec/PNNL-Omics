@@ -13,8 +13,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         where U : Feature, new()
     {
         #region Members
-        private bool m_areDifferencesSet;
-
+        
         private FeatureMatcherParameters m_matchParameters;
 
         private List<FeatureMatch<T, U>> m_matchList;
@@ -120,10 +119,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         public FeatureMatcher(List<T> observedFeatureList, List<U> targetFeatureList, FeatureMatcherParameters matchParameters)
         {
             Clear();
+
             m_observedFeatureList = observedFeatureList;
             m_targetFeatureList = targetFeatureList;
-            m_matchParameters = matchParameters;
-            m_areDifferencesSet = false;
+            m_matchParameters = matchParameters;            
         }
         #endregion
 
@@ -133,6 +132,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// </summary>
         private void Clear()
         {
+            m_stacFDRList = new List<STACFDR>();
             m_matchParameters = new FeatureMatcherParameters();
             m_shiftFDR = 0;
             m_shiftConservativeFDR = 0;
@@ -177,16 +177,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             int targetIndex = 0;
             int lowerBound = 0;
 
-            bool useAlignedObserved = false;
-            bool useAlignedTarget = false;
-
+            
             // Sort both lists by mass.
             if (shortObservedList[0].MassMonoisotopicAligned == double.NaN)
             {
                 shortObservedList.Sort(new Comparison<T>(Feature.MassAlignedComparison));
-                useAlignedObserved = true;
                 shortTargetList.Sort(new Comparison<U>(Feature.MassAlignedComparison));
-                useAlignedTarget = true;
             }
             else
             {
@@ -215,12 +211,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     // Add any shift to the mass tag.
                     U targetFeature = shortTargetList[targetIndex];
                     // Check to see that the features are within the mass tolearance of one another.
-                    if (WithinMassTolerance<T,U>(observedFeature,targetFeature,massTolerancePPM,shiftAmount))
+                    if (WithinMassTolerance(observedFeature,targetFeature,massTolerancePPM,shiftAmount))
                     {
-                        bool withinTolerances = WithinNETTolerance<T, U>(observedFeature, targetFeature, netTolerance);
+                        bool withinTolerances = WithinNETTolerance(observedFeature, targetFeature, netTolerance);
                         if (m_matchParameters.UseDriftTime)
                         {
-                            withinTolerances = withinTolerances & withinDriftTimeTolerance<T, U>(observedFeature, targetFeature, driftTimeTolerance);
+                            withinTolerances = withinTolerances & withinDriftTimeTolerance(observedFeature, targetFeature, driftTimeTolerance);
                         }
                         // Create a temporary match between the two and check it against all tolerances before adding to the match list.
                         if (withinTolerances)
@@ -233,7 +229,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     else
                     {
                         // Increase the lower bound if the the MassTag masses are too low or set the continueLoop flag to false if they are too high.
-                        if (WithinMassTolerance<T,U>(observedFeature,targetFeature,massTolerancePPM,shiftAmount))
+                        if (WithinMassTolerance(observedFeature,targetFeature,massTolerancePPM,shiftAmount))
                         {
                             lowerBound++;
                         }
@@ -359,24 +355,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="startIndex">Index at which to start search.  Set to the value of the last such item.</param>
         /// <param name="chargeState">The charge state to search for a subset of.</param>
         /// <returns>A list of features with the given charge state.</returns>
-        private List<T> ExtractChargeStateList<T>(List<T> featureList, ref int startIndex, int chargeState) where T:Feature, new()
-        {
-            featureList.Sort(new Comparison<T>(Feature.ChargeStateComparison));
-            int currentIndex = startIndex;
-            int start = startIndex;
-            int endIndex = featureList.Count;
-            while (featureList[currentIndex].ChargeState < chargeState)
-            {
-                currentIndex++;
-            }
-            start = currentIndex;
-            while (featureList[currentIndex].ChargeState == chargeState)
-            {
-                currentIndex++;
-            }
-            endIndex = currentIndex;
-            startIndex = currentIndex;
-            return featureList.GetRange(startIndex, endIndex - startIndex + 1);
+        private List<S> ExtractChargeStateList<S>(List<S> featureList, ref int startIndex, int chargeState) where S: Feature, new()
+        {         
+            return featureList.FindAll(delegate(S x) { return x.ChargeState == chargeState; });
         }
         /// <summary>
         /// Sets the false discovery rate by creating a histogram of the mass errors and comparing the proportion above a threshhold to the area below.
@@ -452,9 +433,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="targetFeature"></param>
         /// <param name="massTolerancePPM"></param>
         /// <returns></returns>
-        private bool WithinMassTolerance<T, U>(T observedFeature, U targetFeature, double massTolerancePPM, double shiftAmount)
-            where T : Feature, new()
-            where U : Feature, new()
+        private bool WithinMassTolerance(T observedFeature, U targetFeature, double massTolerancePPM, double shiftAmount)            
         {
             if (massTolerancePPM > 0)
             {
@@ -493,9 +472,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="targetFeature"></param>
         /// <param name="netTolerance"></param>
         /// <returns></returns>
-        private bool WithinNETTolerance<T, U>(T observedFeature, U targetFeature, double netTolerance)
-            where T : Feature, new()
-            where U : Feature, new()
+        private bool WithinNETTolerance(T observedFeature, U targetFeature, double netTolerance)            
         {
             if (netTolerance > 0)
             {
@@ -534,7 +511,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="targetFeature"></param>
         /// <param name="driftTimeTolerance"></param>
         /// <returns></returns>
-        private bool withinDriftTimeTolerance<T, U>(T observedFeature, U targetFeature, float driftTimeTolerance) where T: Feature, new() where U:Feature, new()
+        private bool withinDriftTimeTolerance(T observedFeature, U targetFeature, float driftTimeTolerance)
         {
             if (driftTimeTolerance > 0)
             {
@@ -556,7 +533,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="targetFeature"></param>
         /// <param name="driftTimeTolerance"></param>
         /// <returns></returns>
-        private bool withDriftTimeTolerance<T>(T observedFeature, MassTag targetFeature, float driftTimeTolerance) where T : Feature, new()
+        private bool WithDriftTimeTolerance(T observedFeature, MassTag targetFeature, float driftTimeTolerance) 
         {
             if (driftTimeTolerance > 0)
             {
@@ -607,8 +584,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 {
                     // Create sub-lists of the features with the current charge state.
                     int chargeState = m_matchParameters.ChargeStateList[i];
-                    List<T> chargeObservedList = ExtractChargeStateList(m_observedFeatureList, ref chargeStateIndexObserved, chargeState);
-                    List<U> chargeTargetList = ExtractChargeStateList(m_targetFeatureList, ref chargeStateIndexTarget, chargeState);
+                    List<T> chargeObservedList = ExtractChargeStateList<T>(m_observedFeatureList, ref chargeStateIndexObserved, chargeState);
+                    List<U> chargeTargetList   = ExtractChargeStateList<U>(m_targetFeatureList, ref chargeStateIndexTarget, chargeState);
                     // Find the matches among the two feature lists.
                     List<FeatureMatch<T, U>> tempMatchList = new List<FeatureMatch<T, U>>();
                     tempMatchList = FindMatches(chargeObservedList, chargeTargetList, m_matchParameters.UserTolerances, false, 0);

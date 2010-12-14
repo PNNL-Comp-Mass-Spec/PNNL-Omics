@@ -5,34 +5,28 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace PNNLOmics.Data
 {
-    public class XYData
-    {
-        private double m_x;
-        private double m_y;
-
-        public XYData()
+    public class XYData: BaseData
+    {                
+        public XYData(float newX, float newY)
         {
-            m_x = 0;
-            m_y = 0;
+            X = newX;
+            Y = newY;
         }
 
-        public XYData(double newX, double newY)
+        public float X
         {
-            m_x = newX;
-            m_y = newY;
+            get;
+            set;
         }
-
-        public double X
+        public float Y
         {
-            get { return m_x; }
-            set { m_x = value; }
+            get;
+            set;
         }
-
-        public double Y
+        public override void Clear()
         {
-            get { return m_y; }
-            set { m_y = value; }
-        }
-
+            X = 0;
+            Y = 0;
+        }        
     }
 }

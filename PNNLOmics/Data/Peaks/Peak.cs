@@ -1,54 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PNNLOmics.Data
 {
-    public abstract class Peak: BaseData
+    /// <summary>
+    /// Represents a peak.
+    /// </summary>
+    public class Peak: BaseData
     {
+        private const float DEFAULT_HEIGHT = 0;
+        private const float DEFAULT_WIDTH  = 0;
+        private const float DEFAULT_XVALUE = 0;
+        
+        //TODO: Should we use an enumeration or int to identify the type of peak
+        // e.g. Chromatographic, IMS, Profile, Centroid...or...
+        //TODO: Should we use nullable types for float, etc.
+
         /// <summary>
-        /// Height of the peak.
+        /// Default constructor. 
         /// </summary>
-        private int       m_height;
-        /// <summary>
-        /// Width of the peak.
-        /// </summary>
-        private double    m_width;
-        /// <summary>
-        /// X-value can be time, scan, m/z
-        /// </summary>
-        private double    m_xValue;
+        public Peak()
+        {
+            Clear();
+        }
 
         /// <summary>
         /// Gets or the height of the peak.
         /// </summary>
-        public virtual int Height
+        public float Height
         {
-            get { return m_height; }
-            set { m_height = value; }
-        }
-        /// <summary>
-        /// Gets or sets the width of the peak.
-        /// </summary>
-        /// <remarks>This is not always FWHM, but can be.</remarks>
-        public virtual double Width
-        {
-            get { return m_width; }
-            set { m_width = value; }
+            get;
+            set;
         }
         /// <summary>
         /// Gets or sets the X-Value of the peak (e.g. time, scan, m/z)
         /// </summary>        
-        public virtual double XValue
+        public float XValue
         {
-            get { return m_xValue; }
-            set { m_xValue = value; }
+            get;
+            set;
         }
-
+        /// <summary>
+        /// Gets or sets the width of a peak.  
+        /// </summary>
+        public float Width
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets local signal to noise ratio.
+        /// </summary>
+        public float LocalSignalToNoise 
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the background at a peak's x-value.
+        /// </summary>
+        public float Background
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Sets the values of the peak to its default value.
+        /// </summary>
         public override void Clear()
         {
-            throw new NotImplementedException();
+            Height = DEFAULT_HEIGHT;
+            Width  = DEFAULT_WIDTH;
+            XValue = DEFAULT_XVALUE;
         }
     }
 }

@@ -5,16 +5,22 @@ using System.Text;
 
 namespace PNNLOmics.Data
 {
-    public class Ion: MSPeak
-    {
-        private IonType m_ionType;
-        private byte m_charge;
-        private Molecule m_molecule;
-
+    public class Ion: Peak
+    {        
         public IonType IonType
         {
-            get { return m_ionType; }
-            set { m_ionType = value; }
+            get;
+            set;
+        }
+        public byte Charge
+        { 
+            get; 
+            set; 
+        }
+        public Molecule Molecule
+        {
+            get; 
+            set; 
         }
     }
 }

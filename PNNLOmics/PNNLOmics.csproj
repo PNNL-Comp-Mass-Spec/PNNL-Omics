@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8A934DC1-3418-449F-ADF6-9962499F49B2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -36,6 +36,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -110,7 +111,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
-    <Compile Include="Data\Peaks\CentroidedPeak.cs" />
+    <Compile Include="Data\Peaks\ProcessedPeak.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakCentroid.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakThreshold.cs" />
     <Compile Include="CodeExamples\BinarySearchExample.cs" />
@@ -173,13 +174,11 @@
     <Compile Include="Utilities\Importers\MassTagTextFileImporter.cs" />
     <Compile Include="Utilities\Importers\UMCImporter.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
-    <Compile Include="Data\Peaks\ChromatagraphicPeak.cs" />
     <Compile Include="Data\MassTags\MassTag.cs" />
     <Compile Include="Data\MassTags\Peptide.cs" />
     <Compile Include="Data\ScanIMS.cs" />
     <Compile Include="Data\IsotopicProfile.cs" />
     <Compile Include="Data\ScanLC.cs" />
-    <Compile Include="Data\Peaks\MSPeak.cs" />
     <Compile Include="Data\Peaks\Peak.cs" />
     <Compile Include="Data\XYData.cs" />
     <Compile Include="Generic\Processor.cs" />

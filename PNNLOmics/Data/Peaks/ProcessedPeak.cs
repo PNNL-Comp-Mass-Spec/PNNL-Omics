@@ -6,14 +6,11 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Data
 {
-    public class CentroidedPeak:Peak
+    //TODO: Change name of processed peak to something more specific?
+    public class ProcessedPeak:Peak
     {
-       //TODO set up new peak object so we can return a list
+        //TODO set up new peak object so we can return a list
         //TODO break up regions into functions
-        /// <summary>
-        /// We need to override because the peak height is an integer
-        /// </summary>
-        public double Intensity {get; set; }
         
         /// <summary>
         /// the Scan Number this peak was found in.

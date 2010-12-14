@@ -99,9 +99,5 @@ namespace PNNLOmics.Data
         {
             base.Clear();            
         }
-        public static Comparison<MassTag> MassComparison = delegate(MassTag massTag1, MassTag massTag2)
-        {
-            return massTag1.MassMonoisotopic.CompareTo(massTag2.MassMonoisotopic);
-        };
     }
 }
