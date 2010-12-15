@@ -46,9 +46,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DeconTools.Backend, Version=1.0.3995.21787, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="DeconTools.Backend, Version=1.0.4001.23906, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\DeconTools_DLLs\DeconTools.Backend.dll</HintPath>
+      <HintPath>..\..\DeconTools\trunk\DeconTools.Backend\bin\x64\Debug\DeconTools.Backend.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,12 +83,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PNNLOmics\PNNLOmics.csproj">
-      <Project>{8A934DC1-3418-449F-ADF6-9962499F49B2}</Project>
-      <Name>PNNLOmics</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="PNNLOmicsElementData2.xml" />
     <Content Include="xerces-c_2_7.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -96,6 +90,12 @@
     <Content Include="xerces-c_2_7D.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PNNLOmics\PNNLOmics.csproj">
+      <Project>{8A934DC1-3418-449F-ADF6-9962499F49B2}</Project>
+      <Name>PNNLOmics</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="FeatureFinderTests\" />
