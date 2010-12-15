@@ -4,7 +4,7 @@
 <parameters>
 	<version>1.0</version>
 	<ElementIsotopes>
-		<NumElements>103</NumElements>
+		<NumElements>104</NumElements>
 		<Element>
 			<Symbol>H</Symbol>
 			<Name>Hydrogen</Name>
@@ -231,7 +231,7 @@
 		</Element>
 		<Element>
 			<Symbol>P</Symbol>
-			<Name>Phosphrous</Name>
+			<Name>Phosphorous</Name>
 			<NumIsotopes>1</NumIsotopes>
 			<Atomicity>15</Atomicity>
 			<Isotope>
@@ -2156,6 +2156,18 @@
 				<IsotopeNumber>262</IsotopeNumber>
 				<Mass>260</Mass>
 				<Probability>1</Probability>
+			</Isotope>
+		</Element>
+		
+		<Element>
+			<Symbol>X</Symbol>
+			<Name>Generic</Name>
+			<NumIsotopes>1</NumIsotopes>
+			<Atomicity>104</Atomicity>
+			<Isotope>
+				<IsotopeNumber>999</IsotopeNumber>
+				<Mass>999</Mass>
+				<Probability>0.5</Probability>
 			</Isotope>
 		</Element>
 	</ElementIsotopes>
