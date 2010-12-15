@@ -156,12 +156,19 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             double elementX999Isotope = Constants.Elements[ElementName.Generic].IsotopeDictionary["X999"].NaturalAbundance;
             Isotope newIsotope = new Isotope(1000, 1000.500, 0.75);
             Constants.Elements[ElementName.Generic].IsotopeDictionary.Add("X1000", newIsotope);
+            
 
             double elementX1000Isotope = Constants.Elements[ElementName.Generic].IsotopeDictionary["X1000"].NaturalAbundance;
-            
+
+            //string elementKeyXList
+            Constants.Elements[ElementName.Generic].IsotopeDictionary.Remove("X999");
+            Constants.Elements[ElementName.Generic].IsotopeDictionary.Add("newName", newIsotope);
+
             Assert.AreEqual(elementXMass, 999);
             Assert.AreEqual(elementX999Isotope, 0.5);
             Assert.AreEqual(elementX1000Isotope, 0.75);
+            //Assert.AreEqual(elementKey, "newName");
+            
 
             stopWatch.Stop();
             Console.WriteLine("This took " + stopWatch.Elapsed + "seconds to TestElements");
