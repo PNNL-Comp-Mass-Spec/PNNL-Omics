@@ -80,26 +80,26 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
         [Test]
         public void PeakDetectorV1_DiscoverPeaks_Test1()
         {
-            //double[] xvals = null;
-            //double[] yvals = null;
+            double[] xvals = null;
+            double[] yvals = null;
 
-            //int scanNum = 0;
+            int scanNum = 0;
 
-            //loadTestScanData(ref xvals, ref yvals);
-            //Assert.That(xvals != null);
-            //Assert.AreEqual(322040, xvals.Length);
+            loadTestScanData(ref xvals, ref yvals);
+            Assert.That(xvals != null);
+            Assert.AreEqual(322040, xvals.Length);
 
-            //double peakBR = 2;
-            //double sigNoiseThresh = 3;
+            double peakBR = 2;
+            double sigNoiseThresh = 3;
 
-            //DeconTools.Backend.XYData xydata = new DeconTools.Backend.XYData();
-            //xydata.Xvalues = xvals;
-            //xydata.Yvalues = yvals;
+            DeconTools.Backend.XYData xydata = new DeconTools.Backend.XYData();
+            xydata.Xvalues = xvals;
+            xydata.Yvalues = yvals;
 
-            //DeconTools.Backend.ProcessingTasks.DeconToolsPeakDetector peakdetector = new DeconTools.Backend.ProcessingTasks.DeconToolsPeakDetector(peakBR, sigNoiseThresh, DeconTools.Backend.Globals.PeakFitType.QUADRATIC, false);
-            //List<DeconTools.Backend.Core.IPeak> peakList = peakdetector.FindPeaks(xydata, 0, 50000);
+            DeconTools.Backend.ProcessingTasks.DeconToolsPeakDetector peakdetector = new DeconTools.Backend.ProcessingTasks.DeconToolsPeakDetector(peakBR, sigNoiseThresh, DeconTools.Backend.Globals.PeakFitType.QUADRATIC, false);
+            List<DeconTools.Backend.Core.IPeak> peakList = peakdetector.FindPeaks(xydata, 0, 50000);
 
-            //displayPeakData(peakList);
+            displayPeakData(peakList);
 
 
         }
