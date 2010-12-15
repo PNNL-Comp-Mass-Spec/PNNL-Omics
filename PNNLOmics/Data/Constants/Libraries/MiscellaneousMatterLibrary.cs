@@ -39,7 +39,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             Compound aldehyde = new Compound();
             aldehyde.NewElements(0, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             aldehyde.Name = "Aldehyde";
-            aldehyde.Symbol = "Aldhyd";
+            aldehyde.Symbol = "Aldhyde";
             aldehyde.ChemicalFormula = "H2O";
             aldehyde.MassMonoIsotopic = Compound.GetMonoisotopicMass(aldehyde);
 

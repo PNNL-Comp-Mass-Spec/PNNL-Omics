@@ -39,7 +39,7 @@ namespace PNNLOmics.Data.Constants
                 GeneralCompound.NumSulfur * Constants.Elements[ElementName.Sulfur].MassMonoIsotopic +
                 GeneralCompound.NumPotassium * Constants.Elements[ElementName.Potassium].MassMonoIsotopic +
                 GeneralCompound.NumSodium * Constants.Elements[ElementName.Sodium].MassMonoIsotopic +
-                GeneralCompound.NumPhosphorus * Constants.Elements[ElementName.Phosphrous].MassMonoIsotopic;
+                GeneralCompound.NumPhosphorus * Constants.Elements[ElementName.Phosphorous].MassMonoIsotopic;
 
             return exactMass;
         }

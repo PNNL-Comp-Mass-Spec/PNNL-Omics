@@ -22,7 +22,7 @@ namespace PNNLOmics.Data.Constants.Enumerations
         Magnesium,
         Alumunium,
         Silicon, 
-        Phosphrous,
+        Phosphorous,
         Sulfur,
         Chlorine,
         Argon, 
@@ -110,6 +110,7 @@ namespace PNNLOmics.Data.Constants.Enumerations
         Fermium,
         Medelevium, 
         Nobelium, 
-        Lawrencium
+        Lawrencium,
+        Generic
 	}
 }
