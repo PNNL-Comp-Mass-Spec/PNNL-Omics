@@ -6,39 +6,38 @@ using NUnit.Framework;
 using PNNLOmics.Algorithms.PeakDetector;
 using PNNLOmics.Data;
 using System.IO;
+using PNNLOmics.Algorithms.PeakDetection;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 {
     [TestFixture]
     public class PeakDetectorTests
     {
-        [Test]
-        public void PeakDetectorV3_DiscoverPeaks_no_ThresholdingTest1()
-        {
+        //[Test]
+        //public void PeakDetectorV3_DiscoverPeaks_no_ThresholdingTest1()
+        //{
 
-            float[] xvals = null;
-            float[] yvals = null;
+        //    float[] xvals = null;
+        //    float[] yvals = null;
 
-            int scanNum = 0;
+        //    int scanNum = 0;
 
-            loadTestScanData(ref xvals, ref yvals);
-            Assert.That(xvals != null);
-            Assert.AreEqual(322040, xvals.Length);
+        //    loadTestScanData(ref xvals, ref yvals);
+        //    Assert.That(xvals != null);
+        //    Assert.AreEqual(322040, xvals.Length);
 
-            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+        //    List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
-            parametersPeakCentroid.ScanNumber = scanNum;
+        //    PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
+        //    parametersPeakCentroid.ScanNumber = scanNum;
 
-            List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
+        //    List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
+        //    centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
 
-            Assert.That(centroidedPeakList.Count > 0);
+        //    Assert.That(centroidedPeakList.Count > 0);
 
-            displayPeakData(centroidedPeakList);
-        }
-
-      
+        //    displayPeakData(centroidedPeakList);
+        //}
 
         [Test]
         public void PeakDetectorV3_DiscoverPeaksThenThreshold()
@@ -46,34 +45,37 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             float[] xvals = null;
             float[] yvals = null;
 
-            int scanNum = 0;
-
             loadTestScanData(ref xvals, ref yvals);
             Assert.That(xvals != null);
             Assert.AreEqual(322040, xvals.Length);
 
             List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
-            parametersPeakCentroid.ScanNumber = scanNum;
+        
+            List<ProcessedPeak> processedData = new List<ProcessedPeak>();
+            PeakDetectorParameters parametersPeakDetector = new PeakDetectorParameters();
+            PeakDetector newPeakDetector = new PeakDetector();
+            processedData = newPeakDetector.DetectPeaks(testXYData,parametersPeakDetector);
 
-            List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
-
-            PeakThresholdParameters parametersThreshold = new PeakThresholdParameters();
-            parametersThreshold.SignalToShoulderCuttoff = 3f;
-
-            List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
-            thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, parametersThreshold);
-
-            Assert.That(centroidedPeakList.Count > 0);
-
-            displayPeakData(thresholdedData);
+            Assert.That(processedData.Count > 0);
+            Assert.AreEqual(processedData.Count ,6);
+            displayPeakData(processedData);
             Console.WriteLine();
-            Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
-            Console.WriteLine("Thresholded Peaks detected = " + thresholdedData.Count);
+            Console.WriteLine("Thresholded Peaks detected = " + processedData.Count);
 
+            //    PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
+            //    parametersPeakCentroid.ScanNumber = scanNum;
 
+            //    List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
+            //    centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
+
+            //    PeakThresholdParameters parametersThreshold = new PeakThresholdParameters();
+            //    parametersThreshold.SignalToShoulderCuttoff = 3f;
+
+            //    List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
+            //    thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, parametersThreshold);
+
+            //Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
         }
 
 
@@ -104,6 +106,30 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
         }
 
+        [Test]
+        public void PeakDetectorTest()
+        {
+            float[] xvals = null;
+            float[] yvals = null;
+
+            loadTestScanData(ref xvals, ref yvals);
+            Assert.That(xvals != null);
+            Assert.AreEqual(322040, xvals.Length);
+
+            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+            
+            PeakDetectorParameters newDetectorParameters = new PeakDetectorParameters();
+            PeakDetector newPeakDetector = new PeakDetector();
+
+            List<ProcessedPeak> finalPeakList = new List<ProcessedPeak>();
+
+            finalPeakList = newPeakDetector.DetectPeaks(testXYData, newDetectorParameters);
+
+            Assert.AreEqual(finalPeakList.Count, 6);
+        }
+        
+        
+        #region private functions
         private void displayPeakData(List<DeconTools.Backend.Core.IPeak> peakList)
         {
             StringBuilder sb = new StringBuilder();
@@ -186,6 +212,6 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
         }
 
-
+        #endregion
     }
 }

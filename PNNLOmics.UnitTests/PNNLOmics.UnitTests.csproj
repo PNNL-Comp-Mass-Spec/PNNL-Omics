@@ -72,7 +72,7 @@
     <Compile Include="AlgorithmTests\FeatureClustering\UMCSingleLinkageClusteringTests.cs" />
     <Compile Include="AlgorithmTests\FeatureClustering\UMCSingleLinkageClusterParametersTest.cs" />
     <Compile Include="AlgorithmTests\PeakDetectorTests\PeakDetectorTests.cs" />
-    <Compile Include="AlgorithmTests\STACTests.cs" />
+    <Compile Include="AlgorithmTests\STACTests\STACTests.cs" />
     <Compile Include="ConstantsTests\ConstantsTest.cs" />
     <Compile Include="DataTests\Features\UMCClusterTests.cs" />
     <Compile Include="DataTests\Features\FeatureTests.cs" />
