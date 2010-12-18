@@ -111,9 +111,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
-    <Compile Include="Algorithms\PeakDetection\PeakDetector.cs" />
+    <Compile Include="Algorithms\PeakDetection\PeakCentroid.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\PeakDetection\PeakCentroidParameters.cs" />
+    <Compile Include="Algorithms\PeakDetection\PeakDetectorController.cs" />
+    <Compile Include="Algorithms\PeakDetection\PeakDetectorParameters.cs" />
+    <Compile Include="Algorithms\PeakDetection\PeakThresholdParameters.cs" />
     <Compile Include="Data\Peaks\ProcessedPeak.cs" />
-    <Compile Include="Algorithms\PeakDetection\PeakCentroid.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakThreshold.cs" />
     <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Data\CollisionType.cs" />
