@@ -16,7 +16,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         public List<double> ThresholdedPeakSignalToBackground { get; set; }//results NpointsLong
         public List<ThresholdpeakObject> ThresholdedObjectlist { get; set; }//NpointsLong
         public float SignalToShoulderCuttoff { get; set; }
-        public ThresholdType ThresholdMethod { get; set; }
+        public string ThresholdMethod { get; set; }
         public int ScanNumber { get; set; }
 
         public PeakThresholdParameters()
@@ -29,7 +29,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             this.ThresholdedPeakSignalToBackground = new List<double>();
             this.SignalToShoulderCuttoff = 3;
             this.ThresholdedObjectlist = new List<ThresholdpeakObject>();
-            this.ThresholdMethod = ThresholdType.AveragePlusSigma;
+            this.ThresholdMethod = "AveragePlusSigma";
             this.ScanNumber = 0;
         }
     }
@@ -50,11 +50,5 @@ namespace PNNLOmics.Algorithms.PeakDetection
             this.PeakSignalToBackground = 0;
             this.PeakSN = 0;
         }
-    }
-
-    public enum ThresholdType
-    {
-        AveragePlusSigma,
-        MassFilter
     }
 }

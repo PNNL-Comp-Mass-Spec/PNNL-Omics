@@ -18,32 +18,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <returns>list of processed peaks and their characteristics</returns>
         public List<ProcessedPeak> DetectPeaks(List<PNNLOmics.Data.XYData> rawXYData, PeakDetectorParameters detectorParameters)
         {
-            
             List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
             centroidedPeakList = PeakCentroid.DiscoverPeaks(rawXYData, detectorParameters.CentroidParameters);
 
             List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
-            switch (detectorParameters.ThresholdParameters.ThresholdMethod)
-            {
-                case ThresholdType.AveragePlusSigma:
-                {
-                    thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, detectorParameters.ThresholdParameters);
-                }
-                break;
-                default:
-                {
-                    thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, detectorParameters.ThresholdParameters);
-                }
-            break;
+            thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, detectorParameters.ThresholdParameters);
 
-            }
-            
             return thresholdedData;
         }
-
-        
-
-
 
         /// <summary>
         /// This quadratic formula returns the positve root or -1 for all other cases.  A*x^2 + B*x+C
@@ -95,6 +77,5 @@ namespace PNNLOmics.Algorithms.PeakDetection
             return root1;
         }
     }
-
-    
+  
 }
