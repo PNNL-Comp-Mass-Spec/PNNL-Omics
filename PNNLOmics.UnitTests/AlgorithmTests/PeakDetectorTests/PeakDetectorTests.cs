@@ -41,7 +41,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
         }
 
         [Test]
-        public void PeakDetectorV3_DiscoverPeaksThenThreshold()
+        public void PeakDetectorV3_DiscoverPeaksThenThresholdAsOne()
         {
             float[] xvals = null;
             float[] yvals = null;
@@ -63,20 +63,39 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             displayPeakData(processedData);
             Console.WriteLine();
             Console.WriteLine("Thresholded Peaks detected = " + processedData.Count);
+        }
 
-            //    PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
-            //    parametersPeakCentroid.ScanNumber = scanNum;
+        [Test]
+        public void PeakDetectorV3_DiscoverPeaksThenThreshold()
+        {
+            float[] xvals = null;
+            float[] yvals = null;
 
-            //    List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            //    centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
+            loadTestScanData(ref xvals, ref yvals);
+            Assert.That(xvals != null);
+            Assert.AreEqual(322040, xvals.Length);
 
-            //    PeakThresholdParameters parametersThreshold = new PeakThresholdParameters();
-            //    parametersThreshold.SignalToShoulderCuttoff = 3f;
+            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            //    List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
-            //    thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, parametersThreshold);
+            PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
+            parametersPeakCentroid.ScanNumber = 0;
 
-            //Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
+            List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
+            centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
+
+            PeakThresholdParameters parametersThreshold = new PeakThresholdParameters();
+            parametersThreshold.SignalToShoulderCuttoff = 3f;
+
+            List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
+            thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, parametersThreshold);
+
+            Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
+
+            Assert.That(thresholdedData.Count > 0);
+            Assert.AreEqual(thresholdedData.Count, 6);
+            displayPeakData(thresholdedData);
+            Console.WriteLine();
+            Console.WriteLine("Thresholded Peaks detected = " + thresholdedData.Count);
         }
 
         [Test]
