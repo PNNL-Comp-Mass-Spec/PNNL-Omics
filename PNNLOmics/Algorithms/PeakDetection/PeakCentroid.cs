@@ -43,7 +43,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
 
                 XYData centroidedPeak = new XYData(0, 0);
 
-                for (int i = 1; i < numPoints; i += 1)
+                for (int i = 1; i < numPoints - 1; i += 1)//numPoints-1 because of possible overrun error 4 lines down i+=1
                 {
                     do
                     {

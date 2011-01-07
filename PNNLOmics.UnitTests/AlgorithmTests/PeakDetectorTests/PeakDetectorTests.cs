@@ -91,8 +91,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
             Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
 
-            //Assert.That(thresholdedData.Count > 0);
-            //Assert.AreEqual(thresholdedData.Count, 6);
+            Assert.That(thresholdedData.Count > 0);
+            Assert.AreEqual(thresholdedData.Count, 6);
             displayPeakData(thresholdedData);
             Console.WriteLine();
             Console.WriteLine("Thresholded Peaks detected = " + thresholdedData.Count);
@@ -252,7 +252,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
         private void loadTestScanData(ref double[] xvals, ref double[] yvals)
         {
             string testScanFilePath = @"\\protoapps\UserData\Slysz\DeconTools_TestFiles\SyntheticMS\SyntheticMSScan00.txt";
-
+            
             DeconTools.Backend.Runs.RunFactory runFactory = new DeconTools.Backend.Runs.RunFactory();
             DeconTools.Backend.Core.Run run = runFactory.CreateRun(testScanFilePath);
 
