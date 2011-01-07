@@ -117,6 +117,7 @@
     <Compile Include="Algorithms\PeakDetection\PeakCentroidParameters.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakDetectorController.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakDetectorParameters.cs" />
+    <Compile Include="Algorithms\PeakDetection\PeakThresholdEnumeration.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakThresholdParameters.cs" />
     <Compile Include="Data\Peaks\ProcessedPeak.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakThreshold.cs" />
