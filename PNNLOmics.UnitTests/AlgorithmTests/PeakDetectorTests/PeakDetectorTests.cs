@@ -15,32 +15,6 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
     [TestFixture]
     public class PeakDetectorTests
     {
-        //[Test]
-        //public void PeakDetectorV3_DiscoverPeaks_no_ThresholdingTest1()//from file
-        //{
-
-        //    float[] xvals = null;
-        //    float[] yvals = null;
-
-        //    int scanNum = 0;
-
-        //    loadTestScanData(ref xvals, ref yvals);
-        //    Assert.That(xvals != null);
-        //    Assert.AreEqual(322040, xvals.Length);
-
-        //    List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
-
-        //    PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
-        //    parametersPeakCentroid.ScanNumber = scanNum;
-
-        //    List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-        //    centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
-
-        //    Assert.That(centroidedPeakList.Count > 0);
-
-        //    displayPeakData(centroidedPeakList);
-        //}
-
         [Test]
         public void PeakDetectorV3_DiscoverPeaks_no_ThresholdingTest1()
         {
