@@ -71,9 +71,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             bool loadfromFile = false;
             if (loadfromFile)
             {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
+                //loadTestScanData(ref xvals, ref yvals);
+                //Assert.That(xvals != null);
+                //Assert.AreEqual(322040, xvals.Length);
             }
             else
             {
@@ -166,9 +166,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             bool loadfromFile = false;
             if (loadfromFile)
             {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
+                //loadTestScanData(ref xvals, ref yvals);
+                //Assert.That(xvals != null);
+                //Assert.AreEqual(322040, xvals.Length);
             }
             else
             {
@@ -213,47 +213,48 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
         }
 
-        [Test]
-        public void PeakDetectorV1_DiscoverPeaks_Test1()
-        {
-            float[] xvals = null;
-            float[] yvals = null;
+        //this is a decon tools peak detector test
+        //[Test]
+        //public void PeakDetectorV1_DiscoverPeaks_Test1()
+        //{
+        //    float[] xvals = null;
+        //    float[] yvals = null;
 
 
-            bool loadfromFile = false;
-            if (loadfromFile)
-            {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
-            }
-            else
-            {
-                loadHardCodedScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(122032, xvals.Length);
-            }
+        //    bool loadfromFile = false;
+        //    if (loadfromFile)
+        //    {
+        //        loadTestScanData(ref xvals, ref yvals);
+        //        Assert.That(xvals != null);
+        //        Assert.AreEqual(322040, xvals.Length);
+        //    }
+        //    else
+        //    {
+        //        loadHardCodedScanData(ref xvals, ref yvals);
+        //        Assert.That(xvals != null);
+        //        Assert.AreEqual(122032, xvals.Length);
+        //    }
 
-            double[] xvalsDouble = new double[xvals.Length]; 
-            double[] yvalsDouble = new double[xvals.Length]; 
+        //    double[] xvalsDouble = new double[xvals.Length]; 
+        //    double[] yvalsDouble = new double[xvals.Length]; 
 
-            for (int i = 0; i < xvals.Length; i++)
-            {
-                xvalsDouble[i] = (double)(xvals[i]);
-                yvalsDouble[i] = (double)(yvals[i]);
-            }
-            double peakBR = 2;
-            double sigNoiseThresh = 3;
+        //    for (int i = 0; i < xvals.Length; i++)
+        //    {
+        //        xvalsDouble[i] = (double)(xvals[i]);
+        //        yvalsDouble[i] = (double)(yvals[i]);
+        //    }
+        //    double peakBR = 2;
+        //    double sigNoiseThresh = 3;
 
-            DeconTools.Backend.XYData xydata = new DeconTools.Backend.XYData();
-            xydata.Xvalues = xvalsDouble;
-            xydata.Yvalues = yvalsDouble;
+        //    DeconTools.Backend.XYData xydata = new DeconTools.Backend.XYData();
+        //    xydata.Xvalues = xvalsDouble;
+        //    xydata.Yvalues = yvalsDouble;
 
-            DeconTools.Backend.ProcessingTasks.DeconToolsPeakDetector peakdetector = new DeconTools.Backend.ProcessingTasks.DeconToolsPeakDetector(peakBR, sigNoiseThresh, DeconTools.Backend.Globals.PeakFitType.QUADRATIC, false);
-            List<DeconTools.Backend.Core.IPeak> peakList = peakdetector.FindPeaks(xydata, 0, 50000);
+        //    DeconTools.Backend.ProcessingTasks.DeconToolsPeakDetector peakdetector = new DeconTools.Backend.ProcessingTasks.DeconToolsPeakDetector(peakBR, sigNoiseThresh, DeconTools.Backend.Globals.PeakFitType.QUADRATIC, false);
+        //    List<DeconTools.Backend.Core.IPeak> peakList = peakdetector.FindPeaks(xydata, 0, 50000);
 
-            displayPeakData(peakList);
-        }
+        //    displayPeakData(peakList);
+        //}
 
         [Test]
         public void PeakDetectorTest()
@@ -264,9 +265,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             bool loadfromFile = false;
             if (loadfromFile)
             {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
+                //loadTestScanData(ref xvals, ref yvals);
+                //Assert.That(xvals != null);
+                //Assert.AreEqual(322040, xvals.Length);
             }
             else
             {
@@ -289,22 +290,22 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
         
         
         #region private functions
-        private void displayPeakData(List<DeconTools.Backend.Core.IPeak> peakList)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var item in peakList)
-            {
-                sb.Append(item.XValue);
-                sb.Append('\t');
-                sb.Append(item.Height);
-                sb.Append('\t');
+        //private void displayPeakData(List<DeconTools.Backend.Core.IPeak> peakList)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    foreach (var item in peakList)
+        //    {
+        //        sb.Append(item.XValue);
+        //        sb.Append('\t');
+        //        sb.Append(item.Height);
+        //        sb.Append('\t');
 
-                sb.Append(item.Width);
-                sb.Append(Environment.NewLine);
+        //        sb.Append(item.Width);
+        //        sb.Append(Environment.NewLine);
 
-            }
-            Console.WriteLine(sb.ToString());
-        }
+        //    }
+        //    Console.WriteLine(sb.ToString());
+        //}
 
 
 
@@ -340,36 +341,37 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
         }
 
-        private void loadTestScanData(ref float[] xvals, ref float[] yvals)
-        {
-            double[] tempXVals = null;
-            double[] tempYVals = null;
+        //this is related to decon tools
+        //private void loadTestScanData(ref float[] xvals, ref float[] yvals)
+        //{
+        //    double[] tempXVals = null;
+        //    double[] tempYVals = null;
 
-            loadTestScanData(ref tempXVals, ref tempYVals);
+        //    loadTestScanData(ref tempXVals, ref tempYVals);
 
-            xvals = tempXVals.Select<double, float>(i => (float)i).ToArray();
-            yvals = tempYVals.Select<double, float>(i => (float)i).ToArray();
+        //    xvals = tempXVals.Select<double, float>(i => (float)i).ToArray();
+        //    yvals = tempYVals.Select<double, float>(i => (float)i).ToArray();
 
-        }
+        //}
 
 
-
-        private void loadTestScanData(ref double[] xvals, ref double[] yvals)
-        {
-            string testScanFilePath = @"\\protoapps\UserData\Slysz\DeconTools_TestFiles\SyntheticMS\SyntheticMSScan00.txt";
+        //this is related to decon tools
+        //private void loadTestScanData(ref double[] xvals, ref double[] yvals)
+        //{
+        //    string testScanFilePath = @"\\protoapps\UserData\Slysz\DeconTools_TestFiles\SyntheticMS\SyntheticMSScan00.txt";
             
-            DeconTools.Backend.Runs.RunFactory runFactory = new DeconTools.Backend.Runs.RunFactory();
-            DeconTools.Backend.Core.Run run = runFactory.CreateRun(testScanFilePath);
+        //    DeconTools.Backend.Runs.RunFactory runFactory = new DeconTools.Backend.Runs.RunFactory();
+        //    DeconTools.Backend.Core.Run run = runFactory.CreateRun(testScanFilePath);
 
-            DeconTools.Backend.Core.ScanSet scan = new DeconTools.Backend.Core.ScanSet(0);
-            run.GetMassSpectrum(scan);
+        //    DeconTools.Backend.Core.ScanSet scan = new DeconTools.Backend.Core.ScanSet(0);
+        //    run.GetMassSpectrum(scan);
 
-            //run.XYData.Display();
+        //    //run.XYData.Display();
 
-            xvals = run.XYData.Xvalues;
-            yvals = run.XYData.Yvalues;
+        //    xvals = run.XYData.Xvalues;
+        //    yvals = run.XYData.Yvalues;
 
-        }
+        //}
 
         private void loadHardCodedScanData(ref float[] xvals, ref float[] yvals)
         {
