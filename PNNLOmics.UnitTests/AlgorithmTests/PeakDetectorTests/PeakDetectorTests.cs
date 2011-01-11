@@ -5,15 +5,13 @@ using System.Linq;
 using NUnit.Framework;
 using PNNLOmics.Data;
 using PNNLOmics.Algorithms.PeakDetection;
-using PNNLOmics.Algorithms.PeakDetector;
-using PNNLOmics.Algorithms.PeakDetectorController;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 {
     [TestFixture]
     public class PeakDetectorTests
     {
-        bool loadfromFile = false;
+        bool loadfromFile = true;
         
         [Test]
         public void PeakDetectorV3_DiscoverPeaks_no_ThresholdingTest1()
@@ -37,11 +35,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             }
             List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
+            PeakCentroiderParameters parametersPeakCentroid = new PeakCentroiderParameters();
             parametersPeakCentroid.ScanNumber = scanNum;
 
             List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
+            centroidedPeakList = PeakCentroider.DiscoverPeaks(testXYData, parametersPeakCentroid);
 
             displayPeakData(centroidedPeakList);
 
@@ -80,8 +78,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
             List<ProcessedPeak> processedData = new List<ProcessedPeak>();
-            PeakDetectorParameters parametersPeakDetector = new PeakDetectorParameters();
-            PeakDetectorController newPeakDetector = new PeakDetectorController();
+            KronewitterPeakDetectorParameters parametersPeakDetector = new KronewitterPeakDetectorParameters();
+            KronewitterPeakDetector newPeakDetector = new KronewitterPeakDetector();
 
             processedData = newPeakDetector.DetectPeaks(testXYData, parametersPeakDetector);
 
@@ -122,11 +120,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
             List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
+            PeakCentroiderParameters parametersPeakCentroid = new PeakCentroiderParameters();
             parametersPeakCentroid.ScanNumber = 0;
 
             List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
+            centroidedPeakList = PeakCentroider.DiscoverPeaks(testXYData, parametersPeakCentroid);
 
             PeakThresholdParameters parametersThreshold = new PeakThresholdParameters();
             parametersThreshold.SignalToShoulderCuttoff = 3f;
@@ -175,11 +173,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
             List<ProcessedPeak> processedData = new List<ProcessedPeak>();
 
-            PeakCentroidParameters parametersPeakCentroid = new PeakCentroidParameters();
+            PeakCentroiderParameters parametersPeakCentroid = new PeakCentroiderParameters();
             parametersPeakCentroid.ScanNumber = scanNum;
 
             List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroid.DiscoverPeaks(testXYData, parametersPeakCentroid);
+            centroidedPeakList = PeakCentroider.DiscoverPeaks(testXYData, parametersPeakCentroid);
 
             PeakThresholdParameters parametersThreshold = new PeakThresholdParameters();
             parametersThreshold.SignalToShoulderCuttoff = 3f;
@@ -266,8 +264,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
             List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            PeakDetectorParameters newDetectorParameters = new PeakDetectorParameters();
-            PeakDetectorController newPeakDetector = new PeakDetectorController();
+            KronewitterPeakDetectorParameters newDetectorParameters = new KronewitterPeakDetectorParameters();
+            KronewitterPeakDetector newPeakDetector = new KronewitterPeakDetector();
 
             List<ProcessedPeak> finalPeakList = new List<ProcessedPeak>();
 
@@ -358,9 +356,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
         private void loadHardCodedScanData(ref float[] xvals, ref float[] yvals)
         {
-            HardCodedSpectra newSpectra = new HardCodedSpectra();
-            xvals = newSpectra.XValues;
-            yvals = newSpectra.YValues;
+            //HardCodedSpectra newSpectra = new HardCodedSpectra();
+            //xvals = newSpectra.XValues;
+            //yvals = newSpectra.YValues;
         }
 
         #endregion
