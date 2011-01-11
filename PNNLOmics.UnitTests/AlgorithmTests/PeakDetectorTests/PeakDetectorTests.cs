@@ -27,9 +27,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             bool loadfromFile = false;
             if (loadfromFile)
             {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
+                //loadTestScanData(ref xvals, ref yvals);
+                //Assert.That(xvals != null);
+                //Assert.AreEqual(322040, xvals.Length);
             }
             else
             {
@@ -115,9 +115,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             bool loadfromFile = false;
             if (loadfromFile)
             {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
+                //loadTestScanData(ref xvals, ref yvals);
+                //Assert.That(xvals != null);
+                //Assert.AreEqual(322040, xvals.Length);
             }
             else
             {
