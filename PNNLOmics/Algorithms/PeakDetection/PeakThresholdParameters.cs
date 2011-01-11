@@ -31,7 +31,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <summary>
         /// Has the noise been removed yet.  Orbitrap data has the noise removed.
         /// </summary>
-        public InstrumentDataNoiseType thresholdType { get; set; }
+        public InstrumentDataNoiseType DataNoiseType { get; set; }
 
         public PeakThresholdParameters()
         {
@@ -39,7 +39,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             this.SignalToShoulderCuttoff = 3;
             this.ThresholdMethod = "AveragePlusSigma";
             this.ScanNumber = 0;
-            this.thresholdType = InstrumentDataNoiseType.Standard;
+            this.DataNoiseType = InstrumentDataNoiseType.Standard;
         }
     }
 }
