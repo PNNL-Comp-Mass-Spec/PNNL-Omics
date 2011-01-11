@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PNNLOmics.Data;
-using PNNLOmics.Algorithms.PeakDetection;
 
-namespace PNNLOmics.Algorithms.PeakDetector
+namespace PNNLOmics.Algorithms.PeakDetection
 {
-    public class PeakCentroid
+    //TODO: Scott add comments on class.
+    public class PeakCentroider
     {
+        //TODO: scott - dont make this a static method.
         /// <summary>
         /// Find candidate peaks in the spectra (incressing and then decreasing).  For each peak top, find centroid
         /// </summary>
         /// <param name="RawXYData">List of PNNL Omics XYData</param>
         /// <param name="parameters">parameters needed for the fit</param>
-        public static List<ProcessedPeak> DiscoverPeaks(List<XYData> RawXYData, PeakCentroidParameters parameters)
+        public static List<ProcessedPeak> DiscoverPeaks(List<XYData> RawXYData, PeakCentroiderParameters parameters)
         {
             List<ProcessedPeak> ResultsListCentroid = new List<ProcessedPeak>();
 
@@ -61,7 +61,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
                                 int shoulderNoiseToLeftIndex = 0;
                                 int shoulderNoiseToRightIndex = 0;
 
-                                newcentroidPeak.LocalLowestMinimaHeight = PeakCentroid.FindShoulderNoise(ref RawXYData, i - 1, parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
+                                newcentroidPeak.LocalLowestMinimaHeight = PeakCentroider.FindShoulderNoise(ref RawXYData, i - 1, parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
                                 newcentroidPeak.MinimaOfLowerMassIndex = shoulderNoiseToLeftIndex;
                                 newcentroidPeak.MinimaOfHigherMassIndex = shoulderNoiseToRightIndex;
 
@@ -75,13 +75,13 @@ namespace PNNLOmics.Algorithms.PeakDetector
                                 }
 
                                 //calculate parabola apex returning int and centroided MZ
-                                centroidedPeak = PeakCentroid.Parabola(peakTopParabolaPoints);
+                                centroidedPeak = PeakCentroider.Parabola(peakTopParabolaPoints);
                                 newcentroidPeak.XValue = centroidedPeak.X;
                                 newcentroidPeak.Height = centroidedPeak.Y;
 
                                 //3.  find FWHM
                                 int centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
-                                newcentroidPeak.Width = Convert.ToSingle(PeakCentroid.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, parameters.LowAbundanceFWHMPeakFitType));
+                                newcentroidPeak.Width = Convert.ToSingle(PeakCentroider.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, parameters.LowAbundanceFWHMPeakFitType));
 
                                 //4.  add centroided peak
                                 ResultsListCentroid.Add(newcentroidPeak);
@@ -96,6 +96,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
         }
 
         #region private functions
+        //TODO: scott - dont make this a static method.
         /// <summary>
         /// find the centoid mass and apex intenxity via paraola fit to the top three points
         /// </summary>
@@ -253,11 +254,14 @@ namespace PNNLOmics.Algorithms.PeakDetector
             //apexIntensity = 5.125
         }
 
+        //TODO: scott - dont make this a static method
         /// <summary>
-        /// find the coefficeints to the parabola that goes through the data points
+        /// Find the coefficeints to the parabola that goes through the data points
         /// </summary>
         /// <param name="peakTopList">A list of PNNL Omics XYData</param>
         /// <returns>XYData point correspiding to the pair at the apex intensity and center of mass </returns>
+        /// 
+        //TODO: scott - modify the starting letters to be lower case and use camel case.
         private static void ParabolaABC(List<XYData> peakSideList, ref double Aout, ref double Bout, ref double Cout)
         {
             #region copied code
@@ -415,8 +419,9 @@ namespace PNNLOmics.Algorithms.PeakDetector
             //apexIntensity = 5.125
         }
 
+        //TODO: scott - dont make this a static method
         /// <summary>
-        /// find the local minima on each side of the peak
+        /// Find the local minima on each side of the peak
         /// </summary>
         /// <param name="rawData">reference to fullspectra</param>
         /// <param name="centerIndex">index of center point at local maximum</param>
@@ -515,6 +520,7 @@ namespace PNNLOmics.Algorithms.PeakDetector
         }
 
 
+        //TODO: scott - dont make this a static method
         /// <summary>
         /// Find full width at half maximum value at position specified. 
         /// remarks Looks for half height locations at left and right side, and uses twice of that value as the FWHM value. If half height 

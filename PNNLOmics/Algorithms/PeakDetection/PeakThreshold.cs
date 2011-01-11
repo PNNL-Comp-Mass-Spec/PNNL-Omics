@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PNNLOmics.Data;
-using PNNLOmics.Algorithms.PeakDetection;
 
-namespace PNNLOmics.Algorithms.PeakDetectorController
+namespace PNNLOmics.Algorithms.PeakDetection
 {
+
+    //TODO: scott - add xml comments
     public class PeakThreshold
     {
+        
+        //TODO: scott - dont make this method static
         /// <summary>
         /// calculate mean of the noise (aka mean of the data) then calculate the standard deviation of the noise (aks data)
         /// if peak is above Xsigma+mean reject

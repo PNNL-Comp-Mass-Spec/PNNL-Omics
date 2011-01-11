@@ -1,32 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.ObjectModel;
 using PNNLOmics.Data;
-using PNNLOmics.Algorithms.PeakDetector;
-using PNNLOmics.Algorithms.PeakDetectorController;
 
 namespace PNNLOmics.Algorithms.PeakDetection
 {
-    public class PeakDetectorController
+    public class KronewitterPeakDetector: PeakDetector
     {
+        /// <summary>
+        /// Gets or sets the peak detector parameters.
+        /// </summary>
+        public KronewitterPeakDetectorParameters Parameters
+        {
+            get;
+            set;
+        }
+
+        //TODO: Scott modify your application to adhere to this interface.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rawXYData"></param>
+        /// <returns></returns>
+        public override Collection<Peak> DetectPeaks(Collection<XYData> rawXYData)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Find and identify characteristics of peaks in raw XYData.  This includes finding candidate centroid peaks and noise thresholding.
         /// </summary>
         /// <param name="rawXYData">raw data</param>
         /// <param name="detectorParameters">parameters for the candidate peak detection and threshold parameters</param>
         /// <returns>list of processed peaks and their characteristics</returns>
-        public List<ProcessedPeak> DetectPeaks(List<PNNLOmics.Data.XYData> rawXYData, PeakDetectorParameters detectorParameters)
+        public List<ProcessedPeak> DetectPeaks(List<PNNLOmics.Data.XYData> rawXYData, KronewitterPeakDetectorParameters detectorParameters)
         {
             List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroid.DiscoverPeaks(rawXYData, detectorParameters.CentroidParameters);
+            centroidedPeakList = PeakCentroider.DiscoverPeaks(rawXYData, detectorParameters.CentroidParameters);
 
             List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
             thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, detectorParameters.ThresholdParameters);
 
             return thresholdedData;
         }
-
+        //TODO: scott fill in XML comments.
+        //TODO: scott - dont make this method static. -- move this to a math utility OR DELETE
         /// <summary>
         /// This quadratic formula returns the positve root or -1 for all other cases.  A*x^2 + B*x+C
         /// </summary>
