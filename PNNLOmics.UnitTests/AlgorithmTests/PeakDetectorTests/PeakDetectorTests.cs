@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NUnit.Framework;
-using PNNLOmics.Algorithms.PeakDetector;
 using PNNLOmics.Data;
-using System.IO;
 using PNNLOmics.Algorithms.PeakDetection;
+using PNNLOmics.Algorithms.PeakDetector;
 using PNNLOmics.Algorithms.PeakDetectorController;
-using PNNLOmics.UnitTests.ConstantsTests;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 {
