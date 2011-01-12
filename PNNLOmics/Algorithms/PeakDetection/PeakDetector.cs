@@ -13,8 +13,6 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// </summary>
         /// <param name="rawXYData">List of XY data.</param>
         /// <returns>List of peaks.</returns>
-        //TODO: change List<Peak> into a PeakCollection
-        //TODO: look into the collection object instead of using a list or other explicit collection object.
         public abstract Collection<Peak> DetectPeaks(Collection<XYData> rawXYData);
     }
 }

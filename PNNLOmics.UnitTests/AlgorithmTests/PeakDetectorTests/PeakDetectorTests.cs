@@ -5,203 +5,83 @@ using System.Linq;
 using NUnit.Framework;
 using PNNLOmics.Data;
 using PNNLOmics.Algorithms.PeakDetection;
+using System.Collections.ObjectModel;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 {
     [TestFixture]
     public class PeakDetectorTests
     {
-        bool loadfromFile = true;
-        
         [Test]
-        public void PeakDetectorV3_DiscoverPeaks_no_ThresholdingTest1()
+        public void PeakDetectorV3_DiscoverPeaks_only_no_ThresholdingTest()
         {
-
             float[] xvals = null;
             float[] yvals = null;
 
-            int scanNum = 0;
-            if (loadfromFile)
-            {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
-            }
-            else
-            {
-                loadHardCodedScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(122032, xvals.Length);
-            }
-            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+            loadTestScanData(ref xvals, ref yvals);
+            Assert.That(xvals != null);
+            Assert.AreEqual(322040, xvals.Length);
+            
+            List<XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            PeakCentroiderParameters parametersPeakCentroid = new PeakCentroiderParameters();
-            parametersPeakCentroid.ScanNumber = scanNum;
-
-            List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroider.DiscoverPeaks(testXYData, parametersPeakCentroid);
+            PeakCentroider newPeakCentroider = new PeakCentroider();
+            List<ProcessedPeak> centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
 
             displayPeakData(centroidedPeakList);
 
-            if (loadfromFile)
-            {
-                Assert.That(centroidedPeakList.Count > 0);
-                Assert.AreEqual(68756, centroidedPeakList.Count);
-            }
-            else 
-            {
-                Assert.That(centroidedPeakList.Count > 0);
-                Assert.AreEqual(15255, centroidedPeakList.Count);
-            }
+            Assert.That(centroidedPeakList.Count > 0);
+            Assert.AreEqual(68756, centroidedPeakList.Count);
         }
 
-
         [Test]
-        public void PeakDetectorV3_DiscoverPeaksThenThresholdAsOne()
+        public void PeakDetectorV3_DiscoverPeaks_Then_Threshold()
         {
             float[] xvals = null;
             float[] yvals = null;
 
-            if (loadfromFile)
-            {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
-            }
-            else
-            {
-                loadHardCodedScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(122032, xvals.Length);
-            }
+            loadTestScanData(ref xvals, ref yvals);
+            Assert.That(xvals != null);
+            Assert.AreEqual(322040, xvals.Length);
+
+            List<XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+
+            PeakCentroider newPeakCentroider = new PeakCentroider();
+            newPeakCentroider.Parameters.ScanNumber = 0;
+            List<ProcessedPeak> centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
+
+            PeakThresholder newPeakThresholder = new PeakThresholder();
+            newPeakThresholder.Parameters.SignalToShoulderCuttoff = 3f;
+            List<ProcessedPeak> thresholdedData = newPeakThresholder.ApplyThreshold(ref centroidedPeakList);
+
+            Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
+
+            Assert.That(thresholdedData.Count > 0);
+            Assert.AreEqual(thresholdedData.Count, 6);
+            
+            displayPeakData(thresholdedData);
+            Console.WriteLine();
+            Console.WriteLine("Thresholded Peaks detected = " + thresholdedData.Count);
+        }
+
+        [Test]
+        public void PeakDetectorTest()
+        {
+            float[] xvals = null;
+            float[] yvals = null;
+
+            loadTestScanData(ref xvals, ref yvals);
+            Assert.That(xvals != null);
+            Assert.AreEqual(322040, xvals.Length);
 
             List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+            Collection<XYData> dataInput = new Collection<XYData>(testXYData);
 
-            List<ProcessedPeak> processedData = new List<ProcessedPeak>();
-            KronewitterPeakDetectorParameters parametersPeakDetector = new KronewitterPeakDetectorParameters();
             KronewitterPeakDetector newPeakDetector = new KronewitterPeakDetector();
+            Collection<Peak> finalPeakList = newPeakDetector.DetectPeaks(dataInput);
 
-            processedData = newPeakDetector.DetectPeaks(testXYData, parametersPeakDetector);
-
-            if (loadfromFile)
-            {
-                Assert.That(processedData.Count > 0);
-                Assert.AreEqual(processedData.Count, 6);
-            }
-            else
-            {
-                Assert.That(processedData.Count > 0);
-                Assert.AreEqual(processedData.Count, 53);
-            }
-                
-                displayPeakData(processedData);
-            Console.WriteLine();
-            Console.WriteLine("Thresholded Peaks detected = " + processedData.Count);
+            Console.WriteLine("We found " + finalPeakList.Count + " Peaks.");
+            Assert.AreEqual(finalPeakList.Count, 6);
         }
-
-        [Test]
-        public void PeakDetectorV3_DiscoverPeaksThenThreshold()
-        {
-            float[] xvals = null;
-            float[] yvals = null;
-
-            if (loadfromFile)
-            {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
-            }
-            else
-            {
-                loadHardCodedScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(122032, xvals.Length);
-            }
-
-            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
-
-            PeakCentroiderParameters parametersPeakCentroid = new PeakCentroiderParameters();
-            parametersPeakCentroid.ScanNumber = 0;
-
-            List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroider.DiscoverPeaks(testXYData, parametersPeakCentroid);
-
-            PeakThresholdParameters parametersThreshold = new PeakThresholdParameters();
-            parametersThreshold.SignalToShoulderCuttoff = 3f;
-
-            List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
-            thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, parametersThreshold);
-
-            Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
-
-            if (loadfromFile)
-            {
-                Assert.That(thresholdedData.Count > 0);
-                Assert.AreEqual(thresholdedData.Count, 6);
-            }
-            else
-            {
-                Assert.That(thresholdedData.Count > 0);
-                Assert.AreEqual(thresholdedData.Count, 53);
-            }
-            displayPeakData(thresholdedData);
-            Console.WriteLine();
-            Console.WriteLine("Thresholded Peaks detected = " + thresholdedData.Count);
-        }
-
-        [Test]
-        public void PeakDetectorV3_DiscoverPeaksThenThresholdAsPieces()
-        {
-            float[] xvals = null;
-            float[] yvals = null;
-
-            if (loadfromFile)
-            {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
-            }
-            else
-            {
-                loadHardCodedScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(122032, xvals.Length);
-            }
-
-            int scanNum = 0;
-            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
-
-            List<ProcessedPeak> processedData = new List<ProcessedPeak>();
-
-            PeakCentroiderParameters parametersPeakCentroid = new PeakCentroiderParameters();
-            parametersPeakCentroid.ScanNumber = scanNum;
-
-            List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroider.DiscoverPeaks(testXYData, parametersPeakCentroid);
-
-            PeakThresholdParameters parametersThreshold = new PeakThresholdParameters();
-            parametersThreshold.SignalToShoulderCuttoff = 3f;
-
-            List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
-            thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, parametersThreshold);
-
-            if (loadfromFile)
-            {
-                Assert.That(thresholdedData.Count > 0);
-                Assert.AreEqual(thresholdedData.Count, 6);
-            }
-            else
-            {
-                Assert.That(thresholdedData.Count > 0);
-                Assert.AreEqual(thresholdedData.Count, 53);
-            }
-
-            displayPeakData(thresholdedData);
-            Console.WriteLine();
-            Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
-            Console.WriteLine("Thresholded Peaks detected = " + thresholdedData.Count);
-        }
-
         
         [Test]
         public void PeakDetectorV1_DiscoverPeaks_Test1()
@@ -209,18 +89,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             float[] xvals = null;
             float[] yvals = null;
 
-            if (loadfromFile)
-            {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
-            }
-            else
-            {
-                loadHardCodedScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(122032, xvals.Length);
-            }
+            loadTestScanData(ref xvals, ref yvals);
+            Assert.That(xvals != null);
+            Assert.AreEqual(322040, xvals.Length);
 
             double[] xvalsDouble = new double[xvals.Length]; 
             double[] yvalsDouble = new double[xvals.Length]; 
@@ -241,46 +112,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             List<DeconTools.Backend.Core.IPeak> peakList = peakdetector.FindPeaks(xydata, 0, 50000);
 
             displayPeakData(peakList);
+
+            Assert.AreEqual(peakList.Count, 6);
         }
-
-        [Test]
-        public void PeakDetectorTest()
-        {
-            float[] xvals = null;
-            float[] yvals = null;
-
-            if (loadfromFile)
-            {
-                loadTestScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(322040, xvals.Length);
-            }
-            else
-            {
-                loadHardCodedScanData(ref xvals, ref yvals);
-                Assert.That(xvals != null);
-                Assert.AreEqual(122032, xvals.Length);
-            }
-
-            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
-
-            KronewitterPeakDetectorParameters newDetectorParameters = new KronewitterPeakDetectorParameters();
-            KronewitterPeakDetector newPeakDetector = new KronewitterPeakDetector();
-
-            List<ProcessedPeak> finalPeakList = new List<ProcessedPeak>();
-
-            finalPeakList = newPeakDetector.DetectPeaks(testXYData, newDetectorParameters);
-
-            if (loadfromFile)
-            {
-                Assert.AreEqual(finalPeakList.Count, 6);
-            }
-            else
-            {
-                Assert.AreEqual(finalPeakList.Count, 53);
-            }
-        }
-        
+ 
         #region private functions
         private void displayPeakData(List<DeconTools.Backend.Core.IPeak> peakList)
         {
@@ -322,9 +157,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
                 XYData xydatapoint = new XYData(xvals[i], yvals[i]);
                 xydataList.Add(xydatapoint);
             }
-
             return xydataList;
-
         }
 
         private void loadTestScanData(ref float[] xvals, ref float[] yvals)
@@ -349,16 +182,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             run.GetMassSpectrum(scan);
 
             //run.XYData.Display();
-
             xvals = run.XYData.Xvalues;
             yvals = run.XYData.Yvalues;
-        }
-
-        private void loadHardCodedScanData(ref float[] xvals, ref float[] yvals)
-        {
-            //HardCodedSpectra newSpectra = new HardCodedSpectra();
-            //xvals = newSpectra.XValues;
-            //yvals = newSpectra.YValues;
         }
 
         #endregion

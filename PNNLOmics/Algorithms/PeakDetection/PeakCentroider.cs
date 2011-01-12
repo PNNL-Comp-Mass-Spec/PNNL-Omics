@@ -8,34 +8,46 @@ namespace PNNLOmics.Algorithms.PeakDetection
     //TODO: Scott add comments on class.
     public class PeakCentroider
     {
-        //TODO: scott - dont make this a static method.
+        /// <summary>
+        /// Gets or sets the peak centroider parameters.
+        /// </summary>
+        public PeakCentroiderParameters Parameters { get; set; }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public PeakCentroider()
+        {
+            this.Parameters = new PeakCentroiderParameters();
+        }
+
         /// <summary>
         /// Find candidate peaks in the spectra (incressing and then decreasing).  For each peak top, find centroid
         /// </summary>
         /// <param name="RawXYData">List of PNNL Omics XYData</param>
         /// <param name="parameters">parameters needed for the fit</param>
-        public static List<ProcessedPeak> DiscoverPeaks(List<XYData> RawXYData, PeakCentroiderParameters parameters)
+        public List<ProcessedPeak> DiscoverPeaks(List<XYData> RawXYData)
         {
             List<ProcessedPeak> ResultsListCentroid = new List<ProcessedPeak>();
 
             int numPoints = RawXYData.Count;
 
-            if (parameters.IsXYDataCentroided)
+            if (Parameters.IsXYDataCentroided)
             {
                 for (int i = 1; i < numPoints; i += 1)
                 {
                     ProcessedPeak newPreCentroidedPeak = new ProcessedPeak();
                     newPreCentroidedPeak.XValue = RawXYData[i].X;
                     newPreCentroidedPeak.Height = RawXYData[i].Y;
-                    newPreCentroidedPeak.Width = Convert.ToSingle(parameters.DefaultFWHMForCentroidedData);
-                    newPreCentroidedPeak.ScanNumber = parameters.ScanNumber;
+                    newPreCentroidedPeak.Width = Convert.ToSingle(Parameters.DefaultFWHMForCentroidedData);
+                    newPreCentroidedPeak.ScanNumber = Parameters.ScanNumber;
                     ResultsListCentroid.Add(newPreCentroidedPeak);
                 }
             }
             else
             {
                 List<XYData> peakTopParabolaPoints = new List<XYData>();
-                for (int i = 0; i < parameters.NumberOfPoints; i++)//number of points must be 3,5,7
+                for (int i = 0; i < Parameters.NumberOfPoints; i++)//number of points must be 3,5,7
                 {
                     XYData newPoint = new XYData(0, 0);
                     peakTopParabolaPoints.Add(newPoint);
@@ -54,23 +66,23 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             {
                                 //peak top data point is at location i-1
                                 ProcessedPeak newcentroidPeak = new ProcessedPeak();
-                                newcentroidPeak.ScanNumber = parameters.ScanNumber;
+                                newcentroidPeak.ScanNumber = Parameters.ScanNumber;
 
                                 //1.  find local noise (or shoulder noise) by finding the average fo the local minima on each side of the peak
                                 //XYData storeMinimaDataIndex = new XYData();//will contain the index of the locations where the surrounding local mnima are
                                 int shoulderNoiseToLeftIndex = 0;
                                 int shoulderNoiseToRightIndex = 0;
 
-                                newcentroidPeak.LocalLowestMinimaHeight = PeakCentroider.FindShoulderNoise(ref RawXYData, i - 1, parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
+                                newcentroidPeak.LocalLowestMinimaHeight = PeakCentroider.FindShoulderNoise(ref RawXYData, i - 1, Parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
                                 newcentroidPeak.MinimaOfLowerMassIndex = shoulderNoiseToLeftIndex;
                                 newcentroidPeak.MinimaOfHigherMassIndex = shoulderNoiseToRightIndex;
 
                                 //2.   centroid peaks via fitting a parabola
                                 //TODO: decide if sending indexes is better becaus the modulariy of the parabola finder will be broken
                                 //store points to go to the parabola fitter
-                                for (int j = 0; j < parameters.NumberOfPoints; j += 1)
+                                for (int j = 0; j < Parameters.NumberOfPoints; j += 1)
                                 {
-                                    int index = i - 1 - (int)((float)parameters.NumberOfPoints / (float)2 - (float)0.5) + j;//since number of points is 3,5,7 it will divide nicely
+                                    int index = i - 1 - (int)((float)Parameters.NumberOfPoints / (float)2 - (float)0.5) + j;//since number of points is 3,5,7 it will divide nicely
                                     peakTopParabolaPoints[j] = RawXYData[index];
                                 }
 
@@ -81,7 +93,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
                                 //3.  find FWHM
                                 int centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
-                                newcentroidPeak.Width = Convert.ToSingle(PeakCentroider.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, parameters.LowAbundanceFWHMPeakFitType));
+                                newcentroidPeak.Width = Convert.ToSingle(PeakCentroider.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, Parameters.LowAbundanceFWHMPeakFitType));
 
                                 //4.  add centroided peak
                                 ResultsListCentroid.Add(newcentroidPeak);

@@ -118,13 +118,13 @@
     <Compile Include="Algorithms\PeakDetection\PeakCentroider.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakCentroiderParameters.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakDetector.cs" />
-    <Compile Include="Algorithms\PeakDetection\PeakThreshold.cs">
+    <Compile Include="Algorithms\PeakDetection\PeakThresholder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Algorithms\PeakDetection\PeakThresholdEnumeration.cs">
+    <Compile Include="Algorithms\PeakDetection\PeakThresholderEnumeration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Algorithms\PeakDetection\PeakThresholdParameters.cs">
+    <Compile Include="Algorithms\PeakDetection\PeakThresholderParameters.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data\Peaks\ProcessedPeak.cs" />

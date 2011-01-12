@@ -7,10 +7,21 @@ namespace PNNLOmics.Algorithms.PeakDetection
 {
 
     //TODO: scott - add xml comments
-    public class PeakThreshold
+    public class PeakThresholder
     {
+        /// <summary>
+        /// Gets or sets the peak centroider parameters.
+        /// </summary>
+        public PeakThresholderParameters Parameters { get; set; }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public PeakThresholder()
+        {
+            this.Parameters = new PeakThresholderParameters();
+        }
         
-        //TODO: scott - dont make this method static
         /// <summary>
         /// calculate mean of the noise (aka mean of the data) then calculate the standard deviation of the noise (aks data)
         /// if peak is above Xsigma+mean reject
@@ -20,8 +31,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <param name="peakShoulderNoise">lowest minima point intensity surrounding the peak</param>
         /// <param name="localMinimaData">index of minima on each side of point X=left, Y=right</param>
         /// <param name="parameters">Peakthreshold parameters</param>
-        //public static void ApplyThreshold(ref List<XYData> peakData, List<double> peakShoulderNoise, List<XYData> localMinimaData, List<double> FWHMList, PeakThresholdParameters parameters)
-        public static List<ProcessedPeak> ApplyThreshold(ref List<ProcessedPeak> peakList, PeakThresholdParameters parameters)
+        public List<ProcessedPeak> ApplyThreshold(ref List<ProcessedPeak> peakList)
         {
             List<ProcessedPeak> ResultListThresholded = new List<ProcessedPeak>();
             //int numPoints = peakData.Count;
@@ -32,7 +42,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             double signaltoNoise = 0;
             double thresholdIntensity = 0;
 
-            if (!parameters.isDataThresholded)
+            if (!Parameters.isDataThresholded)
             {
                 #region calculate average noise value and average shoulderNoiseLeve  = baseline
                 double averageShoulderNoise = 0;
@@ -91,7 +101,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     signaltoBackground = peakList[i].Height / averageShoulderNoise;
                     signaltoNoise = peakList[i].Height / averagePeakNoise;
 
-                    thresholdIntensity = parameters.SignalToShoulderCuttoff * stdevMAD + averagePeakNoise;
+                    thresholdIntensity = Parameters.SignalToShoulderCuttoff * stdevMAD + averagePeakNoise;
 
                     if (peakList[i].Height >= thresholdIntensity)
                     {

@@ -10,90 +10,55 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <summary>
         /// Gets or sets the peak detector parameters.
         /// </summary>
-        public KronewitterPeakDetectorParameters Parameters
-        {
-            get;
-            set;
-        }
+        public KronewitterPeakDetectorParameters Parameters {get; set;}
 
-        //TODO: Scott modify your application to adhere to this interface.
         /// <summary>
-        /// 
+        /// default constructor
         /// </summary>
-        /// <param name="rawXYData"></param>
-        /// <returns></returns>
-        public override Collection<Peak> DetectPeaks(Collection<XYData> rawXYData)
+        public KronewitterPeakDetector()
         {
-            throw new NotImplementedException();
+            this.Parameters = new KronewitterPeakDetectorParameters();
         }
 
         /// <summary>
         /// Find and identify characteristics of peaks in raw XYData.  This includes finding candidate centroid peaks and noise thresholding.
         /// </summary>
-        /// <param name="rawXYData">raw data</param>
-        /// <param name="detectorParameters">parameters for the candidate peak detection and threshold parameters</param>
-        /// <returns>list of processed peaks and their characteristics</returns>
-        public List<ProcessedPeak> DetectPeaks(List<PNNLOmics.Data.XYData> rawXYData, KronewitterPeakDetectorParameters detectorParameters)
+        /// <param name="rawXYData">raw XYdata</param>
+        /// <returns>Centroided peaks with noise removed</returns>
+        public override Collection<Peak> DetectPeaks(Collection<XYData> collectionRawXYData)
         {
+            List<XYData> rawXYData = new List<XYData>(collectionRawXYData);
+            
+            PeakCentroider newPeakCentroider = new PeakCentroider();
+            newPeakCentroider.Parameters = Parameters.CentroidParameters;
             List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
-            centroidedPeakList = PeakCentroider.DiscoverPeaks(rawXYData, detectorParameters.CentroidParameters);
+            centroidedPeakList = newPeakCentroider.DiscoverPeaks(rawXYData);
 
+            PeakThresholder newPeakThresholder = new PeakThresholder();
+            newPeakThresholder.Parameters = Parameters.ThresholdParameters;
             List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
-            thresholdedData = PeakThreshold.ApplyThreshold(ref centroidedPeakList, detectorParameters.ThresholdParameters);
+            thresholdedData = newPeakThresholder.ApplyThreshold(ref centroidedPeakList);
 
-            return thresholdedData;
+            Collection<Peak> outputPeakList = ConvertListProcessedPeaksTOStandardOutput(thresholdedData);
+
+            return outputPeakList;
         }
-        //TODO: scott fill in XML comments.
-        //TODO: scott - dont make this method static. -- move this to a math utility OR DELETE
-        /// <summary>
-        /// This quadratic formula returns the positve root or -1 for all other cases.  A*x^2 + B*x+C
-        /// </summary>
-        /// <param name="A"></param>
-        /// <param name="B"></param>
-        /// <param name="C"></param>
-        /// <returns></returns>
-        public static double QuadraticFormula(double A, double B, double C)
+
+        private Collection<Peak> ConvertListProcessedPeaksTOStandardOutput(List<ProcessedPeak> processedPeakList)
         {
-            //TODO verify that this function provides the correct values
-            double root1;
-            double root2;
+            Collection<Peak> outputPeakList = new Collection<Peak>();
 
-            double discriminant;
-
-            //this is used to check for no solutions
-            discriminant = B * B - 4 * A * C;
-
-            // Verify the discriminant.
-            if (discriminant == 0)
+            foreach(ProcessedPeak inPeak in processedPeakList)
             {
-                root1 = -B / (2 * A); // If the discriminant is 0, both solutions are equal.
-                root2 = root1;
+                Peak newPeak = new Peak();
+                newPeak.Height = inPeak.Height;
+                newPeak.LocalSignalToNoise = (float)inPeak.SignalToBackground;
+                newPeak.Width = inPeak.Width;
+                newPeak.XValue = inPeak.XValue;
+                outputPeakList.Add(newPeak);
             }
-            else
-            {
-                if (discriminant < 0)
-                {
-                    root1 = -1;// If the discriminant is negative, there are no solutions.
-                    root2 = -1;
-                }
-                else
-                {
-                    root1 = (-B - Math.Sqrt(discriminant)) / (2 * A);//In other cases the discriminant is positive, so there are two different solutions.
-                    root2 = (-B + Math.Sqrt(discriminant)) / (2 * A);
-                }
-
-                //make sure we return a positive x value
-                if (root1 < 0)
-                {
-                    root1 = root2;
-                }
-                if (root2 < 0)
-                {
-                    root2 = root1;
-                }
-            }
-            return root1;
+            
+            return outputPeakList;
         }
-    }
-  
+    } 
 }

@@ -15,7 +15,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// </summary>
         public PeakCentroiderParameters CentroidParameters { get; set; }
         //TODO: scott - add xml comments
-        public PeakThresholdParameters ThresholdParameters { get; set; }
+        public PeakThresholderParameters ThresholdParameters { get; set; }
         //TODO: scott - add xml comments -- this does not belong in here.
         public int ScanNumber { get; set; }//so we can attach a scan number to each peak   
 
@@ -24,7 +24,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         public KronewitterPeakDetectorParameters()
         {
             this.CentroidParameters = new PeakCentroiderParameters();
-            this.ThresholdParameters = new PeakThresholdParameters();
+            this.ThresholdParameters = new PeakThresholderParameters();
             this.ScanNumber = 0;
         }
     }

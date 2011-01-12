@@ -2,7 +2,7 @@
 namespace PNNLOmics.Algorithms.PeakDetection
 {
     //TODO: scott - add xml comments. 
-    public class PeakThresholdParameters
+    public class PeakThresholderParameters
     {
         //TODO: scott - add xml comments. Gets or sets 
         /// <summary>
@@ -28,18 +28,17 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// </summary>
         public int ScanNumber { get; set; }
 
-        //TODO: scott - add xml comments. Gets or sets 
         /// <summary>
-        /// Has the noise been removed yet.  Orbitrap data has the noise removed.
+        /// Gets and sets the noise quality of the data.  Has the noise been removed yet.  Orbitrap data has the noise removed.
         /// </summary>
         public InstrumentDataNoiseType DataNoiseType { get; set; }
 
 
         //TODO: scott - add xml comments. 
         /// <summary>
-        /// 
+        /// sets default threshold parameters
         /// </summary>
-        public PeakThresholdParameters()
+        public PeakThresholderParameters()
         {
             Clear();
         }
