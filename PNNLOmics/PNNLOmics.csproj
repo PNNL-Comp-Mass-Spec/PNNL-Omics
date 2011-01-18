@@ -113,6 +113,7 @@
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\FeatureClustering\LinkageClustererBase.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCAverageLinkageClusterer.cs" />
+    <Compile Include="Algorithms\PeakDetection\FullWidthHalfMaximumPeakOptions.cs" />
     <Compile Include="Algorithms\PeakDetection\KronewitterPeakDetector.cs" />
     <Compile Include="Algorithms\PeakDetection\KronewitterPeakDetectorParameters.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakCentroider.cs" />

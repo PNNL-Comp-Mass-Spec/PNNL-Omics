@@ -44,6 +44,11 @@ namespace PNNLOmics.Algorithms.PeakDetection
             return outputPeakList;
         }
 
+        /// <summary>
+        /// Peak is the standard object for the output collection and we need to convert processed peak lists.  
+        /// </summary>
+        /// <param name="processedPeakList">list of processed peaks</param>
+        /// <returns>list of peaks</returns>
         private Collection<Peak> ConvertListProcessedPeaksTOStandardOutput(List<ProcessedPeak> processedPeakList)
         {
             Collection<Peak> outputPeakList = new Collection<Peak>();
