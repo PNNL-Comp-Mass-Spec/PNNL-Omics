@@ -1,15 +1,19 @@
 ﻿
 namespace PNNLOmics.Algorithms.PeakDetection
 {
-    //TODO: scott - add xml comments.
     /// <summary>
-    /// Has the noise been removed yet.  Orbitrap data has the noise removed.
+    /// Has the noise been removed from the data prior.  Orbitrap data has the noise removed.
     /// </summary>
     public enum InstrumentDataNoiseType
     {
-    //TODO: scott - add xml comments.
+        /// <summary>
+        /// noise has not been removed
+        /// </summary>
         Standard,
-    //TODO: scott - add xml comments.
+    
+        /// <summary>
+        /// noise has ben thresholded away prior, such as orbitrap
+        /// </summary>
         NoiseRemoved
     }
 }

@@ -46,7 +46,6 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             List<XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
             PeakCentroider newPeakCentroider = new PeakCentroider();
-            newPeakCentroider.Parameters.ScanNumber = 0;
             List<ProcessedPeak> centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
 
             PeakThresholder newPeakThresholder = new PeakThresholder();

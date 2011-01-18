@@ -42,7 +42,6 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     newPreCentroidedPeak.XValue = RawXYData[i].X;
                     newPreCentroidedPeak.Height = RawXYData[i].Y;
                     newPreCentroidedPeak.Width = Convert.ToSingle(Parameters.DefaultFWHMForCentroidedData);
-                    newPreCentroidedPeak.ScanNumber = Parameters.ScanNumber;
                     ResultsListCentroid.Add(newPreCentroidedPeak);
                 }
             }
@@ -68,7 +67,6 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             {
                                 //peak top data point is at location i-1
                                 ProcessedPeak newcentroidPeak = new ProcessedPeak();
-                                newcentroidPeak.ScanNumber = Parameters.ScanNumber;
 
                                 //1.  find local noise (or shoulder noise) by finding the average fo the local minima on each side of the peak
                                 //XYData storeMinimaDataIndex = new XYData();//will contain the index of the locations where the surrounding local mnima are
@@ -97,7 +95,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                                 //3.  find FWHM
                                 int centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
 
-                                newcentroidPeak.Width = Convert.ToSingle(peakTopCalculation.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, Parameters.LowAbundanceFWHMPeakFitType));
+                                newcentroidPeak.Width = Convert.ToSingle(peakTopCalculation.FindFWHM(RawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, Parameters.FWHMPeakFitType));
 
                                 //4.  add centroided peak
                                 ResultsListCentroid.Add(newcentroidPeak);
@@ -533,7 +531,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <param name="shoulderNoiseToRightIndex">return location of local minima to the right</param>
         /// <param name="lowAbundanceFWHMFitType">which algorithm will we use to calculate hald max value on the side of the peak</param>
         /// <returns></returns>
-        private double FindFWHM(List<XYData> rawData, int centerIndex, XYData centroidPeak, ref int shoulderNoiseToLeftIndex, ref int shoulderNoiseToRightIndex, LowAbundanceFWHMPeakFit lowAbundanceFWHMFitType)
+        private double FindFWHM(List<XYData> rawData, int centerIndex, XYData centroidPeak, ref int shoulderNoiseToLeftIndex, ref int shoulderNoiseToRightIndex, PeakFitType lowAbundanceFWHMFitType)
         {
             //this bounds the number of points we can used to determine FWHM
             //int MinimaLeftIndex = (int)storeMinimaData.X;//index lower in mass
@@ -624,7 +622,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
                     switch (lowAbundanceFWHMFitType)//for parabola fit, don't take a log.  For lorentzian, take a log first
                     {
-                        case LowAbundanceFWHMPeakFit.Parabola:
+                        case PeakFitType.Parabola:
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
@@ -635,7 +633,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                                 transformedHalfHeight = Y0HalfHeight;
                             }
                             break;
-                        case LowAbundanceFWHMPeakFit.Lorentzian:
+                        case PeakFitType.Lorentzian:
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
@@ -728,7 +726,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
                     switch (lowAbundanceFWHMFitType)//for parabola fit, don't take a log.  For lorentzian, take a log first
                     {
-                        case LowAbundanceFWHMPeakFit.Parabola:
+                        case PeakFitType.Parabola:
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
@@ -739,7 +737,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                                 transformedHalfHeight = Y0HalfHeight;
                             }
                             break;
-                        case LowAbundanceFWHMPeakFit.Lorentzian:
+                        case PeakFitType.Lorentzian:
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {

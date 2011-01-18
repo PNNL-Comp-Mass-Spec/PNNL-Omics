@@ -6,7 +6,9 @@ using PNNLOmics.Data;
 namespace PNNLOmics.Algorithms.PeakDetection
 {
 
-    //TODO: scott - add xml comments
+    /// <summary>
+    /// Calculates a global threshold line to filter the data
+    /// </summary>
     public class PeakThresholder
     {
         /// <summary>
