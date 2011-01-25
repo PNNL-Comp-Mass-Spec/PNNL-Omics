@@ -10,12 +10,8 @@
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 using System;
-using System.Linq;
-using System.Threading;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
-
+using System.Linq;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 
@@ -51,6 +47,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns>True if the clusters overlap based on group ID or false if they do not.</returns>
         private bool ContainSameDatasets(T clusterX, T clusterY)
         {
+            return false;
+
 			// Map of all group ID's to UMC's from cluster X
 			Dictionary<int, UMCLight> groupMapping = new Dictionary<int, UMCLight>();
 
