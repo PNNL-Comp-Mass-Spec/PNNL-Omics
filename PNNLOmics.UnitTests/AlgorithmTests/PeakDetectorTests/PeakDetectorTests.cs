@@ -50,7 +50,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
             PeakThresholder newPeakThresholder = new PeakThresholder();
             newPeakThresholder.Parameters.SignalToShoulderCuttoff = 3f;
-            List<ProcessedPeak> thresholdedData = newPeakThresholder.ApplyThreshold(ref centroidedPeakList);
+            List<ProcessedPeak> thresholdedData = newPeakThresholder.ApplyThreshold(centroidedPeakList);
 
             Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
 
