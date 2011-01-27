@@ -8,10 +8,29 @@ namespace PNNLOmics.Data.Features
 	/// </summary>
 	public class FeatureLight: BaseData
 	{
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
 		public FeatureLight()
 		{
 			Clear();
-		}	    
+		}
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="feature">Feature to copy data from.</param>
+        public FeatureLight(FeatureLight feature)
+        {
+            Clear();
+            this.Abundance          = feature.Abundance;
+            this.ChargeState        = feature.ChargeState;
+            this.DriftTime          = feature.DriftTime;
+            this.ID                 = feature.ID;
+            this.MassMonoisotopic   = feature.MassMonoisotopic;
+            this.RetentionTime      = feature.RetentionTime;
+            this.Score              = feature.Score;
+            this.NET                = feature.NET;
+        }
         /// <summary>
         /// Gets or sets the abundance.
         /// </summary>
@@ -27,8 +46,11 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets or sets the retention time of a feature.
         /// </summary>
-        //TODO:  How can we convert the scan LC to time?  This should happen in Decon2ls
         public double RetentionTime { get; set; }
+        /// <summary>
+        /// Gets or sets the normalized retention time for this feature.
+        /// </summary>
+        public double NET { get; set; }
         /// <summary>
         /// Gets or sets the drift time of a feature.
         /// </summary>
@@ -52,6 +74,7 @@ namespace PNNLOmics.Data.Features
 			this.DriftTime          = 0;
 			this.ID                 = -1;
 			this.MassMonoisotopic   = 0;
+            this.NET                = 0;
             this.RetentionTime      = 0;
 		}
 		/// <summary>

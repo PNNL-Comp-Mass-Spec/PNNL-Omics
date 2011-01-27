@@ -19,6 +19,21 @@ namespace PNNLOmics.Data.Features
 		{
 			Clear();
 		}
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="feature">Feature to copy data from.</param>
+        public Feature(Feature feature)
+        {
+            Clear();
+            
+            this.Abundance          = feature.Abundance;
+            this.ChargeState        = feature.ChargeState;
+            this.DriftTime          = feature.DriftTime;
+            this.ID                 = feature.ID;
+            this.MassMonoisotopic   = feature.MassMonoisotopic;
+            this.NET                = feature.NET;            
+        }
 
         #region AutoProperties
         /// <summary>

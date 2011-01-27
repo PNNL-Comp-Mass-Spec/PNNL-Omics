@@ -18,14 +18,17 @@ namespace PNNLOmics.Algorithms.Alignment
         /// <param name="aligneeNetEnd"></param>
         /// <param name="referenceNETStart"></param>
         /// <param name="referenceNETEnd"></param>
-        public AlignmentMatch(double aligneeNETStart, double aligneeNetEnd,
-            double referenceNETStart, double referenceNETEnd, double score)
+        public AlignmentMatch(  double aligneeNETStart, 
+                                double aligneeNetEnd,
+                                double referenceNETStart,
+                                double referenceNETEnd, 
+                                double score)
         {
-            AligneeNETStart = aligneeNETStart;
-            AligneeNETEnd = aligneeNetEnd;
-            ReferenceNETStart = referenceNETStart;
-            ReferenceNETEnd = referenceNETEnd;
-            Score = score;
+            AligneeNETStart     = aligneeNETStart;
+            AligneeNETEnd       = aligneeNetEnd;
+            ReferenceNETStart   = referenceNETStart;
+            ReferenceNETEnd     = referenceNETEnd;
+            Score               = score;
         }
         #endregion
 
@@ -65,7 +68,7 @@ namespace PNNLOmics.Algorithms.Alignment
         public double AlignFeatureNET(double oldNET)
         {
             return (((oldNET - AligneeNETStart) * (ReferenceNETEnd - ReferenceNETStart)) /
-                (AligneeNETEnd - AligneeNETStart)) + ReferenceNETStart;
+                            (AligneeNETEnd - AligneeNETStart)) + ReferenceNETStart;
         }
         #endregion
     }

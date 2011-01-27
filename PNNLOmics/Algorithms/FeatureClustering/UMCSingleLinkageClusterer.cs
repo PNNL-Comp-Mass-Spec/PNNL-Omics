@@ -47,6 +47,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns>True if the clusters overlap based on group ID or false if they do not.</returns>
         private bool ContainSameDatasets(T clusterX, T clusterY)
         {
+            //BLL - This is only used if we are testing the dataset constraint.
             return false;
 
 			// Map of all group ID's to UMC's from cluster X

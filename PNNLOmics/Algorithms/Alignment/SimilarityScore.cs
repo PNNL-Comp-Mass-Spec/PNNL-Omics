@@ -11,11 +11,13 @@ namespace PNNLOmics.Algorithms.Alignment
     /// Encapsulates the similarity scoring algorithm for scoring matches between
     /// sections of an alignee and reference dataset
     /// </summary>
-    public class SimilarityScore
+    public class SimilarityScore<T, U>
+        where T : FeatureLight, new()
+        where U : FeatureLight, new()
     {
         #region Class Members
-        private AlignmentDataset m_aligneeDataset;
-        private AlignmentDataset m_referenceDataset;
+        private AlignmentDataset<T> m_aligneeDataset;
+        private AlignmentDataset<U> m_referenceDataset;
         private int m_expansionFactor;
         private int m_expansionFactorSquared;
 
@@ -35,17 +37,17 @@ namespace PNNLOmics.Algorithms.Alignment
         /// <param name="aligneeDataset"></param>
         /// <param name="referenceDataset"></param>
         /// <param name="matchCriteria"></param>
-        public SimilarityScore(AlignmentDataset aligneeDataset, AlignmentDataset referenceDataset, int expansionFactor)
+        public SimilarityScore(AlignmentDataset<T> aligneeDataset, AlignmentDataset<U> referenceDataset, int expansionFactor)
         {
-            m_aligneeDataset = aligneeDataset;
-            m_referenceDataset = referenceDataset;
-            m_expansionFactor = expansionFactor;
+            m_aligneeDataset         = aligneeDataset;
+            m_referenceDataset       = referenceDataset;
+            m_expansionFactor        = expansionFactor;
             m_expansionFactorSquared = expansionFactor * expansionFactor;
 
-            m_standardDeviationNET = NumericValues.DefaultNETStandardDeviation;
-            m_toleranceNET = NumericValues.DefaultNETTolerance;
+            m_standardDeviationNET  = NumericValues.DefaultNETStandardDeviation;
+            m_toleranceNET          = NumericValues.DefaultNETTolerance;
             m_standardDeviationMass = NumericValues.DefaultMassStandardDeviation;
-            m_toleranceMass = NumericValues.DefaultMassTolerance;
+            m_toleranceMass         = NumericValues.DefaultMassTolerance;
 
             m_hasBeenScored = false;
             m_similarityScores = null;
@@ -122,11 +124,8 @@ namespace PNNLOmics.Algorithms.Alignment
                 {
                     for (int currentExpansionFactor = 1; currentExpansionFactor <= m_expansionFactorSquared; ++currentExpansionFactor)
                     {
-                        List<Pair<Feature, Feature>> sectionMatches = GenerateSectionMatches(
-                            aligneeSection, referenceSection, currentExpansionFactor);
-
-                        m_similarityScores[aligneeSection - 1, referenceSection - 1,
-                            currentExpansionFactor - 1] = CalculateMatchScore(sectionMatches);
+                        List<Pair<T, U>> sectionMatches = GenerateSectionMatches(aligneeSection, referenceSection, currentExpansionFactor);
+                        m_similarityScores[aligneeSection - 1, referenceSection - 1,currentExpansionFactor - 1] = CalculateMatchScore(sectionMatches);
                     }
                 }
             }
@@ -160,20 +159,20 @@ namespace PNNLOmics.Algorithms.Alignment
         /// <param name="matchedFeatures">A list of matched features from the alignee
         /// and reference datasets</param>
         /// <returns>The score for this set of matches</returns>
-        private double CalculateMatchScore(List<Pair<Feature, Feature>> matchedFeatures)
+        private double CalculateMatchScore(List<Pair<T, U>> matchedFeatures)
         {
-            double score = 0.0;
+            double score     = 0.0;
             double logFactor = Math.Log10(m_standardDeviationNET * m_standardDeviationMass * 2 * Math.PI);
             double twoNETStandardDeviationSquared = 2 * (m_standardDeviationNET * m_standardDeviationNET);
             double twoMassStandardDeviationSquared = 2 * (m_standardDeviationMass * m_standardDeviationMass);
 
-            foreach (Pair<Feature, Feature> match in matchedFeatures)
+            foreach (Pair<T, U> match in matchedFeatures)
             {
-                double deltaAligneeNET = match.First.NET - match.Second.ElutionTime;
+                double deltaAligneeNET  = match.First.NET - match.Second.NET;
                 double deltaAligneeMass = (match.First.MassMonoisotopic -
                     match.Second.MassMonoisotopic) / match.Second.MassMonoisotopic;
 
-                double deltaAligneeNETSquared = deltaAligneeNET * deltaAligneeNET;
+                double deltaAligneeNETSquared  = deltaAligneeNET * deltaAligneeNET;
                 double deltaAligneeMassSquared = deltaAligneeMass * deltaAligneeMass;
 
                 score = score - logFactor - (deltaAligneeNETSquared / twoNETStandardDeviationSquared) -
@@ -197,36 +196,46 @@ namespace PNNLOmics.Algorithms.Alignment
         /// <param name="referenceSection"></param>
         /// <param name="expansionFactor"></param>
         /// <returns></returns>
-        private List<Pair<Feature, Feature>> GenerateSectionMatches(
-            int aligneeSection, int referenceSection, int expansionFactor)
+        private List<Pair<T, U>> GenerateSectionMatches(int aligneeSection, 
+                                                        int referenceSection,
+                                                        int expansionFactor)
         {
-            List<Pair<Feature, Feature>> matches = new List<Pair<Feature, Feature>>();
-            List<int> aligneeSectionFeatureIndices = m_aligneeDataset.FeatureIndicesForSection(aligneeSection - 1);
+            List<Pair<T, U>> matches                 = new List<Pair<T, U>>();
+            List<int> aligneeSectionFeatureIndices   = m_aligneeDataset.FeatureIndicesForSection(aligneeSection - 1);
             List<int> referenceSectionFeatureIndices = m_referenceDataset.FeatureIndicesForSection(referenceSection - 1);
+
+            double oneMillionth = NumericValues.OneMillionth;
+            double referenceSectionWidth      = m_referenceDataset.SectionWidth;
+            double aligneeSectionWidth        = m_aligneeDataset.SectionWidth;
+            double aligneeEarliestElutionTime = m_aligneeDataset.EarliestElutionTime;
 
             foreach (int i in aligneeSectionFeatureIndices)
             {
-                Feature aligneeFeature = m_aligneeDataset[i];
-                Feature aligneeMatch = null;
+                T aligneeFeature = m_aligneeDataset.m_dataset[i]; // m_aligneeDataset[i] as T;
+                U aligneeMatch   = null;
 
                 aligneeFeature.NET = m_aligneeDataset.EarliestElutionTime +
-                    ((referenceSection - 1) * m_referenceDataset.SectionWidth);
-                aligneeFeature.NET += (expansionFactor * m_referenceDataset.SectionWidth *
-                    (aligneeFeature.ElutionTime - (m_aligneeDataset.EarliestElutionTime + (aligneeSection - 1) *
-                    m_aligneeDataset.SectionWidth))) / m_aligneeDataset.SectionWidth;
+                                            ((referenceSection - 1) * referenceSectionWidth);
+
+                aligneeFeature.NET += (expansionFactor * referenceSectionWidth *
+                                            (aligneeFeature.NET - (aligneeEarliestElutionTime + (aligneeSection - 1) *
+                                                    aligneeSectionWidth))) / aligneeSectionWidth;
+
+                double aligneeMass = aligneeFeature.MassMonoisotopic;
+                double aligneeNET  = aligneeFeature.NET;
 
                 foreach (int j in referenceSectionFeatureIndices)
                 {
-                    Feature referenceFeature = m_referenceDataset[j];
-
-                    double timeDifference = Math.Abs(referenceFeature.ElutionTime - aligneeFeature.NET);
-                    double massDifference = Math.Abs(referenceFeature.MassMonoisotopic -
-                        aligneeFeature.MassMonoisotopic) / referenceFeature.MassMonoisotopic;
+                    U referenceFeature    = m_referenceDataset.m_dataset[j]; //m_referenceDataset[j] as U;
+                    double referenceMass  = referenceFeature.MassMonoisotopic;
+                    double referenceNET   = referenceFeature.NET;
+                    double timeDifference = Math.Abs(referenceNET  - aligneeNET);
+                    double massDifference = Math.Abs(referenceMass - aligneeMass) / referenceMass;
 
                     // TODO: Verify that the feature matching technique below is correct
 
                     // Check if the time and mass differences are both under the specified tolerances
-                    if ((timeDifference < ToleranceNET) && (massDifference < (ToleranceMass * NumericValues.OneMillionth)))
+                    if ((timeDifference < m_toleranceNET) && (massDifference < (m_toleranceMass * oneMillionth)))
                     {
                         // If no match has already been made, this is the match
                         if (aligneeMatch == null)
@@ -236,13 +245,11 @@ namespace PNNLOmics.Algorithms.Alignment
                         // A match has already been made so see which one is better
                         else
                         {
-                            double currentMatchTimeDifference = Math.Abs(aligneeMatch.NET - aligneeFeature.NET);
-                            double currentMatchMassDifference = Math.Abs(aligneeMatch.MassMonoisotopic -
-                                aligneeFeature.MassMonoisotopic) / aligneeMatch.MassMonoisotopic;
+                            double currentMatchTimeDifference = Math.Abs(aligneeMatch.NET - aligneeNET);
+                            double currentMatchMassDifference = Math.Abs(aligneeMatch.MassMonoisotopic - aligneeMass) / aligneeMatch.MassMonoisotopic;
 
                             // Check to see if the new differences are closer than the current match
-                            if ((timeDifference < currentMatchTimeDifference) &&
-                                (massDifference < currentMatchMassDifference))
+                            if ((timeDifference < currentMatchTimeDifference) && (massDifference < currentMatchMassDifference))
                             {
                                 aligneeMatch = referenceFeature;
                             }
@@ -253,21 +260,13 @@ namespace PNNLOmics.Algorithms.Alignment
                 // No match was found, create a "virtual" feature
                 if (aligneeMatch == null)
                 {
-                    aligneeMatch = (Feature)Activator.CreateInstance(m_referenceDataset[0].GetType());
-                    aligneeMatch.MassMonoisotopic = aligneeFeature.MassMonoisotopic +
-                        (aligneeFeature.MassMonoisotopic * ToleranceMass * NumericValues.OneMillionth);
-                    aligneeMatch.ElutionTime = aligneeFeature.NET + m_toleranceNET;
+                    //TODO? Activator ? really?
+                    aligneeMatch                    = Activator.CreateInstance(typeof(U)) as U; //m_referenceDataset[0].GetType()) as T;                    
+                    aligneeMatch.MassMonoisotopic   = aligneeMass + (aligneeMass * m_toleranceMass * oneMillionth);
+                    aligneeMatch.NET                = aligneeNET + m_toleranceNET;
                 }
-
-                matches.Add(new Pair<Feature, Feature>(aligneeFeature, aligneeMatch));
-
-                // If both sets are LCMS features, do some additional matching
-                if ((aligneeFeature is UMC) && (aligneeMatch is UMC))
-                {
-                    // TODO: implement additional matching for LCMS -> LCMS sets
-                }
+                matches.Add(new Pair<T, U>(aligneeFeature, aligneeMatch));
             }
-
             return matches;
         }
         #endregion

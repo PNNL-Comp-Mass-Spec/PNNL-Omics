@@ -137,6 +137,30 @@ namespace PNNLOmics.Data.Features
 			}
 
 
+            List<double> distances = new List<double>();
+            double distanceSum = 0;
+            foreach (UMCLight umc in UMCList)
+            {
+                double netValue   = NET - umc.NET;
+                double massValue  = MassMonoisotopic - umc.MassMonoisotopic;
+                double driftValue = DriftTime - umc.DriftTime;
+
+                double distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
+                distances.Add(distance);
+                distanceSum += distance;
+            }
+
+            if (centroid == ClusterCentroidRepresentation.Mean)
+            {
+                Score = Convert.ToSingle(distanceSum / UMCList.Count);
+            }
+            else
+            {
+                int mid = distances.Count / 2;
+
+                distances.Sort();
+                Score = Convert.ToSingle(distances[mid]);
+            }
 			// Calculate representative charge state as the mode.
 			int maxCharge = int.MinValue;
 			foreach (int charge in chargeStates.Keys)

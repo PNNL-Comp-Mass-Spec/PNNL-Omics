@@ -10,11 +10,13 @@ namespace PNNLOmics.Algorithms.Alignment
     /// Encapsulates the alignment scoring algorithm for generating an alignment
     /// matrix between an alignee and reference dataset
     /// </summary>
-    public class AlignmentScore
+    public class AlignmentScore<T, U>
+        where T : FeatureLight, new()
+        where U : FeatureLight, new()
     {
         #region Class Members
-        private AlignmentDataset m_aligneeDataset;
-        private AlignmentDataset m_referenceDataset;
+        private AlignmentDataset<T> m_aligneeDataset;
+        private AlignmentDataset<U> m_referenceDataset;
         private int m_expansionFactor;
         private int m_discontinuousNETSections;
 
@@ -32,18 +34,18 @@ namespace PNNLOmics.Algorithms.Alignment
         /// </summary>
         /// <param name="aligneeDataset"></param>
         /// <param name="referenceDataset"></param>
-        public AlignmentScore(AlignmentDataset aligneeDataset, AlignmentDataset referenceDataset,
+        public AlignmentScore(AlignmentDataset<T> aligneeDataset, AlignmentDataset<U> referenceDataset,
             int expansionFactor, int discontinuousNETSections)
         {
-            m_aligneeDataset = aligneeDataset;
-            m_referenceDataset = referenceDataset;
-            m_expansionFactor = expansionFactor;
-            m_discontinuousNETSections = discontinuousNETSections;
+            m_aligneeDataset            = aligneeDataset;
+            m_referenceDataset          = referenceDataset;
+            m_expansionFactor           = expansionFactor;
+            m_discontinuousNETSections  = discontinuousNETSections;
 
-            m_standardDeviationNET = NumericValues.DefaultNETStandardDeviation;
-            m_toleranceNET = NumericValues.DefaultNETTolerance;
+            m_standardDeviationNET  = NumericValues.DefaultNETStandardDeviation;
+            m_toleranceNET          = NumericValues.DefaultNETTolerance;
             m_standardDeviationMass = NumericValues.DefaultMassStandardDeviation;
-            m_toleranceMass = NumericValues.DefaultMassTolerance;
+            m_toleranceMass         = NumericValues.DefaultMassTolerance;
 
             m_alignmentMatches = new List<AlignmentMatch>(aligneeDataset.NumberOfSections);
         }
@@ -101,7 +103,7 @@ namespace PNNLOmics.Algorithms.Alignment
         /// </summary>
         /// <param name="similarityScore">The similarity score that was calculated
         /// between the two datasets as this AlignmentScore</param>
-        public void CalculateAlignmentScore(SimilarityScore similarityScore)
+        public void CalculateAlignmentScore(SimilarityScore<T, U> similarityScore)
         {
             double[,] alignmentScores = new double[m_aligneeDataset.NumberOfSections, m_referenceDataset.NumberOfSections];
 

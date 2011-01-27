@@ -1,23 +1,40 @@
-﻿using System;
+﻿/*
+ * 
+ * Reviewed 
+ *  1-18-2011
+ * 
+ */
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.PeakDetection
 {
+    //TODO: Fill in this comment.
+    /// <summary>
+    /// 
+    /// </summary>
     public class KronewitterPeakDetector: PeakDetector
     {
         /// <summary>
-        /// Gets or sets the peak detector parameters.
+        /// Parameters used for centroiding algorithms
         /// </summary>
-        public KronewitterPeakDetectorParameters Parameters {get; set;}
+        public PeakCentroiderParameters CentroidParameters { get; set; }
+
+        /// <summary>
+        /// Parameters used for thresholding algorithms
+        /// </summary>
+        public PeakThresholderParameters ThresholdParameters { get; set; }
+        
 
         /// <summary>
         /// default constructor
         /// </summary>
         public KronewitterPeakDetector()
         {
-            this.Parameters = new KronewitterPeakDetectorParameters();
+            CentroidParameters  = new PeakCentroiderParameters();
+            ThresholdParameters = new PeakThresholderParameters();
         }
 
         /// <summary>
@@ -28,41 +45,26 @@ namespace PNNLOmics.Algorithms.PeakDetection
         public override Collection<Peak> DetectPeaks(Collection<XYData> collectionRawXYData)
         {
             List<XYData> rawXYData = new List<XYData>(collectionRawXYData);
-            
+
+            //TODO: Scott Create constructor that accepts parameters.
             PeakCentroider newPeakCentroider = new PeakCentroider();
-            newPeakCentroider.Parameters = Parameters.CentroidParameters;
+            newPeakCentroider.Parameters = CentroidParameters;
+
+            // Find peaks in profile.
             List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
             centroidedPeakList = newPeakCentroider.DiscoverPeaks(rawXYData);
 
+            //TODO: Scott Create constructor that accepts parameters.
             PeakThresholder newPeakThresholder = new PeakThresholder();
-            newPeakThresholder.Parameters = Parameters.ThresholdParameters;
-            List<ProcessedPeak> thresholdedData = new List<ProcessedPeak>();
-            thresholdedData = newPeakThresholder.ApplyThreshold(ref centroidedPeakList);
-
-            Collection<Peak> outputPeakList = ConvertListProcessedPeaksTOStandardOutput(thresholdedData);
-
-            return outputPeakList;
-        }
-
-        /// <summary>
-        /// Peak is the standard object for the output collection and we need to convert processed peak lists.  
-        /// </summary>
-        /// <param name="processedPeakList">list of processed peaks</param>
-        /// <returns>list of peaks</returns>
-        private Collection<Peak> ConvertListProcessedPeaksTOStandardOutput(List<ProcessedPeak> processedPeakList)
-        {
-            Collection<Peak> outputPeakList = new Collection<Peak>();
-
-            foreach(ProcessedPeak inPeak in processedPeakList)
-            {
-                Peak newPeak = new Peak();
-                newPeak.Height = inPeak.Height;
-                newPeak.LocalSignalToNoise = (float)inPeak.SignalToBackground;
-                newPeak.Width = inPeak.Width;
-                newPeak.XValue = inPeak.XValue;
-                outputPeakList.Add(newPeak);
-            }
+            newPeakThresholder.Parameters = ThresholdParameters;
             
+            // Separate signal from noise.
+            List<ProcessedPeak> thresholdedData = null; 
+            thresholdedData = newPeakThresholder.ApplyThreshold(centroidedPeakList);
+
+            // Find peaks.
+            Collection<Peak> outputPeakList = ProcessedPeak.ToPeaks(thresholdedData); 
+
             return outputPeakList;
         }
     } 

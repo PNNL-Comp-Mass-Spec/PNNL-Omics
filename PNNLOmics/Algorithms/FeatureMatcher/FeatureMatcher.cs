@@ -177,7 +177,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             int targetIndex = 0;
             int lowerBound = 0;
 
-            
+
             // Sort both lists by mass.
             if (shortObservedList[0].MassMonoisotopicAligned == double.NaN)
             {

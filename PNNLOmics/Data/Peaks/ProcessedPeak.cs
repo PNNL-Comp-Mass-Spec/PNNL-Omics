@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using PNNLOmics.Data;
@@ -7,13 +8,13 @@ using PNNLOmics.Data;
 namespace PNNLOmics.Data
 {
     //TODO: Change name of processed peak to something more specific?
-    public class ProcessedPeak:Peak
+    public class ProcessedPeak: Peak
     {
-        //TODO set up new peak object so we can return a list
-        //TODO break up regions into functions
+    //    //TODO set up new peak object so we can return a list
+    //    //TODO break up regions into functions
         
         /// <summary>
-        /// the Scan Number this peak was found in.
+       /// the Scan Number this peak was found in.
         /// </summary>
         public int ScanNumber {get;set;}
 
@@ -54,5 +55,28 @@ namespace PNNLOmics.Data
             this.MinimaOfHigherMassIndex = 0;
             this.MinimaOfLowerMassIndex = 0;
         }
+
+        //TODO: Change List to Collection?
+        /// <summary>
+        /// Peak is the standard object for the output collection and we need to convert processed peak lists.  
+        /// </summary>
+        /// <param name="processedPeakList">list of processed peaks</param>
+        /// <returns>list of peaks</returns>
+        public static Collection<Peak> ToPeaks(List<ProcessedPeak> peaks)
+        {
+            Collection<Peak> outputPeakList = new Collection<Peak>();
+
+            foreach (ProcessedPeak inPeak in peaks)
+            {
+                Peak newPeak = new Peak();
+                newPeak.Height = inPeak.Height;
+                newPeak.LocalSignalToNoise = Convert.ToSingle(inPeak.SignalToBackground);
+                newPeak.Width = inPeak.Width;
+                newPeak.XValue = inPeak.XValue;
+                outputPeakList.Add(newPeak);
+            }
+
+            return outputPeakList;
+        }        
     }
 }

@@ -1,21 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Alignment
 {
-    public class AlignmentDataset : IEnumerable
+    /// <summary>
+    /// Holds a structured form of the features to be aligned or aligned against.
+    /// </summary>
+    public class AlignmentDataset<T>: IEnumerable
+        where T : FeatureLight, new()
     {
         #region Class Members
-        private IEnumerable<Feature> m_dataset;
+        //private IEnumerable<T>  m_dataset;
+        //private List<T>         m_dataset;
+        public  readonly List<T> m_dataset;
         private List<List<int>> m_sections;
-        private int m_numberOfSections;
-        private double m_sectionWidth;
-        private double m_earliestFeatureElutionTime;
-        private double m_lastestFeatureElutionTime;
+        private int             m_numberOfSections;
+        private double          m_sectionWidth;
+        private double          m_earliestFeatureElutionTime;
+        private double          m_lastestFeatureElutionTime;
         #endregion
 
         #region Constructor
@@ -24,38 +30,62 @@ namespace PNNLOmics.Algorithms.Alignment
         /// </summary>
         /// <param name="dataset"></param>
         /// <param name="numberOfSections"></param>
-        public AlignmentDataset(IList<Feature> dataset, int numberOfSections)
+        public AlignmentDataset(ICollection<T> dataset, int numberOfSections)
         {
-            m_numberOfSections = numberOfSections;
+            if (dataset.Count < 1)
+            {
+                throw new Exception();
+                //   throw new InvalidAlignmentParameterException("There are not enough alignment features.");
+            }
+
+            if (numberOfSections < 1)
+            {
+                throw new Exception();
+                //throw new InvalidAlignmentParameterException("There are not enough sections.");
+            }
+
+            m_sections                   = null;            
 
             // Sort the dataset by ascending elution times
-            m_dataset = dataset.OrderBy(f => f.NET);
-            m_earliestFeatureElutionTime = m_dataset.First().NET;
-            m_lastestFeatureElutionTime = m_dataset.Last().NET;
+            //m_dataset                    = dataset.OrderBy(f => f.NET);
+            IEnumerable<T> enumerableDataset = dataset.OrderBy(f => f.NET);
+            m_dataset              = new List<T>(enumerableDataset);
 
-            DivideDatasetIntoSections();
+            m_earliestFeatureElutionTime = m_dataset.First().NET;
+            m_lastestFeatureElutionTime  = m_dataset.Last().NET;
+
+            if (Math.Abs(m_earliestFeatureElutionTime - m_lastestFeatureElutionTime) <= double.Epsilon)
+            {
+                throw new Exception();
+                //throw new InvalidAlignmentParameterException("The input features have the same NET value.");                
+            }
+
+            // Setting this property will automagically partition the data for us.
+            NumberOfSections = numberOfSections;
         }
         #endregion
 
         #region Properties
         /// <summary>
-        /// Gets the feature from the dataset at the specified index
+        /// Gets the Feature from the dataset at the specified index
         /// </summary>
-        /// <param name="index">Index of feature to get</param>
-        /// <returns>The feature at the specified index</returns>
-        public Feature this[int index]
+        /// <param name="index">Index of Feature to get</param>
+        /// <returns>The Feature at the specified index</returns>
+        public T this[int index]
         {
-            get { return m_dataset.ElementAt(index); }
-        }
-
+            get
+            {
+                return m_dataset[index];                
+            }
+        }        
         /// <summary>
         /// Gets the number of Features stored in this AlignmentDataset
         /// </summary>
         public int Count
         {
-            get { return m_dataset.Count(); }
+            //get { return m_dataset.Count(); }
+            get { return m_dataset.Count; }
         }
-
         /// <summary>
         /// Gets or sets the number of sections this dataset is broken into
         /// </summary>
@@ -64,11 +94,16 @@ namespace PNNLOmics.Algorithms.Alignment
             get { return m_numberOfSections; }
             set
             {
+                if (value < 1)
+                {
+                    throw new Exception();
+                    //throw new InvalidAlignmentParameterException("The number of sections must be greater than one.");
+                }
                 m_numberOfSections = value;
+
                 DivideDatasetIntoSections();
             }
         }
-
         /// <summary>
         /// Gets the width that each section of this dataset is broken into
         /// </summary>
@@ -76,7 +111,6 @@ namespace PNNLOmics.Algorithms.Alignment
         {
             get { return m_sectionWidth; }
         }
-
         /// <summary>
         /// Gets the earliest elution time that appears in the dataset
         /// </summary>
@@ -84,7 +118,6 @@ namespace PNNLOmics.Algorithms.Alignment
         {
             get { return m_earliestFeatureElutionTime; }
         }
-
         /// <summary>
         /// Gets the latest elution time that appears in the dataset
         /// </summary>
@@ -95,26 +128,22 @@ namespace PNNLOmics.Algorithms.Alignment
         #endregion
 
         #region Public Methods
-        
-        #region IEnumerable Methods
         /// <summary>
         /// This function allows AlignmentDataset to be used within a "foreach" loop
         /// </summary>
         /// <returns>The next Feature</returns>
         public IEnumerator GetEnumerator()
         {
-            foreach (Feature feature in m_dataset)
+            foreach (T feature in m_dataset)
             {
                 yield return feature;
             }
         }
-        #endregion
-
         /// <summary>
-        /// Gets the indices of the features for the specified section
+        /// Gets the indices of the Features for the specified section
         /// </summary>
         /// <param name="section">The section to get</param>
-        /// <returns>A list of int's representing the indices of the features
+        /// <returns>A list of int's representing the indices of the Features
         /// belonging to the requested section from the dataset. Returns null if
         /// the section is out of bounds</returns>
         public List<int> FeatureIndicesForSection(int section)
@@ -129,7 +158,7 @@ namespace PNNLOmics.Algorithms.Alignment
 
         #region Private Methods
         /// <summary>
-        /// Populates the internal list of sections with indices of features from
+        /// Populates the internal list of sections with indices of Features from
         /// the dataset for which section they belong to
         /// </summary>
         private void DivideDatasetIntoSections()
@@ -149,15 +178,26 @@ namespace PNNLOmics.Algorithms.Alignment
 
             for (int i = 0; i < m_numberOfSections; ++i)
             {
-                m_sections[i] = new List<int>();
+                m_sections.Add(new List<int>());
             }
 
-            // Calculate which section each feature belongs too
-            for (int i = 0; i < m_dataset.Count(); ++i)
+            // Calculate which section each Feature belongs too
+            int     count       = m_dataset.Count();
+            
+            double elutionTimeWindow = m_lastestFeatureElutionTime - m_earliestFeatureElutionTime;
+            //for (int i = 0; i < count; ++i)
+            int j = 0;
+            foreach(T feature in m_dataset)
             {
-                int featureSection = (int)Math.Floor(((m_dataset.ElementAt(i).NET - m_earliestFeatureElutionTime) *
-                    m_numberOfSections) / (m_lastestFeatureElutionTime - m_earliestFeatureElutionTime)) + 1;
-                m_sections[featureSection].Add(i);
+
+                //int featureSection = (int)Math.Floor(((m_dataset.ElementAt(i).NET - m_earliestFeatureElutionTime) *
+                int featureSection = (int)Math.Floor(((feature.NET - m_earliestFeatureElutionTime) *
+                    m_numberOfSections) / (elutionTimeWindow));
+
+                featureSection = Math.Min(m_numberOfSections - 1, featureSection);
+                featureSection = Math.Max(0, featureSection);
+
+                m_sections[featureSection].Add(j++);
             }
         }
         #endregion

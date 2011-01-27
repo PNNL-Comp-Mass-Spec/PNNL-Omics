@@ -33,7 +33,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <param name="peakShoulderNoise">lowest minima point intensity surrounding the peak</param>
         /// <param name="localMinimaData">index of minima on each side of point X=left, Y=right</param>
         /// <param name="parameters">Peakthreshold parameters</param>
-        public List<ProcessedPeak> ApplyThreshold(ref List<ProcessedPeak> peakList)
+        public List<ProcessedPeak> ApplyThreshold(List<ProcessedPeak> peakList)
         {
             List<ProcessedPeak> ResultListThresholded = new List<ProcessedPeak>();
             //int numPoints = peakData.Count;

@@ -52,6 +52,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				// Add to output list...
 				clusters.Add(id, umc.UMCCluster as T);
 			}
+            foreach (T cluster in clusters.Values)
+            {
+                cluster.CalculateStatistics(Parameters.CentroidRepresentation);
+            }
 			return clusters;
 		}
 
@@ -63,7 +67,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// <param name="stop">Stop UMC index.</param>
 		/// <param name="data">List of data to compute distances over.</param>
 		/// <returns>List of UMC distances to consider during clustering.</returns>
-		protected List<PairwiseDistance<UMCLight>> CalculatePairWiseDistances(int start, int stop, List<UMCLight> data)
+		protected virtual List<PairwiseDistance<UMCLight>> CalculatePairWiseDistances(int start, int stop, List<UMCLight> data)
 		{
 			double massTolerance = Parameters.Tolerances.Mass;
 			double netTolerance = Parameters.Tolerances.RetentionTime;
@@ -88,9 +92,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 					UMCLight featureY = data[j];
 
 					// Don't calculate distance to other features within same group
-					if (featureY.GroupID == groupIDX)
+					//if (featureY.GroupID == groupIDX)
 					{
-						continue;
+						//continue;
 					}
 
 					// Calculate the distances here (using a cube).  We dont care if we are going to re-compute
