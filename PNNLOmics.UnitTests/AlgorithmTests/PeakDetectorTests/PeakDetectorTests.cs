@@ -13,7 +13,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
     public class PeakDetectorTests
     {
         [Test]
-        public void PeakDetectorV3_DiscoverPeaks_only_no_ThresholdingTest()
+        public void PeakDetectorV3_DiscoverPeaks_only_no_ThresholdingTest_AOnly()
         {
             float[] xvals = null;
             float[] yvals = null;
@@ -34,7 +34,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
         }
 
         [Test]
-        public void PeakDetectorV3_DiscoverPeaks_Then_Threshold()
+        public void PeakDetectorV3_DiscoverPeaks_Then_Threshold_A_and_B()
         {
             float[] xvals = null;
             float[] yvals = null;
