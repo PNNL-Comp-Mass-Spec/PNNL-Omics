@@ -129,6 +129,12 @@
     <Compile Include="Algorithms\PeakDetection\PeakThresholderParameters.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\Constants\AminoAcidName.cs" />
+    <Compile Include="Data\Constants\CrossRingName.cs" />
+    <Compile Include="Data\Constants\ElementName.cs" />
+    <Compile Include="Data\Constants\MiscellaneousMatterName.cs" />
+    <Compile Include="Data\Constants\MonosaccharideName.cs" />
+    <Compile Include="Data\Constants\SubAtomicParticleName.cs" />
     <Compile Include="Data\Peaks\ProcessedPeak.cs" />
     <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Data\CollisionType.cs" />
