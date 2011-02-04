@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using PNNLOmics.Data.Constants;
-using PNNLOmics.Data.Constants.Enumerations;
 
 //TODO: SCOTT - CR - Update all dictionary example xml comments.
 /// <example>

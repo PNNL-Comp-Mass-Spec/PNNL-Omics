@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PNNLOmics.Data.Constants.Enumerations
+namespace PNNLOmics.Data.Constants
 {
 
 	/// <summary>

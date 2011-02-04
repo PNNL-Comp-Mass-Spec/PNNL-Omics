@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using PNNLOmics.Data.Constants;
-using PNNLOmics.Data.Constants.Enumerations;
 
 /// <example>
 /// dictionary implementation                        

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using PNNLOmics.Data.Constants.Enumerations;
 
 /// <example>
 /// dictionary implementation
@@ -72,7 +71,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             asparticAcid.NewElements(4, 5, 1, 3, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             asparticAcid.Name = "AsparticAcid";
             asparticAcid.Symbol = "D";
-            asparticAcid.ChemicalFormula = "C5H5NO3";
+            asparticAcid.ChemicalFormula = "C4H5NO3";
             asparticAcid.MassMonoIsotopic = Compound.GetMonoisotopicMass(asparticAcid);
 
             Compound cysteine = new Compound();
@@ -163,7 +162,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             threonine.NewElements(4, 7, 1, 2, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             threonine.Name = "Threonine";
             threonine.Symbol = "T";
-            threonine.ChemicalFormula = "C4H7NO";
+            threonine.ChemicalFormula = "C4H7NO2";
             threonine.MassMonoIsotopic = Compound.GetMonoisotopicMass(threonine);
 
             Compound tryptophan = new Compound();

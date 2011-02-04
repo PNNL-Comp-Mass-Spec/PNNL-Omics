@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using PNNLOmics.Data.Constants;
-using PNNLOmics.Data.Constants.Enumerations;
 
 namespace PNNLOmics.Data.Constants.Libraries
 {

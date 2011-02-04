@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using PNNLOmics.Data.Constants.Libraries;
-using PNNLOmics.Data.Constants.Enumerations;
 
 namespace PNNLOmics.Data.Constants
 {
