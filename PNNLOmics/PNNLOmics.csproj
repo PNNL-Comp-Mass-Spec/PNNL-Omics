@@ -133,12 +133,6 @@
     <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\Constants\Constants.cs" />
-    <Compile Include="Data\Constants\Enumerations\AminoAcidName.cs" />
-    <Compile Include="Data\Constants\Enumerations\CrossRingName.cs" />
-    <Compile Include="Data\Constants\Enumerations\ElementName.cs" />
-    <Compile Include="Data\Constants\Enumerations\MiscellaneousMatterName.cs" />
-    <Compile Include="Data\Constants\Enumerations\MonosaccharideName.cs" />
-    <Compile Include="Data\Constants\Enumerations\SubAtomicParticleName.cs" />
     <Compile Include="Data\Constants\Libraries\AminoAcidLibrary.cs" />
     <Compile Include="Data\Constants\Libraries\CrossRingLibrary.cs" />
     <Compile Include="Data\Constants\Libraries\ElementLibrary.cs" />

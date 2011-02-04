@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using System.Diagnostics;
 using PNNLOmics.Data.Constants;
-using PNNLOmics.Data.Constants.Enumerations;
 using PNNLOmics.Data.Constants.Libraries;
 
 namespace PNNLOmics.UnitTests.ConstantsTests
