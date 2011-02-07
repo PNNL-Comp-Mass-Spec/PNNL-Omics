@@ -693,7 +693,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
-            Assert.AreEqual(2, clusters.Count);
+            Assert.AreEqual(1, clusters.Count);
         }
         /// <summary>
         /// Only produces a single cluster because all features should have the same mass.
@@ -756,7 +756,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             // Make sure we have only one cluster.
             Assert.IsNotNull(clusters);
-            Assert.AreEqual(2, clusters.Count);                                   
+            Assert.AreEqual(1, clusters.Count);                                   
         }
         #endregion
     }
