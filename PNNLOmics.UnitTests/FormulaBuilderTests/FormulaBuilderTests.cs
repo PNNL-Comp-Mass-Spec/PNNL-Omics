@@ -12,7 +12,7 @@ namespace PNNLOmics.UnitTests.FormulaBuilderTests
 		[Test]
 		public void TestFormulaCalculator()
 		{
-			AAFormulaBuilder formBuild = new AAFormulaBuilder();
+			AminoAcidFormulaBuilder formBuild = new AminoAcidFormulaBuilder();
 			Dictionary<string, int> formula = formBuild.ConvertToMolecularFormula("ANKYLSRRH");
 			Assert.AreEqual(49, formula["C"]);
 			Assert.AreEqual(81, formula["H"]);
