@@ -3,7 +3,7 @@ using PNNLOmics.Data.Constants;
 
 namespace PNNLOmics.Data.FormulaBuilder
 {
-	public class AAFormulaBuilder : FormulaBuilderBase
+	public class AminoAcidFormulaBuilder : FormulaBuilderBase
 	{
 
 		/// <summary>
