@@ -135,6 +135,10 @@
     <Compile Include="Data\Constants\MiscellaneousMatterName.cs" />
     <Compile Include="Data\Constants\MonosaccharideName.cs" />
     <Compile Include="Data\Constants\SubAtomicParticleName.cs" />
+    <Compile Include="Data\FormulaBuilder\AminoAcidFormulaBuilder.cs" />
+    <Compile Include="Data\FormulaBuilder\FormulaBuilderBase.cs" />
+    <Compile Include="Data\FormulaBuilder\OligosaccharideFormulaBuilder.cs" />
+    <Compile Include="Data\FormulaBuilder\SimpleFormulaBuilder.cs" />
     <Compile Include="Data\Peaks\ProcessedPeak.cs" />
     <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Data\CollisionType.cs" />

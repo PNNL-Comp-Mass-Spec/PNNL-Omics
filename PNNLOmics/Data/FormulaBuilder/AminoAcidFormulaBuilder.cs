@@ -7,7 +7,7 @@ namespace PNNLOmics.Data.FormulaBuilder
 	{
 
 		/// <summary>
-		/// Converts an amino acid sequence into a molecular formula
+		/// Converts an amino acid sequence into a molecular formula.  This does not include water or any other adduct.
 		/// </summary>
 		/// <param name="inputSequence"></param>
 		/// <param name="chargeState"></param>
@@ -31,8 +31,6 @@ namespace PNNLOmics.Data.FormulaBuilder
 					}
 				}
 			}
-			chemicalFormula["H"] += 2;
-			chemicalFormula["O"] += 1;
 			return chemicalFormula;
 		}
 
