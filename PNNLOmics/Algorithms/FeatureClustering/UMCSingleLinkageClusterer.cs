@@ -47,29 +47,30 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns>True if the clusters overlap based on group ID or false if they do not.</returns>
         private bool ContainSameDatasets(T clusterX, T clusterY)
         {
+			// TODO: BLL - Should there be a setting for this, or should it just be removed entirely?
             //BLL - This is only used if we are testing the dataset constraint.
             return false;
 
-			// Map of all group ID's to UMC's from cluster X
-			Dictionary<int, UMCLight> groupMapping = new Dictionary<int, UMCLight>();
+			//// Map of all group ID's to UMC's from cluster X
+			//Dictionary<int, UMCLight> groupMapping = new Dictionary<int, UMCLight>();
 
-			// The goal here is to first create a lookup of all UMC groups (datasets)
-			// from cluster X.  Then iterate through cluster Y's UMC list to find 
-			// UMCs with the same dataset.
-			// This reduces our search run time from the previous O(N^2) to O(2N) max.
-            foreach (UMCLight umcX in clusterX.UMCList)
-            {
-				groupMapping.Add(umcX.GroupID, umcX);
-			}
+			//// The goal here is to first create a lookup of all UMC groups (datasets)
+			//// from cluster X.  Then iterate through cluster Y's UMC list to find 
+			//// UMCs with the same dataset.
+			//// This reduces our search run time from the previous O(N^2) to O(2N) max.
+			//foreach (UMCLight umcX in clusterX.UMCList)
+			//{
+			//    groupMapping.Add(umcX.GroupID, umcX);
+			//}
 			
-			foreach(UMCLight umcY in clusterY.UMCList)
-            {
-				if (groupMapping.ContainsKey(umcY.GroupID))
-				{
-					return true;
-				}                 
-            }
-            return false;
+			//foreach(UMCLight umcY in clusterY.UMCList)
+			//{
+			//    if (groupMapping.ContainsKey(umcY.GroupID))
+			//    {
+			//        return true;
+			//    }                 
+			//}
+			//return false;
         }
         /// <summary>
         /// Performs single linkage clustering over the data and returns a list of UMC clusters.
