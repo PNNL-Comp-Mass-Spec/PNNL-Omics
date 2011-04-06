@@ -27,7 +27,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or the height of the peak.
         /// </summary>
-        public float Height
+        public double Height
         {
             get;
             set;
@@ -35,7 +35,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the X-Value of the peak (e.g. time, scan, m/z)
         /// </summary>        
-        public float XValue
+        public double XValue
         {
             get;
             set;

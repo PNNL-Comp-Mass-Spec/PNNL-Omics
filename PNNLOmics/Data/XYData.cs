@@ -7,18 +7,18 @@ namespace PNNLOmics.Data
 {
     public class XYData: BaseData
     {                
-        public XYData(float newX, float newY)
+        public XYData(double newX, double newY)
         {
             X = newX;
             Y = newY;
         }
 
-        public float X
+        public double X
         {
             get;
             set;
         }
-        public float Y
+        public double Y
         {
             get;
             set;
