@@ -92,7 +92,7 @@ namespace PNNLOmics.Data.Features
 		/// <summary>
 		/// The sum of the abundance of the UMC.
 		/// </summary>
-		public int AbundanceSum { get; set; }
+		public long AbundanceSum { get; set; }
 		/// <summary>
 		/// The maximum Dalton Correction to be applied to the UMC.
 		/// </summary>
