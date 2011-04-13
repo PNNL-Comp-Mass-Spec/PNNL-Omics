@@ -96,6 +96,14 @@ namespace PNNLOmics.Utilities.ConsoleUtil
 							value = key.Substring(switchParameterLocation + 1).Trim().Trim(new char[] { '"' });
 							key = key.Substring(1, switchParameterLocation - 1);
 						}
+						else if (i < parameters.Length - 1 && !parameters[i + 1].StartsWith(SWITCH_START) && !parameters[i + 1].StartsWith("-"))
+						{
+							// Parameter is of the form /I MyParam or -I MyParam
+							string nextParameter = parameters[i + 1];
+							key = key.Substring(1);
+							value = nextParameter.Trim(new char[] { '"' });
+							i++;
+						}
 						else
 						{
 							// Parameter is of the form /S or -S
