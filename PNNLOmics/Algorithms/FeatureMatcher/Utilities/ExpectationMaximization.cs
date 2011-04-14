@@ -324,7 +324,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             if (normalDensityT > 0)
             {
                 double numerator = mixtureParameter * prior * normalDensityT;
-                return Math.Log(numerator) - Math.Log(numerator + mixtureParameter * (1 - prior) * normalDensityF + (1 - mixtureParameter) * uniformDensity);
+				double posteriorReal = mixtureParameter * (1 - prior) * normalDensityF;
+				double posteriorIReal = (1 - mixtureParameter) * uniformDensity;
+
+				return Math.Log(numerator) - Math.Log(numerator + posteriorReal + posteriorIReal);
             }
             return 0.0;
         }
