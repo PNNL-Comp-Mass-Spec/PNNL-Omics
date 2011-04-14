@@ -39,7 +39,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests
             fm.MatchFeatures();
 
             //Assert.AreNotEqual(0, fm.MatchList.Count);
-            Assert.AreEqual(0, fm.MatchList.Count);
+            Assert.AreEqual(11, fm.MatchList.Count);
 
             //bool useDriftDimension=false;
             //bool usePrior = false;
