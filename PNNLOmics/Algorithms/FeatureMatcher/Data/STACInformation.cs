@@ -339,7 +339,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 // Increment the counter to show that another iteration has been completed.
                 m_iteration++;
                 // Set the convergence flag and exit the while loop if the convergence criteria is met.
-                if (Math.Abs(nextLogLikelihood - m_logLikelihood) < EPSILON)
+				if (m_iteration > 10 && Math.Abs(nextLogLikelihood - m_logLikelihood) < EPSILON)
                 {
                     converges = true;
                     break;
