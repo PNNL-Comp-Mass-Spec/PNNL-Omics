@@ -640,8 +640,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 m_matchList.Clear();
                 m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, false, 0);
 
-				// TODO: KLC - The # of matches is the same as the c++ code. Right now, the app bombs below this, when performing STAC
-
                 bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
                 if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
                 {
