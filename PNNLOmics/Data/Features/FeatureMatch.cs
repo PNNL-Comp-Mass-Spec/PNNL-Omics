@@ -206,6 +206,7 @@ namespace PNNLOmics.Data.Features
             m_targetFeature = targetFeature;
             m_useDriftTime = useDriftTime;
             m_shiftedMatch = shiftedMatch;
+			SetDifferenceMatrices();
         }
         /// <summary>
         /// Sets the internal flag as to whether the match is within the given tolerances.
