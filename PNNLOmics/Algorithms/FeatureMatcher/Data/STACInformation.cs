@@ -334,19 +334,30 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 m_meanVectorF = ExpectationMaximization.UpdateNormalMeanVector(dataList, alphaList, priorList, true);
                 m_covarianceMatrixT = ExpectationMaximization.UpdateNormalCovarianceMatrix(dataList, m_meanVectorT, alphaList, priorList, false, false);
                 m_covarianceMatrixF = ExpectationMaximization.UpdateNormalCovarianceMatrix(dataList, m_meanVectorF, alphaList, priorList, false, true);
+
                 // Calculate the loglikelihood based on the new parameters.
                 nextLogLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity, useDriftTime);
+
+				// Print statistics every 10 iterations
+				if (m_iteration % 10 == 0)
+				{
+					PrintCurrentStatistics(nextLogLikelihood);
+				}
+
                 // Increment the counter to show that another iteration has been completed.
                 m_iteration++;
+
                 // Set the convergence flag and exit the while loop if the convergence criteria is met.
 				if (m_iteration > 10 && Math.Abs(nextLogLikelihood - m_logLikelihood) < EPSILON)
                 {
                     converges = true;
                     break;
                 }
+
                 // Update the loglikelihood.
                 m_logLikelihood = nextLogLikelihood;
             }
+
             // Return the convergence flag, which is still false unless changed to true above.
             return converges;
         }
@@ -385,19 +396,30 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 m_mixtureProportion = UpdateNUMixtureParameter(featureMatchList, uniformDensity, ref alphaList);
                 m_meanVectorT = ExpectationMaximization.UpdateNormalMeanVector(dataList, alphaList);
                 m_covarianceMatrixT = ExpectationMaximization.UpdateNormalCovarianceMatrix(dataList, m_meanVectorT, alphaList, false);
-                // Calculate the loglikelihood based on the new parameters.
+                
+				// Calculate the loglikelihood based on the new parameters.
                 nextLogLikelihood = CalculateNULogLikelihood(featureMatchList, uniformDensity, useDriftTime);
+
+				// Print statistics every 10 iterations
+				if (m_iteration % 10 == 0)
+				{
+					PrintCurrentStatistics(nextLogLikelihood);
+				}
+
                 // Increment the counter to show that another iteration has been completed.
                 m_iteration++;
+
                 // Set the convergence flag and exit the while loop if the convergence criteria is met.
                 if (Math.Abs(nextLogLikelihood - m_logLikelihood) < EPSILON)
                 {
                     converges = true;
                     break;
                 }
+
                 // Update the loglikelihood.
                 m_logLikelihood = nextLogLikelihood;
             }
+
             // Return the convergence flag, which is still false unless changed to true above.
             return converges;
         }
@@ -633,6 +655,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         {
             return Math.Sin(Math.PI * alpha) / Math.PI * Math.Pow(stac, (alpha - 1)) * Math.Pow((1 - stac), (-1 * alpha));
         }
+
+		private void PrintCurrentStatistics(double logLikelihood)
+		{
+			Console.WriteLine("Parameters after " + m_iteration + " iterations:");
+			Console.WriteLine("\tLoglikelihood = " + logLikelihood + "\tAlpha = " + m_mixtureProportion);
+			Console.WriteLine();
+		}
         #endregion
     }
 }
