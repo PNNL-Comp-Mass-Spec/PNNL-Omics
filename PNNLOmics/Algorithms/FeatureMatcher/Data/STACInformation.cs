@@ -105,8 +105,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             {
                 m_meanVectorT = new Matrix(2, 1, 0.0);
                 m_covarianceMatrixT = new Matrix(2, 2, 0.0);
-                m_covarianceMatrixT[1, 1] = 2.0;
-                m_covarianceMatrixT[2, 2] = 0.3;
+                m_covarianceMatrixT[0, 0] = 2.0;
+                m_covarianceMatrixT[1, 1] = 0.3;
                 m_meanVectorF = m_meanVectorT;
                 m_covarianceMatrixF = m_covarianceMatrixT;
             }
@@ -133,10 +133,19 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             {
                 uniformDensity /= (2 * toleranceMatrix[i, 0]);
             }
+
             // Train the EM parameters on the data.
             if (usePrior)
             {
-                return TrainWithPrior(featureMatchList, uniformDensity, useDriftTime);
+				if (typeof(U).Equals(typeof(MassTag)))
+				{
+					List<FeatureMatch<T, MassTag>> newFeatureMatchList2 = featureMatchList as List<FeatureMatch<T, MassTag>>;
+					return TrainWithPrior(newFeatureMatchList2, uniformDensity, useDriftTime);
+				}
+				else
+				{
+					return TrainWithoutPrior(featureMatchList, uniformDensity, useDriftTime);
+				}
             }
             else
             {
@@ -296,14 +305,16 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
         /// <returns>A boolean flag indicating the convergence state of the algorithm.</returns>
-        private bool TrainWithPrior<T>(List<FeatureMatch<T, MassTag>> featureMatchList, double uniformDensity, bool useDriftTime) where T : Feature, new()
+        private bool TrainWithPrior<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, bool useDriftTime) 
+			where T : Feature, new()
+			where U : MassTag, new()
         {
             Clear();
             bool converges = false;
 
             List<Matrix> dataList = new List<Matrix>();
             List<double> priorList = new List<double>();
-            foreach (FeatureMatch<T, MassTag> match in featureMatchList)
+            foreach (FeatureMatch<T, U> match in featureMatchList)
             {
                 dataList.Add(match.DifferenceVector);
                 priorList.Add(match.TargetFeature.PriorProbability);
@@ -339,21 +350,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             // Return the convergence flag, which is still false unless changed to true above.
             return converges;
         }
-        /// <summary>
-        /// Overload function to catch data that does not contain a prior probabilities.
-        /// </summary>
-        /// <typeparam name="T">The type of the observed feature.  Derived from Feature.</typeparam>
-        /// <typeparam name="U">The type of the target feature.  Derived from Feature.</typeparam>
-        /// <param name="featureMatchList">List of FeatureMatches to train data on.</param>
-        /// <param name="uniformDensity">Density of uniform distribution.</param>
-        /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
-        /// <returns>A boolean flag indicating the convergence state of the algorithm.</returns>
-        private bool TrainWithPrior<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, bool useDriftTime)
-            where T : Feature, new()
-            where U : Feature, new()
-        {
-            return TrainWithoutPrior(featureMatchList, uniformDensity, useDriftTime);
-        }
+
         /// <summary>
         /// Train the STAC parameters without using prior probabilities.
         /// </summary>
@@ -422,7 +419,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             }
             else
             {
-                return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, MatrixUtilities.RemoveRow(m_meanVectorT, 4), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 4), uniformDensity, m_mixtureProportion);
+                return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, m_meanVectorT, m_covarianceMatrixT, uniformDensity, m_mixtureProportion);
             }
         }
         /// <summary>
@@ -505,7 +502,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="featureMatch">FeatureMatch to evaluate at.</param>
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <returns>The value of the loglikelihood evaluated at featureMatch.</returns>
-        private double CalculateNNULogLikelihood<T>(FeatureMatch<T, MassTag> featureMatch, double uniformDensity) where T : Feature, new()
+        private double CalculateNNULogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity)
+			where T : Feature, new()
+			where U : MassTag, new()
         {
             if (featureMatch.UseDriftTimePredicted)
             {
@@ -513,7 +512,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             }
             else
             {
-                return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, MatrixUtilities.RemoveRow(m_meanVectorT, 4), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 4), MatrixUtilities.RemoveRow(m_meanVectorF, 4), MatrixUtilities.ReduceMatrix(m_covarianceMatrixF, 4), uniformDensity, m_mixtureProportion);
+                return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion);
             }
         }
         /// <summary>
@@ -523,10 +522,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="featureMatchList">List of FeatureMatches to evaluate at.</param>
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <returns>The value of the loglikelihood evaluated over featureMatchList.</returns>
-        private double CalculateNNULogLikelihood<T>(List<FeatureMatch<T, MassTag>> featureMatchList, double uniformDensity) where T : Feature, new()
+        private double CalculateNNULogLikelihood<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity)
+			where T : Feature, new()
+			where U : MassTag, new()
         {
             double loglikelihood = 0.0;
-            foreach (FeatureMatch<T, MassTag> match in featureMatchList)
+            foreach (FeatureMatch<T, U> match in featureMatchList)
             {
                 loglikelihood += CalculateNNULogLikelihood(match, uniformDensity);
             }
@@ -540,7 +541,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
         /// <returns>The value of the loglikelihood evaluated over featureMatchList.</returns>
-        private double CalculateNNULogLikelihood<T>(List<FeatureMatch<T, MassTag>> featureMatchList, double uniformDensity, bool useDriftTime) where T : Feature, new()
+        private double CalculateNNULogLikelihood<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, bool useDriftTime)
+			where T : Feature, new()
+			where U : MassTag, new()
         {
             double logLikelihood = 0.0;
             if (useDriftTime)
@@ -551,7 +554,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             {
                 List<Matrix> dataList = new List<Matrix>();
                 List<double> priorList = new List<double>();
-                foreach (FeatureMatch<T, MassTag> match in featureMatchList)
+                foreach (FeatureMatch<T, U> match in featureMatchList)
                 {
                     dataList.Add(match.DifferenceVector);
                     priorList.Add(match.TargetFeature.PriorProbability);
@@ -568,12 +571,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="alphaList">List to be filled with individual mixture values.</param>
         /// <returns>The updated mixture proportion.</returns>
-        private double UpdateNNUMixtureParameter<T>(List<FeatureMatch<T, MassTag>> featureMatchList, double uniformDensity, ref List<double> alphaList) where T : Feature, new()
+        private double UpdateNNUMixtureParameter<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, ref List<double> alphaList)
+			where T : Feature, new()
+			where U : MassTag, new()
         {
             double nextMixtureParameter = 0.0;
             alphaList.Clear();
 
-            foreach (FeatureMatch<T, MassTag> match in featureMatchList)
+            foreach (FeatureMatch<T, U> match in featureMatchList)
             {
                 double alpha = Math.Exp(CalculateNNULogLikelihood(match, uniformDensity));
                 alphaList.Add(alpha);

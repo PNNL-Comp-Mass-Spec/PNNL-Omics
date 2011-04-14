@@ -250,9 +250,9 @@ namespace PNNLOmics.Data.Features
                     double distance = 0;
                     double massDiff = m_observedFeature.MassMonoisotopicAligned - m_targetFeature.MassMonoisotopicAligned;
                     double netDiff = m_observedFeature.NETAligned - m_targetFeature.NETAligned;
-                    distance += massDiff * massDiff / toleranceMatrix[1, 0] / toleranceMatrix[1, 0];
-                    distance += netDiff * netDiff / toleranceMatrix[2, 0] / toleranceMatrix[2, 0];
-                    // Add drift time difference.
+                    distance += massDiff * massDiff / toleranceMatrix[0, 0] / toleranceMatrix[0, 0];
+                    distance += netDiff * netDiff / toleranceMatrix[1, 0] / toleranceMatrix[1, 0];
+                    // TODO: Add drift time difference.
                     m_withinRefinedRegion = (distance <= 1);
                 }
                 else

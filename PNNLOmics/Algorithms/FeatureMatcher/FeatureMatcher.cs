@@ -263,10 +263,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private FeatureMatcherTolerances FindOptimalTolerances(List<FeatureMatch<T, U>> matchList)
         {
             List<Matrix> differenceMatrixList = new List<Matrix>();
-            for (int i = 0; i <= matchList.Count; i++)
-            {
-                differenceMatrixList.Add(matchList[i].ReducedDifferenceVector);
-            }
+			foreach (FeatureMatch<T, U> featureMatch in matchList)
+			{
+				differenceMatrixList.Add(featureMatch.ReducedDifferenceVector);
+			}
 
             int rows = differenceMatrixList[0].RowCount;
             Matrix meanVector = new Matrix(rows, 1, 0.0);
@@ -278,8 +278,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 
             m_slicParameters.MassPPMStDev = Math.Sqrt(covarianceMatrix[0, 0]);
             m_slicParameters.NETStDev = Math.Sqrt(covarianceMatrix[1, 1]);
-            if (m_matchParameters.UseDriftTime)
-                m_slicParameters.DriftTimeStDev = (float)Math.Sqrt(covarianceMatrix[2, 2]);
+			if (m_matchParameters.UseDriftTime)
+			{
+				m_slicParameters.DriftTimeStDev = (float)Math.Sqrt(covarianceMatrix[2, 2]);
+			}
 
             FeatureMatcherTolerances refinedTolerances = new FeatureMatcherTolerances((2.5 * m_slicParameters.MassPPMStDev), (2.5 * m_slicParameters.NETStDev),
                                                             (float)(2.5 * m_slicParameters.DriftTimeStDev));
@@ -610,7 +612,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     // If 11 Dalton shift FDR is requested, calculate whether each of the temporary matches is within the bounds.
                     if (m_matchParameters.ShouldCalculateShiftFDR)
                     {
-                        m_refinedTolerancesList[i] = FindOptimalTolerances(tempMatchList);
+                        m_refinedTolerancesList.Add(FindOptimalTolerances(tempMatchList));
                         for (int j = 0; j < tempMatchList.Count; j++)
                         {
                             tempMatchList[j].InRegion(m_refinedTolerancesList[i], m_matchParameters.UseEllipsoid);
@@ -655,7 +657,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 if (m_matchParameters.ShouldCalculateShiftFDR)
                 {
                     int count = 0;
-                    m_refinedTolerancesList[0] = FindOptimalTolerances(m_matchList);
+                    m_refinedTolerancesList.Add(FindOptimalTolerances(m_matchList));
                     for (int j = 0; j < m_matchList.Count; j++)
                     {
                         m_matchList[j].InRegion(m_refinedTolerancesList[0], m_matchParameters.UseEllipsoid);
