@@ -179,16 +179,22 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 
 
             // Sort both lists by mass.
-            if (shortObservedList[0].MassMonoisotopicAligned == double.NaN)
+			if (shortObservedList[0].MassMonoisotopicAligned != double.NaN && shortObservedList[0].MassMonoisotopicAligned > 0.0)
             {
                 shortObservedList.Sort(new Comparison<T>(Feature.MassAlignedComparison));
-                shortTargetList.Sort(new Comparison<U>(Feature.MassAlignedComparison));
             }
             else
             {
                 shortObservedList.Sort(new Comparison<T>(Feature.MassComparison));
-                shortTargetList.Sort(new Comparison<U>(Feature.MassComparison));
             }
+			if (shortTargetList[0].MassMonoisotopicAligned != double.NaN && shortTargetList[0].MassMonoisotopicAligned > 0.0)
+			{
+				shortTargetList.Sort(new Comparison<U>(Feature.MassAlignedComparison));
+			}
+			else
+			{
+				shortTargetList.Sort(new Comparison<U>(Feature.MassComparison));
+			}
 
             // Locally store the tolerances.
             double massTolerancePPM = tolerances.MassTolerancePPM;
@@ -210,8 +216,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 {
                     // Add any shift to the mass tag.
                     U targetFeature = shortTargetList[targetIndex];
+
                     // Check to see that the features are within the mass tolearance of one another.
-                    if (WithinMassTolerance(observedFeature,targetFeature,massTolerancePPM,shiftAmount))
+					double massDifference = 0;
+                    if (WithinMassTolerance(observedFeature, targetFeature, massTolerancePPM, shiftAmount, out massDifference))
                     {
                         bool withinTolerances = WithinNETTolerance(observedFeature, targetFeature, netTolerance);
                         if (m_matchParameters.UseDriftTime)
@@ -229,7 +237,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     else
                     {
                         // Increase the lower bound if the the MassTag masses are too low or set the continueLoop flag to false if they are too high.
-                        if (WithinMassTolerance(observedFeature,targetFeature,massTolerancePPM,shiftAmount))
+						if (massDifference < massTolerancePPM)
                         {
                             lowerBound++;
                         }
@@ -433,33 +441,35 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="targetFeature"></param>
         /// <param name="massTolerancePPM"></param>
         /// <returns></returns>
-        private bool WithinMassTolerance(T observedFeature, U targetFeature, double massTolerancePPM, double shiftAmount)            
+        private bool WithinMassTolerance(T observedFeature, U targetFeature, double massTolerancePPM, double shiftAmount, out double difference)            
         {
             if (massTolerancePPM > 0)
             {
                 double observedMass = 0; 
                 double targetMass = 0;
-                if (observedFeature.MassMonoisotopicAligned == double.NaN)
+				if (observedFeature.MassMonoisotopicAligned != double.NaN && observedFeature.MassMonoisotopicAligned > 0.0)
+                {
+					observedMass = observedFeature.MassMonoisotopicAligned;
+                }
+                else
                 {
                     observedMass = observedFeature.MassMonoisotopic;
                 }
-                else
+				if (targetFeature.MassMonoisotopicAligned != double.NaN && targetFeature.MassMonoisotopicAligned > 0.0)
                 {
-                    observedMass = observedFeature.MassMonoisotopicAligned;
+					targetMass = targetFeature.MassMonoisotopicAligned;
                 }
-                if (targetFeature.MassMonoisotopicAligned == double.NaN)
+                else
                 {
                     targetMass = targetFeature.MassMonoisotopic;
                 }
-                else
-                {
-                    targetMass = targetFeature.MassMonoisotopicAligned;
-                }
-                double difference = (targetMass + shiftAmount - observedMass) / targetMass * 1E6;
+				
+				difference = (targetMass + shiftAmount - observedMass) / targetMass * 1E6;
                 return (Math.Abs(difference)< massTolerancePPM);
             }
             else
             {
+				difference = double.MaxValue;
                 return false;
             }
         }
@@ -478,15 +488,15 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             {
                 double targetNET = 0;
                 double observedNET = 0;
-                if (targetFeature.NETAligned == double.NaN)
+				if (targetFeature.NETAligned != double.NaN && targetFeature.NETAligned > 0.0)
                 {
-                    targetNET = targetFeature.NET;
+					targetNET = targetFeature.NETAligned;
                 }
                 else
                 {
-                    targetNET = targetFeature.NETAligned;
+                    targetNET = targetFeature.NET;
                 }
-                if (observedFeature.NETAligned == double.NaN)
+                if (observedFeature.NETAligned != double.NaN && observedFeature.NETAligned > 0.0)
                 {
                     observedNET = observedFeature.NET;
                 }
@@ -593,7 +603,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     // If the STAC score is requested and there are sufficient matches for the assumptions, perform it.
                     if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
                     {
-                        STACParameterList[i].PerformSTAC(tempMatchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+						STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
+						stacInformation.PerformSTAC(tempMatchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+						STACParameterList.Add(stacInformation);
                     }
                     // If 11 Dalton shift FDR is requested, calculate whether each of the temporary matches is within the bounds.
                     if (m_matchParameters.ShouldCalculateShiftFDR)
@@ -625,10 +637,15 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             {
                 m_matchList.Clear();
                 m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, false, 0);
+
+				// TODO: KLC - The # of matches is the same as the c++ code. Right now, the app bombs below this, when performing STAC
+
                 bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
                 if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
                 {
-                    STACParameterList[0].PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+					STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
+					stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+					STACParameterList.Add(stacInformation);
                     PopulateSTACFDRTable();
                 }
                 if (m_matchParameters.ShouldCalculateHistogramFDR)

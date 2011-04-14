@@ -141,18 +141,28 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 dimension++;
             Matrix differences = new Matrix(dimension, 1, 0.0);
 
-            if (feature1.MassMonoisotopicAligned != double.NaN)
-                differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature1.MassMonoisotopicAligned, feature2.MassMonoisotopic);
-            else
-                differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature1.MassMonoisotopic, feature2.MassMonoisotopic);
+			if (feature1.MassMonoisotopicAligned != double.NaN && feature1.MassMonoisotopicAligned > 0.0)
+			{
+				differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature1.MassMonoisotopicAligned, feature2.MassMonoisotopic);
+			}
+			else
+			{
+				differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature1.MassMonoisotopic, feature2.MassMonoisotopic);
+			}
 
-            if (feature1.NETAligned != double.NaN)
-                differences[1, 0] = feature1.NETAligned - feature2.NET;
-            else
-                differences[1, 0] = feature1.NET - feature2.NET;
+			if (feature1.NETAligned != double.NaN && feature1.NETAligned > 0.0)
+			{
+				differences[1, 0] = feature1.NETAligned - feature2.NET;
+			}
+			else
+			{
+				differences[1, 0] = feature1.NET - feature2.NET;
+			}
 
-            if (driftTime)
-                differences[2, 0] = feature1.DriftTime - feature2.DriftTime;
+			if (driftTime)
+			{
+				differences[2, 0] = feature1.DriftTime - feature2.DriftTime;
+			}
 
             return differences;
         }
@@ -168,37 +178,57 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         public static Matrix Differences<T>(T feature, MassTag massTag, bool driftTime, bool forSTAC) where T : Feature
         {
             int dimension = 2;
-            if (driftTime)
-                dimension++;
-            if (driftTime && forSTAC)
-                dimension++;
+			if (driftTime)
+			{
+				dimension++;
+			}
+			if (driftTime && forSTAC)
+			{
+				dimension++;
+			}
             Matrix differences = new Matrix(dimension, 1, 0.0);
 
-            if (feature.MassMonoisotopicAligned != double.NaN)
-                differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature.MassMonoisotopicAligned, massTag.MassMonoisotopic);
-            else
-                differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature.MassMonoisotopic, massTag.MassMonoisotopic);
+			if (feature.MassMonoisotopicAligned != double.NaN && feature.MassMonoisotopicAligned > 0.0)
+			{
+				differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature.MassMonoisotopicAligned, massTag.MassMonoisotopic);
+			}
+			else
+			{
+				differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature.MassMonoisotopic, massTag.MassMonoisotopic);
+			}
 
-            if (feature.NETAligned != double.NaN)
-                differences[1, 0] = feature.NETAligned - massTag.NET;
-            else
-                differences[1, 0] = feature.NET - massTag.NET;
+			if (feature.NETAligned != double.NaN && feature.NETAligned > 0.0)
+			{
+				differences[1, 0] = feature.NETAligned - massTag.NET;
+			}
+			else
+			{
+				differences[1, 0] = feature.NET - massTag.NET;
+			}
 
             if (driftTime)
             {
                 if (forSTAC)
                 {
-                    if (massTag.DriftTime != 0)
-                        differences[2, 0] = feature.DriftTime - massTag.DriftTime;
-                    else
-                        differences[3, 0] = feature.DriftTime - massTag.DriftTimePredicted;
+					if (massTag.DriftTime != 0)
+					{
+						differences[2, 0] = feature.DriftTime - massTag.DriftTime;
+					}
+					else
+					{
+						differences[3, 0] = feature.DriftTime - massTag.DriftTimePredicted;
+					}
                 }
                 else
                 {
-                    if (massTag.DriftTime != 0)
-                        differences[2, 0] = feature.DriftTime - massTag.DriftTime;
-                    else
-                        differences[2, 0] = feature.DriftTime - massTag.DriftTimePredicted;
+					if (massTag.DriftTime != 0)
+					{
+						differences[2, 0] = feature.DriftTime - massTag.DriftTime;
+					}
+					else
+					{
+						differences[2, 0] = feature.DriftTime - massTag.DriftTimePredicted;
+					}
                 }
             }
 
