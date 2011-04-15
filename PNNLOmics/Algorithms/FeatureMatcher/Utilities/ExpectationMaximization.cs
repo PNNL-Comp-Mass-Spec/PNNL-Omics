@@ -320,7 +320,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 				double posteriorIReal = mixtureParameter * (1 - prior) * normalDensityF;
 				double posteriorFalse = (1 - mixtureParameter) * uniformDensity;
 
-				stacScore = (posteriorReal + posteriorIReal) / (posteriorReal + posteriorIReal + posteriorFalse);
+				stacScore = (posteriorReal) / (posteriorReal + posteriorIReal + posteriorFalse);
 
 				return Math.Log(posteriorReal + posteriorIReal + posteriorFalse);
             }
