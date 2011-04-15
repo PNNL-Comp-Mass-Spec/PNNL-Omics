@@ -207,7 +207,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <typeparam name="T">Observed feature to be matched.  Derived from Feature.  Usually UMC or UMCCluster.</typeparam>
         /// <typeparam name="U">Feature to be matched to.  Derived from Feature.  Usually AMTTag.</typeparam>
         /// <param name="featureMatchList">List of FeatureMatches to calculate Specificities for.</param>
-        public void SetSTACSpecificities<T, U>(List<FeatureMatch<T, U>> featureMatchList)
+        public void SetSTACSpecificitiesFeature<T, U>(List<FeatureMatch<T, U>> featureMatchList)
             where T : Feature, new()
             where U : Feature, new()
         {
@@ -241,30 +241,34 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// </summary>
         /// <typeparam name="T">Observed feature to be matched.  Derived from Feature.  Usually UMC or UMCCluster.</typeparam>
         /// <param name="featureMatchList">List of FeatureMatches to calculate Specificities for.</param>
-        public void SetSTACSpecificities<T>(List<FeatureMatch<T, MassTag>> featureMatchList)
+        public void SetSTACSpecificitiesMassTag<T, U>(List<FeatureMatch<T, U>> featureMatchList)
             where T : Feature, new()
+			where U : MassTag, new()
         {
-            featureMatchList.Sort(FeatureMatch<T, MassTag>.FeatureComparison);
+            featureMatchList.Sort(FeatureMatch<T, U>.FeatureComparison);
             int matchIndex = 0;
             int endIndex = matchIndex;
             while (matchIndex < featureMatchList.Count)
             {
-                int totalCount = 1;
+				int maxCount = 0;
                 while (endIndex < featureMatchList.Count && featureMatchList[endIndex].ObservedFeature.ID == featureMatchList[matchIndex].ObservedFeature.ID)
                 {
-                    totalCount += featureMatchList[endIndex].TargetFeature.ObservationCount;
+					if (featureMatchList[endIndex].TargetFeature.ObservationCount > maxCount)
+					{
+						maxCount = featureMatchList[endIndex].TargetFeature.ObservationCount;
+					}
                     endIndex++;
                 }
                 double denominator = 0.0;
                 for (int i = matchIndex; i < endIndex; i++)
                 {
-                    double alpha = (1.0 * featureMatchList[i].TargetFeature.ObservationCount) / totalCount;
-                    denominator += BetaDensity(featureMatchList[i].STACScore, alpha) * featureMatchList[i].STACScore;
+					FeatureMatch<T, U> match = featureMatchList[i];
+					denominator += match.TargetFeature.ObservationCount * Math.Exp(Math.Log(maxCount) + (maxCount - 1) * Math.Log(match.STACScore));
                 }
                 for (int i = matchIndex; i < endIndex; i++)
                 {
-                    double alpha = (1.0 * featureMatchList[i].TargetFeature.ObservationCount) / totalCount;
-                    featureMatchList[i].STACSpecificity = featureMatchList[i].STACScore * BetaDensity(featureMatchList[i].STACScore, alpha) / denominator;
+					FeatureMatch<T, U> match = featureMatchList[i];
+					match.STACSpecificity = (match.TargetFeature.ObservationCount * Math.Exp(Math.Log(maxCount) + (maxCount - 1) * Math.Log(match.STACScore))) / denominator;
                 }
                 matchIndex = endIndex;
             }
@@ -284,7 +288,16 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         {
             TrainSTAC(featureMatchList, uniformTolerances, useDriftTime, usePrior);
             SetSTACScores(featureMatchList, uniformTolerances, useDriftTime, usePrior);
-            SetSTACSpecificities(featureMatchList);
+
+			if (typeof(U).Equals(typeof(MassTag)))
+			{
+				List<FeatureMatch<T, MassTag>> newFeatureMatchList = featureMatchList as List<FeatureMatch<T, MassTag>>;
+				SetSTACSpecificitiesMassTag(newFeatureMatchList);
+			}
+			else
+			{
+				SetSTACSpecificitiesFeature(featureMatchList);
+			}
         }
         #endregion
 
