@@ -294,7 +294,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private void SetSTACCutoffs()
         {
             m_stacFDRList.Clear();
-            for (double cutoff = 0.97; cutoff > 0.90; cutoff -= 0.01)
+            for (double cutoff = 0.99; cutoff > 0.90; cutoff -= 0.01)
             {
                 STACFDR tableLine = new STACFDR(cutoff);
                 m_stacFDRList.Add(tableLine);
@@ -311,48 +311,40 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private void PopulateSTACFDRTable()
         {
             SetSTACCutoffs();
-            m_matchList.Sort(FeatureMatch<T,U>.STACComparison);
+            m_matchList.Sort(FeatureMatch<T,U>.STACComparisonDescending);
 
+			// Iterate over all defined cutoff ranges
 			for (int cutoffIndex = 0; cutoffIndex < m_stacFDRList.Count; cutoffIndex++)
 			{
 				double falseDiscoveries = 0.0;
 				int matches = 0;
 				double fdr = 0.0;
+
+				// Find all matches for this particular cutoff
 				foreach (FeatureMatch<T, U> match in m_matchList)
 				{
 					double stac = match.STACScore;
-					if (stac > m_stacFDRList[cutoffIndex].Cutoff)
+					if (stac >= m_stacFDRList[cutoffIndex].Cutoff)
 					{
 						falseDiscoveries += 1 - stac;
 						matches++;
-						double newFDR = falseDiscoveries / matches;
-						if (fdr < 0.01 && newFDR >= 0.01)
-						{
-							STACFDR newLine = new STACFDR(Math.Round(stac - 0.00005, 4));
-							newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
-							m_stacFDRList.Insert(cutoffIndex, newLine);
-						}
-						else if (fdr < 0.05 && newFDR >= 0.05)
-						{
-							STACFDR newLine = new STACFDR(Math.Round(stac - 0.00005, 4));
-							newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
-							m_stacFDRList.Insert(cutoffIndex, newLine);
-						}
-						else if (fdr < 0.10 && newFDR >= 0.10)
-						{
-							STACFDR newLine = new STACFDR(Math.Round(stac - 0.00005, 4));
-							newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
-							m_stacFDRList.Insert(cutoffIndex, newLine);
-						}
-						fdr = falseDiscoveries / matches;
 					}
 					else
 					{
-						fdr = falseDiscoveries / matches;
-						m_stacFDRList[cutoffIndex].FillLine(fdr, matches, (int)Math.Round(falseDiscoveries, 0));
-						falseDiscoveries += 1 - stac;
-						matches++;
+						// Since we have sorted by descending STAC Score, if we get outside the cutoff range, we can stop
+						break;
 					}
+				}
+
+				// After all matches have been found, report the FDR
+				if (matches > 0)
+				{
+					fdr = falseDiscoveries / (double)matches;
+					m_stacFDRList[cutoffIndex].FillLine(fdr, matches, (int)falseDiscoveries);
+				}
+				else
+				{
+					m_stacFDRList[cutoffIndex].FillLine(0, 0, 0);
 				}
 			}
         }
@@ -647,14 +639,16 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 					stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
 					STACParameterList.Add(stacInformation);
 					Console.WriteLine("Populating FDR table");
-                    //PopulateSTACFDRTable();
+                    PopulateSTACFDRTable();
                 }
                 if (m_matchParameters.ShouldCalculateHistogramFDR)
                 {
+					Console.WriteLine("Setting Mass Error Histogram FDR");
                     SetMassErrorHistogramFDR();
                 }
                 if (m_matchParameters.ShouldCalculateShiftFDR)
                 {
+					Console.WriteLine("Calculating Shift FDR");
                     int count = 0;
                     m_refinedTolerancesList.Add(FindOptimalTolerances(m_matchList));
                     for (int j = 0; j < m_matchList.Count; j++)
@@ -673,7 +667,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 }
                 if (m_matchParameters.ShouldCalculateSLiC && lengthCheck)
                 {
-                    if (!m_refinedTolerancesList[0].Refined)
+					Console.WriteLine("Finding SLic Scores");
+                    if (m_refinedTolerancesList.Count > 0 && !m_refinedTolerancesList[0].Refined)
                     {
                         m_refinedTolerancesList[0] = FindOptimalTolerances(m_matchList);
                     }
