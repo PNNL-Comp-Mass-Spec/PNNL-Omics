@@ -312,50 +312,49 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         {
             SetSTACCutoffs();
             m_matchList.Sort(FeatureMatch<T,U>.STACComparison);
-            double falseDiscoveries = 0.0;
-            int cutoffIndex = 0;
-            int matches = 0;
-            double fdr = 0.0;
-            foreach (FeatureMatch<T, U> match in m_matchList)
-            {
-                double stac = match.STACScore;
-                if (stac > m_stacFDRList[cutoffIndex].Cutoff)
-                {
-                    falseDiscoveries += 1 - stac;
-                    matches++;
-                    double newFDR = falseDiscoveries/matches;
-                    if (fdr < 0.01 && newFDR >= 0.01)
-                    {
-                        STACFDR newLine = new STACFDR(Math.Round(stac-0.00005,4));
-                        newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
-                        m_stacFDRList.Insert(cutoffIndex, newLine);
-                        cutoffIndex++;
-                    }
-                    else if (fdr < 0.05 && newFDR >= 0.05)
-                    {
-                        STACFDR newLine = new STACFDR(Math.Round(stac - 0.00005, 4));
-                        newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
-                        m_stacFDRList.Insert(cutoffIndex, newLine);
-                        cutoffIndex++;
-                    }
-                    else if (fdr < 0.10 && newFDR >= 0.10)
-                    {
-                        STACFDR newLine = new STACFDR(Math.Round(stac - 0.00005, 4));
-                        newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
-                        m_stacFDRList.Insert(cutoffIndex, newLine);
-                        cutoffIndex++;
-                    }
-                    fdr = falseDiscoveries / matches;
-                }
-                else
-                {
-                    fdr = falseDiscoveries / matches;
-                    m_stacFDRList[cutoffIndex].FillLine(fdr, matches, (int)Math.Round(falseDiscoveries, 0));
-                    cutoffIndex++;
-                    falseDiscoveries += 1 - stac;
-                    matches++;
-                }
-            }
+
+			for (int cutoffIndex = 0; cutoffIndex < m_stacFDRList.Count; cutoffIndex++)
+			{
+				double falseDiscoveries = 0.0;
+				int matches = 0;
+				double fdr = 0.0;
+				foreach (FeatureMatch<T, U> match in m_matchList)
+				{
+					double stac = match.STACScore;
+					if (stac > m_stacFDRList[cutoffIndex].Cutoff)
+					{
+						falseDiscoveries += 1 - stac;
+						matches++;
+						double newFDR = falseDiscoveries / matches;
+						if (fdr < 0.01 && newFDR >= 0.01)
+						{
+							STACFDR newLine = new STACFDR(Math.Round(stac - 0.00005, 4));
+							newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
+							m_stacFDRList.Insert(cutoffIndex, newLine);
+						}
+						else if (fdr < 0.05 && newFDR >= 0.05)
+						{
+							STACFDR newLine = new STACFDR(Math.Round(stac - 0.00005, 4));
+							newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
+							m_stacFDRList.Insert(cutoffIndex, newLine);
+						}
+						else if (fdr < 0.10 && newFDR >= 0.10)
+						{
+							STACFDR newLine = new STACFDR(Math.Round(stac - 0.00005, 4));
+							newLine.FillLine(newFDR, matches, (int)falseDiscoveries);
+							m_stacFDRList.Insert(cutoffIndex, newLine);
+						}
+						fdr = falseDiscoveries / matches;
+					}
+					else
+					{
+						fdr = falseDiscoveries / matches;
+						m_stacFDRList[cutoffIndex].FillLine(fdr, matches, (int)Math.Round(falseDiscoveries, 0));
+						falseDiscoveries += 1 - stac;
+						matches++;
+					}
+				}
+			}
         }
         /// <summary>
         /// Find the subset of a list which has the same charge state.
@@ -644,9 +643,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
                 {
 					STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
+					Console.WriteLine("Performing STAC");
 					stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
 					STACParameterList.Add(stacInformation);
-                    PopulateSTACFDRTable();
+					Console.WriteLine("Populating FDR table");
+                    //PopulateSTACFDRTable();
                 }
                 if (m_matchParameters.ShouldCalculateHistogramFDR)
                 {

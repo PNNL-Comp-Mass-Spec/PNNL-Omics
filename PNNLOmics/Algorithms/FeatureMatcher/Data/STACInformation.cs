@@ -320,29 +320,29 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 priorList.Add(match.TargetFeature.PriorProbability);
             }
 
-            m_logLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity, useDriftTime);
+			double nextLogLikelihood = 0.0;
+			List<double> alphaList = new List<double>(dataList.Count);
 
-            double nextLogLikelihood = 0.0;
-            List<double> alphaList = new List<double>(dataList.Count);
+            m_logLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity, useDriftTime, ref alphaList);
 
             // Step through the EM algorithm up to m_maxIterations time.
             while (m_iteration <= MAX_ITERATIONS)
             {
                 // Update the parameters in the following order: mixture parameters, mean, covariance.
-                m_mixtureProportion = UpdateNNUMixtureParameter(featureMatchList, uniformDensity, ref alphaList);
+                m_mixtureProportion = UpdateNNUMixtureParameter(featureMatchList, uniformDensity, alphaList);
                 m_meanVectorT = ExpectationMaximization.UpdateNormalMeanVector(dataList, alphaList, priorList, false);
                 m_meanVectorF = ExpectationMaximization.UpdateNormalMeanVector(dataList, alphaList, priorList, true);
                 m_covarianceMatrixT = ExpectationMaximization.UpdateNormalCovarianceMatrix(dataList, m_meanVectorT, alphaList, priorList, false, false);
                 m_covarianceMatrixF = ExpectationMaximization.UpdateNormalCovarianceMatrix(dataList, m_meanVectorF, alphaList, priorList, false, true);
 
                 // Calculate the loglikelihood based on the new parameters.
-                nextLogLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity, useDriftTime);
+				nextLogLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity, useDriftTime, ref alphaList);
 
 				// Print statistics every 10 iterations
-				if (m_iteration % 10 == 0)
-				{
+				//if (m_iteration % 10 == 0)
+				//{
 					PrintCurrentStatistics(nextLogLikelihood);
-				}
+				//}
 
                 // Increment the counter to show that another iteration has been completed.
                 m_iteration++;
@@ -563,7 +563,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
         /// <returns>The value of the loglikelihood evaluated over featureMatchList.</returns>
-        private double CalculateNNULogLikelihood<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, bool useDriftTime)
+        private double CalculateNNULogLikelihood<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, bool useDriftTime, ref List<double> alphaList)
 			where T : Feature, new()
 			where U : MassTag, new()
         {
@@ -582,6 +582,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                     priorList.Add(match.TargetFeature.PriorProbability);
                 }
                 logLikelihood = ExpectationMaximization.NormalNormalUniformLogLikelihood(dataList, priorList, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion);
+
+				// Get new values for alpha list
+				alphaList.Clear();
+				alphaList = ExpectationMaximization.GetAlphaList(dataList, priorList, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion);
             }
             return logLikelihood;
         }
@@ -593,21 +597,17 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="alphaList">List to be filled with individual mixture values.</param>
         /// <returns>The updated mixture proportion.</returns>
-        private double UpdateNNUMixtureParameter<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, ref List<double> alphaList)
+        private double UpdateNNUMixtureParameter<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, List<double> alphaList)
 			where T : Feature, new()
 			where U : MassTag, new()
         {
-            double nextMixtureParameter = 0.0;
-            alphaList.Clear();
+			double alphaSum = 0.0;
+			foreach (double alpha in alphaList)
+			{
+				alphaSum += alpha;
+			}
 
-            foreach (FeatureMatch<T, U> match in featureMatchList)
-            {
-                double alpha = Math.Exp(CalculateNNULogLikelihood(match, uniformDensity));
-                alphaList.Add(alpha);
-                nextMixtureParameter += alpha;
-            }
-
-            return (nextMixtureParameter / alphaList.Count);
+			return alphaSum / (double)alphaList.Count;
         }
         /// <summary>
         /// Overload function to calculate STAC score for MassTag target data.
@@ -660,6 +660,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 		{
 			Console.WriteLine("Parameters after " + m_iteration + " iterations:");
 			Console.WriteLine("\tLoglikelihood = " + logLikelihood + "\tAlpha = " + m_mixtureProportion);
+			Console.WriteLine("Epsilon = " + EPSILON);
 			Console.WriteLine();
 		}
         #endregion

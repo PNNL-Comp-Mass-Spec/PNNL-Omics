@@ -323,14 +323,30 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             double normalDensityF = MathUtilities.MultivariateNormalDensity(data, meanVectorF, covarianceMatrixF);
             if (normalDensityT > 0)
             {
-                double numerator = mixtureParameter * prior * normalDensityT;
-				double posteriorReal = mixtureParameter * (1 - prior) * normalDensityF;
-				double posteriorIReal = (1 - mixtureParameter) * uniformDensity;
+				double posteriorReal = mixtureParameter * prior * normalDensityT;
+				double posteriorIReal = mixtureParameter * (1 - prior) * normalDensityF;
+				double posteriorFalse = (1 - mixtureParameter) * uniformDensity;
 
-				return Math.Log(numerator) - Math.Log(numerator + posteriorReal + posteriorIReal);
+				return Math.Log(posteriorReal + posteriorIReal + posteriorFalse);
             }
             return 0.0;
         }
+
+		// TODO: XML Comments
+		static public double GetAlpha(Matrix data, double prior, Matrix meanVectorT, Matrix covarianceMatrixT, Matrix meanVectorF, Matrix covarianceMatrixF, double uniformDensity, double mixtureParameter)
+		{
+			double normalDensityT = MathUtilities.MultivariateNormalDensity(data, meanVectorT, covarianceMatrixT);
+			double normalDensityF = MathUtilities.MultivariateNormalDensity(data, meanVectorF, covarianceMatrixF);
+			if (normalDensityT > 0)
+			{
+				double posteriorReal = mixtureParameter * prior * normalDensityT;
+				double posteriorIReal = mixtureParameter * (1 - prior) * normalDensityF;
+				double posteriorFalse = (1 - mixtureParameter) * uniformDensity;
+
+				return (posteriorReal + posteriorIReal) / (posteriorReal + posteriorIReal + posteriorFalse);
+			}
+			return 0.0;
+		}
         /// <summary>
         /// Calculate the loglikelihood for a normal-normal-uniform mixture.
         /// </summary>
@@ -352,6 +368,17 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             }
             return logLikelihood;
         }
+		
+		// TODO: XML Comments
+		static public List<double> GetAlphaList(List<Matrix> dataList, List<double> prior, Matrix meanVectorT, Matrix covarianceMatrixT, Matrix meanVectorF, Matrix covarianceMatrixF, double uniformDensity, double mixtureParameter)
+		{
+			List<double> alphaList = new List<double>(dataList.Count);
+			for (int i = 0; i < dataList.Count; i++)
+			{
+				alphaList.Add(GetAlpha(dataList[i], prior[i], meanVectorT, covarianceMatrixT, meanVectorF, covarianceMatrixF, uniformDensity, mixtureParameter));
+			}
+			return alphaList;
+		}
         /// <summary>
         /// Update the mixture parameter for the normal-normal-uniform mixture model.
         /// </summary>
