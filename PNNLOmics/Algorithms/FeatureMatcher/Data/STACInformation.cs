@@ -157,29 +157,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// </summary>
         /// <typeparam name="T">Observed feature to be matched.  Derived from Feature.  Usually UMC or UMCCluster.</typeparam>
         /// <typeparam name="U">Feature to be matched to.  Derived from Feature.  Usually AMTTag.</typeparam>
-        /// <param name="featureMatchList">FeatureMatch to compute score for.</param>
-        /// <param name="uniformDensity">Density of uniform distribution.</param>
-        /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
-        /// <param name="usePrior">Whether to use prior probabilities in the calculation of the STAC score.</param>
-        /// <returns>The STAC score corresponding to featureMatch.</returns>
-        public double ComputeSTAC<T, U>(FeatureMatch<T, U> featureMatch, FeatureMatcherTolerances uniformTolerances, bool useDriftTime, bool usePrior)
-            where T : Feature, new()
-            where U : Feature, new()
-        {
-            // Calculate the density of the uniform density given the tolerances.
-            Matrix toleranceMatrix = uniformTolerances.AsVector(useDriftTime);
-            double uniformDensity = 1.0;
-            for (int i = 0; i < toleranceMatrix.RowCount; i++)
-            {
-                uniformDensity /= (2 * toleranceMatrix[i, 0]);
-            }
-            return ComputeSTAC(featureMatch, uniformDensity, useDriftTime, usePrior);
-        }
-        /// <summary>
-        /// Function to calculate STAC score.
-        /// </summary>
-        /// <typeparam name="T">Observed feature to be matched.  Derived from Feature.  Usually UMC or UMCCluster.</typeparam>
-        /// <typeparam name="U">Feature to be matched to.  Derived from Feature.  Usually AMTTag.</typeparam>
         /// <param name="featureMatchList">List of FeatureMatches to calculate scores for.</param>
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
@@ -196,10 +173,23 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             {
                 uniformDensity /= (2 * toleranceMatrix[i, 0]);
             }
-            foreach (FeatureMatch<T, U> match in featureMatchList)
-            {
-                match.STACScore = ComputeSTAC(match, uniformDensity, useDriftTime, usePrior);
-            }
+
+
+			if (typeof(U).Equals(typeof(MassTag)))
+			{
+				List<FeatureMatch<T, MassTag>> newFeatureMatchList = featureMatchList as List<FeatureMatch<T, MassTag>>;
+				foreach (FeatureMatch<T, MassTag> match in newFeatureMatchList)
+				{
+					match.STACScore = ComputeSTACMassTag(match, uniformDensity, useDriftTime, usePrior);
+				}
+			}
+			else
+			{
+				foreach (FeatureMatch<T, U> match in featureMatchList)
+				{
+					match.STACScore = ComputeSTACFeature(match, uniformDensity, useDriftTime, usePrior);
+				}
+			}
         }
         /// <summary>
         /// Set the STAC Specificity scores for a list of matches.
@@ -444,17 +434,17 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="featureMatch">FeatureMatch to evaluate at.</param>
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <returns>The value of the loglikelihood evaluated at featureMatch.</returns>
-        private double CalculateNULogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity)
+        private double CalculateNULogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity, ref double stacScore)
             where T : Feature, new()
             where U : Feature, new()
         {
             if (featureMatch.UseDriftTimePredicted)
             {
-                return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, MatrixUtilities.RemoveRow(m_meanVectorT, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 3), uniformDensity, m_mixtureProportion);
+                return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, MatrixUtilities.RemoveRow(m_meanVectorT, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 3), uniformDensity, m_mixtureProportion, ref stacScore);
             }
             else
             {
-                return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, m_meanVectorT, m_covarianceMatrixT, uniformDensity, m_mixtureProportion);
+                return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, m_meanVectorT, m_covarianceMatrixT, uniformDensity, m_mixtureProportion, ref stacScore);
             }
         }
         /// <summary>
@@ -470,9 +460,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             where U : Feature, new()
         {
             double loglikelihood = 0.0;
+			double stacScore = 0.0;
             foreach (FeatureMatch<T, U> match in featureMatchList)
             {
-                loglikelihood += CalculateNULogLikelihood(match, uniformDensity);
+                loglikelihood += CalculateNULogLikelihood(match, uniformDensity, ref stacScore);
+				match.STACScore = stacScore;
             }
             return loglikelihood;
         }
@@ -518,17 +510,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             where T : Feature, new()
             where U : Feature, new()
         {
-            double nextMixtureParameter = 0.0;
-            alphaList.Clear();
+			double alphaSum = 0.0;
+			foreach (double alpha in alphaList)
+			{
+				alphaSum += alpha;
+			}
 
-            foreach (FeatureMatch<T, U> match in featureMatchList)
-            {
-                double alpha = Math.Exp(CalculateNULogLikelihood(match, uniformDensity));
-                alphaList.Add(alpha);
-                nextMixtureParameter += alpha;
-            }
-
-            return (nextMixtureParameter / alphaList.Count);
+			return alphaSum / (double)alphaList.Count;
         }
         /// <summary>
         /// Calculate the loglikelihood for a match with the current parameters.
@@ -537,17 +525,17 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="featureMatch">FeatureMatch to evaluate at.</param>
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <returns>The value of the loglikelihood evaluated at featureMatch.</returns>
-        private double CalculateNNULogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity)
+        private double CalculateNNULogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity, ref double stacScore)
 			where T : Feature, new()
 			where U : MassTag, new()
         {
             if (featureMatch.UseDriftTimePredicted)
             {
-                return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, MatrixUtilities.RemoveRow(m_meanVectorT, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 3), MatrixUtilities.RemoveRow(m_meanVectorF, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixF, 3), uniformDensity, m_mixtureProportion);
+				return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, MatrixUtilities.RemoveRow(m_meanVectorT, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 3), MatrixUtilities.RemoveRow(m_meanVectorF, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixF, 3), uniformDensity, m_mixtureProportion, ref stacScore);
             }
             else
             {
-                return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion);
+				return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion, ref stacScore);
             }
         }
         /// <summary>
@@ -562,9 +550,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 			where U : MassTag, new()
         {
             double loglikelihood = 0.0;
+			double stacScore = 0.0;
             foreach (FeatureMatch<T, U> match in featureMatchList)
             {
-                loglikelihood += CalculateNNULogLikelihood(match, uniformDensity);
+				loglikelihood += CalculateNNULogLikelihood(match, uniformDensity, ref stacScore);
+				match.STACScore = stacScore;
             }
             return loglikelihood;
         }
@@ -631,16 +621,20 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
         /// <param name="usePrior">Whether to use prior probabilities in the calculation of the STAC score.</param>
         /// <returns>The STAC score corresponding to featureMatch.</returns>
-        private double ComputeSTAC<T>(FeatureMatch<T, MassTag> featureMatch, double uniformDensity, bool useDriftTime, bool usePrior) where T : Feature, new()
+        private double ComputeSTACMassTag<T>(FeatureMatch<T, MassTag> featureMatch, double uniformDensity, bool useDriftTime, bool usePrior) where T : Feature, new()
         {
+			double stacScore = 0.0;
+
             if (usePrior)
             {
-                return Math.Exp(CalculateNNULogLikelihood(featureMatch, uniformDensity));
+                CalculateNNULogLikelihood(featureMatch, uniformDensity, ref stacScore);
             }
             else
             {
-                return Math.Exp(CalculateNULogLikelihood(featureMatch, uniformDensity));
+                CalculateNULogLikelihood(featureMatch, uniformDensity, ref stacScore);
             }
+
+			return stacScore;
         }
         /// <summary>
         /// Function to calculate STAC score.
@@ -652,11 +646,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
         /// <param name="usePrior">Whether to use prior probabilities in the calculation of the STAC score.</param>
         /// <returns>The STAC score corresponding to featureMatch.</returns>
-        private double ComputeSTAC<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity, bool useDriftTime, bool usePrior)
+        private double ComputeSTACFeature<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity, bool useDriftTime, bool usePrior)
             where T : Feature, new()
             where U : Feature, new()
         {
-            return Math.Exp(CalculateNULogLikelihood(featureMatch, uniformDensity));
+			double stacScore = 0.0;
+            CalculateNULogLikelihood(featureMatch, uniformDensity, ref stacScore);
+			return stacScore;
         }
         /// <summary>
         /// Compute the density of the Beta distribution as the marginal of a Dirichlet distribution for computation of the STAC Specificity.
