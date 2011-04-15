@@ -155,6 +155,13 @@ namespace PNNLOmics.Data.Features
         {
             return featureMatch1.m_stacScore.CompareTo(featureMatch2.STACScore);
         };
+		/// <summary>
+		/// Comparison function for sorting by STAC score descending.
+		/// </summary>
+		public static Comparison<FeatureMatch<T, U>> STACComparisonDescending = delegate(FeatureMatch<T, U> featureMatch1, FeatureMatch<T, U> featureMatch2)
+		{
+			return featureMatch2.m_stacScore.CompareTo(featureMatch1.STACScore);
+		};
         #endregion
 
         #region Private functions
