@@ -92,12 +92,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             m_logLikelihood = 0.0;
             if (driftTime)
             {
-                m_meanVectorT = new Matrix(4, 1, 0.0);
-                m_covarianceMatrixT = new Matrix(4, 4, 0.0);
+                m_meanVectorT = new Matrix(3, 1, 0.0);
+                m_covarianceMatrixT = new Matrix(3, 3, 0.0);
                 m_covarianceMatrixT[0, 0] = 2.0;
                 m_covarianceMatrixT[1, 1] = 0.3;
                 m_covarianceMatrixT[2, 2] = 0.5;
-                m_covarianceMatrixT[3, 3] = 1.0;
                 m_meanVectorF = m_meanVectorT;
                 m_covarianceMatrixF = m_covarianceMatrixT;
             }
@@ -276,9 +275,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             where T : Feature, new()
             where U : Feature, new()
         {
+			Console.WriteLine("Training STAC");
             TrainSTAC(featureMatchList, uniformTolerances, useDriftTime, usePrior);
+
+			Console.WriteLine("Calculating final STAC Scores");
             SetSTACScores(featureMatchList, uniformTolerances, useDriftTime, usePrior);
 
+			Console.WriteLine("Calculating STAC_UP Scores");
 			if (typeof(U).Equals(typeof(MassTag)))
 			{
 				List<FeatureMatch<T, MassTag>> newFeatureMatchList = featureMatchList as List<FeatureMatch<T, MassTag>>;
@@ -571,12 +574,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 			where U : MassTag, new()
         {
             double logLikelihood = 0.0;
-            if (useDriftTime)
-            {
-                logLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity);
-            }
-            else
-            {
+			//if (useDriftTime)
+			//{
+			//    logLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity);
+			//}
+			//else
+			//{
                 List<Matrix> dataList = new List<Matrix>();
                 List<double> priorList = new List<double>();
                 foreach (FeatureMatch<T, U> match in featureMatchList)
@@ -589,7 +592,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 				// Get new values for alpha list
 				alphaList.Clear();
 				alphaList = ExpectationMaximization.GetAlphaList(dataList, priorList, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion);
-            }
+			//}
             return logLikelihood;
         }
         /// <summary>

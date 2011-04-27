@@ -19,13 +19,23 @@ namespace PNNLOmics.Utilities
         /// <returns>Double</returns>
         static public double MultivariateNormalDensity(Matrix xVector, Matrix meanVector, Matrix covarianceMatrix)
         {
-            int numberOfRows = covarianceMatrix.RowCount;
-            Matrix xMinusMean = xVector - meanVector;
-            Matrix xMinusMeanPrime = xMinusMean.Clone();
-            xMinusMeanPrime.Transpose();
-            Matrix exponent = xMinusMeanPrime * covarianceMatrix.Inverse() * xMinusMean;
-            double denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrix.Determinant()));
-            return Math.Exp(-0.5 * exponent[0, 0]) / denominator;
+			double covarianceMatrixDeterminant = covarianceMatrix.Determinant();
+
+			if (covarianceMatrixDeterminant != 0)
+			{
+				int numberOfRows = covarianceMatrix.RowCount;
+				Matrix xMinusMean = xVector - meanVector;
+				Matrix xMinusMeanPrime = xMinusMean.Clone();
+				xMinusMeanPrime.Transpose();
+				Matrix covarianceInverseMatrix = covarianceMatrix.Inverse();
+				Matrix exponent = xMinusMeanPrime * covarianceInverseMatrix * xMinusMean;
+				double denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrixDeterminant));
+				return Math.Exp(-0.5 * exponent[0, 0]) / denominator;
+			}
+			else
+			{
+				return 0.0;
+			}
         }
         #endregion
 
