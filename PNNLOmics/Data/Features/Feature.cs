@@ -54,6 +54,10 @@ namespace PNNLOmics.Data.Features
         //TODO: Make this a double!
         //TODO: Why is this a virtual property.
         public virtual float DriftTime {get;set;}
+		/// <summary>
+		/// The aligned Drift Time of the feature.
+		/// </summary>
+		public double DriftTimeAligned { get; set; }        
         /// <summary>
         /// The elution time of the feature.
         /// </summary>

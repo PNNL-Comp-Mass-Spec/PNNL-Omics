@@ -163,11 +163,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="shortObservedList">List of observed features.  Possibly a subset of the entire list corresponding to a particular charge state.</param>
         /// <param name="shortTargetList">List of target features.  Possibly a subset of the entire list corresponding to a particular charge state.</param>
         /// <param name="tolerances">Tolerances to be used for matching.</param>
-        /// <param name="useEllipsoid">Whether or not to use an ellipsoidal matching region.  If false, uses a rectangular match region.</param>
         /// <param name="shiftAmount">A fixed shift amount to use for populating the shifted match list.</param>
         /// <returns>A list of type FeatureMatch containing matches within the defined region.</returns>
-        private List<FeatureMatch<T, U>> FindMatches(List<T> shortObservedList, List<U> shortTargetList,
-                                                        FeatureMatcherTolerances tolerances, bool useEllipsoid, double shiftAmount)
+        public List<FeatureMatch<T, U>> FindMatches(List<T> shortObservedList, List<U> shortTargetList, FeatureMatcherTolerances tolerances, double shiftAmount)
         {
             // Create a list to hold the matches until they are returned.
             List<FeatureMatch<T, U>> matchList = new List<FeatureMatch<T, U>>();
@@ -492,11 +490,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 }
                 if (observedFeature.NETAligned != double.NaN && observedFeature.NETAligned > 0.0)
                 {
-                    observedNET = observedFeature.NET;
+					observedNET = observedFeature.NETAligned;
                 }
                 else
                 {
-                    observedNET = observedFeature.NETAligned;
+                    observedNET = observedFeature.NET;
                 }
                 double difference = Math.Abs(targetNET - observedNET);
                 return (difference < netTolerance);
@@ -644,7 +642,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 			//else
 			//{
                 m_matchList.Clear();
-                m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, false, 0);
+                m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, 0);
 
                 bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
                 if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
@@ -675,8 +673,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                         if (m_matchList[j].WithinRefinedRegion)
                             count++;
                     }
-                    m_shiftedMatchList.AddRange(FindMatches(m_observedFeatureList, m_targetFeatureList, m_refinedTolerancesList[0],
-                                                                m_matchParameters.UseEllipsoid, m_matchParameters.ShiftAmount));
+                    m_shiftedMatchList.AddRange(FindMatches(m_observedFeatureList, m_targetFeatureList, m_refinedTolerancesList[0], m_matchParameters.ShiftAmount));
                     m_shiftFDR = (1.0 * count) / m_shiftedMatchList.Count;
                     m_shiftConservativeFDR = (2.0 * count) / m_shiftedMatchList.Count;
                 }

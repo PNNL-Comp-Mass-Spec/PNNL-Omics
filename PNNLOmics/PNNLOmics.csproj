@@ -127,9 +127,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\Alignment\AlignmentScore.cs" />
+    <Compile Include="Algorithms\Alignment\DriftTimeAlignment.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Algorithms\Alignment\LinearEquation.cs" />
+    <Compile Include="Algorithms\Alignment\LinearEquationCalculator.cs" />
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCCentroidClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\LinkageClustererBase.cs" />
