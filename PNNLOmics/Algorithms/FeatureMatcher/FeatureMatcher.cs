@@ -517,9 +517,26 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         {
             if (driftTimeTolerance > 0)
             {
-                float targetDriftTime = targetFeature.DriftTime;
-                float observedDriftTime = observedFeature.DriftTime;
-                float difference = Math.Abs(targetDriftTime - observedDriftTime);
+				double targetDriftTime = 0;
+				double observedDriftTime = 0;
+				if (targetFeature.DriftTimeAligned != double.NaN && targetFeature.DriftTimeAligned > 0.0)
+				{
+					targetDriftTime = targetFeature.DriftTimeAligned;
+				}
+				else
+				{
+					targetDriftTime = targetFeature.DriftTime;
+				}
+				if (observedFeature.DriftTimeAligned != double.NaN && observedFeature.DriftTimeAligned > 0.0)
+				{
+					observedDriftTime = observedFeature.DriftTimeAligned;
+				}
+				else
+				{
+					observedDriftTime = observedFeature.DriftTime;
+				}
+
+                double difference = Math.Abs(targetDriftTime - observedDriftTime);
                 return (difference < driftTimeTolerance);
             }
             else
