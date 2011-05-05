@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using NUnit.Framework;
 
-using PNNLOmics.IO;
+//using PNNLOmics.IO;
 using PNNLOmics.Data;
 using PNNLOmics.Algorithms;
 using PNNLOmics.Data.Features;
