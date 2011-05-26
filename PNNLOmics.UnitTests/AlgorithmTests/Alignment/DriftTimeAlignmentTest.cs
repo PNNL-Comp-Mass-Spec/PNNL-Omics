@@ -20,7 +20,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
 
 			CreateObservedAndTargetUMCLists(ref observedUMCList, ref targetUMCList);
 
-			DriftTimeAlignment<UMC, UMC>.AlignObservedEnumerable(observedUMCList, targetUMCList, 20, 0.03);
+			DriftTimeAlignment<UMC, UMC>.AlignObservedEnumerable(observedUMCList, observedUMCList, targetUMCList, 20, 0.03);
 
 			Assert.AreEqual(Math.Round(observedUMCList[0].DriftTimeAligned, 2), 17.10);
 			Assert.AreEqual(Math.Round(observedUMCList[1].DriftTimeAligned, 2), 28.67);

@@ -232,11 +232,26 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 {
 					if (massTag.DriftTime != 0)
 					{
-						differences[2, 0] = feature.DriftTime - massTag.DriftTime;
+						if (feature.DriftTimeAligned != double.NaN && feature.DriftTimeAligned > 0.0)
+						{
+							differences[2, 0] = feature.DriftTimeAligned - massTag.DriftTime;
+						}
+						else
+						{
+							differences[2, 0] = feature.DriftTime - massTag.DriftTime;
+						}
+						
 					}
 					else
 					{
-						differences[2, 0] = feature.DriftTime - massTag.DriftTimePredicted;
+						if (feature.DriftTimeAligned != double.NaN && feature.DriftTimeAligned > 0.0)
+						{
+							differences[2, 0] = feature.DriftTimeAligned - massTag.DriftTimePredicted;
+						}
+						else
+						{
+							differences[2, 0] = feature.DriftTime - massTag.DriftTimePredicted;
+						}
 					}
                 }
             }
