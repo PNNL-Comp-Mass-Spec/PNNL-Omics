@@ -161,7 +161,27 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 
 			if (driftTime)
 			{
-				differences[2, 0] = feature1.DriftTime - feature2.DriftTime;
+				double feature1DriftTime = 0;
+				double feature2DriftTime = 0;
+
+				if (feature1.DriftTimeAligned != double.NaN && feature1.DriftTimeAligned > 0.0)
+				{
+					feature1DriftTime = feature1.DriftTimeAligned;
+				}
+				else
+				{
+					feature1DriftTime = feature1.DriftTime;
+				}
+				if (feature2.DriftTimeAligned != double.NaN && feature2.DriftTimeAligned > 0.0)
+				{
+					feature2DriftTime = feature2.DriftTimeAligned;
+				}
+				else
+				{
+					feature2DriftTime = feature2.DriftTime;
+				}
+
+				differences[2, 0] = feature1DriftTime - feature2DriftTime;
 			}
 
             return differences;
@@ -209,17 +229,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             if (driftTime)
             {
                 if (forSTAC)
-                {
-					if (massTag.DriftTime != 0)
-					{
-						differences[2, 0] = feature.DriftTime - massTag.DriftTime;
-					}
-					else
-					{
-						differences[3, 0] = feature.DriftTime - massTag.DriftTimePredicted;
-					}
-                }
-                else
                 {
 					if (massTag.DriftTime != 0)
 					{

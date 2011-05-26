@@ -9,6 +9,14 @@ namespace PNNLOmics.Data
 {
     public class MassTag: Feature
     {
+		private int m_conformationID;
+
+		public int ConformationID
+		{
+			get { return m_conformationID; }
+			set { m_conformationID = value; }
+		}
+
         private double m_NETAverage;
 
         public double NETAverage
@@ -71,6 +79,14 @@ namespace PNNLOmics.Data
             get { return m_observationCount; }
             set { m_observationCount = value; }
         }
+
+		private ushort m_conformationObservationCount;
+
+		public ushort ConformationObservationCount
+		{
+			get { return m_conformationObservationCount; }
+			set { m_conformationObservationCount = value; }
+		}
         private ushort m_qualityScore;
 
         public ushort QualityScore

@@ -202,7 +202,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             // Iterate through the list of observed features.
             while( observedIndex < shortObservedList.Count )
             {
-                if (observedIndex % 100 == 0) Console.WriteLine("Working on UMC index = " + observedIndex);
                 // Store the current observed feature locally.
                 T observedFeature = shortObservedList[observedIndex];
                 // Flag variable that gets set to false when the observed mass is greater than the current mass tag by more than the tolerance.
@@ -290,43 +289,51 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <summary>
         /// Populate the FDR table with default cutoffs.
         /// </summary>
-        private void SetSTACCutoffs()
+		private List<STACFDR> SetSTACCutoffs()
         {
-            m_stacFDRList.Clear();
+			List<STACFDR> stacFDRList = new List<STACFDR>();
+
             for (double cutoff = 0.99; cutoff > 0.90; cutoff -= 0.01)
             {
                 STACFDR tableLine = new STACFDR(cutoff);
-                m_stacFDRList.Add(tableLine);
+				stacFDRList.Add(tableLine);
             }
             for (double cutoff = 0.90; cutoff >= 0; cutoff -= 0.10)
             {
                 STACFDR tableLine = new STACFDR(cutoff);
-                m_stacFDRList.Add(tableLine);
+				stacFDRList.Add(tableLine);
             }
+
+			return stacFDRList;
         }
         /// <summary>
         /// Fills in the values for the STAC FDR table.
         /// </summary>
-        private void PopulateSTACFDRTable()
+        public List<STACFDR> PopulateSTACFDRTable(List<FeatureMatch<T,U>> matchList)
         {
-            SetSTACCutoffs();
-            m_matchList.Sort(FeatureMatch<T,U>.STACComparisonDescending);
+            List<STACFDR> stacFDRList = SetSTACCutoffs();
+			matchList.Sort(FeatureMatch<T, U>.STACComparisonDescending);
 
 			// Iterate over all defined cutoff ranges
-			for (int cutoffIndex = 0; cutoffIndex < m_stacFDRList.Count; cutoffIndex++)
+			for (int cutoffIndex = 0; cutoffIndex < stacFDRList.Count; cutoffIndex++)
 			{
 				double falseDiscoveries = 0.0;
 				int matches = 0;
 				double fdr = 0.0;
+				List<U> uniqueTargetList = new List<U>();
 
 				// Find all matches for this particular cutoff
-				foreach (FeatureMatch<T, U> match in m_matchList)
+				foreach (FeatureMatch<T, U> match in matchList)
 				{
 					double stac = match.STACScore;
-					if (stac >= m_stacFDRList[cutoffIndex].Cutoff)
+					if (stac >= stacFDRList[cutoffIndex].Cutoff)
 					{
-						falseDiscoveries += 1 - stac;
-						matches++;
+						if (!uniqueTargetList.Contains(match.TargetFeature))
+						{
+							uniqueTargetList.Add(match.TargetFeature);
+							falseDiscoveries += 1 - stac;
+							matches++;
+						}
 					}
 					else
 					{
@@ -339,13 +346,15 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 				if (matches > 0)
 				{
 					fdr = falseDiscoveries / (double)matches;
-					m_stacFDRList[cutoffIndex].FillLine(fdr, matches, (int)falseDiscoveries);
+					stacFDRList[cutoffIndex].FillLine(fdr, matches, falseDiscoveries);
 				}
 				else
 				{
-					m_stacFDRList[cutoffIndex].FillLine(0, 0, 0);
+					stacFDRList[cutoffIndex].FillLine(0, 0, 0);
 				}
 			}
+
+			return stacFDRList;
         }
         /// <summary>
         /// Find the subset of a list which has the same charge state.
@@ -544,36 +553,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 return false;
             }
         }
-        /// <summary>
-        /// TODO:  You're gonna hate this...
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="observedFeature"></param>
-        /// <param name="targetFeature"></param>
-        /// <param name="driftTimeTolerance"></param>
-        /// <returns></returns>
-        private bool WithDriftTimeTolerance(T observedFeature, MassTag targetFeature, float driftTimeTolerance) 
-        {
-            if (driftTimeTolerance > 0)
-            {
-                float targetDriftTime = 0;
-                float observedDriftTime = observedFeature.DriftTime;
-                if (targetFeature.DriftTimePredicted > 0)
-                {
-                    targetDriftTime = (float)targetFeature.DriftTimePredicted;
-                }
-                else
-                {
-                    targetDriftTime = targetFeature.DriftTime;
-                }
-                float difference = Math.Abs(targetDriftTime - observedDriftTime);
-                return (difference < driftTimeTolerance);
-            }
-            else
-            {
-                return false;
-            }
-        }
         #endregion
 
         #region Public functions
@@ -669,7 +648,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 					stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
 					STACParameterList.Add(stacInformation);
 					Console.WriteLine("Populating FDR table");
-                    PopulateSTACFDRTable();
+                    m_stacFDRList = PopulateSTACFDRTable(m_matchList);
                 }
                 if (m_matchParameters.ShouldCalculateHistogramFDR)
                 {

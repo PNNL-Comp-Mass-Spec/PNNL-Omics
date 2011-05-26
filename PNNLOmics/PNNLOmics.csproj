@@ -65,6 +65,8 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
@@ -137,6 +139,7 @@
     <Compile Include="Algorithms\FeatureClustering\UMCCentroidClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\LinkageClustererBase.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCAverageLinkageClusterer.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\StacFDR.cs" />
     <Compile Include="Algorithms\PeakDetection\FullWidthHalfMaximumPeakOptions.cs" />
     <Compile Include="Algorithms\PeakDetection\KronewitterPeakDetector.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakCentroidEnumerations.cs" />
@@ -206,6 +209,10 @@
     <Compile Include="Data\Features\MSFeature.cs" />
     <Compile Include="Generic\AnonymousComparer.cs" />
     <Compile Include="IonType.cs" />
+    <Compile Include="IO\FileReaders\BaseTextFileReader.cs" />
+    <Compile Include="IO\FileReaders\ITextFileReader.cs" />
+    <Compile Include="IO\FileReaders\MassTagFileReader.cs" />
+    <Compile Include="IO\FileReaders\UMCFileReader.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
     <Compile Include="Organism.cs" />
@@ -249,7 +256,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Algorithms\FeatureFinding\" />
-    <Folder Include="IO\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

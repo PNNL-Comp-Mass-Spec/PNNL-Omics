@@ -12,7 +12,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         private double m_fdr;
 
         private int m_matches;
-        private int m_falseMatches;
+        private double m_falseMatches;
 
         private String m_label;
         #endregion
@@ -46,7 +46,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <summary>
         /// Gets or sets the number of false matches at the cutoff.
         /// </summary>
-        public int FalseMatches
+        public double FalseMatches
         {
             get { return m_falseMatches; }
             set { m_falseMatches = value; }
@@ -114,7 +114,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="fdr">The false discovery rate (FDR) at the cutoff.</param>
         /// <param name="matches">The number of matches found at the cutoff.</param>
         /// <param name="falseMatches">The estimated number of false matches found at the cutoff.  Rounded to an integer value.</param>
-        public void FillLine(double fdr, int matches, int falseMatches)
+        public void FillLine(double fdr, int matches, double falseMatches)
         {
             m_fdr = fdr;
             m_falseMatches = falseMatches;
