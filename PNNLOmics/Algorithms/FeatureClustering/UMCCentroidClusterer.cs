@@ -24,7 +24,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         public UMCCentroidClusterer()
         {
             Parameters = new FeatureClusterParameters();
-			m_massComparer = new Comparison<UMCLight>(UMCLight.MassComparison);
+			m_massComparer = new Comparison<UMCLight>(UMCLight.MassComparison); 
         }
         private double GetAverageClusterDistance(T clusterI, T clusterJ, DistanceFunction function)
         {

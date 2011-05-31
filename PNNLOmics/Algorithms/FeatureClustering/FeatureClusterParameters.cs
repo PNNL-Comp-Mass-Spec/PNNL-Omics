@@ -60,6 +60,30 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             set;
         }
         /// <summary>
+        /// 
+        /// </summary>
+        public double MassWeight
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public double RetentionTimeWeight
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public double DriftWeight
+        {
+            get;
+            set;
+        }
+        /// <summary>
         /// Gets or sets the distance function to use for calculating the distance between two UMC's.
         /// </summary>
         public DistanceFunction DistanceFunction
@@ -95,6 +119,24 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             double sum             = (massDifference  * massDifference)  +
                                      (netDifference   * netDifference)   + 
                                      (driftDifference * driftDifference);
+
+            return Math.Sqrt(sum);
+        }
+        
+        /// <summary>
+        /// Calculates the Euclidean distance based on drift time, aligned mass, and aligned NET.
+        /// </summary>
+        /// <param name="x">Feature x.</param>
+        /// <param name="y">Feature y.</param>
+        /// <returns>Distance calculated as </returns>
+        public double WeightedEuclideanDistance(UMCLight x, UMCLight y)
+        {
+            double massDifference  = Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
+            double netDifference   = x.RetentionTime - y.RetentionTime;
+            double driftDifference = x.DriftTime  - y.DriftTime;
+            double sum             = (massDifference  * massDifference) * MassWeight +
+                                     (netDifference   * netDifference)  * RetentionTimeWeight + 
+                                     (driftDifference * driftDifference) * DriftWeight ;
 
             return Math.Sqrt(sum);
         }
