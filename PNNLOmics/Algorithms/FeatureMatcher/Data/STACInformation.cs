@@ -237,6 +237,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             featureMatchList.Sort(FeatureMatch<T, U>.FeatureComparison);
             int matchIndex = 0;
             int endIndex = matchIndex;
+
+			// If only 1 match, tyhe Specificity score should be 1
+			if (featureMatchList.Count == 1)
+			{
+				featureMatchList[0].STACSpecificity = 1;
+				return;
+			}
+
             while (matchIndex < featureMatchList.Count)
             {
 				int maxCount = 0;
