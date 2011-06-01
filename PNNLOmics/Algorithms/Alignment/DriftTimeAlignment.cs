@@ -16,17 +16,26 @@ namespace PNNLOmics.Algorithms.Alignment
 	{
 		// Set this to an extremely high value so that drift time difference will not be considered when matching
 		private const float DRIFT_TIME_TOLERANCE = 100f;
-
-		public static void AlignObservedEnumerable(IEnumerable<T> fullObservedEnumerable, IEnumerable<T> observedEnumerable, IEnumerable<U> targetEnumerable, double massTolerance, double netTolerance)
+        
+        /// <summary>
+        /// Aligns features to the baseline correcting for drift time.
+        /// </summary>
+        /// <param name="fullObservedEnumerable">All features.</param>
+        /// <param name="observedEnumerable">Filtered features to use for drift time correction.</param>
+        /// <param name="targetEnumerable">Expected features that should be filtered.</param>
+        /// <param name="massTolerance">PPM Mass Tolerance.</param>
+        /// <param name="netTolerance">Normalized Elution Time Tolerance.</param>
+        public static DriftTimeAlignmentResults<T, U> AlignObservedEnumerable(IEnumerable<T> fullObservedEnumerable, IEnumerable<T> observedEnumerable, IEnumerable<U> targetEnumerable, double massTolerance, double netTolerance)
 		{
+            
 			// Setup Tolerance for Feature Matching
-			FeatureMatcherParameters featureMatcherParameters = new FeatureMatcherParameters();
+			FeatureMatcherParameters featureMatcherParameters   = new FeatureMatcherParameters();
 			featureMatcherParameters.SetTolerances(massTolerance, netTolerance, DRIFT_TIME_TOLERANCE);
-			featureMatcherParameters.UseDriftTime = true;
+			featureMatcherParameters.UseDriftTime               = true;
 
 			// Find all matches based on defined tolerances
 			FeatureMatcher<T, U> featureMatcher = new FeatureMatcher<T, U>(observedEnumerable.ToList(), targetEnumerable.ToList(), featureMatcherParameters);
-			List<FeatureMatch<T, U>> matchList = featureMatcher.FindMatches(observedEnumerable.ToList(), targetEnumerable.ToList(), featureMatcherParameters.UserTolerances, 0);
+			List<FeatureMatch<T, U>> matchList  = featureMatcher.FindMatches(observedEnumerable.ToList(), targetEnumerable.ToList(), featureMatcherParameters.UserTolerances, 0);
 
 			// Create <ObservedDriftTime, TargetDriftTime> XYData List
 			List<XYData> xyDataList = new List<XYData>();
@@ -44,9 +53,20 @@ namespace PNNLOmics.Algorithms.Alignment
 			{
 				observedT.DriftTimeAligned = LinearEquationCalculator.CalculateNewValue(observedT.DriftTime, linearEquation);
 			}
-		}
 
-		public static void CorrectForOffset(IEnumerable<T> observedEnumerable, IEnumerable<U> targetEnumerable, double massTolerance, double netTolerance, double driftTimeTolerance)
+            DriftTimeAlignmentResults<T, U> results = new DriftTimeAlignmentResults<T, U>(matchList, linearEquation);
+
+            return results;
+		}
+        /// <summary>
+        /// Does a zero mean drift time correction.
+        /// </summary>
+        /// <param name="observedEnumerable">All observed features to shift that should already be drift time aligned.</param>
+        /// <param name="targetEnumerable">Expected features</param>
+        /// <param name="massTolerance">PPM Mass Tolerance</param>
+        /// <param name="netTolerance">Normalized Elution Time tolerance.</param>
+        /// <param name="driftTimeTolerance">Drift time tolerance to use.</param>
+        public static DriftTimeAlignmentResults<T,U> CorrectForOffset(IEnumerable<T> observedEnumerable, IEnumerable<U> targetEnumerable, double massTolerance, double netTolerance, double driftTimeTolerance)
 		{
 			// Setup Tolerance for Feature Matching
 			FeatureMatcherParameters featureMatcherParameters = new FeatureMatcherParameters();
@@ -105,9 +125,7 @@ namespace PNNLOmics.Algorithms.Alignment
 
 			// Grab the drift time from the group with the most counts
 			double driftTimeOffset = orderGroupingsByCount.First().Key;
-
-			Console.WriteLine("Drift time offset = " + driftTimeOffset);
-
+            
 			// Update all of the observed features with the new drift time
 			foreach (T observedFeature in observedEnumerable)
 			{
@@ -120,6 +138,13 @@ namespace PNNLOmics.Algorithms.Alignment
 					observedFeature.DriftTime -= (float)driftTimeOffset;
 				}
 			}
+
+            LinearEquation linearEquation           = new LinearEquation();
+            linearEquation.Slope                    = 0;
+            linearEquation.Intercept                = driftTimeOffset;
+            DriftTimeAlignmentResults<T, U> results = new DriftTimeAlignmentResults<T, U>(matchList, linearEquation);
+
+            return results;
 		}
 	}
 }

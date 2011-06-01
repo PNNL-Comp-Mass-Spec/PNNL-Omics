@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="Algorithms\Alignment\AlignmentScore.cs" />
     <Compile Include="Algorithms\Alignment\DriftTimeAlignment.cs" />
+    <Compile Include="Algorithms\Alignment\DriftTimeAlignmentResults.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp.cs">
       <SubType>Code</SubType>
     </Compile>
