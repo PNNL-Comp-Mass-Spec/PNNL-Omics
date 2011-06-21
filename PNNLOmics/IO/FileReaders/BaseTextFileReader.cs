@@ -15,7 +15,9 @@ namespace PNNLOmics.IO.FileReaders
 		public IEnumerable<T> ReadFile(string fileLocation) 
 		{
 			TextReader textReader = new StreamReader(fileLocation);
-			return ReadFile(textReader);
+			IEnumerable<T> returnEnumerable = ReadFile(textReader);
+			textReader.Close();
+			return returnEnumerable;
 		}
 
 		public IEnumerable<T> ReadFile(TextReader textReader)
