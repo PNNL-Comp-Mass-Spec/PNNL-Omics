@@ -11,7 +11,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         private double m_cutoff;
         private double m_fdr;
 
-        private int m_matches;
+        private int m_conformationMatches;
+		private int m_amtMatches;
         private double m_falseMatches;
 
         private String m_label;
@@ -36,13 +37,21 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         }
 
         /// <summary>
-        /// Gets or sets the number of matches for the cutoff level.
+        /// Gets or sets the number of Unique Conformation Matches for the cutoff level.
         /// </summary>
-        public int Matches
+        public int ConformationMatches
         {
-            get { return m_matches; }
-            set { m_matches = value; }
+            get { return m_conformationMatches; }
+			set { m_conformationMatches = value; }
         }
+		/// <summary>
+		/// Gets or sets the number of Unique Mass Tag Matches for the cutoff level.
+		/// </summary>
+		public int AMTMatches
+		{
+			get { return m_amtMatches; }
+			set { m_amtMatches = value; }
+		}
         /// <summary>
         /// Gets or sets the number of false matches at the cutoff.
         /// </summary>
@@ -105,7 +114,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         {
             m_fdr = 1;
             SetLabel(0);
-            m_matches = 0;
+            m_conformationMatches = 0;
+			m_amtMatches = 0;
             m_falseMatches = 0;
         }
         /// <summary>
@@ -114,11 +124,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="fdr">The false discovery rate (FDR) at the cutoff.</param>
         /// <param name="matches">The number of matches found at the cutoff.</param>
         /// <param name="falseMatches">The estimated number of false matches found at the cutoff.  Rounded to an integer value.</param>
-        public void FillLine(double fdr, int matches, double falseMatches)
+        public void FillLine(double fdr, int conformationMatches, int amtMatches, double falseMatches)
         {
             m_fdr = fdr;
             m_falseMatches = falseMatches;
-            m_matches = matches;
+			m_conformationMatches = conformationMatches;
+			m_amtMatches = amtMatches;
         }
         #endregion
     }

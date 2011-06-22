@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
@@ -318,7 +319,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 			for (int cutoffIndex = 0; cutoffIndex < stacFDRList.Count; cutoffIndex++)
 			{
 				double falseDiscoveries = 0.0;
-				int matches = 0;
+				int conformationMatches = 0;
+				int amtMatches = 0;
 				double fdr = 0.0;
 				List<U> uniqueTargetList = new List<U>();
 
@@ -330,9 +332,19 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 					{
 						if (!uniqueTargetList.Contains(match.TargetFeature))
 						{
+							// Find out if this is a new, unique Mass Tag. If not, then it is just a new conformation.
+							var searchForMassTagIDQuery = from target in uniqueTargetList
+														  where target.ID == match.TargetFeature.ID
+														  select target;
+
+							if (searchForMassTagIDQuery.Count() == 0)
+							{
+								amtMatches++;
+							}
+
 							uniqueTargetList.Add(match.TargetFeature);
 							falseDiscoveries += 1 - stac;
-							matches++;
+							conformationMatches++;
 						}
 					}
 					else
@@ -343,14 +355,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 				}
 
 				// After all matches have been found, report the FDR
-				if (matches > 0)
+				if (conformationMatches > 0)
 				{
-					fdr = falseDiscoveries / (double)matches;
-					stacFDRList[cutoffIndex].FillLine(fdr, matches, falseDiscoveries);
+					fdr = falseDiscoveries / (double)conformationMatches;
+					stacFDRList[cutoffIndex].FillLine(fdr, conformationMatches, amtMatches, falseDiscoveries);
 				}
 				else
 				{
-					stacFDRList[cutoffIndex].FillLine(0, 0, 0);
+					stacFDRList[cutoffIndex].FillLine(0, 0, 0, 0);
 				}
 			}
 
