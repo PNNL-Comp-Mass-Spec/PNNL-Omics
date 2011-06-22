@@ -255,39 +255,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             return matchList;
         }
         /// <summary>
-        /// Refine tolerances for use in SLiC and shift match methods.
-        /// </summary>
-        /// <param name="matchList">List of matches used to train the refined tolerances.</param>
-        /// <returns>Refined tolerances for use in SLiC and shift match methods.</returns>
-        private FeatureMatcherTolerances FindOptimalTolerances(List<FeatureMatch<T, U>> matchList)
-        {
-            List<Matrix> differenceMatrixList = new List<Matrix>();
-			foreach (FeatureMatch<T, U> featureMatch in matchList)
-			{
-				differenceMatrixList.Add(featureMatch.ReducedDifferenceVector);
-			}
-
-            int rows = differenceMatrixList[0].RowCount;
-            Matrix meanVector = new Matrix(rows, 1, 0.0);
-            Matrix covarianceMatrix = new Matrix(rows, 1.0);
-            double mixtureParameter = 0.5;
-
-
-            Utilities.ExpectationMaximization.NormalUniformMixture(differenceMatrixList, ref meanVector, ref covarianceMatrix, m_matchParameters.UserTolerances.AsVector(m_matchParameters.UseDriftTime), ref mixtureParameter, true);
-
-            m_slicParameters.MassPPMStDev = Math.Sqrt(covarianceMatrix[0, 0]);
-            m_slicParameters.NETStDev = Math.Sqrt(covarianceMatrix[1, 1]);
-			if (m_matchParameters.UseDriftTime)
-			{
-				m_slicParameters.DriftTimeStDev = (float)Math.Sqrt(covarianceMatrix[2, 2]);
-			}
-
-            FeatureMatcherTolerances refinedTolerances = new FeatureMatcherTolerances((2.5 * m_slicParameters.MassPPMStDev), (2.5 * m_slicParameters.NETStDev),
-                                                            (float)(2.5 * m_slicParameters.DriftTimeStDev));
-            refinedTolerances.Refined = true;
-            return refinedTolerances;
-        }
-        /// <summary>
         /// Populate the FDR table with default cutoffs.
         /// </summary>
 		private List<STACFDR> SetSTACCutoffs()
@@ -658,6 +625,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 					STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
 					Console.WriteLine("Performing STAC");
 					stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+
+					// Add the Refined Tolerances that STAC calculated
+					m_refinedTolerancesList.Add(stacInformation.RefinedTolerances);
+
 					STACParameterList.Add(stacInformation);
 					Console.WriteLine("Populating FDR table");
                     m_stacFDRList = PopulateSTACFDRTable(m_matchList);
@@ -671,7 +642,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 {
 					Console.WriteLine("Calculating Shift FDR");
                     int count = 0;
-                    m_refinedTolerancesList.Add(FindOptimalTolerances(m_matchList));
                     for (int j = 0; j < m_matchList.Count; j++)
                     {
                         m_matchList[j].InRegion(m_refinedTolerancesList[0], m_matchParameters.UseEllipsoid);
@@ -684,15 +654,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     m_shiftedMatchList.AddRange(FindMatches(m_observedFeatureList, m_targetFeatureList, m_refinedTolerancesList[0], m_matchParameters.ShiftAmount));
                     m_shiftFDR = (1.0 * count) / m_shiftedMatchList.Count;
                     m_shiftConservativeFDR = (2.0 * count) / m_shiftedMatchList.Count;
-                }
-                if (m_matchParameters.ShouldCalculateSLiC && lengthCheck)
-                {
-					Console.WriteLine("Finding SLic Scores");
-                    if (m_refinedTolerancesList.Count > 0 && !m_refinedTolerancesList[0].Refined)
-                    {
-                        m_refinedTolerancesList[0] = FindOptimalTolerances(m_matchList);
-                    }
-                    // Find SLiC scores.
                 }
 			//}
         }

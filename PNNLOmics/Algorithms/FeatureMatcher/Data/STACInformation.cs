@@ -19,6 +19,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         private Matrix m_meanVectorF;
         private Matrix m_covarianceMatrixF;
 
+		private FeatureMatcherTolerances m_refinedTolerances;
+
         private uint m_iteration;
 
         private const double EPSILON = 0.0001;
@@ -67,6 +69,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             get { return m_covarianceMatrixF; }
             set { m_covarianceMatrixF = value; }
         }
+		/// <summary>
+		/// Gets or sets the the refined tolerances calculated during STAC training.
+		/// </summary>
+		public FeatureMatcherTolerances RefinedTolerances
+		{
+			get { return m_refinedTolerances; }
+			set { m_refinedTolerances = value; }
+		}
         # endregion
 
         #region Constructors
@@ -371,6 +381,21 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 // Update the loglikelihood.
                 m_logLikelihood = nextLogLikelihood;
             }
+
+			// Find the refined tolerances
+			//double massPPMStDev = m_covarianceMatrixT[0, 0];
+			//double netStDev = m_covarianceMatrixT[1, 1];
+			double massPPMStDev = Math.Sqrt(m_covarianceMatrixT[0, 0]);
+			double netStDev = Math.Sqrt(m_covarianceMatrixT[1, 1]);
+			double driftTimeStDev = 0;
+			if (useDriftTime)
+			{
+				driftTimeStDev = Math.Sqrt(m_covarianceMatrixT[2, 2]);
+				//driftTimeStDev = m_covarianceMatrixT[2, 2];
+			}
+
+			m_refinedTolerances = new FeatureMatcherTolerances((2.5 * massPPMStDev), (2.5 * netStDev), (float)(2.5 * driftTimeStDev));
+			m_refinedTolerances.Refined = true;
 
             // Return the convergence flag, which is still false unless changed to true above.
             return converges;
