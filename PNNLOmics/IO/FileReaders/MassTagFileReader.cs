@@ -23,6 +23,9 @@ namespace PNNLOmics.IO.FileReaders
 					case "Mass_Tag_ID":
 						columnMap.Add("MassTag.ID", i);
 						break;
+					case "Mass_Tag_ID_Original":
+						columnMap.Add("MassTag.OriginalID", i);
+						break;
 					case "Conformer_ID":
 						columnMap.Add("MassTag.ConformationID", i);
 						break;
@@ -99,6 +102,12 @@ namespace PNNLOmics.IO.FileReaders
 				{
 					currentId = idIndex;
 					idIndex++;
+				}
+
+				// If there was an "original" ID, then overwirte the MassTagID. This is a hack to make it work with VIPER!
+				if (columnMapping.ContainsKey("MassTag.OriginalID"))
+				{
+					currentId = Int32.Parse(columns[columnMapping["MassTag.OriginalID"]]);
 				}
 				
 				massTag = new MassTag();
