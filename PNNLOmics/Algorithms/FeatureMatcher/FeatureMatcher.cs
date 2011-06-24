@@ -540,122 +540,45 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// </summary>
         public void MatchFeatures()
         {
-			//if (m_matchParameters.UseDriftTime)
-			//{
-			//    // If no charge states were specified in the parameters, fill in the charge state list with all charge states contained in the observed feature list.
-			//    if (m_matchParameters.ChargeStateList.Count == 0)
-			//    {
-			//        SetChargeStateList();
-			//    }
-			//    // Resize the STAC and refined tolerances list so that they are the same length as the charge state list.
-			//    int chargeStateCount = m_matchParameters.ChargeStateList.Count;
-			//    m_stacParametersList.Capacity = chargeStateCount;
-			//    m_refinedTolerancesList.Capacity = chargeStateCount;
-			//    // Sort the feature lists and create indices to store where a charge state ends.
-			//    m_observedFeatureList.Sort(new Comparison<T>(Feature.ChargeStateComparison));
-			//    int chargeStateIndexObserved = 0;
-			//    m_targetFeatureList.Sort(new Comparison<U>(Feature.ChargeStateComparison));
-			//    int chargeStateIndexTarget = 0;
-			//    // Iterate through each charge state performing the desired operations.
-			//    for (int i = 0; i < chargeStateCount; i++)
-			//    {
-			//        // Create sub-lists of the features with the current charge state.
-			//        int chargeState = m_matchParameters.ChargeStateList[i];
-			//        List<T> chargeObservedList = ExtractChargeStateList<T>(m_observedFeatureList, ref chargeStateIndexObserved, chargeState);
-			//        List<U> chargeTargetList   = ExtractChargeStateList<U>(m_targetFeatureList, ref chargeStateIndexTarget, chargeState);
+            m_matchList.Clear();
+            m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, 0);
 
-			//        // If either the observed or target feature lists are empty, then move on to the next charge state
-			//        if (chargeObservedList.Count == 0 || chargeTargetList.Count == 0)
-			//        {
-			//            continue;
-			//        }
+            bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
+            if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
+            {
+				STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
+				Console.WriteLine("Performing STAC");
+				stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
 
-			//        // Find the matches among the two feature lists.
-			//        List<FeatureMatch<T, U>> tempMatchList = new List<FeatureMatch<T, U>>();
-			//        tempMatchList = FindMatches(chargeObservedList, chargeTargetList, m_matchParameters.UserTolerances, false, 0);
-			//        bool lengthCheck = (tempMatchList.Count < MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
+				// Add the Refined Tolerances that STAC calculated
+				m_refinedTolerancesList.Add(stacInformation.RefinedTolerances);
 
-			//        // If not enough matches, move on to the next charge state
-			//        if (lengthCheck)
-			//        {
-			//            continue;
-			//        }
-
-			//        // If the STAC score is requested, perform it.
-			//        if (m_matchParameters.ShouldCalculateSTAC)
-			//        {
-			//            STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
-			//            stacInformation.PerformSTAC(tempMatchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
-			//            STACParameterList.Add(stacInformation);
-			//        }
-			//        // If 11 Dalton shift FDR is requested, calculate whether each of the temporary matches is within the bounds.
-			//        if (m_matchParameters.ShouldCalculateShiftFDR)
-			//        {
-			//            m_refinedTolerancesList.Add(FindOptimalTolerances(tempMatchList));
-			//            for (int j = 0; j < tempMatchList.Count; j++)
-			//            {
-			//                tempMatchList[j].InRegion(m_refinedTolerancesList[i], m_matchParameters.UseEllipsoid);
-			//            }
-			//            m_shiftedMatchList.AddRange(FindMatches(chargeObservedList, chargeTargetList, m_refinedTolerancesList[i],
-			//                                                        m_matchParameters.UseEllipsoid, m_matchParameters.ShiftAmount));
-			//        }
-			//        // Add the temporary matches to the match list.
-			//        m_matchList.AddRange(tempMatchList);
-			//    }
-			//    PopulateSTACFDRTable(); // Need to calculate STAC FDR in a smarter way than this.
-			//    int count = 0;
-			//    for (int j = 0; j < m_matchList.Count; j++)
-			//    {
-			//        if (m_matchList[j].WithinRefinedRegion)
-			//        {
-			//            count++;
-			//        }
-			//    }
-			//    m_shiftFDR = (1.0 * count) / m_shiftedMatchList.Count;
-			//    m_shiftConservativeFDR = (2.0 * count) / m_shiftedMatchList.Count;
-			//}
-			//else
-			//{
-                m_matchList.Clear();
-                m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, 0);
-
-                bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
-                if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
+				STACParameterList.Add(stacInformation);
+				Console.WriteLine("Populating FDR table");
+                m_stacFDRList = PopulateSTACFDRTable(m_matchList);
+            }
+            if (m_matchParameters.ShouldCalculateHistogramFDR)
+            {
+				Console.WriteLine("Setting Mass Error Histogram FDR");
+                SetMassErrorHistogramFDR();
+            }
+            if (m_matchParameters.ShouldCalculateShiftFDR)
+            {
+				Console.WriteLine("Calculating Shift FDR");
+                int count = 0;
+                for (int j = 0; j < m_matchList.Count; j++)
                 {
-					STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
-					Console.WriteLine("Performing STAC");
-					stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
-
-					// Add the Refined Tolerances that STAC calculated
-					m_refinedTolerancesList.Add(stacInformation.RefinedTolerances);
-
-					STACParameterList.Add(stacInformation);
-					Console.WriteLine("Populating FDR table");
-                    m_stacFDRList = PopulateSTACFDRTable(m_matchList);
+                    m_matchList[j].InRegion(m_refinedTolerancesList[0], m_matchParameters.UseEllipsoid);
                 }
-                if (m_matchParameters.ShouldCalculateHistogramFDR)
+                for (int j = 0; j < m_matchList.Count; j++)
                 {
-					Console.WriteLine("Setting Mass Error Histogram FDR");
-                    SetMassErrorHistogramFDR();
+                    if (m_matchList[j].WithinRefinedRegion)
+                        count++;
                 }
-                if (m_matchParameters.ShouldCalculateShiftFDR)
-                {
-					Console.WriteLine("Calculating Shift FDR");
-                    int count = 0;
-                    for (int j = 0; j < m_matchList.Count; j++)
-                    {
-                        m_matchList[j].InRegion(m_refinedTolerancesList[0], m_matchParameters.UseEllipsoid);
-                    }
-                    for (int j = 0; j < m_matchList.Count; j++)
-                    {
-                        if (m_matchList[j].WithinRefinedRegion)
-                            count++;
-                    }
-                    m_shiftedMatchList.AddRange(FindMatches(m_observedFeatureList, m_targetFeatureList, m_refinedTolerancesList[0], m_matchParameters.ShiftAmount));
-                    m_shiftFDR = (1.0 * count) / m_shiftedMatchList.Count;
-                    m_shiftConservativeFDR = (2.0 * count) / m_shiftedMatchList.Count;
-                }
-			//}
+                m_shiftedMatchList.AddRange(FindMatches(m_observedFeatureList, m_targetFeatureList, m_refinedTolerancesList[0], m_matchParameters.ShiftAmount));
+                m_shiftFDR = (1.0 * count) / m_shiftedMatchList.Count;
+                m_shiftConservativeFDR = (2.0 * count) / m_shiftedMatchList.Count;
+            }
         }
         #endregion
     }

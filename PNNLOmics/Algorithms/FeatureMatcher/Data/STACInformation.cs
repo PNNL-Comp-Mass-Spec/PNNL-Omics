@@ -362,11 +362,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 // Calculate the loglikelihood based on the new parameters.
 				nextLogLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity, useDriftTime, ref alphaList);
 
-				// Print statistics every 10 iterations
-				//if (m_iteration % 10 == 0)
-				//{
-					PrintCurrentStatistics(nextLogLikelihood);
-				//}
+				PrintCurrentStatistics(nextLogLikelihood);
 
                 // Increment the counter to show that another iteration has been completed.
                 m_iteration++;
@@ -383,15 +379,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             }
 
 			// Find the refined tolerances
-			//double massPPMStDev = m_covarianceMatrixT[0, 0];
-			//double netStDev = m_covarianceMatrixT[1, 1];
 			double massPPMStDev = Math.Sqrt(m_covarianceMatrixT[0, 0]);
 			double netStDev = Math.Sqrt(m_covarianceMatrixT[1, 1]);
 			double driftTimeStDev = 0;
 			if (useDriftTime)
 			{
 				driftTimeStDev = Math.Sqrt(m_covarianceMatrixT[2, 2]);
-				//driftTimeStDev = m_covarianceMatrixT[2, 2];
 			}
 
 			m_refinedTolerances = new FeatureMatcherTolerances((2.5 * massPPMStDev), (2.5 * netStDev), (float)(2.5 * driftTimeStDev));
