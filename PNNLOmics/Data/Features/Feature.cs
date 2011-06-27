@@ -41,6 +41,10 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public int ID { get; set; }
 		/// <summary>
+		/// The index of this feature. Usually used for keeping multiple sets of IDs.
+		/// </summary>
+		public int Index { get; set; }
+		/// <summary>
 		/// True if the MSFeature was marked as Suspicious by Deconvolution algorithm.
 		/// </summary>
 		public bool IsSuspicious { get; set; }
