@@ -289,7 +289,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 				int conformationMatches = 0;
 				int amtMatches = 0;
 				double fdr = 0.0;
-				List<U> uniqueTargetList = new List<U>();
+				HashSet<int> uniqueIndexList = new HashSet<int>();
+				HashSet<int> uniqueIDList = new HashSet<int>();
 
 				// Find all matches for this particular cutoff
 				foreach (FeatureMatch<T, U> match in matchList)
@@ -297,19 +298,16 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 					double stac = match.STACScore;
 					if (stac >= stacFDRList[cutoffIndex].Cutoff)
 					{
-						if (!uniqueTargetList.Contains(match.TargetFeature))
+						if (!uniqueIndexList.Contains(match.TargetFeature.Index))
 						{
 							// Find out if this is a new, unique Mass Tag. If not, then it is just a new conformation.
-							var searchForMassTagIDQuery = from target in uniqueTargetList
-														  where target.ID == match.TargetFeature.ID
-														  select target;
-
-							if (searchForMassTagIDQuery.Count() == 0)
+							if (!uniqueIDList.Contains(match.TargetFeature.ID))
 							{
+								uniqueIDList.Add(match.TargetFeature.ID);
 								amtMatches++;
 							}
 
-							uniqueTargetList.Add(match.TargetFeature);
+							uniqueIndexList.Add(match.TargetFeature.Index);
 							falseDiscoveries += 1 - stac;
 							conformationMatches++;
 						}
