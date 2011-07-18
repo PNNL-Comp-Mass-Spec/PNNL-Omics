@@ -107,7 +107,15 @@ namespace PNNLOmics.IO.FileReaders
 				massTag = new MassTag();
 				massTag.ID = currentId;
 
-				if (columnMapping.ContainsKey("MassTag.Index")) massTag.Index = Int32.Parse(columns[columnMapping["MassTag.Index"]]);
+				if (columnMapping.ContainsKey("MassTag.Index"))
+				{
+					massTag.Index = Int32.Parse(columns[columnMapping["MassTag.Index"]]);
+				}
+				else
+				{
+					massTag.Index = currentId;
+				}
+
 				if (columnMapping.ContainsKey("MassTag.MassMonoisotopic")) massTag.MassMonoisotopic = double.Parse(columns[columnMapping["MassTag.MassMonoisotopic"]]);
 				if (columnMapping.ContainsKey("MassTag.NET")) massTag.NET = double.Parse(columns[columnMapping["MassTag.NET"]]);
 				if (columnMapping.ContainsKey("MassTag.PriorProbability")) massTag.PriorProbability = double.Parse(columns[columnMapping["MassTag.PriorProbability"]]);
