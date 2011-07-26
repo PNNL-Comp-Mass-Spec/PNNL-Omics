@@ -6,7 +6,8 @@ namespace PNNLOmics.Data.Features
 	/// <summary>
 	/// Basic representation of a group of UMC's observed across datasets.
 	/// </summary>
-	public class UMCClusterLight : FeatureLight
+    public class UMCClusterLight : FeatureLight,
+                                    IFeatureCluster<UMCLight>
 	{
 		/// <summary>
 		/// Default constructor.
@@ -240,6 +241,20 @@ namespace PNNLOmics.Data.Features
 			else
 				UMCList.Clear();
 		}
-		#endregion
-	}
+		#endregion      
+    
+        #region IFeatureCluster<UMCLight> Members
+
+        public void AddChildFeature(UMCLight feature)
+        {
+            UMCList.Add(feature);
+        }
+
+        public List<UMCLight> Features
+        {
+            get { return UMCList; }
+        }
+
+        #endregion
+    }
 }

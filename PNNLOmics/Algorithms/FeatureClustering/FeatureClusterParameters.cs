@@ -20,7 +20,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Parameters for the single linkage UMC Clustering Algorithm.
     /// </summary>
-    public class FeatureClusterParameters
+    public class FeatureClusterParameters<T>
+        where T: FeatureLight, new()
     {        
         #region Constants
         /// <summary>
@@ -60,33 +61,17 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             set;
         }
         /// <summary>
-        /// 
-        /// </summary>
-        public double MassWeight
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public double RetentionTimeWeight
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public double DriftWeight
-        {
-            get;
-            set;
-        }
-        /// <summary>
         /// Gets or sets the distance function to use for calculating the distance between two UMC's.
         /// </summary>
-        public DistanceFunction DistanceFunction
+        public DistanceFunction<T> DistanceFunction
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the function that determines if two features are within range of each other.
+        /// </summary>
+        public WithinTolerances<T> RangeFunction
         {
             get;
             set;
@@ -96,11 +81,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Resets the parameters to their default values.
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
             Tolerances                      = new FeatureTolerances();
             OnlyClusterSameChargeStates     = CONST_DEFAULT_ONLY_CLUSTER_SAME_CHARGE_STATES;
-            DistanceFunction                = new DistanceFunction(EuclideanDistance);
+            DistanceFunction                = new DistanceFunction<T>(EuclideanDistance);            
             CentroidRepresentation          = ClusterCentroidRepresentation.Median;
         }
 
@@ -111,7 +96,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="x">Feature x.</param>
         /// <param name="y">Feature y.</param>
         /// <returns>Distance calculated as </returns>
-        public double EuclideanDistance(UMCLight x, UMCLight y)
+        public double EuclideanDistance(T x, T y)
         {
             double massDifference  = Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
             double netDifference   = x.RetentionTime - y.RetentionTime;
@@ -122,32 +107,30 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
             return Math.Sqrt(sum);
         }
-        
         /// <summary>
-        /// Calculates the Euclidean distance based on drift time, aligned mass, and aligned NET.
+        /// Computes the mass difference between two features.
         /// </summary>
-        /// <param name="x">Feature x.</param>
-        /// <param name="y">Feature y.</param>
-        /// <returns>Distance calculated as </returns>
-        public double WeightedEuclideanDistance(UMCLight x, UMCLight y)
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        protected bool WithinRange(T x, T y)
         {
-            double massDifference  = Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
-            double netDifference   = x.RetentionTime - y.RetentionTime;
-            double driftDifference = x.DriftTime  - y.DriftTime;
-            double sum             = (massDifference  * massDifference) * MassWeight +
-                                     (netDifference   * netDifference)  * RetentionTimeWeight + 
-                                     (driftDifference * driftDifference) * DriftWeight ;
+			// later is more related to determining a scalar value instead.
+			double massDiff         = Math.Abs(Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic));
+			double netDiff          = Math.Abs(x.RetentionTime - y.RetentionTime);
+			double driftDiff        = Math.Abs(y.RetentionTime - y.DriftTime);
 
-            return Math.Sqrt(sum);
-        }
-
+			// Make sure we fall within the distance range before computing...
+            return (massDiff <= Tolerances.Mass && netDiff <= Tolerances .RetentionTime && driftDiff <= Tolerances.DriftTime);            
+        }        
+        
         /// <summary>
         /// Calculates the weighted Euclidean distance based on drift time, aligned mass, and aligned NET.
         /// </summary>
         /// <param name="x">Feature x.</param>
         /// <param name="y">Feature y.</param>
         /// <returns>Distance calculated as </returns>
-		public double EuclideanDistance(UMCLight x, UMCLight y, double massWeight, double netWeight, double driftWeight)
+		public double EuclideanDistance(T x, T y, double massWeight, double netWeight, double driftWeight)
         {
 			double massDifference = Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
             double netDifference = x.RetentionTime - y.RetentionTime;

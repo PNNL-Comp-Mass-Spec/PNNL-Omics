@@ -8,12 +8,10 @@ namespace PNNLOmics.Data
     /// </summary>
     public class Peptide: Molecule
     {
-        private int m_id;
-
         public int Id
         {
-            get { return m_id; }
-            set { m_id = value; }
+            get;
+            set;
         }        
         public override void Clear()
         {
@@ -28,7 +26,7 @@ namespace PNNLOmics.Data
         {
             get; 
             set;
-        }
+        }        
         public string ExtendedSequence
         {
             get;

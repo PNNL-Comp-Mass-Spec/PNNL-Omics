@@ -63,7 +63,10 @@ namespace PNNLOmics.Data.Features
         /// Gets or sets the score value for this feature.
         /// </summary>
         public float Score { get; set; }
-
+        /// <summary>
+        /// Gets or sets the group id (e.g. dataset) this feature originated from.
+        /// </summary>
+        public int GroupID { get; set; }
         /// <summary>
         /// Resets the data structure back to its default state.
         /// </summary>
@@ -84,13 +87,7 @@ namespace PNNLOmics.Data.Features
 		{
 			return x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
 		};
-
-        //TODO: Where to put this?
-        public static double CalculateMZFromMonoisotopicMass(double massMonoisotopic, int chargeState)
-        {
-            throw new NotImplementedException();            
-        }
-
+        
 		#region Overriden Base Methods
 		/// <summary>
 		/// Returns a basic string representation of the cluster.

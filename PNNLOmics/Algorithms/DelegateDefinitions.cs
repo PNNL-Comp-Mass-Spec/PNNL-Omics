@@ -10,15 +10,13 @@ namespace PNNLOmics.Algorithms
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    public delegate double DistanceFunction(UMCLight x, UMCLight y);
+    public delegate double DistanceFunction<T>(T x, T y) where T : FeatureLight, new();
     /// <summary>
-    /// Weighted distance function for comparing the distance between two UMC's.
+    /// Delegate to determine if two features are within range of one another.
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    /// <param name="massWeight"></param>
-    /// <param name="netWeight"></param>
-    /// <param name="driftWeight"></param>
     /// <returns></returns>
-    public delegate double WeightedDistanceFunction(UMCLight x, UMCLight y,double massWeight, double netWeight, double driftWeight);
+    public delegate bool WithinTolerances<T>(T x, T y) where T : FeatureLight, new(); 
 }

@@ -105,6 +105,7 @@
     <Compile Include="DataTests\Features\FeatureTests.cs" />
     <Compile Include="FileReferences.cs" />
     <Compile Include="FormulaBuilderTests\FormulaBuilderTests.cs" />
+    <Compile Include="ImporterExporterTests\IsosImporterTests.cs" />
     <Compile Include="ImporterExporterTests\MassTagTextFileImporterTests.cs" />
     <Compile Include="ImporterExporterTests\UMCImporterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -35,7 +35,9 @@ namespace PNNLOmics.Data
             get { return m_scanNumber; }
             set { m_scanNumber = value; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Clear()
         {
             throw new NotImplementedException();

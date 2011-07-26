@@ -137,9 +137,17 @@
     <Compile Include="Algorithms\Alignment\LinearEquation.cs" />
     <Compile Include="Algorithms\Alignment\LinearEquationCalculator.cs" />
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
+    <Compile Include="Algorithms\FeatureClustering\MSFeatureClusterParameters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\FeatureClustering\MSFeatureSingleLinkageClustering.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCCentroidClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\LinkageClustererBase.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCAverageLinkageClusterer.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\FeatureMatcherLight.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\FeatureMatcherLightOptions.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\MSnLinker\IMSnLinker.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\MSnLinker\MSnLinker.cs" />
     <Compile Include="Algorithms\PeakDetection\FullWidthHalfMaximumPeakOptions.cs" />
     <Compile Include="Algorithms\PeakDetection\KronewitterPeakDetector.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakCentroidEnumerations.cs" />
@@ -161,10 +169,14 @@
     <Compile Include="Data\Constants\MiscellaneousMatterName.cs" />
     <Compile Include="Data\Constants\MonosaccharideName.cs" />
     <Compile Include="Data\Constants\SubAtomicParticleName.cs" />
+    <Compile Include="Data\Features\IChildFeature.cs" />
+    <Compile Include="Data\Features\IFeatureCluster.cs" />
     <Compile Include="Data\FormulaBuilder\AminoAcidFormulaBuilder.cs" />
     <Compile Include="Data\FormulaBuilder\FormulaBuilderBase.cs" />
     <Compile Include="Data\FormulaBuilder\OligosaccharideFormulaBuilder.cs" />
     <Compile Include="Data\FormulaBuilder\SimpleFormulaBuilder.cs" />
+    <Compile Include="Data\MassTags\MassTagLight.cs" />
+    <Compile Include="Data\MassTags\MassTagFeatureMatch.cs" />
     <Compile Include="Data\Peaks\ProcessedPeak.cs" />
     <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Data\CollisionType.cs" />
@@ -188,6 +200,7 @@
     <Compile Include="Data\Features\UMCLight.cs" />
     <Compile Include="Data\MSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
+    <Compile Include="Data\ScanSummary.cs" />
     <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\Alignment\SimilarityScore.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />
@@ -210,8 +223,11 @@
     <Compile Include="Generic\AnonymousComparer.cs" />
     <Compile Include="IonType.cs" />
     <Compile Include="IO\FileReaders\BaseTextFileReader.cs" />
+    <Compile Include="IO\FileReaders\MSFeatureLightReader.cs" />
     <Compile Include="IO\FileReaders\ITextFileReader.cs" />
     <Compile Include="IO\FileReaders\MassTagFileReader.cs" />
+    <Compile Include="IO\FileReaders\MSFeatureFileReader.cs" />
+    <Compile Include="IO\FileReaders\ScansFileReader.cs" />
     <Compile Include="IO\FileReaders\UMCFileReader.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
@@ -245,7 +261,6 @@
   <ItemGroup>
     <None Include="ClassDiagrams\AlgorithmLayer.cd" />
     <None Include="ClassDiagrams\ConstantsSubStructure.cd" />
-    <None Include="ClassDiagrams\DataLayer.cd" />
     <None Include="ClassDiagrams\PNNLOmics.cd" />
     <None Include="ClassDiagrams\UtilityLayer.cd" />
   </ItemGroup>
@@ -254,9 +269,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Algorithms\FeatureFinding\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

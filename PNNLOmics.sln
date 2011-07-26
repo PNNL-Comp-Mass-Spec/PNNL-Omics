@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PNNLOmics", "PNNLOmics\PNNL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PNNLOmics.UnitTests", "PNNLOmics.UnitTests\PNNLOmics.UnitTests.csproj", "{9DE80954-0823-4186-83F2-AA9DF568B61A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PNNLOmicsIO", "PNNLOmicsIO\PNNLOmicsIO.csproj", "{20D49543-CD31-44D2-8403-F045B3FB363D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,16 @@ Global
 		{9DE80954-0823-4186-83F2-AA9DF568B61A}.Release|x64.Build.0 = Release|x64
 		{9DE80954-0823-4186-83F2-AA9DF568B61A}.Release|x86.ActiveCfg = Release|x86
 		{9DE80954-0823-4186-83F2-AA9DF568B61A}.Release|x86.Build.0 = Release|x86
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Release|x64.ActiveCfg = Release|x64
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Release|x64.Build.0 = Release|x64
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Release|x86.ActiveCfg = Release|x86
+		{20D49543-CD31-44D2-8403-F045B3FB363D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

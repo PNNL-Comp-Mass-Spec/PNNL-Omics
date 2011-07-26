@@ -6,24 +6,48 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
-	public abstract class LinkageClustererBase<T> : IClusterer<UMCLight, T> where T : UMCClusterLight, new()
+    /// <summary>
+    /// Performs the base linkage types.
+    /// </summary>
+    /// <typeparam name="T">Features to cluster.</typeparam>
+    /// <typeparam name="T">Clusters produced.</typeparam>
+	public abstract class LinkageClustererBase<T, U> : IClusterer<T, U>
+        where T : FeatureLight, IChildFeature<U>, new()    
+        where U : FeatureLight, IFeatureCluster<T>, new()
 	{
+        public LinkageClustererBase()
+        {
+            SeedClusterID = 0;
+        }
+
+        public LinkageClustererBase(int id)
+        {
+            SeedClusterID = id;
+        }
+        /// <summary>
+        /// Gets or sets the initial cluster Id to use when assingning ID's to a cluster.
+        /// </summary>
+        public int SeedClusterID
+        {
+            get;
+            set;
+        }
 		/// <summary>
 		/// Gets or sets the parameters used 
 		/// </summary>
-		public FeatureClusterParameters Parameters { get; set; }
+		public FeatureClusterParameters<T> Parameters { get; set; }
 
 		/// <summary>
 		/// Clusters the UMC data and returns a list of valid UMC Clusters.
 		/// </summary>
 		/// <param name="data">Data to cluster.</param>
 		/// <returns>List of UMC clusters.</returns>
-		public List<T> Cluster(List<UMCLight> data)
+		public List<U> Cluster(List<T> data)
 		{
-			return this.Cluster(data, new List<T>());
+			return this.Cluster(data, new List<U>());
 		}
 
-		public abstract List<T> Cluster(List<UMCLight> data, List<T> clusters);
+		public abstract List<U> Cluster(List<T> data, List<U> clusters);
 
 		/// <summary>
 		/// Creates a list of singleton clusters from the UMC data between start and stop.
@@ -33,29 +57,33 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// <param name="stop">Stop UMC Index.</param>
 		/// <returns>List of singleton clusters.</returns>
 		//private List<T> CreateSingletonClusters(List<UMC> data, int start, int stop)
-		protected Dictionary<int, T> CreateSingletonClusters(List<UMCLight> data, int start, int stop)
-		{
-			//List<T> clusters = new List<T>();
-			Dictionary<int, T> clusters = new Dictionary<int, T>();
+		protected Dictionary<int, U> CreateSingletonClusters(List<T> data, int start, int stop)
+		{			
+			Dictionary<int, U> clusters = new Dictionary<int, U>();
+			int tempID                  = SeedClusterID;
 
-			int tempID = -1;
 			for (int i = start; i <= stop; i++)
-			{
-				UMCLight umc = data[i];
+			{				
+                T umc        = data[i];
 
-				// Double-reference between cluster and UMC so both can point to each other.
-				umc.UMCCluster = new T() as UMCClusterLight;
-				umc.UMCCluster.UMCList.Add(umc);
-				int id = tempID--;
-				umc.UMCCluster.ID = id;
+				// Add the feature to the parent so the cluster will point to the child.
+                U parentFeature         = new U();
+                int id                  = tempID++;
+				parentFeature.ID        = id;
+
+                parentFeature.AddChildFeature(umc);
+                umc.SetParentFeature(parentFeature);		
 
 				// Add to output list...
-				clusters.Add(id, umc.UMCCluster as T);
+				clusters.Add(id, parentFeature);
 			}
-            foreach (T cluster in clusters.Values)
+            foreach (U cluster in clusters.Values)
             {
                 cluster.CalculateStatistics(Parameters.CentroidRepresentation);
             }
+
+            SeedClusterID = tempID;
+
 			return clusters;
 		}
 
@@ -67,46 +95,34 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// <param name="stop">Stop UMC index.</param>
 		/// <param name="data">List of data to compute distances over.</param>
 		/// <returns>List of UMC distances to consider during clustering.</returns>
-		protected virtual List<PairwiseDistance<UMCLight>> CalculatePairWiseDistances(int start, int stop, List<UMCLight> data)
+		protected virtual List<PairwiseDistance<T>> CalculatePairWiseDistances(int start, int stop, List<T> data)
 		{
-			double massTolerance = Parameters.Tolerances.Mass;
-			double netTolerance = Parameters.Tolerances.RetentionTime;
-			double driftTolerance = Parameters.Tolerances.DriftTime;
-			bool onlyClusterSameChargeStates = Parameters.OnlyClusterSameChargeStates;
+			double massTolerance                = Parameters.Tolerances.Mass;
+			double netTolerance                 = Parameters.Tolerances.RetentionTime;
+			double driftTolerance               = Parameters.Tolerances.DriftTime;
+			bool onlyClusterSameChargeStates    = Parameters.OnlyClusterSameChargeStates;
 
-			List<PairwiseDistance<UMCLight>> distances = new List<PairwiseDistance<UMCLight>>();
+			List<PairwiseDistance<T>> distances = new List<PairwiseDistance<T>>();
 			for (int i = start; i < stop; i++)
 			{
-
-				UMCLight featureX = data[i];
-				double driftTimeX = featureX.DriftTime;
-				double netAlignedX = featureX.RetentionTime;
+				T featureX          = data[i];
+				double driftTimeX   = featureX.DriftTime;
+				double netAlignedX  = featureX.RetentionTime;
 				double massAlignedX = featureX.MassMonoisotopic;
-				int chargeStateX = featureX.ChargeState;
-
-				int groupIDX = featureX.GroupID;
+				int chargeStateX    = featureX.ChargeState;			
 
 				for (int j = i + 1; j <= stop; j++)
 				{
 					// Don't calculate distance to self.                    
-					UMCLight featureY = data[j];
-
-					// Don't calculate distance to other features within same group
-					//if (featureY.GroupID == groupIDX)
-					{
-						//continue;
-					}
+					T featureY      = data[j];					
 
 					// Calculate the distances here (using a cube).  We dont care if we are going to re-compute
 					// these again later, because here we want to fall within the cube, the distance function used
 					// later is more related to determining a scalar value instead.
-					double massDiff = Math.Abs(Feature.ComputeMassPPMDifference(massAlignedX,
-																		featureY.MassMonoisotopic));
-					double netDiff = Math.Abs(netAlignedX - featureY.RetentionTime);
-					double driftDiff = Math.Abs(driftTimeX - featureY.DriftTime);
+                    bool withinRange = Parameters.RangeFunction(featureX, featureY);
 
 					// Make sure we fall within the distance range before computing...
-					if (massDiff <= massTolerance && netDiff <= netTolerance && driftDiff <= driftTolerance)
+					if (withinRange)
 					{
 						// If IMS or equivalent only cluster similar charge states                        
 						if (onlyClusterSameChargeStates)
@@ -115,20 +131,20 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 							if (chargeStateX == featureY.ChargeState)
 							{
 								// Calculate the pairwise distance
-								PairwiseDistance<UMCLight> pairwiseDistance = new PairwiseDistance<UMCLight>();
-								pairwiseDistance.FeatureX = featureX;
-								pairwiseDistance.FeatureY = featureY;
-								pairwiseDistance.Distance = Parameters.DistanceFunction(featureX, featureY);
+								PairwiseDistance<T> pairwiseDistance    = new PairwiseDistance<T>();
+								pairwiseDistance.FeatureX               = featureX;
+								pairwiseDistance.FeatureY               = featureY;
+								pairwiseDistance.Distance               = Parameters.DistanceFunction(featureX, featureY);
 								distances.Add(pairwiseDistance);
 							}
 						}
 						else
 						{
 							// Calculate the pairwise distance
-							PairwiseDistance<UMCLight> pairwiseDistance = new PairwiseDistance<UMCLight>();
-							pairwiseDistance.FeatureX = featureX;
-							pairwiseDistance.FeatureY = featureY;
-							pairwiseDistance.Distance = Parameters.DistanceFunction(featureX, featureY);
+							PairwiseDistance<T> pairwiseDistance    = new PairwiseDistance<T>();
+							pairwiseDistance.FeatureX               = featureX;
+							pairwiseDistance.FeatureY               = featureY;
+							pairwiseDistance.Distance               = Parameters.DistanceFunction(featureX, featureY);
 							distances.Add(pairwiseDistance);
 						}
 					}

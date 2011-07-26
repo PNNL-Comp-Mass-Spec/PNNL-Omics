@@ -5,9 +5,9 @@ using System.Text;
 
 using PNNLOmics.Data.Features;
 
-namespace PNNLOmics.Data
+namespace PNNLOmics.Data.MassTags
 {
-    public class MassTag: Feature
+    public class MassTagLight: FeatureLight
     {
         private int     m_conformationObservationCount;
         private int     m_qualityScore;

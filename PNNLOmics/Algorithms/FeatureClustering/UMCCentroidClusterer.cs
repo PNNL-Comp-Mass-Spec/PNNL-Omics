@@ -11,32 +11,39 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
-	public class UMCCentroidClusterer<T> : LinkageClustererBase<T> where T : UMCClusterLight, new()
+    /// <summary>
+    /// Links objects using a centroid distance linkage algorithm.
+    /// </summary>
+    /// <typeparam name="T">Object to link</typeparam>
+    /// <typeparam name="U">Cluster to produce.</typeparam>
+    public class UMCCentroidClusterer<T, U> : LinkageClustererBase<T, U>
+        where T : FeatureLight, IChildFeature<U>, new()
+        where U : FeatureLight, IFeatureCluster<T>, new()
 	{
 		/// <summary>
 		/// Compares the masses of two light features.
 		/// </summary>
-		private Comparison<UMCLight> m_massComparer;
+		private Comparison<T> m_massComparer;
 
 		/// <summary>
         /// Default Constructor.  This sets the parameters and tolerances to their default values.
         /// </summary>
         public UMCCentroidClusterer()
         {
-            Parameters = new FeatureClusterParameters();
-			m_massComparer = new Comparison<UMCLight>(UMCLight.MassComparison); 
+            Parameters      = new FeatureClusterParameters<T>();
+			m_massComparer  = new Comparison<T>(FeatureLight.MassComparison); 
         }
-        private double GetAverageClusterDistance(T clusterI, T clusterJ, DistanceFunction function)
+        private double GetAverageClusterDistance(U clusterI, U clusterJ, DistanceFunction<T> function)
         {
             double sum = 0;
-            foreach (UMCLight featureI in clusterI.UMCList)
+            foreach (T featureI in clusterI.Features)
             {
-                foreach (UMCLight featureJ in clusterJ.UMCList)
+                foreach (T featureJ in clusterJ.Features)
                 {
                     sum = function(featureI, featureJ);
                 }
             }
-            sum = sum / Convert.ToDouble(clusterI.UMCList.Count * clusterJ.UMCList.Count);
+            sum = sum / Convert.ToDouble(clusterI.Features.Count * clusterJ.Features.Count);
 
             return sum;
         }
@@ -48,22 +55,22 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="stop">Stop UMC index.</param>
         /// <param name="data">List of data to compute distances over.</param>
         /// <returns>List of UMC distances to consider during clustering.</returns>
-        protected List<PairwiseDistance<T>> CalculateDistances(Dictionary<int, T> clusters)
+        protected List<PairwiseDistance<U>> CalculateDistances(Dictionary<int, U> clusters)
         {
             double massTolerance             = Parameters.Tolerances.Mass;
             double netTolerance              = Parameters.Tolerances.RetentionTime;
             double driftTolerance            = Parameters.Tolerances.DriftTime;
             bool onlyClusterSameChargeStates = Parameters.OnlyClusterSameChargeStates;
 
-            List<PairwiseDistance<T>> distances = new List<PairwiseDistance<T>>();
-            foreach(T clusterI in clusters.Values) 
+            List<PairwiseDistance<U>> distances = new List<PairwiseDistance<U>>();
+            foreach(U clusterI in clusters.Values) 
             {                
                 double driftTimeX   = clusterI.DriftTime;
                 double netAlignedX  = clusterI.RetentionTime;
                 double massAlignedX = clusterI.MassMonoisotopic;
                 int chargeStateX    = clusterI.ChargeState;
                 
-                foreach(T clusterJ in clusters.Values)
+                foreach(U clusterJ in clusters.Values)
                 {
                     // Don't calculate distance to other features within same group
                     if (clusterI == clusterJ)
@@ -89,7 +96,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             if (chargeStateX == clusterJ.ChargeState)
                             {
                                 // Calculate the pairwise distance
-                                PairwiseDistance<T> pairwiseDistance = new PairwiseDistance<T>();
+                                PairwiseDistance<U> pairwiseDistance = new PairwiseDistance<U>();
                                 pairwiseDistance.FeatureX = clusterI;
                                 pairwiseDistance.FeatureY = clusterJ;
                                 pairwiseDistance.Distance = GetAverageClusterDistance(clusterI, clusterJ, Parameters.DistanceFunction);
@@ -99,7 +106,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                         else
                         {
                             // Calculate the pairwise distance
-                            PairwiseDistance<T> pairwiseDistance = new PairwiseDistance<T>();
+                            PairwiseDistance<U> pairwiseDistance = new PairwiseDistance<U>();
                             pairwiseDistance.FeatureX = clusterI;
                             pairwiseDistance.FeatureY = clusterJ;
                             pairwiseDistance.Distance = GetAverageClusterDistance(clusterI, clusterJ, Parameters.DistanceFunction);
@@ -115,7 +122,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// </summary>
 		/// <param name="data">List of data to cluster.</param>
 		/// <returns>List of clustered data.</returns>
-		public override List<T> Cluster(List<UMCLight> data, List<T> clusters)
+		public override List<U> Cluster(List<T> data, List<U> clusters)
 		{
 			/*
 			 * This clustering algorithm first sorts the list of input UMC's by mass.  It then iterates
@@ -131,7 +138,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 			}
 
 			// Make sure there is no null UMC data in the input list.
-			int nullIndex = data.FindIndex(delegate(UMCLight x) { return x == null; });
+			int nullIndex = data.FindIndex(delegate(T x) { return x == null; });
 			if (nullIndex > 0)
 			{
 				throw new NullReferenceException("The UMC at index " + nullIndex.ToString() + " was null.  Cannot process this data.");
@@ -151,8 +158,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 			{
 				// Here we compute the ppm mass difference between consecutive features (based on mass).
 				// This will determine if we cluster a block of data or not.                
-				UMCLight umcX = data[i];
-				UMCLight umcY = data[i + 1];
+				T umcX = data[i];
+				T umcY = data[i + 1];
 				double ppm = Math.Abs(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopic, umcY.MassMonoisotopic));
 
 				// If the difference is greater than the tolerance then we cluster 
@@ -163,16 +170,16 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 					// could not find any other features near it within the mass tolerance specified.
 					if (startUMCIndex == i)
 					{
-						T cluster = new T();
-						umcX.UMCCluster = cluster;
-						cluster.UMCList.Add(umcX);
+						U cluster = new U();
+                        umcX.SetParentFeature(cluster);						
+						cluster.AddChildFeature(umcX);
 						clusters.Add(cluster);
 					}
 					else
 					{
 						// Otherwise we have more than one feature to to consider.												
-                        Dictionary<int, T> localClusters    = CreateSingletonClusters(data, startUMCIndex, i);					
-						List<T> blockClusters               = Cluster(localClusters);
+                        Dictionary<int, U> localClusters    = CreateSingletonClusters(data, startUMCIndex, i);					
+						List<U> blockClusters               = Cluster(localClusters);
 						clusters.AddRange(blockClusters);
 					}
 					startUMCIndex = i + 1;
@@ -182,12 +189,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 			// Make sure that we cluster what is left over.
 			if (startUMCIndex < totalFeatures)
             {
-                Dictionary<int, T> localClusters = CreateSingletonClusters(data, startUMCIndex, totalFeatures - 1);
-                List<T> blockClusters            = Cluster(localClusters);
+                Dictionary<int, U> localClusters = CreateSingletonClusters(data, startUMCIndex, totalFeatures - 1);
+                List<U> blockClusters            = Cluster(localClusters);
                 clusters.AddRange(blockClusters);
 			}
 
-			foreach (UMCClusterLight cluster in clusters)
+			foreach (U cluster in clusters)
 			{
 				cluster.CalculateStatistics(Parameters.CentroidRepresentation);
 			}
@@ -200,7 +207,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// </summary>
 		/// <param name="clusters">Singleton clusters</param>		
 		/// <returns>List of T clusters.</returns>
-		private List<T> Cluster(Dictionary<int, T> clusters)
+		private List<U> Cluster(Dictionary<int, U> clusters)
 		{
             bool isClustering = true;            
             while (isClustering)
@@ -208,7 +215,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 isClustering = false;
 
                 // Compute pairwise distances between cluster centroids.
-                List<PairwiseDistance<T>> distances = CalculateDistances(clusters);
+                List<PairwiseDistance<U>> distances = CalculateDistances(clusters);
                 
                 // Find the minimal distance 
                 var newDistances = from element in distances
@@ -217,10 +224,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
                 // Link, we dont just take the smallest distance because
                 // the two clusters may not be in tolerance.
-                foreach (PairwiseDistance<T> distance in newDistances)
+                foreach (PairwiseDistance<U> distance in newDistances)
                 {
-                    T clusterX = distance.FeatureX;
-                    T clusterY = distance.FeatureY;
+                    U clusterX = distance.FeatureX;
+                    U clusterY = distance.FeatureY;
 
                     // Determine if they are already clustered into the same cluster                                 
                     if (clusterX == clusterY && clusterX != null)
@@ -234,10 +241,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     if (areClustersWithinDistance)
                     {
                         // Remove the references for all the clusters in the group and merge them into the other cluster.                    
-                        foreach (UMCLight umcX in clusterX.UMCList)
+                        foreach (T umcX in clusterX.Features)
                         {
-                            umcX.UMCCluster = clusterY;
-                            clusterY.UMCList.Add(umcX);
+                            umcX.SetParentFeature(clusterY);
+                            clusterY.AddChildFeature(umcX);
                         }
 
                         // Remove the old cluster so we don't process it again.
@@ -249,9 +256,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 }
             }
 
-			T[] array = new T[clusters.Values.Count];
+			U[] array = new U[clusters.Values.Count];
 			clusters.Values.CopyTo(array, 0);
-			List<T> newClusters = new List<T>();
+			List<U> newClusters = new List<U>();
 			newClusters.AddRange(array);
 
 			return newClusters;
@@ -263,21 +270,21 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// <param name="clusterX">One of the two clusters to test</param>
 		/// <param name="clusterY">One of the two clusters to test</param>
 		/// <returns>True if clusters are within tolerance, false otherwise</returns>
-		private bool AreClustersWithinTolerance(UMCClusterLight clusterX, UMCClusterLight clusterY)
+		private bool AreClustersWithinTolerance(U clusterX, U clusterY)
 		{
 			// Grab the tolerances
-			double massTolerance = Parameters.Tolerances.Mass;
-			double netTolerance = Parameters.Tolerances.RetentionTime;
-			double driftTolerance = Parameters.Tolerances.DriftTime;
+			double massTolerance    = Parameters.Tolerances.Mass;
+			double netTolerance     = Parameters.Tolerances.RetentionTime;
+			double driftTolerance   = Parameters.Tolerances.DriftTime;
 
             //// Calculate the statistics of the Clusters
             //clusterX.CalculateStatistics(Parameters.CentroidRepresentation);
             //clusterY.CalculateStatistics(Parameters.CentroidRepresentation);
 
 			// Calculate differences
-			double massDiff = Math.Abs(Feature.ComputeMassPPMDifference(clusterX.MassMonoisotopic, clusterY.MassMonoisotopic));
-			double netDiff = Math.Abs(clusterX.RetentionTime - clusterY.RetentionTime);
-			double driftDiff = Math.Abs(clusterX.DriftTime - clusterY.DriftTime);
+			double massDiff     = Math.Abs(Feature.ComputeMassPPMDifference(clusterX.MassMonoisotopic, clusterY.MassMonoisotopic));
+			double netDiff      = Math.Abs(clusterX.RetentionTime - clusterY.RetentionTime);
+			double driftDiff    = Math.Abs(clusterX.DriftTime - clusterY.DriftTime);
 
 			// Return true only if all differences are within tolerance
 			if (massDiff <= massTolerance && netDiff <= netTolerance && driftDiff <= driftTolerance)

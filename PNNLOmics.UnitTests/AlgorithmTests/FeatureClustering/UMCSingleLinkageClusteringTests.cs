@@ -38,7 +38,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void BadDataClusterNull()
         {
             // Sends a null reference to the clustering object.
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+            UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
             clustering.Cluster(null);
         }
         /// <summary>
@@ -52,7 +52,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void BadDataClusterNullInList()
         {
             // Sends a null reference to the clustering object.
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+            UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 			List<UMCLight> list = new List<UMCLight>();
 			list.Add(new UMCLight());
             list.Add(null);
@@ -81,10 +81,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+            UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
@@ -151,15 +151,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters  = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters   = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates          = false;
-            parameters.Tolerances           = new FeatureTolerances();
-            parameters.Tolerances.DriftTime = 1;
-            parameters.Tolerances.RetentionTime       = .06;
-            parameters.Tolerances.Mass      = 3;
+            parameters.Tolerances                           = new FeatureTolerances();
+            parameters.Tolerances.DriftTime                 = 1;
+            parameters.Tolerances.RetentionTime             = .06;
+            parameters.Tolerances.Mass                      = 3;
 
             // Setup the test so that we have the same mass and drift data, but change in NET.
             int totalDatasets = 100;
@@ -221,10 +221,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
@@ -286,10 +286,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              *  where x = a feature and the number is the 1-based index (ID)
              */
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
@@ -346,10 +346,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         {    /*             
              *     x1 x2 ... x3 
              */
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
@@ -406,10 +406,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         {    /*             
              *     x1 ... x2, x3 
              */
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
@@ -471,10 +471,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("This test makes a set of UMC's whose only varying dimension is NET.")]
         public void CreateSingleClusterTests(double deltaMass, double deltaNET)
         {
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates  = false;
             parameters.Tolerances                   = new FeatureTolerances();
             parameters.Tolerances.DriftTime         = 1;
@@ -524,10 +524,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Category("Edge")]
         public void CreateSingletonTests()
         {
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates         = false;
             parameters.Tolerances           = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
@@ -587,10 +587,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("This test will separate clusteres based on charge.")]
         public void ChargeStatesTests(bool onlyClusterCharges)
         {
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters  = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates          = onlyClusterCharges;
             parameters.Tolerances                           = new FeatureTolerances();
             parameters.Tolerances.DriftTime                 = 1;
@@ -650,10 +650,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              * 
              */
 
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
@@ -708,10 +708,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
              *      x1-d1 x2-d2 x3-d2 x4-d1
              * 
              */
-			UMCSingleLinkageClusterer<UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCClusterLight>();
+			UMCSingleLinkageClusterer<UMCLight, UMCClusterLight> clustering = new UMCSingleLinkageClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
+            FeatureClusterParameters<UMCLight> parameters = new FeatureClusterParameters<UMCLight>();
             parameters.OnlyClusterSameChargeStates = false;
             parameters.Tolerances           = new FeatureTolerances();
             parameters.Tolerances.DriftTime = 1;
@@ -776,17 +776,16 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("")]
         public void AverageLinkageEdgeTest30Features()
         {
-            UMCCentroidClusterer<UMCClusterLight> clustering = new UMCCentroidClusterer<UMCClusterLight>();
+            UMCCentroidClusterer<UMCLight, UMCClusterLight> clustering = new UMCCentroidClusterer<UMCLight, UMCClusterLight>();
 
             // Setup the parameters to work with the data.
-            FeatureClusterParameters parameters = new FeatureClusterParameters();
-            parameters.OnlyClusterSameChargeStates = true;
-            parameters.Tolerances = new FeatureTolerances();
-            parameters.Tolerances.DriftTime = 100;
+            FeatureClusterParameters<UMCLight> parameters   = new FeatureClusterParameters<UMCLight>();
+            parameters.OnlyClusterSameChargeStates          = true;
+            parameters.Tolerances               = new FeatureTolerances();
+            parameters.Tolerances.DriftTime     = 100;
             parameters.Tolerances.RetentionTime = .03;
-            parameters.Tolerances.Mass = 20;
-
-            int featureID = 0;
+            parameters.Tolerances.Mass          = 20;
+            
 
             List<UMCLight> features = new List<UMCLight>();
             features.Add(CreateFeature(0.0003106554831  , 27.8946495056152		, 1770.9909200000000));

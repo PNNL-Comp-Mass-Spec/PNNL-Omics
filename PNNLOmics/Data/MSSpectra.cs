@@ -25,9 +25,29 @@ namespace PNNLOmics.Data
 
         #region Properties
         /// <summary>
+        /// Gets or sets the id.
+        /// </summary>
+        public int ID { get; set; }
+        /// <summary>
         /// Gets or sets the retention time.
         /// </summary>
         public double RetentionTime { get; set; }
+        /// <summary>
+        /// Gets or sets the scan value for this spectra.
+        /// </summary>
+        public int Scan
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets what group (or dataset) this spectra came from.
+        /// </summary>
+        public int GroupID
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets or sets the charge state for this spectra.
         /// </summary>
@@ -57,13 +77,21 @@ namespace PNNLOmics.Data
             set;
         }
         /// <summary>
-        /// Gets or sets the parent spectra if MSLevel > 1.
+        /// Gets or sets the parent spectra if MSLevel > 2.
         /// </summary>
         public MSSpectra ParentSpectra { get; set; }
         /// <summary>
         /// Gets or sets the collision type.
         /// </summary>
         public CollisionType CollisionType
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the total ion current.
+        /// </summary>
+        public double TotalIonCurrent
         {
             get;
             set;
@@ -85,6 +113,93 @@ namespace PNNLOmics.Data
         {
             MSLevel         = CONST_DEFAULT_MS_LEVEL;
             CollisionType   = CollisionType.Other;
+            Scan            = 0;
+            TotalIonCurrent = -1;
+            PrecursorMZ     = 0;
+            GroupID         = -1;
+            ID              = -1;
         }
+
+
+        #region Overriden Base Methods
+        /// <summary>
+        /// Returns a basic string representation of the cluster.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return string.Format("ID = {0} Scan = {1} Precursor = {2}  Charge {3} Group = {4}",
+                                ID,
+                                Scan,
+                                PrecursorMZ,
+                                ChargeState,
+                                GroupID);
+            
+        }
+        /// <summary>
+        /// Compares two objects' values.
+        /// </summary>
+        /// <param name="obj">Other to compare with.</param>
+        /// <returns>True if values are the same, false if not.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            MSSpectra other = obj as MSSpectra;
+            if (other == null)
+                return false;
+
+            if (!this.GroupID.Equals(other.GroupID))
+            {
+                return false;
+            }
+            if (!MSLevel.Equals(other.MSLevel))
+            {
+                return false;
+            }
+            if (!this.ChargeState.Equals(other.ChargeState))
+            {
+                return false;
+            }
+            if (!this.PrecursorMZ.Equals(other.PrecursorMZ))
+            {
+                return false;
+            }
+            if (!this.RetentionTime.Equals(other.RetentionTime))
+            {
+                return false;
+            }
+            if (!this.Scan.Equals(other.Scan))
+            {
+                return false;
+            }
+            if (!this.TotalIonCurrent.Equals(other.TotalIonCurrent))
+            {
+                return false;
+            }
+            if (!this.CollisionType.Equals(other.CollisionType))
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// Generates a hash code.
+        /// </summary>
+        /// <returns>Hash code based on stored data.</returns>
+        public override int GetHashCode()
+        {
+            int hashCode =
+                PrecursorMZ.GetHashCode() ^
+                ChargeState.GetHashCode() ^
+                Scan.GetHashCode() ^
+                ID.GetHashCode() ^
+                GroupID.GetHashCode() ^
+                TotalIonCurrent.GetHashCode() ^
+                RetentionTime.GetHashCode();
+            return hashCode;
+        }
+        #endregion
     }
 }

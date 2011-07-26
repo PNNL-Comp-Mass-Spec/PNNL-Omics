@@ -21,8 +21,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <typeparam name="T">Type to cluster data objects of.</typeparam>
     /// <typeparam name="U">Type of cluster output objects.</typeparam>
     public interface IClusterer<T, U>
+        where T: FeatureLight, new ()
     {
-        FeatureClusterParameters Parameters { get; set; }
+        FeatureClusterParameters<T> Parameters { get; set; }
         /// <summary>
         /// Clusters the data objects provided in the list.
         /// </summary>

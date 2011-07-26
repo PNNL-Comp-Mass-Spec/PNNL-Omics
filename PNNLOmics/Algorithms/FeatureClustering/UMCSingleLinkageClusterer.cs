@@ -20,13 +20,15 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Clusters UMC's (LC-MS Features, LC-IMS-MS Features) into UMC Clusters.
     /// </summary>
-	public class UMCSingleLinkageClusterer<T> : LinkageClustererBase<T> where T : UMCClusterLight, new()
+    public class UMCSingleLinkageClusterer<T, U> : LinkageClustererBase<T, U>
+        where T : FeatureLight, IChildFeature<U>,   new()
+        where U : FeatureLight, IFeatureCluster<T>, new()
 	{
 		#region Members
 		/// <summary>
 		/// Compares the masses of two light features.
 		/// </summary>
-		private Comparison<UMCLight> m_massComparer;
+		private Comparison<T> m_massComparer;
 		#endregion
 
 		/// <summary>
@@ -34,52 +36,18 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         public UMCSingleLinkageClusterer()
         {
-            Parameters		= new FeatureClusterParameters();
-			m_massComparer	= new Comparison<UMCLight>(UMCLight.MassComparison);
+            Parameters		= new FeatureClusterParameters<T>();
+			m_massComparer	= new Comparison<T>(FeatureLight.MassComparison);
         }
 
-        #region Clustering Methods
-        /// <summary>
-        /// Checks the two clusters to see if they have UMC's with the same group ID's.
-        /// </summary>
-        /// <param name="clusterX">Cluster x.</param>
-        /// <param name="clusterY">Cluster y.</param>
-        /// <returns>True if the clusters overlap based on group ID or false if they do not.</returns>
-        private bool ContainSameDatasets(T clusterX, T clusterY)
-        {
-			// TODO: BLL - Should there be a setting for this, or should it just be removed entirely?
-            //BLL - This is only used if we are testing the dataset constraint.
-            return false;
-
-			//// Map of all group ID's to UMC's from cluster X
-			//Dictionary<int, UMCLight> groupMapping = new Dictionary<int, UMCLight>();
-
-			//// The goal here is to first create a lookup of all UMC groups (datasets)
-			//// from cluster X.  Then iterate through cluster Y's UMC list to find 
-			//// UMCs with the same dataset.
-			//// This reduces our search run time from the previous O(N^2) to O(2N) max.
-			//foreach (UMCLight umcX in clusterX.UMCList)
-			//{
-			//    groupMapping.Add(umcX.GroupID, umcX);
-			//}
-			
-			//foreach(UMCLight umcY in clusterY.UMCList)
-			//{
-			//    if (groupMapping.ContainsKey(umcY.GroupID))
-			//    {
-			//        return true;
-			//    }                 
-			//}
-			//return false;
-        }
+        #region Clustering Methods        
         /// <summary>
         /// Performs single linkage clustering over the data and returns a list of UMC clusters.
         /// </summary>
         /// <param name="data">Data to cluster on.</param>
         /// <param name="distances">pairwise distance between UMC's.</param>
-        /// <returns>List of UMC clusters.</returns>
-        //private List<T> LinkUMCs(List<PairwiseDistance<UMC>> distances, List<T> clusters)
-		private List<T> LinkUMCs(List<PairwiseDistance<UMCLight>> distances, Dictionary<int, T> clusters)
+        /// <returns>List of UMC clusters.</returns>        
+		private List<U> LinkUMCs(List<PairwiseDistance<T>> distances, Dictionary<int, U> clusters)
         {
             // We assume that the features have already been put into singleton
             // clusters or have a cluster already associated with them.  Otherwise
@@ -93,46 +61,36 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             // Then do the linking           
 			
             //foreach (PairwiseDistance<UMC> distance in distances)
-			foreach (PairwiseDistance<UMCLight> distance in newDistances)
+			foreach (PairwiseDistance<T> distance in newDistances)
             {
-                UMCLight featureX = distance.FeatureX;
-                UMCLight featureY = distance.FeatureY;
+                T featureX = distance.FeatureX;
+                T featureY = distance.FeatureY;
 
-                T clusterX = featureX.UMCCluster as T;
-                T clusterY = featureY.UMCCluster as T;                
+                U clusterX = featureX.ParentFeature as U;
+                U clusterY = featureY.ParentFeature as U;                
                  
                 // Determine if they are already clustered into the same cluster                                 
                 if (clusterX == clusterY && clusterX != null)
                 {
                     continue;
                 }
-
-                // Now we make sure we don't merge two clusters that have
-                // the same group ID.
-                bool hasOverlap = ContainSameDatasets(clusterX, 
-                                                             clusterY);
-
-                // If there is no overlap of group ID's then we can go ahead 
-                // and merge the clusters into one of the clusters.                
-                if (!hasOverlap)
-                {                                        
-                    // Remove the references for all the clusters in the group 
-                    // and merge them into the other cluster.                    
-                    foreach (UMCLight umcX in clusterX.UMCList)
-                    {
-                        umcX.UMCCluster = clusterY;
-                        clusterY.UMCList.Add(umcX);
-                    }
-
-					// Remove the old cluster so we don't process it again.
-					clusters.Remove(clusterX.ID);					
+                                                                       
+                // Remove the references for all the clusters in the group 
+                // and merge them into the other cluster.                    
+                foreach (T umcX in clusterX.Features)
+                {
+                    umcX.SetParentFeature(clusterY);
+                    clusterY.AddChildFeature(umcX);
                 }
+
+				// Remove the old cluster so we don't process it again.
+				clusters.Remove(clusterX.ID);					                
             }
 
             //return clusters;
-			T [] array			= new T[clusters.Values.Count];
+			U [] array			= new U[clusters.Values.Count];
 			clusters.Values.CopyTo(array, 0);
-			List<T> newClusters = new List<T>();
+			List<U> newClusters = new List<U>();
 			newClusters.AddRange(array);
 
 			return newClusters;
@@ -146,7 +104,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         /// <param name="data">List of data to cluster.</param>
         /// <returns>List of clustered data.</returns>
-		public override List<T> Cluster(List<UMCLight> data, List<T> clusters)
+		public override List<U> Cluster(List<T> data, List<U> clusters)
         {
             //  This clustering algorithm first sorts the list of input UMC's by mass.  It then
             //  iterates through this list partitioning the data into blocks of UMC's based on a 
@@ -157,14 +115,14 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             // Make sure we have data to cluster first.
             if (data == null)
             {
-                throw new NullReferenceException("The input UMC data list was null.  Cannot process this data.");
+                throw new NullReferenceException("The input feature data list was null.  Cannot process this data.");
             }
 
             // Make sure there is no null UMC data in the input list.
-            int nullIndex = data.FindIndex(delegate(UMCLight x) { return x == null; });            
+            int nullIndex = data.FindIndex(delegate(T x) { return x == null; });            
             if (nullIndex > 0)
             {
-                throw new NullReferenceException("The UMC at index " + nullIndex.ToString() + " was null.  Cannot process this data.");
+                throw new NullReferenceException("The feature at index " + nullIndex.ToString() + " was null.  Cannot process this data.");
             }
 			
 
@@ -182,30 +140,29 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             {
                 // Here we compute the ppm mass difference between consecutive features (based on mass).
                 // This will determine if we cluster a block of data or not.                
-                UMCLight umcX    = data[i];
-				UMCLight umcY = data[i + 1];
-                double ppm  = Math.Abs(Feature.ComputeMassPPMDifference( umcX.MassMonoisotopic, 
-                                                                umcY.MassMonoisotopic));
+                T umcX              = data[i];
+				T umcY              = data[i + 1];
+                double massDiff     = Math.Abs(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopic, umcY.MassMonoisotopic));
 
                 // If the difference is greater than the tolerance then we cluster 
                 //  - we dont check the sign of the ppm because the data should be sorted based on mass.
-                if (ppm > massTolerance)
+                if (massDiff > massTolerance)
                 {                    
                     // If start UMC Index is equal to one, then that means the feature at startUMCIndex
                     // could not find any other features near it within the mass tolerance specified.
                     if (startUMCIndex == i)
                     {
-                        T cluster  = new T();
-                        umcX.UMCCluster = cluster; 
-                        cluster.UMCList.Add(umcX);
+                        U cluster  = new U();
+                        umcX.SetParentFeature(cluster); 
+                        cluster.AddChildFeature(umcX);
                         clusters.Add(cluster);
                     }
                     else
                     {
                         // Otherwise we have more than one feature to cluster to consider.												
-						List<PairwiseDistance<UMCLight>> distances = CalculatePairWiseDistances(startUMCIndex, i, data);
-						Dictionary<int, T> localClusters = CreateSingletonClusters(data, startUMCIndex, i);                        
-                        List<T>  blockClusters  = LinkUMCs(distances, localClusters);
+						List<PairwiseDistance<T>> distances     = CalculatePairWiseDistances(startUMCIndex, i, data);
+						Dictionary<int, U> localClusters        = CreateSingletonClusters(data, startUMCIndex, i);                        
+                        List<U>  blockClusters                  = LinkUMCs(distances, localClusters);
                         clusters.AddRange(blockClusters);
                     }
                     startUMCIndex = i + 1;
@@ -215,18 +172,16 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             // Make sure that we cluster what is left over.
             if (startUMCIndex < totalFeatures)
             {
-				List<PairwiseDistance<UMCLight>> distances = CalculatePairWiseDistances(startUMCIndex, totalFeatures - 1, data);                
-				Dictionary<int, T> localClusters = CreateSingletonClusters(data, startUMCIndex, totalFeatures - 1);                        
-                        
-                List<T> blockClusters = LinkUMCs(distances, localClusters);
+				List<PairwiseDistance<T>> distances = CalculatePairWiseDistances(startUMCIndex, totalFeatures - 1, data);                
+				Dictionary<int, U> localClusters    = CreateSingletonClusters(data, startUMCIndex, totalFeatures - 1);                                                
+                List<U> blockClusters               = LinkUMCs(distances, localClusters);
                 clusters.AddRange(blockClusters);
             }
 
-			foreach (UMCClusterLight cluster in clusters)
+			foreach (U cluster in clusters)
             {
                 cluster.CalculateStatistics(Parameters.CentroidRepresentation);
             }
-
             return clusters;
         }
         #endregion        

@@ -72,6 +72,14 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public MSSpectra MSMSFragmentation
         { get; set; }
+        /// <summary>
+        /// Gets or sets the mass to charge ratio.
+        /// </summary>
+        public double MZ
+        {
+            get;
+            set;
+        }
 		#endregion
 
 		#region BaseData Members
