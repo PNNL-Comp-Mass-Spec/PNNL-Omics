@@ -94,7 +94,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
             // MSMS scan range of spectra associated, some may not have it.
             foreach(int scan in  featureMap.Keys)
             {
-
                 bool containsMSMSFragments = spectraMap.ContainsKey(scan);
                 if (containsMSMSFragments)
                 {
