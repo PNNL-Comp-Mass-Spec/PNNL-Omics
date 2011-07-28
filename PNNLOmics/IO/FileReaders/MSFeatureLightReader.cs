@@ -117,20 +117,20 @@ namespace PNNLOmics.IO.FileReaders
                 if (!hasDriftTimeData)
                 {                    
                     if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.Scan                        = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
-                    feature.RetentionTime                                                               = Convert.ToSingle(feature.Scan);       
+                    feature.RetentionTime                                                               = Convert.ToDouble(feature.Scan);       
                 }
                 else
                 {
                     if (columnMapping.ContainsKey(FRAME_NUMBER))    feature.Scan                        = int.Parse(columns[columnMapping[FRAME_NUMBER]]);
                     if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.DriftTime                   = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
 
-                    feature.RetentionTime = Convert.ToSingle(feature.Scan);                    
+                    feature.RetentionTime = Convert.ToDouble(feature.Scan);                    
                 }
                 if (columnMapping.ContainsKey(CHARGE))              feature.ChargeState                 = int.Parse(columns[columnMapping[CHARGE]]);
                 if (columnMapping.ContainsKey(ABUNDANCE))           feature.Abundance                   = long.Parse(columns[columnMapping[ABUNDANCE]]);
-                if (columnMapping.ContainsKey(MZ))                  feature.Mz                          = Convert.ToSingle(double.Parse(columns[columnMapping[MZ]]));                
+                if (columnMapping.ContainsKey(MZ))                  feature.Mz                          = double.Parse(columns[columnMapping[MZ]]);                
                 if (columnMapping.ContainsKey(MONO_MASS))           feature.MassMonoisotopic            = double.Parse(columns[columnMapping[MONO_MASS]]);  
-                if (columnMapping.ContainsKey(ISOTOPIC_FIT))        feature.Score                       = Convert.ToSingle(double.Parse(columns[columnMapping[ISOTOPIC_FIT]]));       
+                if (columnMapping.ContainsKey(ISOTOPIC_FIT))        feature.Score                       = double.Parse(columns[columnMapping[ISOTOPIC_FIT]]);       
                 if (columnMapping.ContainsKey(AVERAGE_MASS))        feature.MassMonoisotopicAverage     = double.Parse(columns[columnMapping[AVERAGE_MASS]]);
                 if (columnMapping.ContainsKey(ABUNDANT_MASS))       feature.MassMonoisotopicMostAbundant    = double.Parse(columns[columnMapping[ABUNDANT_MASS]]);                                
                 features.Add(feature);

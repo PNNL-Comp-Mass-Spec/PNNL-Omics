@@ -153,6 +153,7 @@ namespace PNNLOmics.Data.Features
                 {
                     maxAbundance = umc.Abundance;
                     Scan         = umc.Scan;
+                    ChargeState  = umc.ChargeState;
                 }
 
                 net.Add(umc.RetentionTime);
@@ -162,16 +163,7 @@ namespace PNNLOmics.Data.Features
                 sumNet          += umc.RetentionTime;
                 sumMass         += umc.MassMonoisotopic;
                 sumDrifttime    += umc.DriftTime;
-
-                // Calculate charge states.
-                if (!chargeStates.ContainsKey(umc.ChargeState))
-                {
-                    chargeStates.Add(umc.ChargeState, 1);
-                }
-                else
-                {
-                    chargeStates[umc.ChargeState]++;
-                }
+                
             }
 
             int numUMCs = MSFeatures.Count;
@@ -194,20 +186,26 @@ namespace PNNLOmics.Data.Features
                     if ((numUMCs % 2) == 0)
                     {
                         median                  = Convert.ToInt32(numUMCs / 2);
-                        this.MassMonoisotopic   = (mass[median] + mass[median - 1]) / 2;
                         this.RetentionTime      = (net[median] + net[median - 1]) / 2;
                         this.DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
                     }
                     else
                     {
                         median                  = Convert.ToInt32((numUMCs) / 2);
-                        this.MassMonoisotopic   = mass[median];
                         this.RetentionTime      = net[median];
                         this.DriftTime          = Convert.ToSingle(driftTime[median]);
-                    }
+                    }                                        
                     break;
+                    
             }
-
+            if ((numUMCs % 2) == 1)
+            {
+                MassMonoisotopic = mass[numUMCs / 2];
+            }
+            else
+            {
+                MassMonoisotopic = .5 * (mass[numUMCs / 2 - 1] + mass[numUMCs / 2]);
+            }
 
             List<double> distances  = new List<double>();
             double distanceSum      = 0;
@@ -231,17 +229,7 @@ namespace PNNLOmics.Data.Features
 
                 distances.Sort();
                 Score = Convert.ToSingle(distances[mid]);
-            }
-            // Calculate representative charge state as the mode.
-            int maxCharge = int.MinValue;
-            foreach (int charge in chargeStates.Keys)
-            {
-                if (maxCharge == int.MinValue || chargeStates[charge] > chargeStates[maxCharge])
-                {
-                    maxCharge = charge;
-                }
-            }
-            this.ChargeState = maxCharge;
+            }                        
         }
 
 

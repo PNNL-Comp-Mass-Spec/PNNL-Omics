@@ -22,7 +22,7 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets or sets the mass to charge ratio value.
         /// </summary>
-        public float Mz { get; set; }
+        public double Mz { get; set; }
         /// <summary>
         /// Gets or sets the scan of the feature.
         /// </summary>

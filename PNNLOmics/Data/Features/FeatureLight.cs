@@ -62,7 +62,7 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets or sets the score value for this feature.
         /// </summary>
-        public float Score { get; set; }
+        public double Score { get; set; }
         /// <summary>
         /// Gets or sets the group id (e.g. dataset) this feature originated from.
         /// </summary>
