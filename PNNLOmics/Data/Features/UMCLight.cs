@@ -140,34 +140,44 @@ namespace PNNLOmics.Data.Features
             // Histogram of representative charge states
             Dictionary<int, int> chargeStates = new Dictionary<int, int>();
 
-            double sumNet       = 0;
-            double sumMass      = 0;
-            double sumDrifttime = 0;
-            long maxAbundance   = long.MinValue; 
-            foreach (MSFeatureLight umc in MSFeatures)
+            double  sumNet          = 0;
+            double  sumMass         = 0;
+            double  sumDrifttime    = 0;
+            long    sumAbundance    = 0;
+            int     minScan         = int.MaxValue;
+            int     maxScan         = int.MinValue;
+            long    maxAbundance    = long.MinValue;
+            double representativeMZ = 0;
+            foreach (MSFeatureLight feature in MSFeatures)
             {
-                if (umc == null)
+                if (feature == null)
                     throw new NullReferenceException("A MS feature was null when trying to calculate cluster statistics.");
 
-                if (umc.Abundance > maxAbundance)
+                if (feature.Abundance > maxAbundance)
                 {
-                    maxAbundance = umc.Abundance;
-                    Scan         = umc.Scan;
-                    ChargeState  = umc.ChargeState;
+                    maxAbundance     = feature.Abundance;
+                    Scan             = feature.Scan;
+                    ChargeState      = feature.ChargeState;
+                    representativeMZ = feature.Mz;
                 }
 
-                net.Add(umc.RetentionTime);
-                mass.Add(umc.MassMonoisotopic);
-                driftTime.Add(umc.DriftTime);
+                net.Add(feature.RetentionTime);
+                mass.Add(feature.MassMonoisotopic);
+                driftTime.Add(feature.DriftTime);
 
-                sumNet          += umc.RetentionTime;
-                sumMass         += umc.MassMonoisotopic;
-                sumDrifttime    += umc.DriftTime;
-                
-            }
-
-            int numUMCs = MSFeatures.Count;
-            int median = 0;
+                sumAbundance    += feature.Abundance;
+                sumNet          += feature.RetentionTime;
+                sumMass         += feature.MassMonoisotopic;
+                sumDrifttime    += feature.DriftTime;
+                minScan          = Math.Min(feature.Scan, minScan);
+                maxScan          = Math.Max(feature.Scan, maxScan);
+            }            
+            Abundance       = maxAbundance;
+            AbundanceSum    = sumAbundance;
+            ScanEnd         = maxScan;
+            ScanStart       = minScan;
+            int numUMCs     = MSFeatures.Count;
+            int median      = 0;
 
             // Calculate the centroid of the cluster.
             switch (centroid)
