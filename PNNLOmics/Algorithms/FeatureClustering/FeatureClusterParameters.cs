@@ -119,7 +119,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 			// later is more related to determining a scalar value instead.
 			double massDiff         = Math.Abs(Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic));
 			double netDiff          = Math.Abs(x.RetentionTime - y.RetentionTime);
-			double driftDiff        = Math.Abs(y.RetentionTime - y.DriftTime);
+			double driftDiff        = Math.Abs(y.DriftTime - y.DriftTime);
 
 			// Make sure we fall within the distance range before computing...
             return (massDiff <= Tolerances.Mass && netDiff <= Tolerances .RetentionTime && driftDiff <= Tolerances.DriftTime);            
