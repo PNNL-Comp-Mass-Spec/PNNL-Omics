@@ -31,7 +31,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private List<FeatureMatcherTolerances> m_refinedTolerancesList;
         private SLiCInformation m_slicParameters;
 
-        const int MIN_MATCHES_FOR_NORMAL_ASSUMPTION = 50;
+        const int MIN_MATCHES_FOR_NORMAL_ASSUMPTION = 1;
         #endregion
 
         #region Properties
