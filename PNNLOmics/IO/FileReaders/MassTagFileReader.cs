@@ -9,7 +9,7 @@ namespace PNNLOmics.IO.FileReaders
 	{
 		protected override Dictionary<string, int> CreateColumnMapping(TextReader textReader)
 		{
-			Dictionary<String, int> columnMap = new Dictionary<String, int>();
+            Dictionary<String, int> columnMap = new Dictionary<String, int>(StringComparer.CurrentCultureIgnoreCase);
 
 			// TODO: Different types of delimiters?
 			String[] columnTitles = textReader.ReadLine().Split('\t', '\n');

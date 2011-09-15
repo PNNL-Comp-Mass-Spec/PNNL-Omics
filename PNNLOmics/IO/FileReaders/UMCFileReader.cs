@@ -10,7 +10,7 @@ namespace PNNLOmics.IO.FileReaders
 	{
 		protected override Dictionary<string, int> CreateColumnMapping(TextReader textReader)
 		{
-			Dictionary<String, int> columnMap = new Dictionary<String, int>();
+			Dictionary<String, int> columnMap = new Dictionary<String, int>(StringComparer.CurrentCultureIgnoreCase);
 
 			String[] columnTitles = textReader.ReadLine().Split('\t', '\n');
 			int numOfColumns = columnTitles.Length;
@@ -144,9 +144,9 @@ namespace PNNLOmics.IO.FileReaders
 			{
 				String[] columns = line.Split(',', '\t', '\n');
 
-				if (columnMapping.ContainsKey("Umc.Id"))
+				if (columnMapping.ContainsKey("Umc.ID"))
 				{
-					currentId = Int32.Parse(columns[columnMapping["Umc.Id"]]);
+                    currentId = Int32.Parse(columns[columnMapping["Umc.ID"]]);
 				}
 				else
 				{
