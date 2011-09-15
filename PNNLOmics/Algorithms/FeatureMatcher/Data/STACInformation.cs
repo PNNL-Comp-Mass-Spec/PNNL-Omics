@@ -5,6 +5,7 @@ using PNNLOmics.Data;
 using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Data.Features;
+using PNNLOmics.Utilities;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {
@@ -293,13 +294,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             where T : Feature, new()
             where U : Feature, new()
         {
-			Console.WriteLine("Training STAC");
+			ReportMessage("Training STAC");
             TrainSTAC(featureMatchList, uniformTolerances, useDriftTime, usePrior);
 
-			Console.WriteLine("Calculating final STAC Scores");
+			ReportMessage("Calculating final STAC Scores");
             SetSTACScores(featureMatchList, uniformTolerances, useDriftTime, usePrior);
 
-			Console.WriteLine("Calculating STAC_UP Scores");
+			ReportMessage("Calculating STAC_UP Scores");
 			if (typeof(U).Equals(typeof(MassTag)))
 			{
 				List<FeatureMatch<T, MassTag>> newFeatureMatchList = featureMatchList as List<FeatureMatch<T, MassTag>>;
@@ -362,6 +363,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 // Calculate the loglikelihood based on the new parameters.
 				nextLogLikelihood = CalculateNNULogLikelihood(featureMatchList, uniformDensity, useDriftTime, ref alphaList);
 
+                OnIterate(new MessageEventArgs("."));
 				PrintCurrentStatistics(nextLogLikelihood);
 
                 // Increment the counter to show that another iteration has been completed.
@@ -696,11 +698,74 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 
 		private void PrintCurrentStatistics(double logLikelihood)
 		{
-			Console.WriteLine("Parameters after " + m_iteration + " iterations:");
-			Console.WriteLine("\tLoglikelihood = " + logLikelihood + "\tAlpha = " + m_mixtureProportion);
-			Console.WriteLine("Epsilon = " + EPSILON);
-			Console.WriteLine();
+            ReportDebug( "Parameters after " + m_iteration + " iterations:" + Environment.NewLine +
+			             "\tLoglikelihood = " + logLikelihood + "\tAlpha = " + m_mixtureProportion + Environment.NewLine +
+			             "Epsilon = " + EPSILON);
+			
 		}
+
+        #endregion
+
+        #region "Events and related functions"
+
+        public event MessageEventHandler ErrorEvent;
+        public event MessageEventHandler IterationEvent;
+        public event MessageEventHandler MessageEvent;
+        public event MessageEventHandler DebugEvent;
+
+        /// <summary>
+        /// Report detailed debugging information using OnDebugEvent
+        /// </summary>
+        /// <param name="message"></param>
+        protected void ReportDebug(string message) 
+        {
+            OnDebugEvent(new MessageEventArgs(message));
+        }
+
+        /// <summary>
+        /// Report an error message using OnErrorMessage
+        /// </summary>
+        /// <param name="message"></param>
+        protected void ReportError(string message) 
+        {
+            OnErrorMessage(new MessageEventArgs(message));
+        }
+
+        /// <summary>
+        /// Report a progress message using OnMessage
+        /// </summary>
+        /// <param name="message"></param>
+        protected void ReportMessage(string message) 
+        {
+            OnMessage(new MessageEventArgs(message));
+        }
+
+
+        private void OnErrorMessage(MessageEventArgs e) 
+        {
+            if (ErrorEvent != null)
+                ErrorEvent(this, e);
+        }
+
+        private void OnIterate(MessageEventArgs e) 
+        {
+            if (IterationEvent != null)
+                IterationEvent(this, e);
+        }
+
+        private void OnMessage(MessageEventArgs e) 
+        {
+            if (MessageEvent != null)
+                MessageEvent(this, e);
+        }
+
+        private void OnDebugEvent(MessageEventArgs e) 
+        {
+            if (DebugEvent != null)
+                DebugEvent(this, e);
+        }
+
         #endregion
     }
+
 }

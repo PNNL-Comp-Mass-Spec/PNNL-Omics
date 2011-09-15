@@ -256,6 +256,7 @@
     <Compile Include="Data\Scan.cs" />
     <Compile Include="Data\ScanSet.cs" />
     <Compile Include="Generic\Task.cs" />
+    <Compile Include="Utilities\MessageEventArgs.cs" />
     <Compile Include="Utilities\MolecularWeightCalculator.cs" />
   </ItemGroup>
   <ItemGroup>

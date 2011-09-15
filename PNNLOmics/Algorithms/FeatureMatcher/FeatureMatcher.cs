@@ -144,6 +144,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             m_matchList = new List<FeatureMatch<T, U>>();
             m_shiftedMatchList = new List<FeatureMatch<T, U>>();
         }
+        
         /// <summary>
         /// Set the list of charge states to be used in IMS calculations.
         /// </summary>
@@ -344,7 +345,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private List<S> ExtractChargeStateList<S>(List<S> featureList, ref int startIndex, int chargeState) where S: Feature, new()
         {         
             return featureList.FindAll(delegate(S x) { return x.ChargeState == chargeState; });
-        }
+        }     
         /// <summary>
         /// Sets the false discovery rate by creating a histogram of the mass errors and comparing the proportion above a threshhold to the area below.
         /// </summary>
@@ -545,24 +546,31 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
             {
 				STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
-				Console.WriteLine("Performing STAC");
+                
+                // Attach the event handlers 
+                stacInformation.MessageEvent += new MessageEventHandler(StacInformationMessageHandler);
+                stacInformation.ErrorEvent += new MessageEventHandler(StacInformationErrorHandler);
+                stacInformation.IterationEvent += new MessageEventHandler(StacInformationIterate);
+                stacInformation.DebugEvent += new MessageEventHandler(StacInformationDebugHandler);
+
+				ReportMessage("Performing STAC");
 				stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
 
 				// Add the Refined Tolerances that STAC calculated
 				m_refinedTolerancesList.Add(stacInformation.RefinedTolerances);
 
 				STACParameterList.Add(stacInformation);
-				Console.WriteLine("Populating FDR table");
+                ReportMessage("Populating FDR table");
                 m_stacFDRList = PopulateSTACFDRTable(m_matchList);
             }
             if (m_matchParameters.ShouldCalculateHistogramFDR)
             {
-				Console.WriteLine("Setting Mass Error Histogram FDR");
+                ReportMessage("Setting Mass Error Histogram FDR");
                 SetMassErrorHistogramFDR();
             }
             if (m_matchParameters.ShouldCalculateShiftFDR)
             {
-				Console.WriteLine("Calculating Shift FDR");
+                ReportMessage("Calculating Shift FDR");
                 int count = 0;
                 for (int j = 0; j < m_matchList.Count; j++)
                 {
@@ -577,7 +585,106 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 m_shiftFDR = (1.0 * count) / m_shiftedMatchList.Count;
                 m_shiftConservativeFDR = (2.0 * count) / m_shiftedMatchList.Count;
             }
+
+            OnProcessingComplete(new MessageEventArgs("Processing Complete"));
         }
         #endregion
+
+        #region "Events and related functions"
+
+        public event MessageEventHandler ErrorEvent;
+        public event MessageEventHandler IterationEvent;
+        public event MessageEventHandler MessageEvent;
+        public event MessageEventHandler DebugEvent;
+        public event MessageEventHandler ProcessingCompleteEvent;
+        
+        protected void StacInformationIterate(object sender, MessageEventArgs e) 
+        {
+            OnIterate(e);
+        }
+
+        protected void StacInformationErrorHandler(object sender, MessageEventArgs e) 
+        {
+            ReportError(e);
+        }
+
+        protected void StacInformationMessageHandler(object sender, MessageEventArgs e) 
+        {
+            ReportMessage(e);
+        }
+
+        protected void StacInformationDebugHandler(object sender, MessageEventArgs e) 
+        {
+            OnDebugMessage(e);
+        }
+
+        /// <summary>
+        /// Report an error message using OnErrorMessage
+        /// </summary>
+        /// <param name="message"></param>
+        protected void ReportError(string message) 
+        {
+            OnErrorMessage(new MessageEventArgs(message));
+        }
+
+        /// <summary>
+        /// Report an error message using OnErrorMessage
+        /// </summary>
+        /// <param name="message"></param>
+        protected void ReportError(MessageEventArgs e) 
+        {
+            OnErrorMessage(e);
+        }
+
+        /// <summary>
+        /// Report a progress message using OnMessage
+        /// </summary>
+        /// <param name="message"></param>
+        protected void ReportMessage(string message) 
+        {
+            OnMessage(new MessageEventArgs(message));
+        }
+
+        /// <summary>
+        /// Report a progress message using OnMessage
+        /// </summary>
+        /// <param name="message"></param>
+        protected void ReportMessage(MessageEventArgs e) 
+        {
+            OnMessage(e);
+        }
+
+        private void OnDebugMessage(MessageEventArgs e) 
+        {
+            if (DebugEvent != null)
+                DebugEvent(this, e);
+        }
+
+        private void OnErrorMessage(MessageEventArgs e) 
+        {
+            if (ErrorEvent != null)
+                ErrorEvent(this, e);
+        }
+
+        private void OnIterate(MessageEventArgs e) 
+        {
+            if (IterationEvent != null)
+                IterationEvent(this, e);
+        }
+
+        private void OnMessage(MessageEventArgs e) 
+        {
+            if (MessageEvent != null)
+                MessageEvent(this, e);
+        }
+
+        private void OnProcessingComplete(MessageEventArgs e) 
+        {
+            if (ProcessingCompleteEvent != null)
+                ProcessingCompleteEvent(this, e);
+        }
+
+        #endregion
     }
+
 }
