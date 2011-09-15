@@ -25,7 +25,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         private uint m_iteration;
 
         private const double EPSILON = 0.0001;
-        private const int MAX_ITERATIONS = 500;
+        private const int MAX_ITERATIONS = 100;
         #endregion
 
         #region Properties
@@ -720,7 +720,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         protected void ReportDebug(string message) 
         {
             OnDebugEvent(new MessageEventArgs(message));
-        }
+    }
 
         /// <summary>
         /// Report an error message using OnErrorMessage
@@ -729,7 +729,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         protected void ReportError(string message) 
         {
             OnErrorMessage(new MessageEventArgs(message));
-        }
+}
 
         /// <summary>
         /// Report a progress message using OnMessage
