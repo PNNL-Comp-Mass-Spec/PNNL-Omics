@@ -8,7 +8,7 @@ namespace PNNLOmics.Algorithms.Alignment
 {
 	public static class LinearEquationCalculator
 	{
-		public static LinearEquation CalculateLinearEquation(List<XYData> xyDataList)
+		public static LinearEquation CalculateLinearEquation(IEnumerable<XYData> xyDataList)
 		{
 			LinearEquation linearEquation = new LinearEquation();
 
@@ -16,8 +16,7 @@ namespace PNNLOmics.Algorithms.Alignment
 			double sumY = 0;
 			double sumXTimesY = 0;
 			double sumXSquared = 0;
-			double sumYSquared = 0;
-			double numPoints = xyDataList.Count;
+			double numPoints = xyDataList.Count();
 
 			foreach (XYData xyData in xyDataList)
 			{
@@ -28,11 +27,10 @@ namespace PNNLOmics.Algorithms.Alignment
 				sumY += yValue;
 				sumXTimesY += (xValue * yValue);
 				sumXSquared += (xValue * xValue);
-				sumYSquared += (yValue * yValue);
 			}
 
-			double intercept = ((sumY * sumXSquared) - (sumX * sumXTimesY)) / ((numPoints * sumXSquared) - (sumX * sumX));
 			double slope = ((numPoints * sumXTimesY) - (sumX * sumY)) / ((numPoints * sumXSquared) - (sumX * sumX));
+			double intercept = ((sumY * sumXSquared) - (sumX * sumXTimesY)) / ((numPoints * sumXSquared) - (sumX * sumX));
 
 			linearEquation.Intercept = intercept;
 			linearEquation.Slope = slope;
