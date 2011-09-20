@@ -264,12 +264,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 
             for (double cutoff = 0.99; cutoff > 0.90; cutoff -= 0.01)
             {
-                STACFDR tableLine = new STACFDR(cutoff);
+                STACFDR tableLine = new STACFDR(Math.Round(cutoff, 2));
 				stacFDRList.Add(tableLine);
             }
             for (double cutoff = 0.90; cutoff >= 0; cutoff -= 0.10)
             {
-                STACFDR tableLine = new STACFDR(cutoff);
+                STACFDR tableLine = new STACFDR(Math.Round(cutoff, 2));
 				stacFDRList.Add(tableLine);
             }
 
@@ -345,7 +345,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private List<S> ExtractChargeStateList<S>(List<S> featureList, ref int startIndex, int chargeState) where S: Feature, new()
         {         
             return featureList.FindAll(delegate(S x) { return x.ChargeState == chargeState; });
-        }     
+        }
         /// <summary>
         /// Sets the false discovery rate by creating a histogram of the mass errors and comparing the proportion above a threshhold to the area below.
         /// </summary>
@@ -601,12 +601,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         protected void StacInformationIterate(object sender, MessageEventArgs e) 
         {
             OnIterate(e);
-        }
+    }
 
         protected void StacInformationErrorHandler(object sender, MessageEventArgs e) 
         {
             ReportError(e);
-        }
+}
 
         protected void StacInformationMessageHandler(object sender, MessageEventArgs e) 
         {
