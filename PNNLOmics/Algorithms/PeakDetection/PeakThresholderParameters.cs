@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 namespace PNNLOmics.Algorithms.PeakDetection
 {
     /// <summary>
@@ -43,7 +44,8 @@ namespace PNNLOmics.Algorithms.PeakDetection
             this.isDataThresholded = false;
             this.SignalToShoulderCuttoff = 3;
             this.ThresholdMethod = "AveragePlusSigma";
-            this.DataNoiseType = InstrumentDataNoiseType.Standard;
+            this.DataNoiseType = InstrumentDataNoiseType.Standard;     
         }
     }
 }
+ 

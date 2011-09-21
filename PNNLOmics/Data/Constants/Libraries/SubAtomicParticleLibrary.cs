@@ -30,7 +30,9 @@ namespace PNNLOmics.Data.Constants.Libraries
         public const double MASS_NUETRON    = 1.00866491597;
         public const double MASS_ELECTRON   = 0.00054857990943;
 
-        //TODO: SCOTT - CR - Add XML comments.
+        /// <summary>
+        /// Loads the information from the const section into a sub atomics particle library
+        /// </summary>
         public override void LoadLibrary()
         {
             m_symbolToCompoundMap = new Dictionary<string, SubAtomicParticle>();

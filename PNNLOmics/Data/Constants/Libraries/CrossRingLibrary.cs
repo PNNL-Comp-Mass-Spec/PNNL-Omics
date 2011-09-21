@@ -19,7 +19,9 @@ using PNNLOmics.Data.Constants;
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
-    //TODO: SCOTT - CR - add XML comments
+    /// <summary>
+    /// Sets up the cross ring compound library and calculates its monoisotopic masses from its elemental composition
+    /// </summary>
     public class CrossRingLibrary : MatterLibrary<Compound, CrossRingName>
     {
         /// <summary>

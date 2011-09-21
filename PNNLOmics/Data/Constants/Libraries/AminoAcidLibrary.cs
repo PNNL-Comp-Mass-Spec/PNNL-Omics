@@ -26,12 +26,13 @@ using System.Collections.Generic;
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
-    //TODO: SCOTT - CR - add XML comments
+    /// <summary>
+    /// Sets up the amino acid compound library and calculates its monoisotopic masses from its elemental composition
+    /// </summary>
     public class AminoAcidLibrary : MatterLibrary<Compound, AminoAcidName>
     {
-       //TODO:  SCOTT this is not a class
         /// <summary>
-        /// This is a Class designed to create amino acids objects from the elements.
+        /// This designed to create amino acids objects from the elements.
         /// The amino acids are added to a Dictionary searchable by char keys such as 'A' for Alanine.
         /// This is the only library with char keys.
         /// </summary>		
@@ -152,7 +153,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             proline.MassMonoIsotopic = Compound.GetMonoisotopicMass(proline);
 
             Compound serine = new Compound();
-            serine.NewElements(11, 10, 2, 1, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
+            serine.NewElements(3, 5, 1, 2, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             serine.Name = "Serine";
             serine.Symbol = "S";
             serine.ChemicalFormula = "C3H5NO2";

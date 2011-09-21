@@ -24,7 +24,9 @@ using PNNLOmics.Data.Constants;
 /// </example>
 namespace PNNLOmics.Data.Constants.Libraries
 {
-    //enum is at bottom of class
+    /// <summary>
+    /// Sets up the element library by loading the information from the disk
+    /// </summary>
     public class ElementLibrary : MatterLibrary<Element, ElementName>
     {
         #region Loading Data

@@ -20,7 +20,9 @@ using PNNLOmics.Data.Constants;
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
-    //TODO: SCOTT - CR - add XML comments
+    /// <summary>
+    /// Sets up the miscellaneous matter compound library and calculates its monoisotopic masses from its elemental composition
+    /// </summary>
     public class MiscellaneousMatterLibrary : MatterLibrary<Compound, MiscellaneousMatterName>
     {
         /// <summary>

@@ -10,18 +10,50 @@ namespace PNNLOmics.Data.Constants
     /// </summary>
     public class Compound : Matter
     {
-        //TODO: SCOTT - CR - add XML comments
+        /// <summary>
+        /// Elemental Formula for the compound
+        /// </summary>
         public string ChemicalFormula { get; set; }
-
-        //TODO: SCOTT - CR - add XML comments
+ 
         //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
+        /// <summary>
+        /// Number of carbon atoms in the compound
+        /// </summary>
         public int NumCarbon { get; set; }
+
+        /// <summary>
+        /// Number of hydrogen atoms in the compound
+        /// </summary>
         public int NumHydrogen { get; set; }
+
+        /// <summary>
+        /// Number of nitrogen atoms in the compound
+        /// </summary>
         public int NumNitrogen { get; set; }
+
+        /// <summary>
+        /// Number of oxygen atoms in the compound
+        /// </summary>
         public int NumOxygen { get; set; }
+
+        /// <summary>
+        /// Number of sulfur atoms in the compound
+        /// </summary>
         public int NumSulfur { get; set; }
+
+        /// <summary>
+        /// Number of phosphorus atoms in the compound
+        /// </summary>
         public int NumPhosphorus { get; set; }
+
+        /// <summary>
+        /// Number of potassium atoms in the compound
+        /// </summary>
         public int NumPotassium { get; set; }
+
+        /// <summary>
+        /// Number of sodium atoms in the compound
+        /// </summary>
         public int NumSodium { get; set; }
 
         /// <summary>
@@ -43,16 +75,23 @@ namespace PNNLOmics.Data.Constants
             return exactMass;
         }
 
-        //TODO: SCOTT - CR - add XML comments
-        //TODO: SCOTT - CR - make names lower-case, and elaborate what the names are (C, H, N..etc)
-        public void NewElements(int C, int H, int N, int O, int S, int P)
+        /// <summary>
+        /// sets up the elements in the compound
+        /// </summary>
+        /// <param name="c">number of carbon atoms</param>
+        /// <param name="h">number of hydrogen atoms</param>
+        /// <param name="n">number of nitrogen atoms</param>
+        /// <param name="o">number of oxygen atoms</param>
+        /// <param name="s">number of sulfur atoms</param>
+        /// <param name="p">number of phosphorus atoms</param>
+        public void NewElements(int c, int h, int n, int o, int s, int p)
         {
-            NumCarbon = C;
-            NumHydrogen = H;
-            NumNitrogen = N;
-            NumOxygen = O;
-            NumSulfur = S;
-            NumPhosphorus = P;
+            NumCarbon = c;
+            NumHydrogen = h;
+            NumNitrogen = n;
+            NumOxygen = o;
+            NumSulfur = s;
+            NumPhosphorus = p;
         }
     }
 }

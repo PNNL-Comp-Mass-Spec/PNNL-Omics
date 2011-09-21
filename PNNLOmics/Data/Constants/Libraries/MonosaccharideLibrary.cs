@@ -19,7 +19,9 @@ using PNNLOmics.Data.Constants;
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
-    //TODO: SCOTT - CR - add XML comments
+    /// <summary>
+    /// Sets up the monosaccharide compound library and calculates its monoisotopic masses from its elemental composition
+    /// </summary>
     public class MonosaccharideLibrary : MatterLibrary<Compound, MonosaccharideName>
     {        
         //TODO: SCOTT - CR - update XML comments, this is not accurate anymore.
