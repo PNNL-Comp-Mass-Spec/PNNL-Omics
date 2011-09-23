@@ -97,11 +97,11 @@ namespace PNNLOmics.Data.Constants.Libraries
             NGlycolylNeuraminicAcid.MassMonoIsotopic = Compound.GetMonoisotopicMass(NGlycolylNeuraminicAcid);
 
             Compound pentose = new Compound();
-            pentose.NewElements(6, 10, 5, 0, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
+            pentose.NewElements(5, 8, 0, 4, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             pentose.Name = "Pentose";
             pentose.Symbol = "Pent";
             //pentose.SixLetterCode = "Pentos";
-            pentose.ChemicalFormula = "C6H10O5";
+            pentose.ChemicalFormula = "C5H8O4";
             pentose.MassMonoIsotopic = Compound.GetMonoisotopicMass(pentose);
 
             m_symbolToCompoundMap.Add(deoxyhexose.Symbol, deoxyhexose);
