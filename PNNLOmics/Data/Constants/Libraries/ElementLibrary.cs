@@ -42,6 +42,8 @@ namespace PNNLOmics.Data.Constants.Libraries
             int numberOfIsotopes = 0;
             int atomicity = 0;
             int isotopeNumber = 0;
+            double massAverage = 0;
+            double massAverageUncertainty = 0;
             double isotopeMass = 0;
             double isotopeProbability = 0;
             double monoIsotopicMass = 0;
@@ -74,6 +76,12 @@ namespace PNNLOmics.Data.Constants.Libraries
                         readerXML.ReadToFollowing("Atomicity");
                         atomicity = readerXML.ReadElementContentAsInt();
 
+                        readerXML.ReadToFollowing("MassAverage");
+                        massAverage = readerXML.ReadElementContentAsDouble();
+
+                        readerXML.ReadToFollowing("MassAverageUncertainty");
+                        massAverageUncertainty = readerXML.ReadElementContentAsDouble();
+
                         //for each isotope
                         for (int i = 0; i < numberOfIsotopes; i++)
                         {
@@ -100,14 +108,16 @@ namespace PNNLOmics.Data.Constants.Libraries
                             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope);
                             //newIsotopeDictionary.Add(newElement.Symbol + i.ToString(), NewIsotope);//used for interating through
                         }
+
                         newElement.IsotopeDictionary = newIsotopeDictionary;
                         newElement.MassMonoIsotopic = monoIsotopicMass;
-                        newElement.MassAverage = 0;//not used yet//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
+                        newElement.MassAverage = massAverage;//IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
+                        newElement.MassAverageUncertainty = massAverageUncertainty;
 
                         elementList.Add(newElement);
                         elementSymbolList.Add(newElement.Symbol);
 
-                        readerXML.Skip();//skip white space
+                        //readerXML.Skip();//skip white space
                     }
                 }
             }
@@ -122,7 +132,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
             string currentDirectory = Directory.GetCurrentDirectory();
-            string constantsFileXMLName = currentDirectory + "\\PNNLOmicsElementData2.xml";
+            string constantsFileXMLName = currentDirectory + "\\PNNLOmicsElementData3.xml";
 
             List<string> elementSymbolList = new List<string>();
             List<Element> elementList = new List<Element>();

@@ -8,11 +8,19 @@ namespace PNNLOmics.Data.Constants
     /// </summary>
     public class Element : Matter
     {
-        //TODO: SCOTT - CR - add XML comments
+        /// <summary>
+        /// Average mass from IUPAC 2007.  This is not the calculated one
+        /// </summary>
         public double MassAverage { get; set; }
 
-        //TODO: SCOTT - CR - remove this if not needed 
-        //public double MassMostAbundantIsotope { get; set; }
+        /// <summary>
+        /// Average mass uncertainty in Da from IUPAC 2007
+        /// </summary>
+        public double MassAverageUncertainty { get; set; }
+
+        /// <summary>
+        /// dictionary containing all known isotopes from an element
+        /// </summary>
         public Dictionary<string, Isotope> IsotopeDictionary { get; set; }
     }
 }
