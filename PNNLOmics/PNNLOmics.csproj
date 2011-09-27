@@ -266,7 +266,7 @@
     <None Include="ClassDiagrams\UtilityLayer.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PNNLOmicsElementData3.xml">
+    <Content Include="PNNLOmicsElementData.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

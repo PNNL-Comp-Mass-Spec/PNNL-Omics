@@ -117,11 +117,12 @@ namespace PNNLOmics.Data.Constants.Libraries
                         elementList.Add(newElement);
                         elementSymbolList.Add(newElement.Symbol);
 
-                        //readerXML.Skip();//skip white space
+                        readerXML.Skip();//skip white space
                     }
                 }
             }
         }
+
         /// <summary>
         /// This is a Class designed to convert raw values into element objects (including masses and isotope abundances)
         /// and create an element dictionary searchable by key string such as "C" for carbon.
@@ -132,7 +133,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
             string currentDirectory = Directory.GetCurrentDirectory();
-            string constantsFileXMLName = currentDirectory + "\\PNNLOmicsElementData3.xml";
+            string constantsFileXMLName = currentDirectory + "\\PNNLOmicsElementData.xml";
+
+            if (!File.Exists(constantsFileXMLName))
+            {
+                throw new FileNotFoundException("The PNNLOmicsElementData.xml file cannot be found");
+            }
 
             List<string> elementSymbolList = new List<string>();
             List<Element> elementList = new List<Element>();
@@ -151,6 +157,7 @@ namespace PNNLOmics.Data.Constants.Libraries
                 counter++;
             }
         }
+
         #endregion
     }
 

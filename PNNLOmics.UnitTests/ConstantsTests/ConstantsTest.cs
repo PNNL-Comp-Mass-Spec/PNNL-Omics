@@ -144,31 +144,43 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             double elementC12MassC12IsotopeNumber = Constants.Elements[ElementName.Carbon].IsotopeDictionary["C12"].IsotopeNumber;
             double elementC13MassC13IsotopeNumber = Constants.Elements[ElementName.Carbon].IsotopeDictionary["C13"].IsotopeNumber;
 
-            Assert.AreEqual(elementC12Mass, 12.0);
-            Assert.AreEqual(elementC13Mass, 13.0033548385);
-            Assert.AreEqual(elementC12MassC12Abundance, 0.98892228);
-            Assert.AreEqual(elementC13MassC13Abundance, 0.01107828);
-            Assert.AreEqual(elementC12MassC12IsotopeNumber, 12);
-            Assert.AreEqual(elementC13MassC13IsotopeNumber, 13);
+            Assert.AreEqual(12.0, elementC12Mass);
+            Assert.AreEqual(13.0033548385, elementC13Mass);
+            Assert.AreEqual(0.98892228, elementC12MassC12Abundance);
+            Assert.AreEqual(0.01107828, elementC13MassC13Abundance);
+            Assert.AreEqual(12, elementC12MassC12IsotopeNumber);
+            Assert.AreEqual(13, elementC13MassC13IsotopeNumber);
 
+
+            //average mass
+            double averageMass = Constants.Elements[ElementName.Carbon].MassAverage;
+            double averageMassUncertainty = Constants.Elements[ElementName.Carbon].MassAverageUncertainty;
+
+            double massHigh = averageMass + averageMassUncertainty;
+            double massLow = averageMass - averageMassUncertainty;
+
+            Assert.AreEqual(12.0107d, averageMass);
+            Assert.AreEqual(0.0008d, averageMassUncertainty);
+            Assert.AreEqual(12.0115d, massHigh);
+            Assert.AreEqual(12.0099d, massLow);
+
+            //last element
             double elementXMass = Constants.Elements[ElementName.Generic].MassMonoIsotopic;
             double elementX999Isotope = Constants.Elements[ElementName.Generic].IsotopeDictionary["X999"].NaturalAbundance;
             Isotope newIsotope = new Isotope(1000, 1000.500, 0.75);
             Constants.Elements[ElementName.Generic].IsotopeDictionary.Add("X1000", newIsotope);
             
-
             double elementX1000Isotope = Constants.Elements[ElementName.Generic].IsotopeDictionary["X1000"].NaturalAbundance;
 
             //string elementKeyXList
             Constants.Elements[ElementName.Generic].IsotopeDictionary.Remove("X999");
             Constants.Elements[ElementName.Generic].IsotopeDictionary.Add("newName", newIsotope);
 
-            Assert.AreEqual(elementXMass, 999);
-            Assert.AreEqual(elementX999Isotope, 0.5);
-            Assert.AreEqual(elementX1000Isotope, 0.75);
+            Assert.AreEqual(999, elementXMass);
+            Assert.AreEqual(0.5, elementX999Isotope);
+            Assert.AreEqual(0.75, elementX1000Isotope);
             //Assert.AreEqual(elementKey, "newName");
             
-
             stopWatch.Stop();
             Console.WriteLine("This took " + stopWatch.Elapsed + "seconds to TestElements");
         }
