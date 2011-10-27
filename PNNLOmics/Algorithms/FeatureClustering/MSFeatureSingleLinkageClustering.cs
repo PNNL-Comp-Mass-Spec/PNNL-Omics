@@ -80,12 +80,14 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 {
                     int matchClusterID =  featureIDToClusterID[matchPeak.ID];
                     
-                    //if (matchPeak.ID != currentFeature.ID)
+                    //this is asking if they are already clustered together.
                     if (matchClusterID != currentFeatureClusterID)
                     {
+                        // This checks the distance
                         bool withinRange = Parameters.RangeFunction(currentFeature, matchPeak);
                         if (withinRange)
                         {
+                            // Has the match peak been matched yet?
                             if (matchClusterID == -1)
                             {
                                 idFeatureMap[currentFeatureClusterID].Add(matchPeak);
@@ -94,12 +96,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             }
                             else
                             {
+                                // Otherwise, we merge the old guy.
                                 List<T> tempFeatures = idFeatureMap[matchClusterID];
                                 int oldID = matchClusterID;
                                 foreach (T tempFeature in tempFeatures)
                                 {
-                                    featureIDToClusterID[tempFeature.ID] = currentFeatureClusterID;
-                                    //tempFeature.ID = currentFeature.ID;
+                                    featureIDToClusterID[tempFeature.ID] = currentFeatureClusterID;                                    
                                 }
                                 idFeatureMap[currentFeatureClusterID].AddRange(tempFeatures);
                                 idFeatureMap.Remove(oldID);
