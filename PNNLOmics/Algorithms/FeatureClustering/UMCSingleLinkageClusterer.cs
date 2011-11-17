@@ -184,6 +184,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             }
             return clusters;
         }
-        #endregion        
+        #endregion   
+        
+        public override string ToString()
+        {
+            return "single linkage clustering";
+        }
     }
 }

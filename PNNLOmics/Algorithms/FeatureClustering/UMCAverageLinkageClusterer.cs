@@ -208,5 +208,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				return false;
 			}
 		}
+
+        public override string ToString()
+        {
+            return "average linkage clustering";
+        }
 	}
 }

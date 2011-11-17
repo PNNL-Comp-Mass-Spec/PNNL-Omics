@@ -296,5 +296,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				return false;
 			}
 		}
+
+        public override string ToString()
+        {
+            return "centroid distance linkage clustering";
+        }
 	}
 }
