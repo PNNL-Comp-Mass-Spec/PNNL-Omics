@@ -4,12 +4,12 @@
     /// <summary>
     /// Options class for matching AMT's to features
     /// </summary>
-    public class FeatureMatcherLightOptions
+    public class PeakMatcherOptions
     {
         /// <summary>
         /// constructor.
         /// </summary>
-        public FeatureMatcherLightOptions()
+        public PeakMatcherOptions()
         {
             Tolerances  = new FeatureTolerances();
             DaltonShift = 0;

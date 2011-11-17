@@ -20,5 +20,23 @@ namespace PNNLOmics.Data.MassTags
             get;
             set;
         }
+        #region Scores
+        /// <summary>
+        /// Gets or sets the confidence of this match. STAC Score.
+        /// </summary>
+        public double Confidence
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the uniqueness of this match.  STAC Up
+        /// </summary>
+        public double Uniqueness
+        {
+            get;
+            set;
+        }
+        #endregion
     }
 }

@@ -144,8 +144,8 @@
     <Compile Include="Algorithms\FeatureClustering\UMCCentroidClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\LinkageClustererBase.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCAverageLinkageClusterer.cs" />
-    <Compile Include="Algorithms\FeatureMatcher\FeatureMatcherLight.cs" />
-    <Compile Include="Algorithms\FeatureMatcher\FeatureMatcherLightOptions.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\PeakMatcher.cs" />
+    <Compile Include="Algorithms\FeatureMatcher\PeakMatcherOptions.cs" />
     <Compile Include="Algorithms\FeatureMatcher\MSnLinker\IMSnLinker.cs" />
     <Compile Include="Algorithms\FeatureMatcher\MSnLinker\MSnLinker.cs" />
     <Compile Include="Algorithms\PeakDetection\FullWidthHalfMaximumPeakOptions.cs" />

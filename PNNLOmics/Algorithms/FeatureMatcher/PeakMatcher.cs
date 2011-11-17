@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
+using PNNLOmics.Algorithms.FeatureMatcher.Data;
 using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher
@@ -12,9 +13,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
     /// Matches features to a list of mass tags.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class FeatureMatcherLight<T, U>
-        where T : FeatureLight
-        where U : FeatureLight
+    public class PeakMatcher<T, U>
+        where T : Feature, new ()
+        where U : Feature, new ()
     {
         /// <summary>
         /// Matches a list of features to a list of mass tags.
@@ -22,25 +23,25 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="features"></param>
         /// <param name="tags"></param>
         /// <returns></returns>
-        public List<FeatureMatchLight<T, U>> MatchFeatures(List<T>                  features,
-                                                          List<U>                   tags,
-                                                          FeatureMatcherLightOptions    options)
+        public List<FeatureMatch<T, U>> MatchFeatures(    List<T>               features,
+                                                          List<U>               tags,
+                                                          PeakMatcherOptions    options)
         {
-            List<FeatureMatchLight<T, U>> matches = new List<FeatureMatchLight<T, U>>();
+            List<FeatureMatch<T, U>> matches = new List<FeatureMatch<T, U>>();
 
             // Construct a large array of features so we can do searching in linear time.
-            List<FeatureLight> allFeatures = new List<FeatureLight>();
+            List<Feature> allFeatures = new List<Feature>();
             foreach (T copyFeature in features)
             {
-                allFeatures.Add(copyFeature as FeatureLight);
+                allFeatures.Add(copyFeature as Feature);
             }
             foreach (U copyTag in tags)
             {
-                allFeatures.Add(copyTag as FeatureLight);
+                allFeatures.Add(copyTag as Feature);
             }
 
             // Sort by mass, gives us the best search time.
-            allFeatures.Sort(new Comparison<FeatureLight>(FeatureLight.MassComparison));
+            allFeatures.Sort(new Comparison<Feature>(Feature.MassComparison));
             
             double netTolerance     = options.Tolerances.RetentionTime;
             double massTolerance    = options.Tolerances.Mass;
@@ -53,7 +54,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             // This was a linear search, now O(N^2).  Need to improve.
 			while(elementNumber < N)
 			{
-                FeatureLight feature = allFeatures[elementNumber];
+                Feature feature = allFeatures[elementNumber];
                 U massTag            = feature as U;
                 if (massTag == null)
                 {
@@ -68,7 +69,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     int matchIndex              = elementNumber - 1;
                     while (matchIndex >= 0)
                     {
-                        FeatureLight toMatchFeature = allFeatures[matchIndex];
+                        Feature toMatchFeature = allFeatures[matchIndex];
                         if (toMatchFeature.MassMonoisotopic < lowerMass)
                         {
                             break;
@@ -81,9 +82,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                             {
                                 if (lowerDritfTime <= tag.DriftTime && tag.DriftTime <= higherDriftTime)
                                 {
-                                    FeatureMatchLight<T, U> match   = new FeatureMatchLight<T, U>();
-                                    match.Observed                  = feature as T; // it has to be T if not U.
-                                    match.Target                    = tag;
+                                    FeatureMatch<T, U> match   = new FeatureMatch<T, U>(feature as T, tag as U, false, false);
                                     matches.Add(match);
                                 }
                             }                            
@@ -94,7 +93,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     matchIndex = elementNumber + 1;
                     while(matchIndex < N)                    
                     {
-                        FeatureLight toMatchFeature = allFeatures[matchIndex];
+                        Feature toMatchFeature = allFeatures[matchIndex];
                         if (toMatchFeature.MassMonoisotopic > higherMass)
                         {
                             break;
@@ -107,9 +106,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                             {
                                 if (lowerDritfTime <= tag.DriftTime && tag.DriftTime <= higherDriftTime)
                                 {
-                                    FeatureMatchLight<T, U> match   = new FeatureMatchLight<T, U>();
-                                    match.Observed                  = feature as T; // it has to be T if not U.
-                                    match.Target                    = tag;
+                                    FeatureMatch<T, U> match = new FeatureMatch<T, U>(feature as T, tag as U, false, false);
                                     matches.Add(match);
                                 }
                             }

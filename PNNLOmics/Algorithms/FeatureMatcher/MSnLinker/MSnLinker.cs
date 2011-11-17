@@ -49,6 +49,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                             return x.Scan.CompareTo(y.Scan);
                         }
             );
+             
+            
 
             // Map the scans
             Dictionary<int, List<MSFeatureLight>> featureMap    = new Dictionary<int, List<MSFeatureLight>>();
