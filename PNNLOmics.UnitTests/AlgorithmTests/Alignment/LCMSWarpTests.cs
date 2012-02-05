@@ -7,7 +7,7 @@ using NUnit.Framework;
 using PNNLOmics.Data;
 using PNNLOmics.Algorithms;
 using PNNLOmics.Data.Features;
-using PNNLOmics.Utilities.Importers;
+//using PNNLOmics.Utilities.Importers;
 using PNNLOmics.Algorithms.Alignment;
 using PNNLOmics.Algorithms.FeatureClustering;
 

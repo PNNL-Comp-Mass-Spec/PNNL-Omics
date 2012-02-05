@@ -7,6 +7,6 @@ namespace PNNLOmics
 {
     public class SRMTransitions
     {
-        public int IonList { get; set; }
+        public int IonList { get; set; } 
     }
 }

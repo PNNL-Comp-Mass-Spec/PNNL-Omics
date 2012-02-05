@@ -30,6 +30,7 @@ namespace PNNLOmics.Data.Features
             this.RetentionTime      = feature.RetentionTime;
             this.Score              = feature.Score;
             this.NET                = feature.NET;
+            this.AmbiguityScore     = double.MaxValue;
         }
         /// <summary>
         /// Gets or sets the abundance.
@@ -63,6 +64,10 @@ namespace PNNLOmics.Data.Features
         /// Gets or sets the score value for this feature.
         /// </summary>
         public double Score { get; set; }
+        /// <summary>
+        /// Gets or sets the ambiguity score for a given cluster.
+        /// </summary>
+        public double AmbiguityScore { get; set; }
         /// <summary>
         /// Gets or sets the group id (e.g. dataset) this feature originated from.
         /// </summary>

@@ -153,6 +153,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     if (startUMCIndex == i)
                     {
                         U cluster  = new U();
+                        cluster.AmbiguityScore = m_maxDistance;
                         umcX.SetParentFeature(cluster); 
                         cluster.AddChildFeature(umcX);
                         clusters.Add(cluster);
@@ -163,6 +164,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 						List<PairwiseDistance<T>> distances     = CalculatePairWiseDistances(startUMCIndex, i, data);
 						Dictionary<int, U> localClusters        = CreateSingletonClusters(data, startUMCIndex, i);                        
                         List<U>  blockClusters                  = LinkUMCs(distances, localClusters);
+
+                        CalculateAmbiguityScore(blockClusters);
                         clusters.AddRange(blockClusters);
                     }
                     startUMCIndex = i + 1;
@@ -175,6 +178,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				List<PairwiseDistance<T>> distances = CalculatePairWiseDistances(startUMCIndex, totalFeatures - 1, data);                
 				Dictionary<int, U> localClusters    = CreateSingletonClusters(data, startUMCIndex, totalFeatures - 1);                                                
                 List<U> blockClusters               = LinkUMCs(distances, localClusters);
+                        CalculateAmbiguityScore(blockClusters);
                 clusters.AddRange(blockClusters);
             }
 

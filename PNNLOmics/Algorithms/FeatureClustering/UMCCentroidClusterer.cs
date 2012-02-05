@@ -170,7 +170,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 					// could not find any other features near it within the mass tolerance specified.
 					if (startUMCIndex == i)
 					{
-						U cluster = new U();
+						U cluster               = new U();
+                        cluster.AmbiguityScore  = m_maxDistance;
                         umcX.SetParentFeature(cluster);						
 						cluster.AddChildFeature(umcX);
 						clusters.Add(cluster);
@@ -180,6 +181,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 						// Otherwise we have more than one feature to to consider.												
                         Dictionary<int, U> localClusters    = CreateSingletonClusters(data, startUMCIndex, i);					
 						List<U> blockClusters               = Cluster(localClusters);
+                        CalculateAmbiguityScore(blockClusters);
 						clusters.AddRange(blockClusters);
 					}
 					startUMCIndex = i + 1;
@@ -190,7 +192,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 			if (startUMCIndex < totalFeatures)
             {
                 Dictionary<int, U> localClusters = CreateSingletonClusters(data, startUMCIndex, totalFeatures - 1);
-                List<U> blockClusters            = Cluster(localClusters);
+                List<U> blockClusters = Cluster(localClusters);
+                CalculateAmbiguityScore(blockClusters);
                 clusters.AddRange(blockClusters);
 			}
 

@@ -118,6 +118,7 @@ namespace PNNLOmics.Data
             PrecursorMZ     = 0;
             GroupID         = -1;
             ID              = -1;
+            Peaks           = new List<XYData>();
         }
 
 

@@ -15,14 +15,21 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         where T : FeatureLight, IChildFeature<U>, new()    
         where U : FeatureLight, IFeatureCluster<T>, new()
 	{
+        /// <summary>
+        /// Maximum distance when calculating ambiguity
+        /// </summary>
+        protected double m_maxDistance;
+
         public LinkageClustererBase()
         {
             SeedClusterID = 0;
+            m_maxDistance = 10000;
         }
 
         public LinkageClustererBase(int id)
         {
             SeedClusterID = id;
+            m_maxDistance = 10000;
         }
         /// <summary>
         /// Gets or sets the initial cluster Id to use when assingning ID's to a cluster.
@@ -86,16 +93,63 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
 			return clusters;
 		}
+        /// <summary>
+        /// Calculates the minimum distance between two clusters by pairwise feature comparisons.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        protected virtual double CalculateMinimumFeatureDistance(U x, U y)
+        {
+            double distance = m_maxDistance;
 
-		/// <summary>
-		/// Calculates pairwise distances between features in the list of 
-		/// potential features to cluster.        
-		/// </summary>
-		/// <param name="start">Start UMC index.</param>
-		/// <param name="stop">Stop UMC index.</param>
-		/// <param name="data">List of data to compute distances over.</param>
-		/// <returns>List of UMC distances to consider during clustering.</returns>
-		protected virtual List<PairwiseDistance<T>> CalculatePairWiseDistances(int start, int stop, List<T> data)
+            foreach (T featureX in x.Features)
+            {                
+                foreach(T featureY in y.Features)
+                {
+                    double tempDistance = Parameters.DistanceFunction(featureX, featureY);
+                    distance = Math.Min(tempDistance, distance);
+                }                
+            }
+
+            return distance;
+        }
+        /// <summary>
+        /// Calculates the ambiguity score
+        /// </summary>
+        /// <param name="clusters"></param>
+        protected virtual void CalculateAmbiguityScore(List<U> clusters)
+        {
+            for (int i = 0; i < clusters.Count; i++)
+            {
+                double minDistance  = m_maxDistance;
+                U clusterI          = clusters[i];
+
+                for (int j = 0; j < clusters.Count; j++)
+                {
+                    if (i == j)
+                    {
+                        continue;
+                    }
+
+                    U clusterJ = clusters[j];
+
+                    double distance = CalculateMinimumFeatureDistance(clusterJ, clusterI);                    
+                    minDistance = Math.Min(minDistance, distance);                    
+                }
+                clusterI.AmbiguityScore = minDistance;
+            }
+        }
+
+        /// <summary>
+        /// Calculates pairwise distances between features in the list of 
+        /// potential features to cluster.        
+        /// </summary>
+        /// <param name="start">Start UMC index.</param>
+        /// <param name="stop">Stop UMC index.</param>
+        /// <param name="data">List of data to compute distances over.</param>
+        /// <returns>List of UMC distances to consider during clustering.</returns>
+        protected virtual List<PairwiseDistance<T>> CalculatePairWiseDistances(int start, int stop, List<T> data)
 		{
 			double massTolerance                = Parameters.Tolerances.Mass;
 			double netTolerance                 = Parameters.Tolerances.RetentionTime;

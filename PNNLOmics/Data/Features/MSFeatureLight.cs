@@ -65,15 +65,15 @@ namespace PNNLOmics.Data.Features
 		}
 		#endregion
 
-		#region Comparers
-		/// <summary>
-		/// Compares the IMS Scan of two MS Features
-		/// </summary>
+        #region Comparers
+        /// <summary>
+        /// Compares the IMS Scan of two MS Features
+        /// </summary>
         //TODO: Move to Feature.cs?
-		public static Comparison<MSFeature> ScanIMSComparison = delegate(MSFeature x, MSFeature y)
-		{
-			return x.ScanIMS.CompareTo(y.ScanIMS);
-		};
+        public static Comparison<MSFeature> ScanIMSComparison = delegate(MSFeature x, MSFeature y)
+        {
+            return x.ScanIMS.CompareTo(y.ScanIMS);
+        };
 		#endregion
 
 
@@ -87,7 +87,18 @@ namespace PNNLOmics.Data.Features
         {
             get { return UMC; }
         }
-
         #endregion
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+            hash = hash * 23 + ID.GetHashCode();
+            hash = hash * 23 + this.GroupID.GetHashCode();
+            hash = hash * 23 + this.MassMonoisotopicMostAbundant.GetHashCode();
+            hash = hash * 23 + this.MassMonoisotopic.GetHashCode();
+            hash = hash * 23 + this.RetentionTime.GetHashCode();
+
+            return hash;
+        }
     }
 }

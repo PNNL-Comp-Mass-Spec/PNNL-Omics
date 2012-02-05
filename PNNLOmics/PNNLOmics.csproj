@@ -17,49 +17,16 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\AnyCPU\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\AnyCPU\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -68,35 +35,10 @@
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\lib\x86\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\lib\x64\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\lib\x86\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
-      <SpecificVersion>True</SpecificVersion>
-      <HintPath>..\lib\x64\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
+    <Reference Include="alglibnet2">
+      <HintPath>..\lib\alglibnet2.dll</HintPath>
+    </Reference>
     <Reference Include="Mapack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Mapack.dll</HintPath>
@@ -117,10 +59,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UIMFLibrary, Version=1.1.3828.24207, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\UIMFLibrary.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Alignment\AlignmentDataset.cs" />
@@ -136,6 +74,7 @@
     </Compile>
     <Compile Include="Algorithms\Alignment\LinearEquation.cs" />
     <Compile Include="Algorithms\Alignment\LinearEquationCalculator.cs" />
+    <Compile Include="Algorithms\FeatureClustering\MSMSClusterer.cs" />
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\FeatureClustering\MSFeatureClusterParameters.cs">
       <SubType>Code</SubType>
@@ -148,6 +87,7 @@
     <Compile Include="Algorithms\FeatureMatcher\PeakMatcherOptions.cs" />
     <Compile Include="Algorithms\FeatureMatcher\MSnLinker\IMSnLinker.cs" />
     <Compile Include="Algorithms\FeatureMatcher\MSnLinker\MSnLinker.cs" />
+    <Compile Include="Algorithms\IProgressNotifer.cs" />
     <Compile Include="Algorithms\PeakDetection\FullWidthHalfMaximumPeakOptions.cs" />
     <Compile Include="Algorithms\PeakDetection\KronewitterPeakDetector.cs" />
     <Compile Include="Algorithms\PeakDetection\PeakCentroidEnumerations.cs" />
@@ -163,6 +103,11 @@
     <Compile Include="Algorithms\PeakDetection\PeakThresholderParameters.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\ISpectralComparer.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\SpectralNormalizedDotProductComparer.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\SpectralMzComparer.cs" />
+    <Compile Include="Algorithms\Statistics\WilcoxonSignedRankTest.cs" />
     <Compile Include="Data\Constants\AminoAcidName.cs" />
     <Compile Include="Data\Constants\CrossRingName.cs" />
     <Compile Include="Data\Constants\ElementName.cs" />
@@ -175,10 +120,11 @@
     <Compile Include="Data\FormulaBuilder\FormulaBuilderBase.cs" />
     <Compile Include="Data\FormulaBuilder\OligosaccharideFormulaBuilder.cs" />
     <Compile Include="Data\FormulaBuilder\SimpleFormulaBuilder.cs" />
+    <Compile Include="Data\ISpectraProvider.cs" />
     <Compile Include="Data\MassTags\MassTagLight.cs" />
     <Compile Include="Data\MassTags\MassTagFeatureMatch.cs" />
+    <Compile Include="Data\MSMSCluster.cs" />
     <Compile Include="Data\Peaks\ProcessedPeak.cs" />
-    <Compile Include="CodeExamples\BinarySearchExample.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\Constants\Constants.cs" />
     <Compile Include="Data\Constants\Libraries\AminoAcidLibrary.cs" />
@@ -222,23 +168,10 @@
     <Compile Include="Data\Features\MSFeature.cs" />
     <Compile Include="Generic\AnonymousComparer.cs" />
     <Compile Include="IonType.cs" />
-    <Compile Include="IO\FileReaders\BaseTextFileReader.cs" />
-    <Compile Include="IO\FileReaders\MSFeatureLightReader.cs" />
-    <Compile Include="IO\FileReaders\ITextFileReader.cs" />
-    <Compile Include="IO\FileReaders\MassTagFileReader.cs" />
-    <Compile Include="IO\FileReaders\MSFeatureFileReader.cs" />
-    <Compile Include="IO\FileReaders\ScansFileReader.cs" />
-    <Compile Include="IO\FileReaders\UMCFileReader.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
     <Compile Include="Organism.cs" />
     <Compile Include="PeptideIon.cs" />
-    <Compile Include="RawDataReader.cs" />
-    <Compile Include="UIMFReader.cs" />
-    <Compile Include="Utilities\ConsoleUtil\CommandLineUtil.cs" />
-    <Compile Include="Utilities\Importers\ImporterBase.cs" />
-    <Compile Include="Utilities\Importers\MassTagTextFileImporter.cs" />
-    <Compile Include="Utilities\Importers\UMCImporter.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\MassTags\MassTag.cs" />
     <Compile Include="Data\MassTags\Peptide.cs" />
@@ -260,16 +193,11 @@
     <Compile Include="Utilities\MolecularWeightCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagrams\AlgorithmLayer.cd" />
-    <None Include="ClassDiagrams\ConstantsSubStructure.cd" />
-    <None Include="ClassDiagrams\PNNLOmics.cd" />
-    <None Include="ClassDiagrams\UtilityLayer.cd" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="PNNLOmicsElementData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -281,5 +209,9 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

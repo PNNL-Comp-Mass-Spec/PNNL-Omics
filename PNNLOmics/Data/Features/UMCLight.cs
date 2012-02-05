@@ -224,7 +224,7 @@ namespace PNNLOmics.Data.Features
                 double netValue   = NET - umc.NET;
                 double massValue  = MassMonoisotopic - umc.MassMonoisotopic;
                 double driftValue = DriftTime - umc.DriftTime;
-                double distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
+                double distance   = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
                 distances.Add(distance);
                 distanceSum += distance;
             }

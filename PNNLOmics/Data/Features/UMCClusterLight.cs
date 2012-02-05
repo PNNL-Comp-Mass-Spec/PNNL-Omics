@@ -142,9 +142,9 @@ namespace PNNLOmics.Data.Features
             double distanceSum = 0;
             foreach (UMCLight umc in UMCList)
             {
-                double netValue   = NET - umc.NET;
-                double massValue  = MassMonoisotopic - umc.MassMonoisotopic;
-                double driftValue = DriftTime - umc.DriftTime;
+                double netValue   = RetentionTime       - umc.RetentionTime;
+                double massValue  = MassMonoisotopic    - umc.MassMonoisotopic;
+                double driftValue = DriftTime           - umc.DriftTime;
 
                 double distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
                 distances.Add(distance);

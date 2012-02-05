@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 using NUnit.Framework;
 
-using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 
-using PNNLOmics.Algorithms;
-using PNNLOmics.Algorithms.FeatureClustering;
 
-using PNNLOmics.Utilities.Importers;
+//using PNNLOmics.Utilities.Importers;
 
 namespace PNNLOmics.UnitTests.DataTests.Features
 {
