@@ -58,7 +58,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="TestSpectra, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\SVN PNNL Omics Test DLL\TestData\TestSpectra\bin\Release\TestSpectra.dll</HintPath>
+      <HintPath>..\lib\TestSpectra_DLLs\TestSpectra.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
