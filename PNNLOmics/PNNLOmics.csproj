@@ -124,6 +124,7 @@
     <Compile Include="Data\MassTags\MassTagLight.cs" />
     <Compile Include="Data\MassTags\MassTagFeatureMatch.cs" />
     <Compile Include="Data\MSMSCluster.cs" />
+    <Compile Include="Data\PeakProcessingLevel.cs" />
     <Compile Include="Data\Peaks\ProcessedPeak.cs" />
     <Compile Include="Data\CollisionType.cs" />
     <Compile Include="Data\Constants\Constants.cs" />

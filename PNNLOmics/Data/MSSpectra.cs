@@ -69,6 +69,22 @@ namespace PNNLOmics.Data
             set;
         }
         /// <summary>
+        /// Gets or sets processed peaks asspcoated with this spectra.
+        /// </summary>
+        public List<ProcessedPeak> PeaksProcessed
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// The level to which the peaks have been processed
+        /// </summary>
+        public PeakProcessingLevel PeakProcessingLevel
+        {
+            get;
+            set;
+        }
+        /// <summary>
         /// Gets or sets any n + 1 level MSn child spectra.
         /// </summary>
         public List<MSSpectra> ChildSpectra
