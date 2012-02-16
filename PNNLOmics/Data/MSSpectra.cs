@@ -123,7 +123,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the more accurate parent precursor M/Z for this MSn spectra.
         /// </summary>
-        public double PrecursorMZAccurate
+        public double PrecursorPeak
         {
             get;
             set;
