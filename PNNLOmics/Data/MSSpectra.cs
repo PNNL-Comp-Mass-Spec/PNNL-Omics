@@ -8,7 +8,7 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Contains MSn data for a given parent m/z.
     /// </summary>
-    public class MSSpectra: BaseData
+    public class MSSpectra: BaseData,IDisposable
     {
         /// <summary>
         /// The default MSn level (MS/MS).
@@ -135,16 +135,20 @@ namespace PNNLOmics.Data
         /// </summary>
         public override void  Clear()
         {
-            MSLevel         = CONST_DEFAULT_MS_LEVEL;
-            CollisionType   = CollisionType.Other;
-            Scan            = 0;
-            TotalIonCurrent = -1;
-            PrecursorMZ     = 0;
-            GroupID         = -1;
-            ID              = -1;
-            Peaks           = new List<XYData>();
+            MSLevel             = CONST_DEFAULT_MS_LEVEL;
+            CollisionType       = CollisionType.Other;
+            Scan                = 0;
+            TotalIonCurrent     = -1;
+            PrecursorMZ         = 0;
+            GroupID             = -1;
+            ChargeState         = -1;
+            ID                  = -1;
+            Peaks               = new List<XYData>();
+            PeaksProcessed      = new List<ProcessedPeak>();
+            PrecursorPeak       = new ProcessedPeak();
+           
+            PeakProcessingLevel = Data.PeakProcessingLevel.None;
         }
-
 
         #region Overriden Base Methods
         /// <summary>
@@ -225,6 +229,33 @@ namespace PNNLOmics.Data
                 RetentionTime.GetHashCode();
             return hashCode;
         }
+        #endregion
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            Clear();
+            Peaks = null;
+            PeaksProcessed = null;
+            PrecursorPeak = null;
+
+            if (ParentSpectra != null)
+            {
+                ParentSpectra.Clear();
+                ParentSpectra = null;
+            }
+
+            if (ChildSpectra != null)
+            {
+                foreach (MSSpectra spectra in ChildSpectra)
+                {
+                    spectra.Clear();
+                }
+                ChildSpectra = null;
+            }
+        }
+
         #endregion
     }
 }

@@ -10,6 +10,7 @@ namespace PNNLOmics.Data
     /// </summary>
     public enum PeakProcessingLevel
     {
+        None,
         BackgroundSubtracted,
         Centroided,
         Thresholded,
