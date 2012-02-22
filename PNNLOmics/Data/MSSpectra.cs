@@ -235,7 +235,6 @@ namespace PNNLOmics.Data
 
         public void Dispose()
         {
-            Clear();
             Peaks = null;
             PeaksProcessed = null;
             PrecursorPeak = null;
@@ -250,7 +249,7 @@ namespace PNNLOmics.Data
             {
                 foreach (MSSpectra spectra in ChildSpectra)
                 {
-                    spectra.Clear();
+                    spectra.Dispose();
                 }
                 ChildSpectra = null;
             }
