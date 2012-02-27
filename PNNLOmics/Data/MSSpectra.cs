@@ -51,7 +51,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the charge state for this spectra.
         /// </summary>
-        public int ChargeState { get; set; }
+        public int PrecursorChargeState { get; set; }
         /// <summary>
         /// Gets or sets the MS Level.
         /// </summary>
@@ -135,19 +135,18 @@ namespace PNNLOmics.Data
         /// </summary>
         public override void  Clear()
         {
-            MSLevel             = CONST_DEFAULT_MS_LEVEL;
-            CollisionType       = CollisionType.Other;
-            Scan                = 0;
-            TotalIonCurrent     = -1;
-            PrecursorMZ         = 0;
-            GroupID             = -1;
-            ChargeState         = -1;
-            ID                  = -1;
-            Peaks               = new List<XYData>();
-            PeaksProcessed      = new List<ProcessedPeak>();
-            PrecursorPeak       = new ProcessedPeak();
-           
-            PeakProcessingLevel = Data.PeakProcessingLevel.None;
+            MSLevel                 = CONST_DEFAULT_MS_LEVEL;
+            CollisionType           = CollisionType.Other;
+            Scan                    = 0;
+            TotalIonCurrent         = -1;
+            PrecursorMZ             = 0;
+            GroupID                 = -1;
+            PrecursorChargeState    = -1;
+            ID                      = -1;
+            Peaks                   = new List<XYData>();
+            PeaksProcessed          = new List<ProcessedPeak>();
+            PrecursorPeak           = new ProcessedPeak();           
+            PeakProcessingLevel     = Data.PeakProcessingLevel.None;
         }
 
         #region Overriden Base Methods
@@ -161,7 +160,7 @@ namespace PNNLOmics.Data
                                 ID,
                                 Scan,
                                 PrecursorMZ,
-                                ChargeState,
+                                PrecursorChargeState,
                                 GroupID);
             
         }
@@ -187,7 +186,7 @@ namespace PNNLOmics.Data
             {
                 return false;
             }
-            if (!this.ChargeState.Equals(other.ChargeState))
+            if (!this.PrecursorChargeState.Equals(other.PrecursorChargeState))
             {
                 return false;
             }
@@ -221,7 +220,7 @@ namespace PNNLOmics.Data
         {
             int hashCode =
                 PrecursorMZ.GetHashCode() ^
-                ChargeState.GetHashCode() ^
+                PrecursorChargeState.GetHashCode() ^
                 Scan.GetHashCode() ^
                 ID.GetHashCode() ^
                 GroupID.GetHashCode() ^
