@@ -147,6 +147,7 @@
     <Compile Include="Data\Features\UMCLight.cs" />
     <Compile Include="Data\MSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
+    <Compile Include="Data\PrecursorInfo.cs" />
     <Compile Include="Data\ScanSummary.cs" />
     <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\Alignment\SimilarityScore.cs" />
