@@ -8,11 +8,6 @@ namespace PNNLOmics.Data
     public class PrecursorInfo
     { 
         /// <summary>
-        /// Peak coresponding to the Precursor selected for fragmentation
-        /// </summary>
-        public PNNLOmics.Data.XYData PrecursorXYData { get; set; }
-
-        /// <summary>
         /// MS=0 or MSMS=1
         /// </summary>
         public int MSLevel { get; set; }
@@ -27,9 +22,20 @@ namespace PNNLOmics.Data
         /// </summary>
         public int PrecursorScan { get; set; }
 
+        /// <summary>
+        /// Precursor m/z
+        /// </summary>
+        public double PrecursorMZ { get; set; }
+
+        /// <summary>
+        /// Precursor intensity
+        /// </summary>
+        public float PrecursorIntensity { get; set; }
+
         public PrecursorInfo()
         {
-            PrecursorXYData = new PNNLOmics.Data.XYData(-1, -1);
+            PrecursorMZ = 0;
+            PrecursorIntensity = 0;
             MSLevel = -1;
             PrecursorCharge = -1;
             PrecursorScan = -1;
