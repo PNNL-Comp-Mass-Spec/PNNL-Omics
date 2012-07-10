@@ -284,6 +284,55 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         }
 
         [Test]
+        public void TestUserUnit()
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            //create dictionary
+            UserUnit userUnitA = new UserUnit("myUserUnit1","MU1");
+            userUnitA.UserUnitType = UserUnitName.User01;
+            userUnitA.MassMonoIsotopic = 500;
+
+            UserUnit userUnitB = new UserUnit("myUserUnit2", "MU2");
+            userUnitB.UserUnitType = UserUnitName.User02;
+            userUnitB.MassMonoIsotopic = 600;
+
+            UserUnit userUnitC = new UserUnit("myUserUnit3", "MU3");
+            userUnitC.UserUnitType = UserUnitName.User03;
+            userUnitC.MassMonoIsotopic = 700;
+
+            UserUnitLibrary myLibrary = new UserUnitLibrary();
+            myLibrary.SetLibrary(userUnitA, userUnitB, userUnitC);
+
+            Constants.SetUserUnitLibrary(myLibrary);
+            //using a String Key with a dictionary
+            string userKey = Constants.UserUnits[UserUnitName.User01].Symbol;//="N-03X1"//"CRFNeu5Ac_03_X1";
+
+            double userMass = Constants.UserUnits[userKey].MassMonoIsotopic;
+            string userSymbol = Constants.UserUnits[userKey].Symbol;
+            string userName = Constants.UserUnits[userKey].Name;
+
+
+
+            Assert.AreEqual(500, userMass);
+            Assert.AreEqual("MU1", userSymbol);
+            Assert.AreEqual("myUserUnit1", userName);
+
+            //using a Select Key and Enum
+            double userMass3 = Constants.UserUnits[UserUnitName.User02].MassMonoIsotopic;
+            string userSymbol3 = Constants.UserUnits[UserUnitName.User02].Symbol;
+            string userName3 = Constants.UserUnits[UserUnitName.User02].Name;
+
+            Assert.AreEqual(600, userMass3);
+            Assert.AreEqual("MU2", userSymbol3);
+            Assert.AreEqual("myUserUnit2", userName3);
+
+            stopWatch.Stop();
+            Console.WriteLine("This took " + stopWatch.Elapsed + "seconds to TestCrossRing");
+        }
+
+        [Test]
         public void TestMasses()
         {
             

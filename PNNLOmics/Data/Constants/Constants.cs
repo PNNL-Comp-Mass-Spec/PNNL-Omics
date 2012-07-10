@@ -34,6 +34,11 @@ namespace PNNLOmics.Data.Constants
         /// </summary>
         private static SubAtomicParticleLibrary m_subAtomicParticleLibrary;
 
+        /// <summary>
+        /// user library instance.
+        /// </summary>
+        private static UserUnitLibrary m_userUnitLibrary;
+
 
         #region Library Properties
         /// <summary>
@@ -130,6 +135,31 @@ namespace PNNLOmics.Data.Constants
                 }
                 return m_subAtomicParticleLibrary;
             }
+        }
+
+        /// <summary>
+        /// Gets and sets the user unit library.
+        /// </summary>
+        public static UserUnitLibrary UserUnits
+        {
+            get
+            {
+                if (m_userUnitLibrary == null)
+                {
+                    m_userUnitLibrary = new UserUnitLibrary();
+                    m_userUnitLibrary.LoadLibrary();
+                }
+                return m_userUnitLibrary;
+            }
+            set
+            {
+       
+            }
+        }
+
+        public static void SetUserUnitLibrary(UserUnitLibrary libraryIn)
+        {
+            m_userUnitLibrary = libraryIn;
         }
         #endregion
     }

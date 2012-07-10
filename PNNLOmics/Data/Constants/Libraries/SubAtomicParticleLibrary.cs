@@ -38,11 +38,11 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap = new Dictionary<string, SubAtomicParticle>();
             m_enumToSymbolMap = new Dictionary<SubAtomicParticleName, string>();
 
-            //TODO: SCOTT - CR - Add particle types to each electron, proton and neutron.
             SubAtomicParticle electron = new SubAtomicParticle();
             electron.Name = "Electron";
             electron.MassMonoIsotopic = MASS_ELECTRON;//units of u a.k.a.Da.  NIST CODATA 2006 
             electron.Symbol = "e";
+            electron.ParticleType = SubAtomicParticleName.Electron;
 
             SubAtomicParticle neutron = new SubAtomicParticle();
             neutron.Name = "Neutron";
@@ -54,6 +54,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             proton.Name = "Proton";
             proton.MassMonoIsotopic = MASS_PROTON;//units of u a.k.a.Da.  NIST CODATA 2006
             proton.Symbol = "p";
+            proton.ParticleType = SubAtomicParticleName.Proton;
 
             m_symbolToCompoundMap.Add(electron.Symbol, electron);
             m_symbolToCompoundMap.Add(neutron.Symbol, neutron);

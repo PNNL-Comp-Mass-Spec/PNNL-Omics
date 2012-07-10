@@ -3,14 +3,13 @@
 namespace PNNLOmics.Data.Constants
 {
     /// <summary>
-    /// Monosaccharides
+    /// Monosaccharides.  KDN is 2-keto-3-deoxy-D-glycero-D-galacto-nononic acid
     /// </summary>
     public enum MonosaccharideName
     {
         Deoxyhexose,
         Hexose,
         HexuronicAcid,
-        //TODO: SCOTT - CR - add something here - xml comment or make the name ...long...
         KDN,
         NAcetylhexosamine,
         NeuraminicAcid,
