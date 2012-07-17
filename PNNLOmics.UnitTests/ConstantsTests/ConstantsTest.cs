@@ -232,6 +232,16 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual("Aldehyde", otherName);
             Assert.AreEqual("H2O", otherFormula);
 
+            //testing new groups (O-acetyl and methyl
+            string otherKeyNew = Constants.MiscellaneousMatter[MiscellaneousMatterName.OAcetyl].Symbol;//"O-acetyl";
+
+            double otherMassNew = Constants.MiscellaneousMatter[otherKeyNew].MassMonoIsotopic;
+            string otherNameNew = Constants.MiscellaneousMatter[otherKeyNew].Name;
+            string otherFormulaNew = Constants.MiscellaneousMatter[otherKeyNew].ChemicalFormula;
+
+            Assert.AreEqual(42.010564686244997, otherMassNew);//methyl=15.02347509588
+            Assert.AreEqual("O-acetyl", otherNameNew);
+            Assert.AreEqual("C2H2O", otherFormulaNew);
 
             //using a Select Key and Enum 
             double otherMass3 = Constants.MiscellaneousMatter[MiscellaneousMatterName.Ammonia].MassMonoIsotopic;

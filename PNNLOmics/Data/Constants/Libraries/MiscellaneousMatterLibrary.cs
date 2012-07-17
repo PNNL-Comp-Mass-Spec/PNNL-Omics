@@ -73,6 +73,13 @@ namespace PNNLOmics.Data.Constants.Libraries
             KMinusH.ChemicalFormula = "K-H";
             KMinusH.MassMonoIsotopic = Compound.GetMonoisotopicMass(KMinusH);
 
+            Compound methyl = new Compound();
+            methyl.NewElements(1, 3, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
+            methyl.Name = "Methyl";
+            methyl.Symbol = "CH3   ";
+            methyl.ChemicalFormula = "CH3";
+            methyl.MassMonoIsotopic = Compound.GetMonoisotopicMass(methyl);
+
             Compound NaMinusH = new Compound();
             NaMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             NaMinusH.NumSodium = 1;
@@ -80,6 +87,13 @@ namespace PNNLOmics.Data.Constants.Libraries
             NaMinusH.Symbol = "NaminH";
             NaMinusH.ChemicalFormula = "Na-H";
             NaMinusH.MassMonoIsotopic = Compound.GetMonoisotopicMass(NaMinusH);
+
+            Compound oAcetyl = new Compound();
+            oAcetyl.NewElements(2, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
+            oAcetyl.Name = "O-acetyl";
+            oAcetyl.Symbol = "OAc";
+            oAcetyl.ChemicalFormula = "C2H2O";
+            oAcetyl.MassMonoIsotopic = Compound.GetMonoisotopicMass(oAcetyl);
 
             Compound sulfate = new Compound();
             sulfate.NewElements(0, 0, 0, 4, 2, 0);//-->X.NewElements(C H N O S P)
@@ -107,17 +121,22 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap.Add(ammonia.Symbol, ammonia);
             m_symbolToCompoundMap.Add(ammonium.Symbol, ammonium);
             m_symbolToCompoundMap.Add(KMinusH.Symbol, KMinusH);
+            m_symbolToCompoundMap.Add(methyl.Symbol, methyl);
             m_symbolToCompoundMap.Add(NaMinusH.Symbol, NaMinusH);
+            m_symbolToCompoundMap.Add(oAcetyl.Symbol, oAcetyl);
             m_symbolToCompoundMap.Add(sulfate.Symbol, sulfate);
             m_symbolToCompoundMap.Add(water.Symbol, water);
             m_symbolToCompoundMap.Add(aminoGlycan.Symbol, aminoGlycan);
 
+ 
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Aldehyde, aldehyde.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Alditol, alditol.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Ammonia, ammonia.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Ammonium, ammonium.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.KMinusH, KMinusH.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.Methyl, methyl.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.NaMinusH, NaMinusH.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.OAcetyl, oAcetyl.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Sulfate, sulfate.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Water, water.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.AminoGlycan, aminoGlycan.Symbol);

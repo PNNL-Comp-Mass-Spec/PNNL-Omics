@@ -13,5 +13,12 @@ namespace PNNLOmics.Data.Constants
         User01,
         User02,
         User03,
+        User04,
+        User05,
+        User06,
+        User07,
+        User08,
+        User09,
+        User10,
     }
 }

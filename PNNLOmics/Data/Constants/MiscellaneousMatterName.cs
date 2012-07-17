@@ -12,7 +12,9 @@ namespace PNNLOmics.Data.Constants
         Ammonia,
         Ammonium,
         KMinusH,
+        Methyl,
         NaMinusH,
+        OAcetyl,
         Sulfate,
         Water,
         AminoGlycan
