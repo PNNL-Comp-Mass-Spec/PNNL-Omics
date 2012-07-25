@@ -646,7 +646,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
                                     XYData pointTransfer = new XYData(0, 0);
-                                    pointTransfer = rawData[i];
+                                    //pointTransfer = rawData[i];
+                                    //so we break the referencing
+                                    pointTransfer.X = rawData[i].X;
+                                    pointTransfer.Y = rawData[i].Y;
                                     peakRightSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
