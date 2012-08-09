@@ -17,6 +17,7 @@ namespace PNNLOmics.Data.Constants
         OAcetyl,
         Sulfate,
         Water,
-        AminoGlycan
+        AminoGlycan,
+        Fragment
     }
 }

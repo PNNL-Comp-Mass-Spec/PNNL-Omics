@@ -116,6 +116,13 @@ namespace PNNLOmics.Data.Constants.Libraries
             aminoGlycan.ChemicalFormula = "NH3";
             aminoGlycan.MassMonoIsotopic = Compound.GetMonoisotopicMass(aminoGlycan);
 
+            Compound fragment = new Compound();
+            fragment.NewElements(0, 0, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
+            fragment.Name = "Fragment";
+            fragment.Symbol = "Fragmt";
+            fragment.ChemicalFormula = " - ";
+            fragment.MassMonoIsotopic = 0;
+
             m_symbolToCompoundMap.Add(aldehyde.Symbol, aldehyde);
             m_symbolToCompoundMap.Add(alditol.Symbol, alditol);
             m_symbolToCompoundMap.Add(ammonia.Symbol, ammonia);
@@ -127,6 +134,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap.Add(sulfate.Symbol, sulfate);
             m_symbolToCompoundMap.Add(water.Symbol, water);
             m_symbolToCompoundMap.Add(aminoGlycan.Symbol, aminoGlycan);
+            m_symbolToCompoundMap.Add(fragment.Symbol, fragment);
 
  
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Aldehyde, aldehyde.Symbol);
@@ -140,6 +148,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Sulfate, sulfate.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Water, water.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.AminoGlycan, aminoGlycan.Symbol);
+            m_enumToSymbolMap.Add(MiscellaneousMatterName.Fragment, fragment.Symbol);
         }
     }
 }
