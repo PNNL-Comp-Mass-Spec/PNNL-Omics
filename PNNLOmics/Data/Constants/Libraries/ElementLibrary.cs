@@ -132,18 +132,17 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap = new Dictionary<string, Element>();
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
-			System.IO.FileInfo fiExecutingAssembly = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
-			string constantsFilePath = System.IO.Path.Combine(fiExecutingAssembly.DirectoryName, "PNNLOmicsElementData.xml");
+			FileInfo constantsFileInfo = new FileInfo("PNNLOmicsElementData.xml");
 
-			if (!File.Exists(constantsFilePath))
+			if (!constantsFileInfo.Exists)
             {
-                throw new FileNotFoundException("The PNNLOmicsElementData.xml file cannot be found");
+				throw new FileNotFoundException("The PNNLOmicsElementData.xml file cannot be found at " + constantsFileInfo.FullName);
             }
 
             List<string> elementSymbolList = new List<string>();
             List<Element> elementList = new List<Element>();
 
-			LoadXML(constantsFilePath, out elementSymbolList, out elementList);
+			LoadXML(constantsFileInfo.FullName, out elementSymbolList, out elementList);
 
             for (int i = 0; i < elementSymbolList.Count; i++)
             {
