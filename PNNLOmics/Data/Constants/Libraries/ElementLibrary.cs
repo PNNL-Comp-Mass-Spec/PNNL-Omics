@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using PNNLOmics.Data.Constants;
+using PNNLOmics.Utilities;
 
 /// <example>
 /// dictionary implementation                        
@@ -29,6 +30,8 @@ namespace PNNLOmics.Data.Constants.Libraries
     /// </summary>
     public class ElementLibrary : MatterLibrary<Element, ElementName>
     {
+		protected const string OMICS_ELEMENT_DATA_FILE = "PNNLOmicsElementData.xml";
+
         #region Loading Data
         /// <summary>
         /// This is a Class designed to load periodic table of the elements data from a XML file PNNLOmicsElementData.xml
@@ -132,11 +135,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap = new Dictionary<string, Element>();
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
-			FileInfo constantsFileInfo = new FileInfo("PNNLOmicsElementData.xml");
+
+			FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(PathUtil.AssemblyDirectory, OMICS_ELEMENT_DATA_FILE));
 
 			if (!constantsFileInfo.Exists)
             {
-				throw new FileNotFoundException("The PNNLOmicsElementData.xml file cannot be found at " + constantsFileInfo.FullName);
+				throw new FileNotFoundException("The " + OMICS_ELEMENT_DATA_FILE + " file cannot be found at " + constantsFileInfo.FullName);
             }
 
             List<string> elementSymbolList = new List<string>();

@@ -13,10 +13,6 @@ namespace PNNLOmics.Data.Features
         //TODO: How do we drill back to the MS/MS data.  The MSPeak data does not accurately do this.  Abundance mass and mono does not capture this.
 
         #region AutoProperties
-        /// <summary>
-        /// The ID of the group the feature belongs to.  Where a group could be a dataset or factor.
-        /// </summary>
-        public int GroupID { get; set; }
 		/// <summary>
 		/// The index location (row #) of the MSFeature in the input file.
 		/// </summary>
