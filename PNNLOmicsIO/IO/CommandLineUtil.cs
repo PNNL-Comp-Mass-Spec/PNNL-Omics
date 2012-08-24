@@ -13,6 +13,7 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 		private bool m_showHelp;
 		private List<string> m_nonSwitchParameters;
 		private Dictionary<string, string> m_ParameterValueMap;
+		private Dictionary<string, string> m_ParameterValueMapAnyCase;
 
 		/// <summary>
 		/// True if the help contents should be displayed, False otherwise.
@@ -46,6 +47,7 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 			m_showHelp = false;
 			m_nonSwitchParameters = new List<string>();
 			m_ParameterValueMap = new Dictionary<string, string>();
+			m_ParameterValueMapAnyCase = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
 		}
 
 		/// <summary>
@@ -99,6 +101,9 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 						else if (i < parameters.Length - 1 && !parameters[i + 1].StartsWith(SWITCH_START) && !parameters[i + 1].StartsWith("-"))
 						{
 							// Parameter is of the form /I MyParam or -I MyParam
+							// Note that -I "MyParam" will result in two parameters, -I and MyParam
+							// Thus, you must use -I:"My Parameter" if your parameter contains spaces
+
 							string nextParameter = parameters[i + 1];
 							key = key.Substring(1);
 							value = nextParameter.Trim(new char[] { '"' });
@@ -111,6 +116,8 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 						}
 
 						m_ParameterValueMap.Add(key, value);
+						if (!m_ParameterValueMapAnyCase.ContainsKey(key))
+							m_ParameterValueMapAnyCase.Add(key, value);
 					}
 					else
 					{
@@ -198,11 +205,14 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 		/// </summary>
 		/// <param name="parameter">The parameter to get the value of</param>
 		/// <param name="value">The returned value of the parameter (empty if no value exists for the parameter)</param>
+		/// <param name="isCaseSensitive">True if parameter names are case-sensitive</param>
 		/// <returns>True if the parameter exists, False otherwise</returns>
-		public bool RetrieveValueForParameter(string parameter, out string value)
-		// TODO: When updated to 4.0 add an optional parameter: isCaseSensitive
+		public bool RetrieveValueForParameter(string parameter, out string value, bool isCaseSensitive=true)
 		{
-			return m_ParameterValueMap.TryGetValue(parameter, out value);
+			if (isCaseSensitive)
+				return m_ParameterValueMap.TryGetValue(parameter, out value);
+			else
+				return m_ParameterValueMapAnyCase.TryGetValue(parameter, out value);
 		}
 	}
 }
