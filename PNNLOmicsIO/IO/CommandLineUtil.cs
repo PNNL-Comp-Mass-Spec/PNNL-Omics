@@ -8,7 +8,8 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 	public class CommandLineUtil
 	{
 		private const string SWITCH_START = "/";
-		private const string SWITCH_PARAMETER = ":";
+		private const string SWITCH_START_ALT = "-";
+		private const string SWITCH_PARAMETER_SEPARATOR = ":";
 
 		private bool m_showHelp;
 		private List<string> m_nonSwitchParameters;
@@ -66,10 +67,20 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 			{
 				return false;
 			}
-			else if (commandLine.Contains(SWITCH_START + "?") || commandLine.Contains(SWITCH_START + "help"))
+
+			List<string> helpSwitches = new List<string>();
+			helpSwitches.Add(SWITCH_START + "?");
+			helpSwitches.Add(SWITCH_START + "help");
+			helpSwitches.Add(SWITCH_START_ALT + "?");
+			helpSwitches.Add(SWITCH_START_ALT + "help");
+
+			foreach (string item in helpSwitches) 
 			{
-				m_showHelp = true;
-				return false;
+				if (commandLine.ToLower().Contains(item.ToLower()))
+				{
+					m_showHelp = true;
+					return false;
+				}
 			}
 
 			// Note that parameters[0] is the path to the executable for the calling program
@@ -81,28 +92,20 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 				{
 					string key = parameter.Trim();
 					string value = string.Empty;
-					bool switchParameterExists = false;
-
-					if (key.StartsWith(SWITCH_START) || key.StartsWith("-"))
-					{
-						switchParameterExists = true;
-					}
-
-					if (switchParameterExists)
-					{
-						int switchParameterLocation = parameter.IndexOf(SWITCH_PARAMETER);
+					
+					if (key.StartsWith(SWITCH_START) || key.StartsWith(SWITCH_START_ALT))
+					{					
+						int switchParameterLocation = parameter.IndexOf(SWITCH_PARAMETER_SEPARATOR);
 
 						if (switchParameterLocation > 0)
 						{
-							// Parameter is of the form /I:MyParam or /I:"My Parameter" or -I:"My Parameter" or /MyParam:Setting
+							// Parameter is of the form /I:MyParam or /I:"My Parameter" or -I:"My Parameter" or -MyParam:Setting
 							value = key.Substring(switchParameterLocation + 1).Trim().Trim(new char[] { '"' });
 							key = key.Substring(1, switchParameterLocation - 1);
 						}
-						else if (i < parameters.Length - 1 && !parameters[i + 1].StartsWith(SWITCH_START) && !parameters[i + 1].StartsWith("-"))
+						else if (i < parameters.Length - 1 && !parameters[i + 1].StartsWith(SWITCH_START) && !parameters[i + 1].StartsWith(SWITCH_START_ALT))
 						{
-							// Parameter is of the form /I MyParam or -I MyParam
-							// Note that -I "MyParam" will result in two parameters, -I and MyParam
-							// Thus, you must use -I:"My Parameter" if your parameter contains spaces
+							// Parameter is of the form /I MyParam or -I MyParam or -MyParam Setting
 
 							string nextParameter = parameters[i + 1];
 							key = key.Substring(1);
@@ -115,7 +118,10 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 							key = key.Substring(1);
 						}
 
+						// Store the parameter in the case-sensitive dictionary
 						m_ParameterValueMap.Add(key, value);
+
+						// Store the parameter in the case-insensitive dictionary
 						if (!m_ParameterValueMapAnyCase.ContainsKey(key))
 							m_ParameterValueMapAnyCase.Add(key, value);
 					}
