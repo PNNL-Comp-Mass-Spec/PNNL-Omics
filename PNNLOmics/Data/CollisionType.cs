@@ -11,6 +11,7 @@ namespace PNNLOmics.Data
         CID,
         ETD,
         ECD,
-        Other
+        Other,
+        None
     }
 }
