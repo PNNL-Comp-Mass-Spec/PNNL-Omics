@@ -48,6 +48,11 @@ namespace PNNLOmics.Data
         /// </summary>
         public double SignalToBackground { get; set; }
 
+        /// <summary>
+        /// Charge state based on nearby peaks
+        /// </summary>
+        public int Charge { get; set; }
+
         public override void Clear()
         {
             this.ScanNumber = 0;
