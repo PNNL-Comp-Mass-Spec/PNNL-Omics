@@ -51,7 +51,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             msFeatures.AddRange(rawMSFeatures);
             msFeatures.Sort(delegate(T x, T y)
             {
-                return x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
+                return x.MassMonoisotopicAligned.CompareTo(y.MassMonoisotopicAligned);
             });
 
             while (currentIndex < N)
@@ -72,11 +72,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 if (matchIndex == N)
                     break;
 
-                double massTolerance = currentFeature.MassMonoisotopic * Parameters.Tolerances.Mass / 1000000;
-                double maxMass       = currentFeature.MassMonoisotopic + massTolerance;
+                double massTolerance = currentFeature.MassMonoisotopicAligned * Parameters.Tolerances.Mass / 1000000;
+                double maxMass       = currentFeature.MassMonoisotopicAligned + massTolerance;
 
                 T matchPeak = msFeatures[matchIndex];
-                while (matchPeak.MassMonoisotopic < maxMass)
+                while (matchPeak.MassMonoisotopicAligned < maxMass)
                 {
                     int matchClusterID =  featureIDToClusterID[matchPeak.ID];
                     
@@ -128,8 +128,6 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 U umc                = new U();
                 foreach (T tempFeature in tempFeatures)
                 {
-                    //int oldID = 0;
-                    //tempFeature.ID  = oldID;
                     tempFeature.SetParentFeature(umc);
                     umc.AddChildFeature(tempFeature);
                 }

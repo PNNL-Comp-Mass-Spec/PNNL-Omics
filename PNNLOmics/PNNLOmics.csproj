@@ -75,6 +75,9 @@
     </Compile>
     <Compile Include="Algorithms\Alignment\LinearEquation.cs" />
     <Compile Include="Algorithms\Alignment\LinearEquationCalculator.cs" />
+    <Compile Include="Algorithms\Distance\DistanceFactory.cs" />
+    <Compile Include="Algorithms\Distance\DistanceMetric.cs" />
+    <Compile Include="Algorithms\Distance\EuclideanDistance.cs" />
     <Compile Include="Algorithms\FeatureClustering\MSMSClusterer.cs" />
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\FeatureClustering\MSFeatureClusterParameters.cs">
@@ -153,6 +156,8 @@
     <Compile Include="Data\PairwiseUMCDistance.cs" />
     <Compile Include="Data\PrecursorInfo.cs" />
     <Compile Include="Data\ScanSummary.cs" />
+    <Compile Include="Data\XYZData.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\Alignment\SimilarityScore.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />

@@ -162,7 +162,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				T featureX          = data[i];
 				double driftTimeX   = featureX.DriftTime;
 				double netAlignedX  = featureX.RetentionTime;
-				double massAlignedX = featureX.MassMonoisotopic;
+				double massAlignedX = featureX.MassMonoisotopicAligned;
 				int chargeStateX    = featureX.ChargeState;			
 
 				for (int j = i + 1; j <= stop; j++)

@@ -67,7 +67,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             {                
                 double driftTimeX   = clusterI.DriftTime;
                 double netAlignedX  = clusterI.RetentionTime;
-                double massAlignedX = clusterI.MassMonoisotopic;
+                double massAlignedX = clusterI.MassMonoisotopicAligned;
                 int chargeStateX    = clusterI.ChargeState;
                 
                 foreach(U clusterJ in clusters.Values)
@@ -82,7 +82,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     // these again later, because here we want to fall within the cube, the distance function used
                     // later is more related to determining a scalar value instead.
                     double massDiff = Math.Abs(Feature.ComputeMassPPMDifference(massAlignedX,
-                                                                        clusterJ.MassMonoisotopic));
+                                                                        clusterJ.MassMonoisotopicAligned));
                     double netDiff = Math.Abs(netAlignedX - clusterJ.RetentionTime);
                     double driftDiff = Math.Abs(driftTimeX - clusterJ.DriftTime);
 
@@ -160,7 +160,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				// This will determine if we cluster a block of data or not.                
 				T umcX = data[i];
 				T umcY = data[i + 1];
-				double ppm = Math.Abs(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopic, umcY.MassMonoisotopic));
+                double ppm = Math.Abs(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopicAligned, umcY.MassMonoisotopicAligned));
 
 				// If the difference is greater than the tolerance then we cluster 
 				//  - we dont check the sign of the ppm because the data should be sorted based on mass.
@@ -285,7 +285,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             //clusterY.CalculateStatistics(Parameters.CentroidRepresentation);
 
 			// Calculate differences
-			double massDiff     = Math.Abs(Feature.ComputeMassPPMDifference(clusterX.MassMonoisotopic, clusterY.MassMonoisotopic));
+            double massDiff = Math.Abs(Feature.ComputeMassPPMDifference(clusterX.MassMonoisotopicAligned, clusterY.MassMonoisotopicAligned));
 			double netDiff      = Math.Abs(clusterX.RetentionTime - clusterY.RetentionTime);
 			double driftDiff    = Math.Abs(clusterX.DriftTime - clusterY.DriftTime);
 

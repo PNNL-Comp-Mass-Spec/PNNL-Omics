@@ -142,7 +142,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 // This will determine if we cluster a block of data or not.                
                 T umcX              = data[i];
 				T umcY              = data[i + 1];
-                double massDiff     = Math.Abs(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopic, umcY.MassMonoisotopic));
+                double massDiff     = Math.Abs(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopicAligned, umcY.MassMonoisotopicAligned));
 
                 // If the difference is greater than the tolerance then we cluster 
                 //  - we dont check the sign of the ppm because the data should be sorted based on mass.

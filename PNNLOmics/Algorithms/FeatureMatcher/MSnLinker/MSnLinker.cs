@@ -2,6 +2,7 @@
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using System;
+using System.Linq;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
 {
@@ -26,13 +27,21 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
             set;
         }
 
+        public Dictionary<int, int> LinkMSFeaturesToMSn(List<MSFeatureLight> features,
+            List<MSSpectra> fragmentSpectra,
+            ISpectraProvider provider)
+        {
+            return LinkMSFeaturesToMSn(features, fragmentSpectra);
+        }
         /// <summary>
         /// Links MS features to MSMS (or MSn) data.
         /// </summary>
         /// <param name="features">Features to link.</param>
         /// <param name="spectra">Spectra to link to.</param>
+        /// <param name="rawSpectraProvider">Provides access to raw scans if more data is required.</param>
         /// <returns>A map of a ms spectra id to the number of times it was mapped.</returns>
-        public Dictionary<int, int>  LinkMSFeaturesToMSn(List<MSFeatureLight> features, List<MSSpectra> newSpectra)
+        public Dictionary<int, int>  LinkMSFeaturesToMSn(List<MSFeatureLight> features, 
+            List<MSSpectra> fragmentSpectra)
         {
             // First  - Sort the MSn features based on scan
             // Second - map all the features to a scan number for MS Features
@@ -42,16 +51,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
             //          This indicates the parent scan these features were fragmented from.
             // Third  - Once these spectra have been mapped, then we can do a quicker search
             List<MSSpectra> spectra = new List<MSSpectra>();
-            spectra.AddRange(newSpectra);
-            spectra.Sort(
-                delegate(MSSpectra x, MSSpectra y)
-                        {
-                            return x.Scan.CompareTo(y.Scan);
-                        }
-            );
-             
-            
-
+            spectra.AddRange(fragmentSpectra);           
+            spectra.OrderBy(x => x.Scan);
+                         
             // Map the scans
             Dictionary<int, List<MSFeatureLight>> featureMap    = new Dictionary<int, List<MSFeatureLight>>();
             Dictionary<int, List<MSSpectra>> spectraMap         = new Dictionary<int, List<MSSpectra>>();
@@ -113,6 +115,47 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                                         return Math.Abs(x.PrecursorMZ - mz) <= ppmRange;                            
                                     }
                                     );
+
+                        // Search for spectra that are not the same as the most abundant mono mass peak.
+                        if (matching.Count < 1)
+                        {
+                            //List<XYData> parentSpectrum = provider.GetRawSpectra(scan, feature.GroupID);
+                            //double mzSpacing            = 1.0 / Convert.ToDouble(feature.ChargeState);
+                            //double maxAbundance         = feature.Abundance;
+                            //double abundance            = maxAbundance;
+                            //double prevAbundance        = -1.0;
+                            //double newMz                = mz + mzSpacing;
+                            ///// Search to the right of the mono peak...
+                            //int i = 0;
+                            //bool foundSome = false;
+                            //while (abundance > prevAbundance || prevAbundance < 0 && !foundSome)
+                            //{                                
+                            //    List<MSSpectra> tempSpectra = suspectSpectra.FindAll(
+                            //            delegate(MSSpectra x)
+                            //            {
+                            //                return Math.Abs(x.PrecursorMZ - newMz) <= ppmRange;
+                            //            }
+                            //        );
+
+
+                            //    if (matching.Count > 0)
+                            //    {
+                            //        matching.AddRange(tempSpectra);
+                            //        foundSome = true;
+                            //    }
+                            //    else
+                            //    {
+                            //        // Find the next peak...
+                            //        newMz += mzSpacing;
+                            //        while (i < parentSpectrum.Count && newMz > parentSpectrum[i].X)
+                            //        {
+                            //            i++;
+                            //        }
+                            //        prevAbundance = Math.Max(abundance, 0);
+                            //        abundance = parentSpectrum[Math.Max(0, i - 1)].Y;
+                            //    }
+                            //}
+                        }
 
                         // Finally link!
                         foreach (MSSpectra spectrum in matching)

@@ -63,14 +63,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     double higherNET            = feature.NET + netTolerance;
                     double lowerDritfTime       = feature.DriftTime - driftTolerance;
                     double higherDriftTime      = feature.DriftTime + driftTolerance;
-                    double currentMassTolerance = feature.MassMonoisotopic * massTolerance / 1000000.0;
-                    double lowerMass            = feature.MassMonoisotopic - currentMassTolerance;
-                    double higherMass           = feature.MassMonoisotopic + currentMassTolerance;
+                    double currentMassTolerance = feature.MassMonoisotopicAligned * massTolerance / 1000000.0;
+                    double lowerMass            = feature.MassMonoisotopicAligned - currentMassTolerance;
+                    double higherMass           = feature.MassMonoisotopicAligned + currentMassTolerance;
                     int matchIndex              = elementNumber - 1;
                     while (matchIndex >= 0)
                     {
                         Feature toMatchFeature = allFeatures[matchIndex];
-                        if (toMatchFeature.MassMonoisotopic < lowerMass)
+                        if (toMatchFeature.MassMonoisotopicAligned < lowerMass)
                         {
                             break;
                         }
@@ -94,7 +94,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     while(matchIndex < N)                    
                     {
                         Feature toMatchFeature = allFeatures[matchIndex];
-                        if (toMatchFeature.MassMonoisotopic > higherMass)
+                        if (toMatchFeature.MassMonoisotopicAligned > higherMass)
                         {
                             break;
                         }
