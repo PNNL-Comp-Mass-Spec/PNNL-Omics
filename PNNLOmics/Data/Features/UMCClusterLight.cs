@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace PNNLOmics.Data.Features
 {
 	/// <summary>
 	/// Basic representation of a group of UMC's observed across datasets.
 	/// </summary>
-    public class UMCClusterLight : FeatureLight,
+    public class UMCClusterLight :  FeatureLight,
                                     IFeatureCluster<UMCLight>
 	{
 		/// <summary>
@@ -22,16 +23,17 @@ namespace PNNLOmics.Data.Features
         /// <param name="cluster"></param>
         public UMCClusterLight(UMCLight umc)
         {            
-            List<UMCLight> umcs  = new List<UMCLight>();
-            umcs.Add(umc);
-
+            List<UMCLight> umcs  = new List<UMCLight>();            
+            
             UMCList				= umcs;
             umc.UMCCluster		= this;             
             Abundance			= umc.Abundance;
             ChargeState			= umc.ChargeState;
             DriftTime			= umc.DriftTime;
             ID					= umc.ID;
-            MassMonoisotopic    = umc.MassMonoisotopic;            
+            RetentionTime       = umc.NETAligned;
+            MassMonoisotopic    = umc.MassMonoisotopicAligned;                        
+            AddChildFeature(umc);            
         }		
         /// <summary>
         /// Copy constructor. 
@@ -46,8 +48,36 @@ namespace PNNLOmics.Data.Features
             ChargeState			 = cluster.ChargeState;
             DriftTime			 = cluster.DriftTime;
             ID					 = cluster.ID;
-            MassMonoisotopic     = cluster.MassMonoisotopic;            
-        }        
+            MassMonoisotopic     = cluster.MassMonoisotopic;
+            MassMonoisotopicAligned = cluster.MassMonoisotopicAligned;
+        }
+
+        public double Tightness
+        {
+            get;
+            set;
+        }
+        public int MemberCount
+        {
+            get;
+            set;
+        }
+        public int DatasetMemberCount
+        {
+            get;
+            set;
+        }
+        public override double MassMonoisotopicAligned
+        {
+            get
+            {
+                return MassMonoisotopic;
+            }
+            set
+            {
+                MassMonoisotopic = value;
+            }
+        }
 
 		/// <summary>
 		/// Gets or sets the list of UMC's that comprise this cluster.
@@ -78,18 +108,27 @@ namespace PNNLOmics.Data.Features
 			double sumMass = 0;
 			double sumDrifttime = 0;
 
+            Dictionary<int, int> datasetMembers = new Dictionary<int,int>();
+            MemberCount = UMCList.Count;
+
 			foreach (UMCLight umc in UMCList)
 			{
 
 				if (umc == null)
 					throw new NullReferenceException("A UMC was null when trying to calculate cluster statistics.");
 
+                if (!datasetMembers.ContainsKey(umc.GroupID))
+                {
+                    datasetMembers.Add(umc.GroupID, 0);
+                }
+                datasetMembers[umc.GroupID]++;
+
 				net.Add(umc.RetentionTime);
-				mass.Add(umc.MassMonoisotopic);
+				mass.Add(umc.MassMonoisotopicAligned);
 				driftTime.Add(umc.DriftTime);
 
 				sumNet		 += umc.RetentionTime;
-				sumMass		 += umc.MassMonoisotopic;
+				sumMass		 += umc.MassMonoisotopicAligned;
 				sumDrifttime += umc.DriftTime;
 
 				// Calculate charge states.
@@ -102,6 +141,8 @@ namespace PNNLOmics.Data.Features
 					chargeStates[umc.ChargeState]++;
 				}
 			}
+            
+            DatasetMemberCount = datasetMembers.Keys.Count;
 
 			int numUMCs = UMCList.Count;
 			int median = 0;
@@ -110,9 +151,9 @@ namespace PNNLOmics.Data.Features
 			switch (centroid)
 			{
 				case ClusterCentroidRepresentation.Mean:
-					this.MassMonoisotopic = (sumMass / numUMCs);
-					this.RetentionTime = (sumNet / numUMCs);
-					this.DriftTime = Convert.ToSingle(sumDrifttime / numUMCs);
+					this.MassMonoisotopic   = (sumMass / numUMCs);
+					this.RetentionTime      = (sumNet / numUMCs);
+					this.DriftTime          = Convert.ToSingle(sumDrifttime / numUMCs);
 					break;
 				case ClusterCentroidRepresentation.Median:
 					net.Sort();
@@ -122,17 +163,17 @@ namespace PNNLOmics.Data.Features
 					// If the median index is odd.  Then take the average.
 					if ((numUMCs % 2) == 0)
 					{
-						median = Convert.ToInt32(numUMCs / 2);
-						this.MassMonoisotopic = (mass[median] + mass[median - 1]) / 2;
-						this.RetentionTime = (net[median] + net[median - 1]) / 2;
-						this.DriftTime = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
+						median                  = Convert.ToInt32(numUMCs / 2);
+						this.MassMonoisotopic   = (mass[median] + mass[median - 1]) / 2;
+						this.RetentionTime      = (net[median] + net[median - 1]) / 2;
+						this.DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
 					}
 					else
 					{
-						median = Convert.ToInt32((numUMCs) / 2);
-						this.MassMonoisotopic = mass[median];
-						this.RetentionTime  = net[median];
-						this.DriftTime      = Convert.ToSingle(driftTime[median]);
+						median                  = Convert.ToInt32((numUMCs) / 2);
+						this.MassMonoisotopic   = mass[median];
+						this.RetentionTime      = net[median];
+						this.DriftTime          = Convert.ToSingle(driftTime[median]);
 					}
 					break;
 			}
@@ -143,8 +184,8 @@ namespace PNNLOmics.Data.Features
             foreach (UMCLight umc in UMCList)
             {
                 double netValue   = RetentionTime       - umc.RetentionTime;
-                double massValue  = MassMonoisotopic    - umc.MassMonoisotopic;
-                double driftValue = DriftTime           - umc.DriftTime;
+                double massValue  = MassMonoisotopic    - umc.MassMonoisotopicAligned;
+                double driftValue = DriftTime           - Convert.ToSingle(umc.DriftTime);
 
                 double distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
                 distances.Add(distance);
@@ -153,14 +194,14 @@ namespace PNNLOmics.Data.Features
 
             if (centroid == ClusterCentroidRepresentation.Mean)
             {
-                Score = Convert.ToSingle(distanceSum / UMCList.Count);
+                Tightness = Convert.ToSingle(distanceSum / UMCList.Count);
             }
             else
             {
                 int mid = distances.Count / 2;
 
                 distances.Sort();
-                Score = Convert.ToSingle(distances[mid]);
+                Tightness = Convert.ToSingle(distances[mid]);
             }
 			// Calculate representative charge state as the mode.
 			int maxCharge = int.MinValue;
@@ -254,6 +295,12 @@ namespace PNNLOmics.Data.Features
         {
             get { return UMCList; }
         }
+
+        #endregion
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
     }

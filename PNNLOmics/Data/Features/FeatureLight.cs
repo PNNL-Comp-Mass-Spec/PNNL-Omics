@@ -27,6 +27,7 @@ namespace PNNLOmics.Data.Features
             this.DriftTime          = feature.DriftTime;
             this.ID                 = feature.ID;
             this.MassMonoisotopic   = feature.MassMonoisotopic;
+            this.MassMonoisotopicAligned = feature.MassMonoisotopicAligned;
             this.RetentionTime      = feature.RetentionTime;
             this.Score              = feature.Score;
             this.NET                = feature.NET;
@@ -43,7 +44,11 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets or sets the monoisotopic mass of the feature.
         /// </summary>
-		public double	MassMonoisotopic	{ get; set; }        
+		public double	MassMonoisotopic	{ get; set; }   
+        /// <summary>
+        /// Gets or sets the monoisotopic mass of the feature.
+        /// </summary>
+		public virtual double	MassMonoisotopicAligned	{ get; set; }        
         /// <summary>
         /// Gets or sets the retention time of a feature.
         /// </summary>
@@ -52,6 +57,7 @@ namespace PNNLOmics.Data.Features
         /// Gets or sets the normalized retention time for this feature.
         /// </summary>
         public double NET { get; set; }
+        public double NETAligned { get; set; }
         /// <summary>
         /// Gets or sets the drift time of a feature.
         /// </summary>
@@ -82,6 +88,7 @@ namespace PNNLOmics.Data.Features
 			this.DriftTime          = 0;
 			this.ID                 = -1;
 			this.MassMonoisotopic   = 0;
+            this.MassMonoisotopicAligned = 0;
             this.NET                = 0;
             this.RetentionTime      = 0;
 		}
@@ -92,6 +99,14 @@ namespace PNNLOmics.Data.Features
 		{
 			return x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
 		};
+
+        /// <summary>
+        /// Compares the aligned monoisotopic mass of two Features
+        /// </summary>
+        public static Comparison<FeatureLight> MassAlignedComparison = delegate(FeatureLight x, FeatureLight y)
+        {
+            return x.MassMonoisotopicAligned.CompareTo(y.MassMonoisotopicAligned);
+        };
         
 		#region Overriden Base Methods
 		/// <summary>

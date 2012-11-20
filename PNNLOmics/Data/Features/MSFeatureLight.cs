@@ -8,9 +8,7 @@ namespace PNNLOmics.Data.Features
 	/// </summary>
     public class MSFeatureLight : FeatureLight, IComparable<MSFeatureLight>, IChildFeature<UMCLight>
 	{
-        //TODO: WHO?  Fix the names of the properties and the comments.  Gets or sets needs to be in each.
-        //TODO: How do we drill back to the MS/MS data.  The MSPeak data does not accurately do this.  Abundance mass and mono does not capture this.
-
+    
         #region AutoProperties
         /// <summary>
 		/// The list of MSPeaks that make up the MSFeature.
@@ -40,6 +38,18 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public List<MSSpectra> MSnSpectra { get; set; }
 		#endregion
+
+        public override double MassMonoisotopicAligned
+        {
+            get
+            {
+                return MassMonoisotopic;
+            }
+            set
+            {
+                MassMonoisotopic = value;
+            }
+        }
 
 		#region BaseData Members
 		/// <summary>
@@ -81,11 +91,17 @@ namespace PNNLOmics.Data.Features
 
         public void SetParentFeature(UMCLight parentFeature)
         {
-            UMC = parentFeature;
+            UMC   = parentFeature;
+            UMCID = UMC.ID;
         }
         public UMCLight ParentFeature
         {
             get { return UMC; }
+        }
+        public int UMCID
+        {
+            get;
+            set;
         }
         #endregion
 

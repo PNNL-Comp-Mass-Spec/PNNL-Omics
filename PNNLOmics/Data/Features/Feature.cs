@@ -32,6 +32,7 @@ namespace PNNLOmics.Data.Features
             this.DriftTime          = feature.DriftTime;
             this.ID                 = feature.ID;
             this.MassMonoisotopic   = feature.MassMonoisotopic;
+            this.MassMonoisotopicAligned = feature.MassMonoisotopicAligned;
             this.NET                = feature.NET;            
         }
 
@@ -106,6 +107,7 @@ namespace PNNLOmics.Data.Features
         /// The charge state of the feature.
         /// </summary>
         public int ChargeState{get;set;}  
+
         #endregion
 
         #region BaseData Members
