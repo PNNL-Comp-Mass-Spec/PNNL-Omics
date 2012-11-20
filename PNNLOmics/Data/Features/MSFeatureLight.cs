@@ -11,7 +11,7 @@ namespace PNNLOmics.Data.Features
     
         #region AutoProperties
         /// <summary>
-		/// The list of MSPeaks that make up the MSFeature.
+		/// The list of MSPeaks that make up the MSFeature.  This would be the isotopic distribution.
         public List<Peak> MSPeakList { get; set; }        
 		/// <summary>
 		/// The UMC associated with this MS Feature.
