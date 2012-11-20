@@ -4,25 +4,23 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using PNNLOmics.Data;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Data
 {
-    //TODO: Change name of processed peak to something more specific?
+    //TODO: Change name of processed peak to something more specific? like MSPeak
     public class ProcessedPeak: Peak
     {
     //    //TODO set up new peak object so we can return a list
     //    //TODO break up regions into functions
         
-        /// <summary>
-       /// the Scan Number this peak was found in.
-        /// </summary>
-        public int ScanNumber {get;set;}
 
         /// <summary>
         /// the lower of the two local minima (lowest between the minima lower in mass and the minima higher in mass)
         /// </summary>
         public double LocalLowestMinimaHeight { get; set; }
 
+        
         /// <summary>
         /// the closes minima on the lower mass side of the peak has this index.
         /// </summary>
@@ -53,8 +51,20 @@ namespace PNNLOmics.Data
         /// </summary>
         public int Charge { get; set; }
 
-        public override void Clear()
+        /// <summary>
+        /// the Scan Number this peak was found in.
+        /// </summary>
+        public int ScanNumber { get; set; }
+
+        //TODO: Remove the charge and scannumber and make them part of the feature.
+        public MSFeatureLight Feature
         {
+            get;
+            set;
+        }
+
+        public override void Clear()
+        {            
             this.ScanNumber = 0;
             this.LocalLowestMinimaHeight = 0;
             this.MinimaOfHigherMassIndex = 0;

@@ -13,7 +13,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// The default MSn level (MS/MS).
         /// </summary>
-        public const int CONST_DEFAULT_MS_LEVEL = 2;
+        public const int CONST_DEFAULT_MS_LEVEL = 1;
 
         /// <summary>
         /// Default constructor
@@ -59,6 +59,14 @@ namespace PNNLOmics.Data
         {
             get; 
             set; 
+        }
+        /// <summary>
+        /// Gets or sets the base peak.
+        /// </summary>
+        public ProcessedPeak BasePeak
+        {
+            get;
+            set;
         }
         /// <summary>
         /// Gets or sets the spectra for this MS level as x,y data points.
@@ -136,16 +144,17 @@ namespace PNNLOmics.Data
         public override void  Clear()
         {
             MSLevel                 = CONST_DEFAULT_MS_LEVEL;
-            CollisionType           = CollisionType.Other;
+            CollisionType           = CollisionType.None;
             Scan                    = 0;
-            TotalIonCurrent         = -1;
+            TotalIonCurrent         = 0;
             PrecursorMZ             = 0;
             GroupID                 = -1;
             PrecursorChargeState    = -1;
             ID                      = -1;
             Peaks                   = new List<XYData>();
             PeaksProcessed          = new List<ProcessedPeak>();
-            PrecursorPeak           = new ProcessedPeak();           
+            PrecursorPeak           = null;
+            ParentSpectra           = null;
             PeakProcessingLevel     = Data.PeakProcessingLevel.None;
         }
 

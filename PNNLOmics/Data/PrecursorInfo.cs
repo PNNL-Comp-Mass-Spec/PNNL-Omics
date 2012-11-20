@@ -5,6 +5,7 @@ using System.Text;
 
 namespace PNNLOmics.Data
 {
+    //TODO: Scott - Check to see if you use this, otherwise delete as this information is stored in the MSSpectra and related by the data structures.
     public class PrecursorInfo
     { 
         /// <summary>

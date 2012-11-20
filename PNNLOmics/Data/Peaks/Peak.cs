@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace PNNLOmics.Data
 {
+    //TODO: Change Peak to inherit from XYData
+
     /// <summary>
     /// Represents a peak.
     /// </summary>
@@ -23,6 +25,7 @@ namespace PNNLOmics.Data
         {
             Clear();
         }
+        
 
         /// <summary>
         /// Gets or the height of the peak.
@@ -44,6 +47,30 @@ namespace PNNLOmics.Data
         /// Gets or sets the width of a peak.  
         /// </summary>
         public float Width
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the data that define the peak or profile.
+        /// </summary>
+        public List<XYData> Points
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the width to the left of the centroid (XValue) at half max.
+        /// </summary>
+        public double LeftWidth
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the width to the right of the centroid (XValue) at half max.
+        /// </summary>
+        public double RightWidth
         {
             get;
             set;
