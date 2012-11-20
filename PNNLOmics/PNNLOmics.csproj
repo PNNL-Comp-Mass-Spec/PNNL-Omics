@@ -155,6 +155,7 @@
     <Compile Include="Data\MSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
     <Compile Include="Data\PrecursorInfo.cs" />
+    <Compile Include="Data\ScanMetaData.cs" />
     <Compile Include="Data\ScanSummary.cs" />
     <Compile Include="Data\XYZData.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
@@ -186,9 +187,6 @@
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\MassTags\MassTag.cs" />
     <Compile Include="Data\MassTags\Peptide.cs" />
-    <Compile Include="Data\ScanIMS.cs" />
-    <Compile Include="Data\IsotopicProfile.cs" />
-    <Compile Include="Data\ScanLC.cs" />
     <Compile Include="Data\Peaks\Peak.cs" />
     <Compile Include="Data\XYData.cs" />
     <Compile Include="Generic\Processor.cs" />
@@ -197,8 +195,6 @@
     <Compile Include="Data\Features\UMCCluster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\MassTags\Protein.cs" />
-    <Compile Include="Data\Scan.cs" />
-    <Compile Include="Data\ScanSet.cs" />
     <Compile Include="Generic\Task.cs" />
     <Compile Include="Utilities\MessageEventArgs.cs" />
     <Compile Include="Utilities\MolecularWeightCalculator.cs" />

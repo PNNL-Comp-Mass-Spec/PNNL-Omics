@@ -1,5 +1,6 @@
 ﻿namespace PNNLOmics.Data
 {
+    //TODO: Remove this class with MSSpectra, by updating the ScansSummaryTextFileReader
     /// <summary>
     /// Encapsulates MS Spectrum summary information (e.g. BPI, # of peaks, TIC)
     /// </summary>

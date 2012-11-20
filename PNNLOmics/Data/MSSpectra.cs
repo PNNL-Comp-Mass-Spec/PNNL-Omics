@@ -136,6 +136,14 @@ namespace PNNLOmics.Data
             get;
             set;
         }
+        /// <summary>
+        /// Gets or sets information about the scan from the instrument vendor's file.
+        /// </summary>
+        public Dictionary<string, ScanMetaData> ScanMetaData
+        {
+            get;
+            set;
+        }
         #endregion
 
         /// <summary>
@@ -143,6 +151,7 @@ namespace PNNLOmics.Data
         /// </summary>
         public override void  Clear()
         {
+            ScanMetaData = new Dictionary<string, ScanMetaData>();
             MSLevel                 = CONST_DEFAULT_MS_LEVEL;
             CollisionType           = CollisionType.None;
             Scan                    = 0;
