@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Text.RegularExpressions;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Data;
@@ -8,6 +9,9 @@ namespace PNNLOmics.Utilities
 {
     static public class MathUtilities
     {
+		private const string SCIENTIFIC_NOTATION_CLEANUP_REGEX = "0+E";
+		private static Regex m_scientificNotationTrim = new Regex(SCIENTIFIC_NOTATION_CLEANUP_REGEX, RegexOptions.Compiled);
+
         #region Statistical distributions
         /// <summary>
         /// Finds the density of the n-variate normal distribution with mean meanVector and covariance structure covarianceMatrix 
@@ -139,6 +143,119 @@ namespace PNNLOmics.Utilities
         {
             return ((mass1 - mass2) / mass2 * 1000000);
         }
+
+		/// <summary>
+		/// Convert value to a string with 5 digits of precision
+		/// </summary>
+		/// <param name="value">Number to convert to text</param>
+		/// <returns>Number as text; numbers larger than 1000000 or smaller than 0.000001 will be in scientific notation</returns>
+		public static string ValueToString(double value)
+		{
+			return ValueToString(value, 5, 1000000);
+		}
+
+		/// <summary>
+		/// Convert value to a string with the specified digits of precision
+		/// </summary>
+		/// <param name="value">Number to convert to text</param>
+		/// <param name="digitsOfPrecision">Total digits of precision (before and after the decimal point)</param>
+		/// <returns>Number as text; numbers larger than 1000000 or smaller than 0.000001 will be in scientific notation</returns>
+		public static string ValueToString(double value, int digitsOfPrecision)
+		{
+			return ValueToString(value, digitsOfPrecision, 1000000);
+		}
+
+		/// <summary>
+		/// Convert value to a string with the specified digits of precision and customized scientific notation threshold
+		/// </summary>
+		/// <param name="value">Number to convert to text</param>
+		/// <param name="digitsOfPrecision">Total digits of precision (before and after the decimal point)</param>
+		/// <param name="scientificNotationThreshold">Values larger than this threshold (positive or negative) will be converted to scientific notation</param>
+		/// <returns>Number as text</returns>
+		public static string ValueToString(double value, int digitsOfPrecision, double scientificNotationThreshold)
+		{
+			string strValue;
+			string strMantissa;
+
+			if (digitsOfPrecision < 1)
+				digitsOfPrecision = 1;
+
+			scientificNotationThreshold = Math.Abs(scientificNotationThreshold);
+			if (scientificNotationThreshold < 10)
+				scientificNotationThreshold = 10;
+
+			try
+			{
+				strMantissa = "0." + new string('0', Math.Max(digitsOfPrecision - 1, 1)) + "E+00";
+
+				if (value == 0)
+				{
+					strValue = "0";
+				}
+				else if (Math.Abs(value) <= 1 / scientificNotationThreshold ||
+					     Math.Abs(value) >= scientificNotationThreshold)
+				{
+					// Use scientific notation
+					strValue = value.ToString(strMantissa);
+				}
+				else if (Math.Abs(value) < 1)
+				{
+					int intDigitsAfterDecimal = (int)Math.Floor(-Math.Log10(Math.Abs(value))) + digitsOfPrecision;
+					string strFormatString = "0." + new string('0', intDigitsAfterDecimal);
+
+					strValue = value.ToString(strFormatString);
+					if (double.Parse(strValue) == 0)
+					{
+						// Value was converted to 0; use scientific notation
+						strValue = value.ToString(strMantissa);
+					}
+					else
+					{
+						strValue = strValue.TrimEnd('0');
+					}
+				}
+				else
+				{
+					int intDigitsAfterDecimal = digitsOfPrecision - (int)Math.Ceiling(Math.Log10(Math.Abs(value)));
+
+					if (intDigitsAfterDecimal > 0)
+					{
+						strValue = value.ToString("0." + new string('0', intDigitsAfterDecimal));
+						strValue = strValue.TrimEnd('0');
+						strValue = strValue.TrimEnd('.');
+					}
+					else
+					{
+						strValue = value.ToString("0");
+					}
+				}
+
+				if (digitsOfPrecision > 1)
+				{
+					// Look for numbers with scientific notation
+					// If there is a series of zeroes before the E then remove them
+					// For example, change 1.5000E-43 to 1.5E-43
+					if (m_scientificNotationTrim.IsMatch(strValue))
+					{
+						strValue = m_scientificNotationTrim.Replace(strValue, "E");
+
+						// The number may now look like 1.E+43
+						// If it does, then re-insert a zero after the decimal point
+						strValue = strValue.Replace(".E", ".0E");
+					}
+				}
+
+				return strValue;
+
+			}
+			catch (System.Exception ex)
+			{
+				Console.WriteLine("Error in ValueToString: " + ex.Message);
+				return value.ToString();
+			}
+
+		}
+
         #endregion
     }
 }
