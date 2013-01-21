@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{20D49543-CD31-44D2-8403-F045B3FB363D}</ProjectGuid>
+    <ProjectGuid>{FC4BD445-0F35-432E-90F4-9982EA31C790}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PNNLOmicsIO</RootNamespace>
-    <AssemblyName>PNNLOmicsIO</AssemblyName>
+    <RootNamespace>PNNLOmicsData</RootNamespace>
+    <AssemblyName>PNNLOmicsData</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\AnyCPU\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\AnyCPU\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -40,29 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IO\BaseTextFileReader.cs" />
-    <Compile Include="IO\CommandLineUtil.cs" />
-    <Compile Include="IO\ImporterBase.cs" />
-    <Compile Include="IO\IMsMsSpectraWriter.cs" />
-    <Compile Include="IO\ITextFileReader.cs" />
-    <Compile Include="IO\MassTagFileReader.cs" />
-    <Compile Include="IO\MassTagTextFileImporter.cs" />
-    <Compile Include="IO\MgfFileWriter.cs" />
-    <Compile Include="IO\MSFeatureFileReader.cs" />
-    <Compile Include="IO\MSFeatureLightReader.cs" />
-    <Compile Include="IO\ScansFileReader.cs" />
-    <Compile Include="IO\UMCFileReader.cs" />
-    <Compile Include="IO\UMCImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PNNLOmics\PNNLOmics.csproj">
-      <Project>{8A934DC1-3418-449F-ADF6-9962499F49B2}</Project>
-      <Name>PNNLOmics</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
