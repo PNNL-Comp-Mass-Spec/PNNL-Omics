@@ -9,8 +9,8 @@ namespace PNNLOmics.Algorithms.Solvers
     {
         public LevenburgMarquadt()
         {
-            DifferentialStep = 0.0001;
-            Epsilon          = 0.000001;
+            DifferentialStep = 0.0001;            
+            Epsilon          = 0.000001; 
         }
 
         #region Properties

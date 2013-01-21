@@ -29,13 +29,18 @@ namespace PNNLOmics.Data
             Y = 0;
         }
         public static List<XYData> Bin(List<XYData> data, double binSize)
-        {
-            List<XYData> newData = new List<XYData>();
+        {            
             double lowMass       = data[0].X;
             double highMass      = data[data.Count - 1].X;
+            return Bin(data, lowMass, highMass, binSize);
+        }
+
+        public  static List<XYData> Bin(List<XYData> data, double lowMass, double highMass, double binSize)
+        {
+            List<XYData> newData = new List<XYData>();
             int total            = Convert.ToInt32((highMass - lowMass)/binSize);
 
-            for (int i = 0; i < data.Count; i++)
+            for (int i = 0; i < total; i++)
             {
                 XYData part = new XYData(lowMass * i, 0.0);
                 newData.Add(part);
@@ -47,7 +52,7 @@ namespace PNNLOmics.Data
                 int bin = Math.Min(total - 1, System.Convert.ToInt32((data[i].X - lowMass) / binSize));
                 try
                 {
-                    data[bin].Y += intensity;
+                    newData[bin].Y += intensity;
                 }
                 catch (Exception ex)
                 {

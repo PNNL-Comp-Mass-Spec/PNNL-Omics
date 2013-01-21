@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Algorithms.SpectralComparisons;
+using PNNLOmics.Data.Constants.Libraries;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -22,10 +23,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         public MSMSClusterer()
         {
+            AdductMass          = SubAtomicParticleLibrary.MASS_PROTON;
             ScanRange           = 800;
             MinimumClusterSize  = 2;
             MzTolerance         = .5;
             MassTolerance       = 6;
+            
         }
 
         #region Properties
@@ -77,6 +80,14 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             get;
             set;
         }
+        /// <summary>
+        /// Gets or sets the adduct mass e.g. Proton H+
+        /// </summary>
+        public double AdductMass
+        {
+            get;
+            set;
+        }
         #endregion
 
 
@@ -97,9 +108,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                                          int stop, 
                                          List<MSFeatureLight>   features,
                                          ISpectraProvider       provider,
-                                         double                 similarityTolerance,
-                                         double                 massTolerance)
+                                         double                 similarityTolerance)
         {
+            double massTolerance = MassTolerance;
+
             // Maps the feature to a cluster ID.
             Dictionary<MSFeatureLight, int> featureMap  = new Dictionary<MSFeatureLight, int>();
 
@@ -114,15 +126,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 MSFeatureLight feature  = features[i];
                 MSMSCluster cluster     = new MSMSCluster();
                 cluster.ID              = id++;
-                cluster.MeanScore       = 0;
+                cluster.MeanScore       = 0; 
                 cluster.Features.Add(feature);
-
                 
                 featureMap.Add(feature,    cluster.ID);
                 clusterMap.Add(cluster.ID, cluster);
             }
-
-            double protonMass = PNNLOmics.Data.Constants.Libraries.SubAtomicParticleLibrary.MASS_PROTON;
+            double protonMass = AdductMass;
 
             // Then iterate and cluster.
             for (int i = start; i < stop; i++)
@@ -134,39 +144,47 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 {
                     
                     MSFeatureLight featureJ = features[j];
-                    MSMSCluster clusterJ = clusterMap[featureMap[featureJ]];
+                    MSMSCluster clusterJ    = clusterMap[featureMap[featureJ]];
 
                     // Don't cluster the same thing
                     if (clusterI.ID == clusterJ.ID)   continue;
+
                     // Don't cluster from the same dataset.  Let the linkage algorithm decide if they 
                     // belong in the same cluster, and later, go back and determine if the cluster is valid or not.
                     if (featureI.GroupID == featureJ.GroupID) continue;
-
                     // Check the scan difference.  If it fits then we are within range.
                     int scanDiff = Math.Abs(featureI.Scan - featureJ.Scan);
                     if (scanDiff <= ScanRange)
                     {
-                        
+
                         // Use the most abundant mass because it had a higher chance of being fragmented.
                         double mzI = (featureI.MassMonoisotopicMostAbundant / featureI.ChargeState) + protonMass;
                         double mzJ = (featureJ.MassMonoisotopicMostAbundant / featureJ.ChargeState) + protonMass;
 
-                        double massDiff = Math.Abs(mzI - mzJ);
-                        if (massDiff <= MzTolerance)
-                        {
+                        double mzDiff = Math.Abs(mzI - mzJ);
+                        if (mzDiff <= MzTolerance)
+                        {                            
                             if (featureI.MSnSpectra[0].Peaks.Count <= 0)
                             {
                                 featureI.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureI.MSnSpectra[0].Scan, featureI.GroupID);
-                                featureI.MSnSpectra[0].Peaks = XYData.Bin(featureI.MSnSpectra[0].Peaks, MassTolerance);
+                                featureI.MSnSpectra[0].Peaks = XYData.Bin(featureI.MSnSpectra[0].Peaks,
+                                                                            0,
+                                                                            2000,
+                                                                            MzTolerance);
                             }
                             if (featureJ.MSnSpectra[0].Peaks.Count <= 0)
                             {
                                 featureJ.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureJ.MSnSpectra[0].Scan, featureJ.GroupID);
-                                featureJ.MSnSpectra[0].Peaks = XYData.Bin(featureJ.MSnSpectra[0].Peaks, MassTolerance);
+                                featureJ.MSnSpectra[0].Peaks = XYData.Bin(featureJ.MSnSpectra[0].Peaks, 
+                                                                            0,
+                                                                            2000,
+                                                                            MzTolerance);
                             }
+
+
                             // Compute similarity 
                             double score = SpectralComparer.CompareSpectra(featureI.MSnSpectra[0], featureJ.MSnSpectra[0]);
-
+                    
                             if (score >= similarityTolerance)
                             {
                                 clusterJ.MeanScore += score;
@@ -199,62 +217,60 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         /// <param name="featureMap"></param>
         /// <param name="msms"></param>
-        public List<MSMSCluster> Cluster(Dictionary<int, List<UMCLight>> featureMap, ISpectraProvider provider)
+        public List<MSMSCluster> Cluster(List<UMCLight> features, ISpectraProvider provider)
         {
-            double mzTolerance = this.MzTolerance;
-
+           
             UpdateStatus("Mapping UMC's to MS/MS spectra using intensity profile.");
             // Step 1: Cluster the spectra 
             // Create the collection of samples.
-            List<MSFeatureLight> features = new List<MSFeatureLight>();
+            List<MSFeatureLight> msFeatures = new List<MSFeatureLight>();
 
-            foreach (int key in featureMap.Keys)
+            // Sort through the features
+            foreach(UMCLight feature in features)
             {
-                // Sort through the features
-                foreach(UMCLight feature in featureMap[key])
+                // Sort out charge states...?
+                Dictionary<int, MSFeatureLight> chargeMap = new Dictionary<int,MSFeatureLight>();
+
+                long   abundance            = long.MinValue;
+                MSFeatureLight maxFeature   = null;
+
+                // Find the max abundance spectrum.  This the number of features we have to search.
+                foreach(MSFeatureLight msFeature in feature.MSFeatures)
                 {
-                    // Sort out charge states...?
-                    Dictionary<int, MSFeatureLight> chargeMap = new Dictionary<int,MSFeatureLight>();
-
-                    long   abundance            = long.MinValue;
-                    MSFeatureLight maxFeature   = null;
-
-                    // Find the max abundance spectrum.  This the number of features we have to search.
-                    foreach(MSFeatureLight msFeature in feature.MSFeatures)
+                    if (msFeature.Abundance > abundance && msFeature.MSnSpectra.Count > 0)
                     {
-                        if (msFeature.Abundance > abundance && msFeature.MSnSpectra.Count > 0)
-                        {
-                            abundance   = msFeature.Abundance;
-                            maxFeature  = msFeature; 
-                        }
+                        abundance   = msFeature.Abundance;
+                        maxFeature  = msFeature; 
                     }
+                }
 
-                    if (maxFeature != null)
-                    {
-                        features.Add(maxFeature);
-                    }
+                if (maxFeature != null)
+                {
+                    msFeatures.Add(maxFeature);
                 }
             }
 
+            UpdateStatus(string.Format("Found {0} total spectra for clustering.", msFeatures.Count));
+
             UpdateStatus("Sorting spectra.");
             // Sort based on mass using the max abundance of the feature.
-            features.Sort(delegate(MSFeatureLight x, MSFeatureLight y) 
+            msFeatures.Sort(delegate(MSFeatureLight x, MSFeatureLight y) 
                 { return x.MassMonoisotopicMostAbundant.CompareTo(y.MassMonoisotopicMostAbundant); });
 
             // Then cluster the spectra.
             int j = 1;
             int h = 0;
-            int N = features.Count;
+            int N = msFeatures.Count;
 
             List<MSMSCluster> clusters  = new List<MSMSCluster>();
-            double tol                  = mzTolerance;
+            double tol                  = MassTolerance;
             int lastTotal               = 0;
             UpdateStatus("Clustering spectra.");
             while(j < N)
             {
                 int i = j - 1;
-                MSFeatureLight featureJ = features[j];
-                MSFeatureLight featureI = features[i];
+                MSFeatureLight featureJ = msFeatures[j];
+                MSFeatureLight featureI = msFeatures[i];
                 double diff             = Feature.ComputeMassPPMDifference(featureJ.MassMonoisotopicMostAbundant, featureI.MassMonoisotopicMostAbundant);
 
                 if (Math.Abs(diff) > tol)
@@ -264,10 +280,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     {
                         List<MSMSCluster> data = Cluster(   h,
                                                             j,
-                                                            features,
+                                                            msFeatures,
                                                             provider,
-                                                            SimilarityTolerance,
-                                                            mzTolerance);
+                                                            SimilarityTolerance);
                         clusters.AddRange(data);
                     }
 
@@ -288,10 +303,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             {
                 List<MSMSCluster> data = Cluster(   h,
                                                     j,
-                                                    features,
+                                                    msFeatures,
                                                     provider,
-                                                            SimilarityTolerance,
-                                                            mzTolerance);
+                                                    SimilarityTolerance);
                 clusters.AddRange(data);
             }
             UpdateStatus("Finished clustering.");            

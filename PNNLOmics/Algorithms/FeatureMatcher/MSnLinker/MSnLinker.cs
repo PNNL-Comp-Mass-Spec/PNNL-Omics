@@ -3,6 +3,7 @@ using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using System;
 using System.Linq;
+using PNNLOmics.Data.Constants.Libraries;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
 {
@@ -16,12 +17,23 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
         /// </summary>
         public BoxMSnLinker()
         {
-            Tolerances = new FeatureTolerances();
+            Tolerances      = new FeatureTolerances();
+            Tolerances.Mass = .5;
+            AdductMass      = SubAtomicParticleLibrary.MASS_PROTON;
         }
         /// <summary>
         /// Gets or sets the feature tolerances to use.
         /// </summary>
         public FeatureTolerances Tolerances
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the adduct mass (e.g. proton, H+)
+        /// </summary>
+        public double AdductMass
         {
             get;
             set;
@@ -91,8 +103,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
             }
 
             // then we search for links          
-            double ppmRange     = Tolerances.Mass;            
-            double protonMass   = PNNLOmics.Data.Constants.Libraries.SubAtomicParticleLibrary.MASS_PROTON;
+            double ppmRange     = Tolerances.Mass;
+            double protonMass   = AdductMass;
 
             // Go through each scan, and see if there is a corresponding 
             // MSMS scan range of spectra associated, some may not have it.
@@ -115,47 +127,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                                         return Math.Abs(x.PrecursorMZ - mz) <= ppmRange;                            
                                     }
                                     );
-
-                        // Search for spectra that are not the same as the most abundant mono mass peak.
-                        if (matching.Count < 1)
-                        {
-                            //List<XYData> parentSpectrum = provider.GetRawSpectra(scan, feature.GroupID);
-                            //double mzSpacing            = 1.0 / Convert.ToDouble(feature.ChargeState);
-                            //double maxAbundance         = feature.Abundance;
-                            //double abundance            = maxAbundance;
-                            //double prevAbundance        = -1.0;
-                            //double newMz                = mz + mzSpacing;
-                            ///// Search to the right of the mono peak...
-                            //int i = 0;
-                            //bool foundSome = false;
-                            //while (abundance > prevAbundance || prevAbundance < 0 && !foundSome)
-                            //{                                
-                            //    List<MSSpectra> tempSpectra = suspectSpectra.FindAll(
-                            //            delegate(MSSpectra x)
-                            //            {
-                            //                return Math.Abs(x.PrecursorMZ - newMz) <= ppmRange;
-                            //            }
-                            //        );
-
-
-                            //    if (matching.Count > 0)
-                            //    {
-                            //        matching.AddRange(tempSpectra);
-                            //        foundSome = true;
-                            //    }
-                            //    else
-                            //    {
-                            //        // Find the next peak...
-                            //        newMz += mzSpacing;
-                            //        while (i < parentSpectrum.Count && newMz > parentSpectrum[i].X)
-                            //        {
-                            //            i++;
-                            //        }
-                            //        prevAbundance = Math.Max(abundance, 0);
-                            //        abundance = parentSpectrum[Math.Max(0, i - 1)].Y;
-                            //    }
-                            //}
-                        }
 
                         // Finally link!
                         foreach (MSSpectra spectrum in matching)

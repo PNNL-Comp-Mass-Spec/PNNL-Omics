@@ -80,6 +80,9 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
             
             int xTop = Math.Max(0, xTopIons.Count - System.Convert.ToInt32(System.Convert.ToDouble(xTotalNonZero) * TopPercent));
             int yTop = Math.Max(0, yTopIons.Count - System.Convert.ToInt32(System.Convert.ToDouble(yTotalNonZero) * TopPercent));
+            
+            xTop = Math.Min(xTopIons.Count - 1, xTop);
+            yTop = Math.Min(yTopIons.Count - 1, yTop);
 
             double xThreshold = xTopIons[xTop];
             double yThreshold = yTopIons[yTop];
