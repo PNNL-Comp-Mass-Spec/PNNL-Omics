@@ -211,7 +211,7 @@ namespace PNNLOmics.Utilities
 					}
 					else
 					{
-						strValue = strValue.TrimEnd('0');
+						strValue = strValue.TrimEnd('0').TrimEnd('.');
 					}
 				}
 				else
@@ -221,8 +221,7 @@ namespace PNNLOmics.Utilities
 					if (intDigitsAfterDecimal > 0)
 					{
 						strValue = value.ToString("0." + new string('0', intDigitsAfterDecimal));
-						strValue = strValue.TrimEnd('0');
-						strValue = strValue.TrimEnd('.');
+						strValue = strValue.TrimEnd('0').TrimEnd('.');
 					}
 					else
 					{
