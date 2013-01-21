@@ -19,6 +19,10 @@ namespace PNNLOmics.Algorithms.Distance
                     EuclideanDistanceMetric<T> metricFunction = new EuclideanDistanceMetric<T>();
                     function = new DistanceFunction<T>(metricFunction.EuclideanDistance);
                     break;
+                case DistanceMetric.PowerEuclidean:
+                    PowerEuclideanDistanceMetric<T> power = new PowerEuclideanDistanceMetric<T>();
+                    function = new DistanceFunction<T>(power.EuclideanDistance);
+                    break;
                 default:
                     break;
             }

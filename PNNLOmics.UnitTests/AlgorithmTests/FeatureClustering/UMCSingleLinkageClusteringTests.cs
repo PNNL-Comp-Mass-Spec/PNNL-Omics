@@ -104,7 +104,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID          = i;
                 feature.UMCCluster  = null;
                 feature.RetentionTime  = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = i % totalDatasets;
                 features.Add(feature);
@@ -115,8 +115,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the two UMC's that are far away from home.
-            features[features.Count - 2].MassMonoisotopic = (startMass + 100.0);
-            features[features.Count - 1].MassMonoisotopic = (startMass + 100.0);
+            features[features.Count - 2].MassMonoisotopicAligned = (startMass + 100.0);
+            features[features.Count - 1].MassMonoisotopicAligned = (startMass + 100.0);
 
             // Cluster!
             clustering.Parameters = parameters;
@@ -174,7 +174,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID = i;
                 feature.UMCCluster = null;
                 feature.RetentionTime = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -185,7 +185,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[features.Count - 1].MassMonoisotopic = (startMass + 100.0);
+            features[features.Count - 1].MassMonoisotopicAligned = (startMass + 100.0);
 
             // Cluster!
             clustering.Parameters = parameters;
@@ -244,7 +244,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID = i;
                 feature.UMCCluster = null;
                 feature.RetentionTime = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -255,8 +255,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[0].MassMonoisotopic = (startMass - 100.0);
-            features[1].MassMonoisotopic = (features[0].MassMonoisotopic);
+            features[0].MassMonoisotopicAligned = (startMass - 100.0);
+            features[1].MassMonoisotopicAligned = (features[0].MassMonoisotopicAligned);
 
             // Cluster!
             clustering.Parameters = parameters;
@@ -309,7 +309,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID = i;
                 feature.UMCCluster = null;
                 feature.RetentionTime = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -320,7 +320,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
 
             // Now make the one UMC that is far away from home.
-            features[0].MassMonoisotopic = (startMass - 100.0);
+            features[0].MassMonoisotopicAligned = (startMass - 100.0);
 
             // Cluster!
             clustering.Parameters = parameters;
@@ -369,7 +369,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID = i;
                 feature.UMCCluster = null;
                 feature.RetentionTime = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -429,7 +429,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID                      = i;
                 feature.UMCCluster              = null;
                 feature.RetentionTime              = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime               = Convert.ToSingle(startDrift);
                 feature.GroupID                 = i % totalDatasets;
                 features.Add(feature);
@@ -492,7 +492,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID                      = i;
                 feature.UMCCluster              = null;
                 feature.RetentionTime              = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime               = Convert.ToSingle(startDrift);
                 feature.GroupID                 = i % totalDatasets;
                 features.Add(feature);
@@ -547,14 +547,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID              = i;
                 feature.UMCCluster      = null;
                 feature.RetentionTime      = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime       = Convert.ToSingle(startDrift);
                 feature.GroupID         = i % totalDatasets;
                 feature.ChargeState     = i;
 
                 feature.DriftTime               = Convert.ToSingle(startDrift);
                 feature.RetentionTime              = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
 
                 // Always put it just outside of the next feature.
                 startMass   = Feature.ComputeDaDifferenceFromPPM(startMass, parameters.Tolerances.Mass * 1.5);
@@ -607,7 +607,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID          = i;
                 feature.UMCCluster  = null;
                 feature.RetentionTime  = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = i % totalDatasets;
                 feature.ChargeState = i;
@@ -673,7 +673,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID = i;
                 feature.UMCCluster = null;
                 feature.RetentionTime = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime = Convert.ToSingle(startDrift);
                 feature.GroupID = i % totalDatasets;
                 features.Add(feature);
@@ -731,7 +731,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.ID          = i;
                 feature.UMCCluster  = null;
                 feature.RetentionTime  = startNET;
-                feature.MassMonoisotopic = startMass;
+                feature.MassMonoisotopicAligned = startMass;
                 feature.DriftTime   = Convert.ToSingle(startDrift);
                 feature.GroupID     = 0;
                 features.Add(feature);
@@ -762,7 +762,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             UMCLight feature            = new UMCLight();
             feature.RetentionTime       = net;
             feature.DriftTime           = drift;
-            feature.MassMonoisotopic    = mass;
+            feature.MassMonoisotopicAligned = mass;
 
             return feature;
         }
@@ -846,12 +846,12 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             features.Add(CreateFeature(285.97799	, 0 ,	0.00637551801083838));
             foreach (UMCLight feature in features)
             {
-                feature.MassMonoisotopic = 100.1;
+                feature.MassMonoisotopicAligned = 100.1;
                 feature.DriftTime        = 10.1;
             }
                 //feature.ID = featureID++;
                 //feature.UMCCluster = null;
-                //feature.MassMonoisotopic = 100.1;
+                //feature.MassMonoisotopicAligned = 100.1;
                 //feature.DriftTime = 10.1;
                 //feature.GroupID = 1;
 
