@@ -38,6 +38,10 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="alglibnet2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\alglibnet2.dll</HintPath>
+    </Reference>
     <Reference Include="DeconTools.Backend">
       <HintPath>..\lib\x86\DeconTools.Backend.dll</HintPath>
     </Reference>
@@ -74,6 +78,7 @@
     <Compile Include="AlgorithmTests\PeakDetectorTests\PeakDetectorTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AlgorithmTests\Solvers\LevenburgMarquadtSolverTests.cs" />
     <Compile Include="AlgorithmTests\STACTests\STACTests.cs" />
     <Compile Include="ConstantsTests\ConstantsTest.cs" />
     <Compile Include="DataTests\Features\UMCClusterLightTests.cs" />

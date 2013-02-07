@@ -40,6 +40,13 @@ namespace PNNLOmics.Algorithms.Solvers
         }
         #endregion
 
+        /// <summary>
+        /// Least squares solver 
+        /// </summary>
+        /// <param name="baseline"></param>
+        /// <param name="alignee"></param>
+        /// <param name="coeffs"></param>
+        /// <returns></returns>
         public bool Solve(List<double> baseline, List<double> alignee, ref double[] coeffs)
         {
             double epsf     = 0;
