@@ -108,8 +108,16 @@
     <Compile Include="Algorithms\PeakDetection\PeakThresholderParameters.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctionFactory.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctionInterface.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\BasisFunctionsEnum.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Chebyshev.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Cubic.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Gaussian.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Lorentian.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Quadratic.cs" />
     <Compile Include="Algorithms\Solvers\ChebyshevDelegate.cs" />
-    <Compile Include="Algorithms\Solvers\LevenburgMarquadt.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\LevenburgMarquadtSolver.cs" />
     <Compile Include="Algorithms\SpectralProcessing\ISpectralComparer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralNormalizedDotProductComparer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralMzComparer.cs" />

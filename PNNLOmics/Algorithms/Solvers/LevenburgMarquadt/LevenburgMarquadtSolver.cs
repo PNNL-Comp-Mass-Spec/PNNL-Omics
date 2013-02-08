@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace PNNLOmics.Algorithms.Solvers
+namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
-    public class LevenburgMarquadt
+    public class LevenburgMarquadtSolver
     {
-        public LevenburgMarquadt()
+        public LevenburgMarquadtSolver()
         {
             DifferentialStep = 0.0001;            
             Epsilon          = 0.000001; 
