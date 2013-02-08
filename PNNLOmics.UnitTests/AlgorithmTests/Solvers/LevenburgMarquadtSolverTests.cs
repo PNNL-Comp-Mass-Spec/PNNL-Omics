@@ -15,7 +15,6 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         /// 
         /// </summary>
         [Test]
-        [ExpectedException(typeof(NullReferenceException))]
         [Description("Sends a null list of UMC's to the clustering algorithm.")]
         public void SolveQuadratic()
         {
@@ -56,6 +55,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
                 Console.WriteLine("{0}\t{1}\t{2}", xValue, fitValue, yValue);
             }
+
+            Assert.AreEqual(-0.99999999959999375d, coeffs[0]);
+            Assert.AreEqual(2.4338897338076459E-10d, coeffs[1]);
+            Assert.AreEqual(99.999999976089995d, coeffs[2]); 
+
         }
     }     
 }
