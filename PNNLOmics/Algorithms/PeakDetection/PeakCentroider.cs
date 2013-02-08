@@ -474,7 +474,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             bool found = false;
             for (int i = centerIndex; i > 0; i--)
             {
-                if (rawData[i + 1].Y >= rawData[i].Y && rawData[i - 1].Y > rawData[i].Y) // Local minima here \/
+               if (rawData[i + 1].Y >= rawData[i].Y && rawData[i - 1].Y >= rawData[i].Y) // Local minima here \/  //typically data must decrease then increase.  adding >= to part 2 allows for decrease and then flat which is what happens at zero
                 {
                     minIntensityLeft = rawData[i].Y;
                     shoulderNoiseToLeftIndex = i; //minIntensityLeft;//assign index for use in FWHM
@@ -493,7 +493,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             found = false;//reset and continue
             for (int i = centerIndex; i < length - 1; i++)
             {
-                if (rawData[i + 1].Y >= rawData[i].Y && rawData[i - 1].Y > rawData[i].Y) // Local minima here \/
+                if (rawData[i + 1].Y >= rawData[i].Y && rawData[i - 1].Y >= rawData[i].Y) // Local minima here \/  //typically data must decrease then increase.  adding >= to part 2 allows for decrease and then flat which is what happens at zero
                 {
                     minIntensityRight = rawData[i].Y;
                     shoulderNoiseToRightIndex = i; //minIntensityRight;//assign index for use in FWHM
