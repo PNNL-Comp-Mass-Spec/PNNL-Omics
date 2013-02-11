@@ -103,7 +103,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             }
 
             Assert.AreEqual(Math.Round(30.521054724721569d, 7), Math.Round(coeffs[0], 7));
-            Assert.AreEqual(Math.Round(37.723968728457208d,7), Math.Round(coeffs[1],7));
+            Assert.AreEqual(Math.Round(37.723968728457208d,6), Math.Round(coeffs[1],6));
             Assert.AreEqual(Math.Round(1234.4579999999935d,7), Math.Round(coeffs[2],7));
         }
 
