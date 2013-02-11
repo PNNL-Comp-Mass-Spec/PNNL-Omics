@@ -10,6 +10,12 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
             Epsilon          = 0.000001; 
         }
 
+        public LevenburgMarquadtSolver(double differentialStep, double epsilon)
+        {
+            DifferentialStep = differentialStep;
+            Epsilon = epsilon;
+        }
+
         #region Properties
         /// <summary>
         /// Gets or sets the amount to step when differentiating.
