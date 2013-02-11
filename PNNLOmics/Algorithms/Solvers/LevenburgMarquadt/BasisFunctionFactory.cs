@@ -73,6 +73,27 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
                         quadSolver.Coefficients[1] = 1;//?
                     }
                     break;
+                case BasisFunctionsEnum.Orbitrap:
+                    {
+                        quadSolver = new BasisFunctionFactory(new OrbitrapFunction());
+                        quadSolver.Coefficients = new double[3];
+                        quadSolver.Coefficients[0] = 1;//?
+                        quadSolver.Coefficients[1] = 1;//?
+                        quadSolver.Coefficients[2] = 1;//?
+                        //quadSolver.Coefficients[3] = 1;//?
+                        //quadSolver.Coefficients[4] = 1;//?
+                        //quadSolver.Coefficients[4] = 1;//?
+                    }
+                    break;
+                case BasisFunctionsEnum.Hanning:
+                    {
+                        quadSolver = new BasisFunctionFactory(new Hanning());
+                        quadSolver.Coefficients = new double[3];
+                        quadSolver.Coefficients[0] = 1;//?
+                        quadSolver.Coefficients[1] = 1;//?
+                        quadSolver.Coefficients[2] = 1;//?
+                    }
+                    break;
                 default:
                     Console.WriteLine("No Case Availible");
                     break;

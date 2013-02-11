@@ -114,7 +114,9 @@
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Chebyshev.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Cubic.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Gaussian.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Hanning.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Lorentian.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\OrbitrapFunction.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Quadratic.cs" />
     <Compile Include="Algorithms\Solvers\ChebyshevDelegate.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\LevenburgMarquadtSolver.cs" />

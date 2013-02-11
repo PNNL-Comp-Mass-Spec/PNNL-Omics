@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
-    /// <summary>
-    /// Basis function for the LM Algorithm using Lorentzian Peak Shapes
-    /// </summary>
-    public class Lorentian : IBasisFunctionInterface
+    public class Hanning : IBasisFunctionInterface
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials
@@ -16,19 +16,17 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
         /// <param name="obj">?</param>
         public void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj)
         {
-            //=a*1/(2*PI()*sigma*sigma)^0.5*EXP(-((X-Offset)^2)/2*sigma*sigma)
-            //sum = height * 1 / Math.Pow((2.0 * pi * sigma * sigma), 0.5) * Math.Exp(0.5 * Math.Exp(-((x[0] - xOffset) * (x[0] - xOffset))) / (2.0 * sigma * sigma));
-
+            //Y=ax^2 + bx + c
             functionResult = 0;
 
             double pi = 3.14159265358979;//Math.PI;
 
-            double width = c[0];
-            double height = c[1];
+            double hanningI = c[0];
+            double hanningK = c[1];
+
             double xOffset = c[2];
 
-            //=a*EXP(-(X^2)/(2*sigma^2))
-            functionResult = height * 1 / pi * 0.5 * width / (Math.Pow(x[0] - xOffset, 2) + 0.5 * Math.Pow(width, 2));
+            functionResult = hanningI * (Math.Sin(2 * pi * hanningK * (x[0] - xOffset)) / (2 * pi * hanningK * (x[0] - xOffset)) + 0.5 * Math.Sin(2 * pi * hanningK * (x[0] - xOffset) - pi) / (2 * pi * hanningK * (x[0] - xOffset) - pi) + 0.5 * Math.Sin(2 * pi * hanningK * (x[0] - xOffset) + pi) / (2 * pi * hanningK * (x[0] - xOffset) + pi));
         }
     }
 }

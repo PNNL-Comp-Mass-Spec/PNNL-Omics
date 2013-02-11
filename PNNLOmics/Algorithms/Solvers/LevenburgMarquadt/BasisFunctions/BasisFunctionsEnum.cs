@@ -6,6 +6,8 @@
         PolynomialCubic,
         Chebyshev,
         Gaussian,
-        Lorentzian
+        Lorentzian,
+        Orbitrap,
+        Hanning
     }
 }
