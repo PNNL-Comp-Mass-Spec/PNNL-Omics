@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
-    public class Hanning : IBasisFunctionInterface
+    public class Hanning : IBasisFunction
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials

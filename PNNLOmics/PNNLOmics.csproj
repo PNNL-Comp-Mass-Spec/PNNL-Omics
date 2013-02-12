@@ -109,12 +109,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctionFactory.cs" />
-    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctionInterface.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\BasisFunctionsEnum.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Chebyshev.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Cubic.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Gaussian.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Hanning.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\IBasisFunction.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Lorentian.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\OrbitrapFunction.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Quadratic.cs" />

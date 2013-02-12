@@ -3,7 +3,7 @@
     /// <summary>
     /// Basis function for the LM Algorithm using Quadratic Peak Shapes
     /// </summary>
-    public class Quadratic : IBasisFunctionInterface
+    public class Quadratic : IBasisFunction
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials

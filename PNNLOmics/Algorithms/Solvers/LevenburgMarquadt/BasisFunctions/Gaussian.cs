@@ -5,7 +5,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
     /// <summary>
     /// Basis function for the LM Algorithm using Gaussian Peak Shapes
     /// </summary>
-    public class Gaussian : IBasisFunctionInterface
+    public class Gaussian : IBasisFunction
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials

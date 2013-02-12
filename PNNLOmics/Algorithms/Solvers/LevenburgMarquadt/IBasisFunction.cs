@@ -3,7 +3,7 @@
     /// <summary>
     /// interface for strategy design pattern
     /// </summary>
-    public interface IBasisFunctionInterface
+    public interface IBasisFunction
     {
         void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj);
     }

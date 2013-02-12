@@ -3,7 +3,7 @@
     /// <summary>
     /// Basis function for the LM Algorithm using Polynomials
     /// </summary>
-    public class Cubic : IBasisFunctionInterface
+    public class Cubic : IBasisFunction
     {
         /// <summary>
         /// Evalutates the cubic polynomials

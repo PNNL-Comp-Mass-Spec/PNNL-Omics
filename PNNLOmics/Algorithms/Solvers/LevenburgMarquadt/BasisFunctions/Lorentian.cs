@@ -5,7 +5,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
     /// <summary>
     /// Basis function for the LM Algorithm using Lorentzian Peak Shapes
     /// </summary>
-    public class Lorentian : IBasisFunctionInterface
+    public class Lorentian : IBasisFunction
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials

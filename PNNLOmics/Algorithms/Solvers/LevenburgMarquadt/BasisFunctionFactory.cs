@@ -5,11 +5,11 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
     public class BasisFunctionFactory
     {
-        private IBasisFunctionInterface FunctionDelegateInterface;
+        private IBasisFunction FunctionDelegateInterface;
 
         public double[] Coefficients { get; set; }
 
-        public BasisFunctionFactory(IBasisFunctionInterface strategy)
+        public BasisFunctionFactory(IBasisFunction strategy)
         {
             FunctionDelegateInterface = strategy;
             Coefficients = new double[0];

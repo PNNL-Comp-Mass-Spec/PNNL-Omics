@@ -3,7 +3,7 @@
     /// <summary>
     /// Basis function for the LM Algorithm using First Order Chebyshev
     /// </summary>
-    public class Chebyshev : IBasisFunctionInterface
+    public class Chebyshev : IBasisFunction
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials

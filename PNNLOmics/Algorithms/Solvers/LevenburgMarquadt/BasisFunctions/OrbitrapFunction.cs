@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
-    public class OrbitrapFunction : IBasisFunctionInterface
+    public class OrbitrapFunction : IBasisFunction
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials
