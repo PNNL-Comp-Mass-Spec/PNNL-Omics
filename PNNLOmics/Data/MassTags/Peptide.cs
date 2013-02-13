@@ -15,7 +15,8 @@ namespace PNNLOmics.Data
         }        
         public override void Clear()
         {
-            throw new NotImplementedException();
+            base.Clear();
+            ProteinList = new List<Protein>();
         }        
         public List<Protein> ProteinList
         {
@@ -26,7 +27,12 @@ namespace PNNLOmics.Data
         {
             get; 
             set;
-        }        
+        }
+        public double Score
+        {
+            get;
+            set;
+        }
         public string ExtendedSequence
         {
             get;

@@ -19,7 +19,7 @@ namespace PNNLOmics.Data
         /// Default constructor
         /// </summary>
         public MSSpectra ()
-        {
+        {                        
             Clear();
         }
 
@@ -51,7 +51,11 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the charge state for this spectra.
         /// </summary>
-        public int PrecursorChargeState { get; set; }
+        public int PrecursorChargeState
+        {
+            get; 
+            set; 
+        }
         /// <summary>
         /// Gets or sets the MS Level.
         /// </summary>
@@ -144,6 +148,14 @@ namespace PNNLOmics.Data
             get;
             set;
         }
+        /// <summary>
+        /// Gets or sets the peptide was associated with.
+        /// </summary>
+        public Peptide Peptide
+        {
+            get;
+            set;
+        }
         #endregion
 
         /// <summary>
@@ -164,6 +176,7 @@ namespace PNNLOmics.Data
             PeaksProcessed          = new List<ProcessedPeak>();
             PrecursorPeak           = null;
             ParentSpectra           = null;
+            this.Peptide            = new Data.Peptide();
             PeakProcessingLevel     = Data.PeakProcessingLevel.None;
         }
 

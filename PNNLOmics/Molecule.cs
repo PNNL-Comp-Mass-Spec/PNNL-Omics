@@ -7,8 +7,15 @@ namespace PNNLOmics.Data
 {
     public class Molecule: BaseData
     {
-        private string m_description;
-
+        /// <summary>
+        /// Gets or sets the scan the molecule was identified in.
+        /// </summary>
+        public int Scan
+        {
+            get;
+            set;
+        }
+        private string m_description;        
         public string Description
         {
             get { return m_description; }
@@ -38,7 +45,8 @@ namespace PNNLOmics.Data
 
         public override void Clear()
         {
-            throw new NotImplementedException();
+            Spectrum  = null;
+            m_massTag = null;
         }
 
         /// <summary>
@@ -50,6 +58,14 @@ namespace PNNLOmics.Data
             {
                 throw new System.NotImplementedException();
             }
+        }
+        /// <summary>
+        /// Gets or sets the spectrum that identified the molecule.
+        /// </summary>
+        public MSSpectra Spectrum
+        {
+            get;
+            set;
         }
     }
 }
