@@ -29,7 +29,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             double area = integrator.Integrate(functionSelector, coeffs, 0, 3, 500);
 
             Console.WriteLine("Area: {0}", area);
-            Assert.AreEqual(22.5, area, .1);
+            Assert.AreEqual(22.5, area, .001);
         }
         /// <summary>
         /// 

@@ -31,7 +31,7 @@ namespace PNNLOmics.Algorithms.Solvers
             sum = basis.Evaluate(coefficients, x);
             x += delta;
             // We already evaluated the first point, now for each element within
-            for (int i = 1; i < numberOfSamples; i++)
+            for (int i = 1; i < numberOfSamples-1; i++)
             {
                 x += delta;
                 double y = basis.Evaluate(coefficients, x);
