@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
-    public class OrbitrapFunction : IBasisFunction
+    public class OrbitrapFunction : BasisFunctionBase
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials
@@ -14,7 +14,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
         /// <param name="x">Input variables</param>
         /// <param name="functionResult">Returned sum value of your function</param>
         /// <param name="obj">?</param>
-        public void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj)
+        public override  void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj)
         {
             //Y=ax^2 + bx + c
             functionResult = 0;

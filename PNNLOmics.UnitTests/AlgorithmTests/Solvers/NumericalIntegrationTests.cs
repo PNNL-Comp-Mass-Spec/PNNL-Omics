@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using PNNLOmics.Algorithms.Solvers;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
 using PNNLOmics.Data;
+using PNNLOmics.Algorithms.Solvers;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 {
-
     [TestFixture]
-    public class LevenburgMarquadtSolverTests : SolverTestBase
+    public class NumericalIntegrationTests : SolverTestBase
     {
         /// <summary>
         /// 
         /// </summary>
         [Test]
         [Description("Tests the Levenburg Marquadt solver using a quadratic line shape.")]
-        public void SolveLinearFunction()
+        public void IntegrateLineFunction()
         {
             List<double> x;
             List<double> y;
@@ -26,26 +25,49 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Linear);
             double[] coeffs = EvaluateFunction(x, y, functionSelector);
 
-            Assert.AreEqual(5, coeffs[0], .0001);
-            Assert.AreEqual(0, coeffs[1], .0001);
+            NumericalIntegrationBase integrator = new TrapezoidIntegration();
+            double area = integrator.Integrate(functionSelector, coeffs, 0, 3, 500);
+
+            Console.WriteLine("Area: {0}", area);
+            Assert.AreEqual(22.5, area, .1);
         }
         /// <summary>
         /// 
         /// </summary>
         [Test]
         [Description("Tests the Levenburg Marquadt solver using a quadratic line shape.")]
-        public void SolveQuadraticFactory()
+        public void IntegrateLineFunctionTimeTrial()
         {
             List<double> x;
             List<double> y;
-            ConvertXYDataToArrays(CalculatedParabola(), out x, out y);
+            ConvertXYDataToArrays(CalculateLine(), out x, out y);
 
-            BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.PolynomialQuadratic);
+            BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Linear);
             double[] coeffs = EvaluateFunction(x, y, functionSelector);
 
-            Assert.AreEqual(-0.99999999960388553d, coeffs[0], .000001);
-            Assert.AreEqual(2.410211171560969E-10d, coeffs[1], .000001);
-            Assert.AreEqual(99.999999976322613d, coeffs[2], .000001);
+            NumericalIntegrationBase integrator = new TrapezoidIntegration();
+
+            Console.WriteLine("");
+            Console.WriteLine("Samples\tTime(ms)\tArea");
+
+            for (int i = 0; i < 100; i++)
+            {
+                List<double> averageTimes   = new List<double>();
+                double sum                  = 0;
+                int iterations              = 1000;
+                int totalSamples            = i*100;
+                double area                 = 0;
+                for(int j = 0; j < iterations; j++)
+                {
+                    DateTime start  = DateTime.Now;
+                    area            = integrator.Integrate(functionSelector, coeffs, 0, 3, totalSamples);
+                    DateTime end    = DateTime.Now;
+                    sum += end.Subtract(start).TotalMilliseconds;
+                }
+
+                double averageTime = sum / Convert.ToDouble(iterations);
+                Console.WriteLine("{0}\t{1}\t{2}", totalSamples, averageTime, area);                
+            }
         }
 
         /// <summary>

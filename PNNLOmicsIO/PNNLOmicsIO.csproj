@@ -44,13 +44,17 @@
     <Compile Include="IO\CommandLineUtil.cs" />
     <Compile Include="IO\ImporterBase.cs" />
     <Compile Include="IO\IMsMsSpectraWriter.cs" />
+    <Compile Include="IO\IPeptideFileReader.cs" />
     <Compile Include="IO\ITextFileReader.cs" />
     <Compile Include="IO\MassTagFileReader.cs" />
     <Compile Include="IO\MassTagTextFileImporter.cs" />
     <Compile Include="IO\MgfFileWriter.cs" />
     <Compile Include="IO\MSFeatureFileReader.cs" />
     <Compile Include="IO\MSFeatureLightReader.cs" />
+    <Compile Include="IO\MsgfReader.cs" />
+    <Compile Include="IO\PeptideReaderFactory.cs" />
     <Compile Include="IO\ScansFileReader.cs" />
+    <Compile Include="IO\SkylineTransitionFileReader.cs" />
     <Compile Include="IO\UMCFileReader.cs" />
     <Compile Include="IO\UMCImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

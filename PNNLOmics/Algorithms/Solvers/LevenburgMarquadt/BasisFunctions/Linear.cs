@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
     /// <summary>
-    /// Basis function for the LM Algorithm using Polynomials
+    /// Basis function for adding a fit to a linear function.
     /// </summary>
-    public class Cubic : BasisFunctionBase
+    public class Linear : BasisFunctionBase
     {
-        
         /// <summary>
-        /// Evaluates the cubic polynomials
+        /// Evalutates a linear point value.
         /// </summary>
         /// <param name="c">Set of coefficients</param>
         /// <param name="x">Input variables</param>
@@ -17,11 +19,10 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
         /// <param name="obj">?</param>
         public override void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj)
         {
-            //Y=ax^3 + bx^2 + cx +d
-            functionResult = 0;
-            functionResult = (c[0] * x[0] * x[0] * x[0]) + (c[1] * x[0] * x[0]) + (c[2] * x[0]) + c[3];
+            //y = mx + b
+            functionResult = (c[0] * x[0]) + c[1];
         }
+
     }
-
-
+    
 }

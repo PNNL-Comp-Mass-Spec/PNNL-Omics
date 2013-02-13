@@ -8,6 +8,7 @@
         Gaussian,
         Lorentzian,
         Orbitrap,
-        Hanning
+        Hanning,
+        Linear
     }
 }

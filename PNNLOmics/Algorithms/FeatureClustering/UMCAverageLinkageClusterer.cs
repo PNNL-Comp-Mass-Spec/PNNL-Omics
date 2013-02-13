@@ -25,6 +25,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         public UMCAverageLinkageClusterer()
         {
+            ShouldTestClustersWithinTolerance = true;
             Parameters      = new FeatureClusterParameters<T>();
             m_massComparer  = new Comparison<T>(FeatureLight.MassAlignedComparison); 
         }
@@ -178,7 +179,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
 			return newClusters;
 		}
-
+        public bool ShouldTestClustersWithinTolerance
+        {
+            get;
+            set;
+        }
 		/// <summary>
 		/// Determines if two clusters are within mass, NET, and drift time tolerances
 		/// </summary>
@@ -187,6 +192,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// <returns>True if clusters are within tolerance, false otherwise</returns>
 		private bool AreClustersWithinTolerance(U clusterX, U clusterY)
 		{
+            if (!ShouldTestClustersWithinTolerance)
+                return true;
+
 			// Grab the tolerances
 			double massTolerance    = Parameters.Tolerances.Mass;
 			double netTolerance     = Parameters.Tolerances.RetentionTime;

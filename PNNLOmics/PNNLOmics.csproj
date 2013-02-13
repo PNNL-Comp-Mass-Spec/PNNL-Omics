@@ -37,8 +37,9 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="alglibnet2">
-      <HintPath>..\lib\alglibnet2.dll</HintPath>
+    <Reference Include="alglibnet2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>M:\download\alglib-3.7.0.csharp\csharp\alglibnet2.dll</HintPath>
     </Reference>
     <Reference Include="Mapack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -114,12 +115,15 @@
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Cubic.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Gaussian.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Hanning.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Linear.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\IBasisFunction.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Lorentian.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\OrbitrapFunction.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Quadratic.cs" />
     <Compile Include="Algorithms\Solvers\ChebyshevDelegate.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\LevenburgMarquadtSolver.cs" />
+    <Compile Include="Algorithms\Solvers\NumericalIntegrationBase.cs" />
+    <Compile Include="Algorithms\Solvers\TrapezoidIntegration.cs" />
     <Compile Include="Algorithms\SpectralProcessing\ISpectralComparer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralNormalizedDotProductComparer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralMzComparer.cs" />
@@ -221,6 +225,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Algorithms\Chromatograms\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

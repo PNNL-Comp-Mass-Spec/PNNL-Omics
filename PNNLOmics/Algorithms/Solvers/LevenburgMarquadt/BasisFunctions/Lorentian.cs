@@ -5,7 +5,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
     /// <summary>
     /// Basis function for the LM Algorithm using Lorentzian Peak Shapes
     /// </summary>
-    public class Lorentian : IBasisFunction
+    public class Lorentian : BasisFunctionBase
     {
         /// <summary>
         /// Evalutates the second order chebyshev polynomials
@@ -14,7 +14,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
         /// <param name="x">Input variables</param>
         /// <param name="functionResult">Returned sum value of your function</param>
         /// <param name="obj">?</param>
-        public void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj)
+        public override void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj)
         {
             //=a*1/(2*PI()*sigma*sigma)^0.5*EXP(-((X-Offset)^2)/2*sigma*sigma)
             //sum = height * 1 / Math.Pow((2.0 * pi * sigma * sigma), 0.5) * Math.Exp(0.5 * Math.Exp(-((x[0] - xOffset) * (x[0] - xOffset))) / (2.0 * sigma * sigma));

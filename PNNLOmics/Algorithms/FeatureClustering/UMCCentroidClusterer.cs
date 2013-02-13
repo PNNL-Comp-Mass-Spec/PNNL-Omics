@@ -104,7 +104,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             }
                         }
                         else
-                        {
+                        {                            
                             // Calculate the pairwise distance
                             PairwiseDistance<U> pairwiseDistance = new PairwiseDistance<U>();
                             pairwiseDistance.FeatureX = clusterI;

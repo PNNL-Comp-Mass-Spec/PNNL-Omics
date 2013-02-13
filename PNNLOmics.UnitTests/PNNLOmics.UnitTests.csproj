@@ -27,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -78,7 +79,9 @@
     <Compile Include="AlgorithmTests\PeakDetectorTests\PeakDetectorTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AlgorithmTests\Solvers\NumericalIntegrationTests.cs" />
     <Compile Include="AlgorithmTests\Solvers\LevenburgMarquadtSolverTests.cs" />
+    <Compile Include="AlgorithmTests\Solvers\SolverTestBase.cs" />
     <Compile Include="AlgorithmTests\STACTests\STACTests.cs" />
     <Compile Include="ConstantsTests\ConstantsTest.cs" />
     <Compile Include="DataTests\Features\UMCClusterLightTests.cs" />

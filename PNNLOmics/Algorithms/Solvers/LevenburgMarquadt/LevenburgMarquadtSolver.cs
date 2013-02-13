@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
@@ -46,11 +47,11 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
         /// <summary>
         /// Least squares solver 
         /// </summary>
-        /// <param name="baseline"></param>
-        /// <param name="alignee"></param>
-        /// <param name="coeffs"></param>
-        /// <returns></returns>
-        public bool Solve(List<double> baseline, List<double> alignee, ref double[] coeffs)
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="coeffs">Guess at coefficients</param>
+        /// <returns>True if solved, False if error</returns>
+        public SolverReport Solve(List<double> x, List<double> y, ref double[] coeffs)
         {
             double epsf     = 0;
             int maxits      = 0; 
@@ -59,17 +60,17 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
             alglib.lsfitstate   state;
             alglib.lsfitreport  report;
 
-            int         N   = baseline.Count;
-            double[,]   x   = new double[N, 1];
+            int         N   = x.Count;
+            double[,]   xMatrix   = new double[N, 1];
 
             int         i = 0;
-            foreach (double d in baseline)
+            foreach (double d in x)
             {
-                x[i++, 0] = d;
+                xMatrix[i++, 0] = d;
             }
 
-            alglib.lsfitcreatef(x,
-                                alignee.ToArray(),
+            alglib.lsfitcreatef(xMatrix,
+                                y.ToArray(),
                                 coeffs,
                                 DifferentialStep,
                                 out state);
@@ -85,13 +86,116 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
                             null);
 
 
+
             alglib.lsfitresults(state,
                                 out info, 
                                 out coeffs, 
                                 out report);
 
+            //Info    -   completion code:
+            //        * -7    gradient verification failed.
+            //                See LSFitSetGradientCheck() for more information.
+            //        *  1    relative function improvement is no more than
+            //                EpsF.
+            //        *  2    relative step is no more than EpsX.
+            //        *  4    gradient norm is no more than EpsG
+            //        *  5    MaxIts steps was taken
+            //        *  7    stopping conditions are too stringent,
+            //                further improvement is impossible
+
+            bool converged = (info >= 1 && info < 5);
+
             // This is the flag in the ALGLIB library that says things were good for this kind of fit.
-            return info == 2;
+            SolverReport solverReport = new SolverReport(report, converged);
+
+            return solverReport;
         }
+    }
+
+    /// <summary>
+    /// Contains information about the Levenburg-Marquadt execution.
+    /// </summary>
+    public class SolverReport
+    {        
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="report">Report from algorithm</param>
+        /// <param name="didConverge"></param>
+        public SolverReport(alglib.lsfitreport report, bool didConverge)
+        {
+            AverageError     = report.avgerror;
+            DidConverge      = didConverge;
+            IterationCount   = report.iterationscount;
+            MaxError         = report.maxerror;
+            PerPointNoise    = report.noise;
+            RmsError         = report.rmserror;
+            RSquared         = report.r2;
+            WeightedRmsError = report.wrmserror;
+        }
+        /// <summary>
+        /// Gets the average error.
+        /// </summary>
+        public double AverageError
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the number of iterations the software took to converge.
+        /// </summary>
+        public int IterationCount
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the maximum error 
+        /// </summary>
+        public double MaxError 
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the RMS value
+        /// </summary>
+        public double RmsError
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the weighted RMS value 
+        /// </summary>
+        public double WeightedRmsError
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the noise per point.
+        /// </summary>
+        public double[] PerPointNoise
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the flag indicating whether the algorithm converged.
+        /// </summary>
+        public bool DidConverge
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the R-squared value for the fit.
+        /// </summary>
+        public double RSquared
+        {
+            get;
+            private set;
+        }        
     }
 }

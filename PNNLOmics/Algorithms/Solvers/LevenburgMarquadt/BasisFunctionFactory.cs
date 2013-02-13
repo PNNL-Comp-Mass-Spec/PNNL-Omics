@@ -5,11 +5,11 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
     public class BasisFunctionFactory
     {
-        private IBasisFunction FunctionDelegateInterface;
+        private BasisFunctionBase FunctionDelegateInterface;
 
         public double[] Coefficients { get; set; }
 
-        public BasisFunctionFactory(IBasisFunction strategy)
+        public BasisFunctionFactory(BasisFunctionBase strategy)
         {
             FunctionDelegateInterface = strategy;
             Coefficients = new double[0];
@@ -21,65 +21,71 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 
         }
 
-        public static BasisFunctionFactory BasisFunctionSelector(BasisFunctionsEnum functionChoise)
+        public static BasisFunctionBase BasisFunctionSelector(BasisFunctionsEnum functionChoise)
         {
             //default
-            BasisFunctionFactory quadSolver = new BasisFunctionFactory(new Quadratic());
+            BasisFunctionBase solver = null;
             
             switch (functionChoise)
             {
+                case BasisFunctionsEnum.Linear:
+                    solver = new Linear();
+                    solver.Coefficients = new double[2];
+                    solver.Coefficients[0] = 1; // m
+                    solver.Coefficients[1] = 0; // b
+                    break;
                 case BasisFunctionsEnum.PolynomialQuadratic:
                     {
-                        quadSolver = new BasisFunctionFactory(new Quadratic());
-                        quadSolver.Coefficients = new double[3];
-                        quadSolver.Coefficients[0] = 1;//ax^2
-                        quadSolver.Coefficients[1] = 1;//bx
-                        quadSolver.Coefficients[2] = 1;//c
+                        solver = new Quadratic();
+                        solver.Coefficients = new double[3];
+                        solver.Coefficients[0] = 1;//ax^2
+                        solver.Coefficients[1] = 1;//bx
+                        solver.Coefficients[2] = 1;//c
                     }
                     break;
                 case BasisFunctionsEnum.PolynomialCubic:
                     {
-                        quadSolver = new BasisFunctionFactory(new Cubic());
-                        quadSolver.Coefficients = new double[4];
-                        quadSolver.Coefficients[0] = 1;//ax^3
-                        quadSolver.Coefficients[1] = 1;//bx^2
-                        quadSolver.Coefficients[2] = 1;//cx
-                        quadSolver.Coefficients[3] = 1;//d
+                        solver = new Cubic();
+                        solver.Coefficients = new double[4];
+                        solver.Coefficients[0] = 1;//ax^3
+                        solver.Coefficients[1] = 1;//bx^2
+                        solver.Coefficients[2] = 1;//cx
+                        solver.Coefficients[3] = 1;//d
                     }
                     break;
                 case BasisFunctionsEnum.Lorentzian:
                     {
-                        quadSolver = new BasisFunctionFactory(new Lorentian());
-                        quadSolver.Coefficients = new double[3];
-                        quadSolver.Coefficients[0] = 6;//width
-                        quadSolver.Coefficients[1] = 50;//height
-                        quadSolver.Coefficients[2] = -1;//xoffset
+                        solver = new Lorentian();
+                        solver.Coefficients = new double[3];
+                        solver.Coefficients[0] = 6;//width
+                        solver.Coefficients[1] = 50;//height
+                        solver.Coefficients[2] = -1;//xoffset
                     }
                     break;
                 case BasisFunctionsEnum.Gaussian:
                     {
-                        quadSolver = new BasisFunctionFactory(new Gaussian());
-                        quadSolver.Coefficients = new double[3];
-                        quadSolver.Coefficients[0] = 6;//sigma
-                        quadSolver.Coefficients[1] = 50;//height
-                        quadSolver.Coefficients[2] = -1;//xoffset
+                        solver = new Gaussian();
+                        solver.Coefficients = new double[3];
+                        solver.Coefficients[0] = 6;//sigma
+                        solver.Coefficients[1] = 50;//height
+                        solver.Coefficients[2] = -1;//xoffset
                     }
                     break;
                 case BasisFunctionsEnum.Chebyshev:
                     {
-                        quadSolver = new BasisFunctionFactory(new Chebyshev());
-                        quadSolver.Coefficients = new double[6];
-                        quadSolver.Coefficients[0] = 1;//?
-                        quadSolver.Coefficients[1] = 1;//?
+                        solver = new Chebyshev();
+                        solver.Coefficients = new double[6];
+                        solver.Coefficients[0] = 1;//?
+                        solver.Coefficients[1] = 1;//?
                     }
                     break;
                 case BasisFunctionsEnum.Orbitrap:
                     {
-                        quadSolver = new BasisFunctionFactory(new OrbitrapFunction());
-                        quadSolver.Coefficients = new double[3];
-                        quadSolver.Coefficients[0] = 1;//?
-                        quadSolver.Coefficients[1] = 1;//?
-                        quadSolver.Coefficients[2] = 1;//?
+                        solver = new OrbitrapFunction();
+                        solver.Coefficients = new double[3];
+                        solver.Coefficients[0] = 1;//?
+                        solver.Coefficients[1] = 1;//?
+                        solver.Coefficients[2] = 1;//?
                         //quadSolver.Coefficients[3] = 1;//?
                         //quadSolver.Coefficients[4] = 1;//?
                         //quadSolver.Coefficients[4] = 1;//?
@@ -87,18 +93,18 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
                     break;
                 case BasisFunctionsEnum.Hanning:
                     {
-                        quadSolver = new BasisFunctionFactory(new Hanning());
-                        quadSolver.Coefficients = new double[3];
-                        quadSolver.Coefficients[0] = 1;//?
-                        quadSolver.Coefficients[1] = 1;//?
-                        quadSolver.Coefficients[2] = 1;//?
+                        solver = new Hanning();
+                        solver.Coefficients = new double[3];
+                        solver.Coefficients[0] = 1;//?
+                        solver.Coefficients[1] = 1;//?
+                        solver.Coefficients[2] = 1;//?
                     }
                     break;
                 default:
                     Console.WriteLine("No Case Availible");
                     break;
             }
-            return quadSolver;
+            return solver;
         }
     }
 
