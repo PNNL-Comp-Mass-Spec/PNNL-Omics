@@ -163,9 +163,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coeffs[2] = -1;//xoffset            
             coeffs = EvaluateFunction(x, y, functionSelector);
 
-            Assert.AreEqual(0.50000000000535016d, coeffs[0]);//real is 0.5. 
-            Assert.AreEqual(150.00000000174555d, coeffs[1]);//real is 75
-            Assert.AreEqual(0.99999999999999312d, coeffs[2]);//real is 1
+            Assert.AreEqual(0.50000000000535016d, coeffs[0], .00001);//real is 0.5. 
+            Assert.AreEqual(150.00000000174555d, coeffs[1], .00001);//real is 75
+            Assert.AreEqual(0.99999999999999312d, coeffs[2], .00001);//real is 1
 
             //using 1 instead of 0.5
             //Assert.AreEqual(0.49999999817701907d, coeffs[0]);//real is 0.5. 

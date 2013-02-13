@@ -29,7 +29,7 @@ namespace PNNLOmics.Algorithms.Solvers
 
             // Get the start of the function
             sum = basis.Evaluate(coefficients, x);
-
+            x += delta;
             // We already evaluated the first point, now for each element within
             for (int i = 1; i < numberOfSamples; i++)
             {

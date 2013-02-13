@@ -48,7 +48,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             NumericalIntegrationBase integrator = new TrapezoidIntegration();
 
             Console.WriteLine("");
-            Console.WriteLine("Samples\tTime(ms)\tArea");
+            Console.WriteLine("Samples\tTime(ms)\tArea\tPercentError");
 
             for (int i = 0; i < 100; i++)
             {
@@ -64,9 +64,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                     DateTime end    = DateTime.Now;
                     sum += end.Subtract(start).TotalMilliseconds;
                 }
-
+                double percentError = (area - 22.5)/22.5*100;
                 double averageTime = sum / Convert.ToDouble(iterations);
-                Console.WriteLine("{0}\t{1}\t{2}", totalSamples, averageTime, area);                
+                Console.WriteLine("{0}\t{1}\t{2}\t{3}", totalSamples, averageTime, area, percentError);                
             }
         }
 
