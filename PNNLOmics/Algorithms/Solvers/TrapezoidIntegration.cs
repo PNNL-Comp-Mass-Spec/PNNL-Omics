@@ -33,9 +33,10 @@ namespace PNNLOmics.Algorithms.Solvers
             // We already evaluated the first point, now for each element within
             for (int i = 1; i < numberOfSamples; i++)
             {
+                x += delta;
                 double y = basis.Evaluate(coefficients, x);
                 sum += (y * 2);
-                x += delta;
+                
             }
 
             // Make sure we get the end of the function
