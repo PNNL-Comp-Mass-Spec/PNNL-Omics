@@ -39,7 +39,7 @@
   <ItemGroup>
     <Reference Include="alglibnet2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>M:\download\alglib-3.7.0.csharp\csharp\alglibnet2.dll</HintPath>
+      <HintPath>..\lib\alglibnet2.dll</HintPath>
     </Reference>
     <Reference Include="Mapack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
