@@ -24,7 +24,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             ConvertXYDataToArrays(CalculateLine(), out x, out y);
 
             BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Linear);
-            double[] coeffs = EvaluateFunction(x, y, functionSelector);
+            double[] coeffs = functionSelector.Coefficients;
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             Assert.AreEqual(5, coeffs[0], .0001);
             Assert.AreEqual(0, coeffs[1], .0001);
@@ -41,7 +42,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             ConvertXYDataToArrays(CalculatedParabola(), out x, out y);
 
             BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.PolynomialQuadratic);
-            double[] coeffs = EvaluateFunction(x, y, functionSelector);
+            double[] coeffs = functionSelector.Coefficients;
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             Assert.AreEqual(-0.99999999960388553d, coeffs[0], .000001);
             Assert.AreEqual(2.410211171560969E-10d, coeffs[1], .000001);
@@ -66,7 +68,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coeffs[0] = 30;//hanningI
             coeffs[1] = 5;//hanningK
             coeffs[2] = 1234.388251;//xoffset
-            coeffs = EvaluateFunction(x, y, functionSelector);
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             Assert.AreEqual(Math.Round(30.521054724721569d, 7), Math.Round(coeffs[0], 7), .00001);
             Assert.AreEqual(Math.Round(37.723968728457208d, 6), Math.Round(coeffs[1], 6), .00001);
@@ -92,7 +94,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coeffs[1] = 80000;//hanningK
             coeffs[2] = 1234.388251;//xoffset
 
-            coeffs = EvaluateFunction(x, y, functionSelector);
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             Assert.AreEqual(0.014591732782157337d, coeffs[0], .001);
             Assert.AreEqual(41816.913857810927d, coeffs[1], .001);
@@ -112,7 +114,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             BasisFunctionsEnum functionChoise = BasisFunctionsEnum.PolynomialCubic;
             BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
-            double[] coeffs = EvaluateFunction(x, y, functionSelector);
+            double[] coeffs = functionSelector.Coefficients;
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             Assert.AreEqual(-0.9999999999984106d, coeffs[0], .00001);
             Assert.AreEqual(5.0000000000444658d, coeffs[1], .00001);
@@ -134,7 +137,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             BasisFunctionsEnum functionChoise = BasisFunctionsEnum.Chebyshev;
 
             BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
-            double[] coeffs = EvaluateFunction(x, y, functionSelector);
+            double[] coeffs = functionSelector.Coefficients;
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             //Assert.AreEqual(-0.9999999999984106d, coeffs[0]);
             //Assert.AreEqual(5.0000000000444658d, coeffs[1]);
@@ -161,7 +165,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coeffs[0] = 6;//width
             coeffs[1] = 50;//height
             coeffs[2] = -1;//xoffset            
-            coeffs = EvaluateFunction(x, y, functionSelector);
+            
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             Assert.AreEqual(0.50000000000535016d, coeffs[0], .00001);//real is 0.5. 
             Assert.AreEqual(150.00000000174555d, coeffs[1], .00001);//real is 75
@@ -193,7 +198,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coeffs[0] = 6;//sigma
             coeffs[1] = 50;//height
             coeffs[2] = -1;//xoffset            
-            coeffs = EvaluateFunction(x, y, functionSelector);
+            
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             Assert.AreEqual(0.50000000014842283d, Math.Abs(coeffs[0]), .00001);//real is 0.5.  may return a negative value
             Assert.AreEqual(99.999999955476071d, coeffs[1], .00001);//real is 100
@@ -212,7 +218,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             ConvertXYDataToArrays(CalculatedParabola(), out x, out y);
 
             BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.PolynomialQuadratic);
-            double[] coeffs = EvaluateFunction(x, y, functionSelector);
+            double[] coeffs = functionSelector.Coefficients;
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             Assert.AreEqual(-0.99999999959999375d, coeffs[0], .00001);
             Assert.AreEqual(2.4338897338076459E-10d, coeffs[1], .00001);
@@ -232,7 +239,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             ConvertXYDataToArrays(ManualGaussian(), out x, out y);
 
             BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Gaussian);
-            double[] coeffs = EvaluateFunction(x, y, functionSelector);
+            double[] coeffs = functionSelector.Coefficients;
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
 
             //sigma must be positive
             Assert.AreEqual(0.50000000014842283d, Math.Abs(coeffs[0]), .00001);//real is 0.5.  may return a negative value

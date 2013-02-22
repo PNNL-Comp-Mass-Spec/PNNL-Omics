@@ -21,9 +21,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         /// <param name="initialCoefficients"></param>
         /// <param name="functionChoise"></param>
         /// <returns></returns>
-        protected double[] EvaluateFunction(List<double> x, List<double> y, BasisFunctionBase basisFunction)
+        protected SolverReport EvaluateFunction(List<double> x, List<double> y, BasisFunctionBase basisFunction, ref double[] coeffs)
         {
-            double[] coeffs = basisFunction.Coefficients;
+            coeffs = basisFunction.Coefficients;
             alglib.ndimensional_pfunc myDelegate = basisFunction.FunctionDelegate;
 
             LevenburgMarquadtSolver solver = new LevenburgMarquadtSolver();
@@ -45,8 +45,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 //quadSolver2.FunctionDelegate(coeffs, new double[] { xValue }, ref fitValue, null);
                 myDelegate.Invoke(coeffs, new double[] { xValue }, ref fitValue, null);
                 Console.WriteLine("{0}\t{1}\t{2}", xValue, fitValue, yValue);
-            }
-            return coeffs;
+            }            
+            return worked;
         }
 
         protected static void ConvertXYDataToArrays(List<PNNLOmics.Data.XYData> data, out List<double> x, out List<double> y)
