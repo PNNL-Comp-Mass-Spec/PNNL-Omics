@@ -119,7 +119,8 @@ namespace PNNLOmicsIO.Utilities.ConsoleUtil
 						}
 
 						// Store the parameter in the case-sensitive dictionary
-						m_ParameterValueMap.Add(key, value);
+						if (!m_ParameterValueMap.ContainsKey(key))
+							m_ParameterValueMap.Add(key, value);
 
 						// Store the parameter in the case-insensitive dictionary
 						if (!m_ParameterValueMapAnyCase.ContainsKey(key))
