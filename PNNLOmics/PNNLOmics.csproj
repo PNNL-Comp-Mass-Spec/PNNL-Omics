@@ -49,6 +49,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MathNet.Iridium.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -76,6 +79,7 @@
     </Compile>
     <Compile Include="Algorithms\Alignment\LinearEquation.cs" />
     <Compile Include="Algorithms\Alignment\LinearEquationCalculator.cs" />
+    <Compile Include="Algorithms\Distance\PearsonCorrelation.cs" />
     <Compile Include="Algorithms\Distance\PowerEuclideanDistance.cs" />
     <Compile Include="Algorithms\Distance\DistanceFactory.cs" />
     <Compile Include="Algorithms\Distance\DistanceMetric.cs" />
