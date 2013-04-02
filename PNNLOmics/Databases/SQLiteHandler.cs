@@ -329,6 +329,11 @@ namespace PNNLOmics.Databases
             return CreateDatabase(OverwriteExistingDatabase);
         }
 
+        /// <summary>
+        /// Writes a DataTable out to the SQLite database
+        /// </summary>
+        /// <param name="Table">DataTable to write to database</param>
+        /// <returns>True, if the function completes successfully</returns>
         public bool WriteDataTableToDatabase(
             DataTable Table)
         {

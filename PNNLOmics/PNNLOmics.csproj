@@ -225,6 +225,9 @@
     <Compile Include="Utilities\PathUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PNNLOmics.XML">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="PNNLOmicsElementData.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
