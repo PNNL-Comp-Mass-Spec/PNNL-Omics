@@ -79,13 +79,9 @@ namespace PNNLOmics.Algorithms.Distance
                 r = alglib.pearsoncorr2(x, y, n);
                 RSquared = r * r;
                 DegreesOfFreedom = x.Length - 2;
-                                
-                Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
-                Microsoft.Office.Interop.Excel.WorksheetFunction wsf = app.WorksheetFunction;
-                Pvalue = wsf.TDist(
-                    (r * Math.Sqrt(DegreesOfFreedom) / Math.Sqrt(1 - r * r)),
-                    DegreesOfFreedom,
-                    2);
+
+                Pvalue = 2 * (1 - alglib.studenttdistribution(DegreesOfFreedom,
+                    (r * Math.Sqrt(DegreesOfFreedom) / Math.Sqrt(1 - r * r))));
                                 
                 return true;
             }
