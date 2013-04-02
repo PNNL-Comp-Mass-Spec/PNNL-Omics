@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Distance
 {
@@ -63,8 +64,8 @@ namespace PNNLOmics.Algorithms.Distance
         /// <summary>
         /// Calculates the Pearson Product-Moment Correlation Coefficient (r)
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">vector or array</param>
+        /// <param name="y">vector or array</param>
         /// <returns>True, if the function completes successfully</returns>
         public bool Pearson(double[] x, double[] y)
         {
@@ -95,10 +96,46 @@ namespace PNNLOmics.Algorithms.Distance
         }
 
         /// <summary>
+        /// Calculates the Pearson Product-Moment Correlation Coefficient (r) on Y values from Lists of XYData
+        /// </summary>
+        /// <param name="x">vector or array</param>
+        /// <param name="y">vector or array</param>
+        /// <returns>True, if the function completes successfully</returns>
+        public bool Pearson(List<XYData> data1, List<XYData> data2)
+        {
+            if (data1.Count != data2.Count)
+                return false;
+
+            try
+            {
+                int n = data1.Count;
+
+                //convert XYData to arrays
+                int xLength = data1.Count;
+                double[] vectorY1 = new double[xLength];
+                double[] vectorY2 = new double[xLength];
+
+                for (int i = 0; i < xLength; i++)
+                {
+                    vectorY1[i] = data1[i].Y;
+                    vectorY2[i] = data2[i].Y;
+                }
+
+                Pearson(vectorY1, vectorY2);
+
+                return true;
+            }
+            catch (Exception exc)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Calculates the Pearson Product-Moment Correlation Coefficient (r)
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">vector or array</param>
+        /// <param name="y">vector or array</param>
         /// <returns>True, if the function completes successfully</returns>
         public bool Pearson(List<double> x, List<double> y)
         {
@@ -111,8 +148,8 @@ namespace PNNLOmics.Algorithms.Distance
         /// <summary>
         /// Calculates the Pearson Product-Moment Correlation Coefficient (r)
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">vector or array</param>
+        /// <param name="y">vector or array</param>
         /// <returns>True, if the function completes successfully</returns>
         public bool Pearson(float[] x, float[] y)
         {
@@ -133,8 +170,8 @@ namespace PNNLOmics.Algorithms.Distance
         /// <summary>
         /// Calculates the Pearson Product-Moment Correlation Coefficient (r)
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">vector or array</param>
+        /// <param name="y">vector or array</param>
         /// <returns>True, if the function completes successfully</returns>
         public bool Pearson(List<float> x, List<float> y)
         {
@@ -147,8 +184,8 @@ namespace PNNLOmics.Algorithms.Distance
         /// <summary>
         /// Calculates the Pearson Product-Moment Correlation Coefficient (r)
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">vector or array</param>
+        /// <param name="y">vector or array</param>
         /// <returns>True, if the function completes successfully</returns>
         public bool Pearson(int[] x, int[] y)
         {
@@ -169,8 +206,8 @@ namespace PNNLOmics.Algorithms.Distance
         /// <summary>
         /// Calculates the Pearson Product-Moment Correlation Coefficient (r)
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">vector or array</param>
+        /// <param name="y">vector or array</param>
         /// <returns>True, if the function completes successfully</returns>
         public bool Pearson(List<int> x, List<int> y)
         {
