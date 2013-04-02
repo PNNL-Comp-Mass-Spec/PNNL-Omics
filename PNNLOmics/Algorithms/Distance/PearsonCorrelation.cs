@@ -69,7 +69,7 @@ namespace PNNLOmics.Algorithms.Distance
         /// <returns>True, if the function completes successfully</returns>
         public bool Pearson(double[] x, double[] y)
         {
-            if (x.Length != y.Length)
+            if (!CheckVectors(x, y))
                 return false;
 
             try
@@ -121,9 +121,7 @@ namespace PNNLOmics.Algorithms.Distance
                     vectorY2[i] = data2[i].Y;
                 }
 
-                Pearson(vectorY1, vectorY2);
-
-                return true;
+                return Pearson(vectorY1, vectorY2);
             }
             catch (Exception exc)
             {
@@ -216,6 +214,37 @@ namespace PNNLOmics.Algorithms.Distance
 
             return Pearson(x.ToArray(), y.ToArray());
         }
-    }
+
+        /// <summary>
+        /// Checks that the two vectors are of equal length, and that there are
+        /// more than 3 elements in the vector or array.
+        /// </summary>
+        /// <param name="x">vector or array</param>
+        /// <param name="y">vector or array</param>
+        /// <returns>True, if the parameters are correct for correlation</returns>
+        public bool CheckVectors(double[] x, double[] y)
+        {
+            bool b_Successful = true;
+
+            if (x.Length != y.Length)
+                return false;
+
+            if (x.Length < 3)
+                return false;
+
+            return b_Successful;
+        }
+
+        /// <summary>
+        /// Generic method to write results to console, including r, R^2, and p-value
+        /// </summary>
+        public void WriteOutResultsToConsole()
+        {
+            Console.WriteLine(
+                string.Format("Results from Pearson Product-Moment Correlation Analysis...\n" +
+                "r = {0}\nR-squared = {1}\nP-Value = {2}",
+                r, RSquared, Pvalue));
+        }
         #endregion
+    }        
 }
