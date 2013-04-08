@@ -23,6 +23,11 @@ namespace PNNLOmics.Algorithms.PeakDetection
         {
             this.Parameters = new PeakThresholderParameters();
         }
+
+        public PeakThresholder(PeakThresholderParameters parameters)
+        {
+            this.Parameters = parameters;
+        }
         
         /// <summary>
         /// calculate mean of the noise (aka mean of the data) then calculate the standard deviation of the noise (aks data)
@@ -47,49 +52,32 @@ namespace PNNLOmics.Algorithms.PeakDetection
             if (!Parameters.isDataThresholded)
             {
                 #region calculate average noise value and average shoulderNoiseLeve  = baseline
-                double averageShoulderNoise = 0;
-                double averagePeakNoise = 0;
+                double averageShoulderNoise = 0;//average of higher minima
+                double averagePeakNoise = 0;//average of all data.  usefull if noise dominates
+                double averageBackgroundNoise = 0;//average of lower minima = baseline
+                double averageNoise = 0; //average between the the lower and higher minima.  this means that half the minima are higher and half the minima are lower.  should also work well on large numbers of points
                 
                 for (int i = 0; i < numPoints; i++)
                 {
                     //averageShoulderNoise += peakShoulderNoise[i];
                     //averagePeakNoise += peakData[i].Y;
-                    averageShoulderNoise += peakList[i].LocalLowestMinimaHeight;
+                    averageShoulderNoise += peakList[i].LocalHighestMinimaHeight;
+                    averageBackgroundNoise += peakList[i].LocalLowestMinimaHeight;
                     averagePeakNoise += peakList[i].Height;
+                    averageNoise += (peakList[i].LocalHighestMinimaHeight + peakList[i].LocalLowestMinimaHeight) / 2;//this is pretty nice
                 }
                 #endregion
-                averageShoulderNoise /= numPoints;//baseline
+                averageShoulderNoise /= numPoints;//worst case senario
+                averageBackgroundNoise /= numPoints;//average background or baseline
                 averagePeakNoise /= numPoints;//works if the noise dominates the spectra
+                averageNoise /= numPoints;//good depection of the overall background of the data
 
                 #region calculate standard deviation
-                double stdevDeviationsSquared = 0;
-                double stdevDeviations = 0;
-                double stdevSumDeviationsSquared = 0;
-                double standardDevAllSignal =0;
-                double MAD = 0; //Median Absolute Deviation
-                double stdevMAD = 0;//standard deviation derived from MAD
-
-                List<ProcessedPeak> sortedCentroidedPeak = new List<ProcessedPeak>();
-                List<double> medanDeviationList = new List<double>();
-
-                sortedCentroidedPeak = peakList.OrderBy(p => p.Height).ToList();
-
-                double median = sortedCentroidedPeak[(int)(sortedCentroidedPeak.Count / 2)].Height;//if it is sorted.
-
-                double medianDeviations = 0;
-
-                for (int i = 0; i < numPoints; i++)
-                {
-                    stdevDeviations = (peakList[i].Height - averagePeakNoise);
-                    stdevDeviationsSquared = stdevDeviations * stdevDeviations;
-                    stdevSumDeviationsSquared += stdevDeviationsSquared;
-
-                    medianDeviations = Math.Abs(peakList[i].Height - median);
-                    medanDeviationList.Add(medianDeviations);
-                }
-                medanDeviationList.Sort();
-                MAD = medanDeviationList[(int)(medanDeviationList.Count / 2)];
-                
+                double stdevSumDeviationsSquared;
+                double standardDevAllSignal;
+                double MAD;
+                double stdevMAD;
+                CalculateDeviation(peakList, numPoints, averageNoise, out stdevSumDeviationsSquared, out standardDevAllSignal, out MAD, out stdevMAD);
                 
                 #endregion
                 stdevMAD = MAD * 1.4826;
@@ -99,18 +87,19 @@ namespace PNNLOmics.Algorithms.PeakDetection
                 {
                     ProcessedPeak thresholdedPeak = new ProcessedPeak();
 
-                    signaltoShoulder = peakList[i].Height / peakList[i].LocalLowestMinimaHeight;
-                    signaltoBackground = peakList[i].Height / averageShoulderNoise;
+                    signaltoShoulder = peakList[i].Height / peakList[i].LocalHighestMinimaHeight;
+                    signaltoBackground = peakList[i].Height / averageBackgroundNoise;
                     signaltoNoise = peakList[i].Height / averagePeakNoise;
 
-                    thresholdIntensity = Parameters.SignalToShoulderCuttoff * stdevMAD + averagePeakNoise;
+                    //thresholdIntensity = Parameters.SignalToShoulderCuttoff * stdevMAD + averagePeakNoise;//average peak noise is too high
+                    thresholdIntensity = Parameters.SignalToShoulderCuttoff * stdevMAD + averageNoise;//average noise is nice here
 
                     if (peakList[i].Height >= thresholdIntensity)
                     {
                         //include high abundant peaks
                         thresholdedPeak = peakList[i];
                         thresholdedPeak.SignalToNoiseGlobal = signaltoNoise;
-                        thresholdedPeak.SignalToNoiseLocalMinima = signaltoShoulder;
+                        thresholdedPeak.SignalToNoiseLocalHighestMinima = signaltoShoulder;
                         thresholdedPeak.SignalToBackground = signaltoBackground;
                        
                         ResultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);
@@ -169,6 +158,38 @@ namespace PNNLOmics.Algorithms.PeakDetection
                 }
             }
             return ResultListThresholded;
+        }
+
+        private static void CalculateDeviation(List<ProcessedPeak> peakList, int numPoints, double averagePeakNoise, out double stdevSumDeviationsSquared, out double standardDevAllSignal, out double MAD, out double stdevMAD)
+        {
+            double stdevDeviationsSquared = 0;
+            double stdevDeviations = 0;
+            stdevSumDeviationsSquared = 0;
+            standardDevAllSignal = 0;
+            MAD = 0; //Median Absolute Deviation
+            stdevMAD = 0;//standard deviation derived from MAD
+
+            List<ProcessedPeak> sortedCentroidedPeak = new List<ProcessedPeak>();
+            List<double> medanDeviationList = new List<double>();
+
+            sortedCentroidedPeak = peakList.OrderBy(p => p.Height).ToList();
+
+            double median = sortedCentroidedPeak[(int)(sortedCentroidedPeak.Count / 2)].Height;//if it is sorted.
+
+            double medianDeviations = 0;
+
+            for (int i = 0; i < numPoints; i++)
+            {
+                stdevDeviations = (peakList[i].Height - averagePeakNoise);
+                stdevDeviationsSquared = stdevDeviations * stdevDeviations;
+                stdevSumDeviationsSquared += stdevDeviationsSquared;
+
+                medianDeviations = Math.Abs(peakList[i].Height - median);
+                medanDeviationList.Add(medianDeviations);
+            }
+            medanDeviationList.Sort();
+            MAD = medanDeviationList[(int)(medanDeviationList.Count / 2)];
+
         }
     }
 }

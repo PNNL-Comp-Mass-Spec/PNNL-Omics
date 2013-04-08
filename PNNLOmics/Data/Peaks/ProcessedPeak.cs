@@ -20,6 +20,10 @@ namespace PNNLOmics.Data
         /// </summary>
         public double LocalLowestMinimaHeight { get; set; }
 
+        /// <summary>
+        /// the higher of the two local minima (highest between the minima lower in mass and the minima higher in mass)
+        /// </summary>
+        public double LocalHighestMinimaHeight { get; set; }
         
         /// <summary>
         /// the closes minima on the lower mass side of the peak has this index.
@@ -39,7 +43,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Maxintensity/local lowest minima
         /// </summary>
-        public double SignalToNoiseLocalMinima { get; set; }
+        public double SignalToNoiseLocalHighestMinima { get; set; }
 
         /// <summary>
         /// Maxintensity/average of local minima

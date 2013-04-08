@@ -41,6 +41,15 @@ namespace PNNLOmics.Algorithms.PeakDetection
         }
 
         /// <summary>
+        /// default constructor that loads default values
+        /// </summary>
+        public PeakCentroiderParameters(PeakFitType fitType)
+        {
+            Clear();
+            this.FWHMPeakFitType = fitType;
+        }
+
+        /// <summary>
         /// initializes the parameters to their defaults.
         /// </summary>
         public void Clear()

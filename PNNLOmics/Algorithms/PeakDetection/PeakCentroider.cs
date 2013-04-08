@@ -32,6 +32,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
         }
 
         /// <summary>
+        /// Default constructor
+        /// </summary>
+        public PeakCentroider(PeakCentroiderParameters parameters)
+        {
+            this.Parameters = parameters;
+        }
+
+        /// <summary>
         /// Find candidate peaks in the spectra (incressing and then decreasing).  For each peak top, find centroid
         /// </summary>
         /// <param name="RawXYData">List of PNNL Omics XYData</param>
@@ -91,6 +99,8 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             newcentroidPeak.LocalLowestMinimaHeight = peakTopCalculation.FindShoulderNoise(ref rawXYData, i - 1, Parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
                             newcentroidPeak.MinimaOfLowerMassIndex = shoulderNoiseToLeftIndex;
                             newcentroidPeak.MinimaOfHigherMassIndex = shoulderNoiseToRightIndex;
+                            newcentroidPeak.LocalHighestMinimaHeight = Convert.ToDouble(Math.Max((decimal)rawXYData[shoulderNoiseToLeftIndex].Y, (decimal)rawXYData[shoulderNoiseToRightIndex].Y));
+                            newcentroidPeak.LocalHighestMinimaHeight = Convert.ToDouble(Math.Max((decimal)newcentroidPeak.LocalHighestMinimaHeight, 1));//takes care of the 0 condition
 
                             //2.   centroid peaks via fitting a parabola
                             //TODO: decide if sending indexes is better becaus the modulariy of the parabola finder will be broken
@@ -110,6 +120,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             int centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
 
                             newcentroidPeak.Width = Convert.ToSingle(peakTopCalculation.FindFWHM(rawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, Parameters.FWHMPeakFitType));
+
+                            //4.  calculate signal to noise
+                            newcentroidPeak.SignalToNoiseLocalHighestMinima = newcentroidPeak.Height / newcentroidPeak.LocalHighestMinimaHeight;
+                            
 
                             //4.  add centroided peak
                             resultsListCentroid.Add(newcentroidPeak);
@@ -522,7 +536,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                 {
                     return defaultNoiseValue;//set equal to 1 so dividing signal by the noise will produce Signal to noise = intensity
                 }
-                return minIntensityRight;//0,1
+                return defaultNoiseValue;//0,1//set equal to 1 so dividing signal by the noise will produce Signal to noise = intensity
             }
             //else//1,?  //return the lowest when both are present
             if (minIntensityRight > 0)
@@ -662,7 +676,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                                     XYData pointTransfer = new XYData(0, 0);
                                     pointTransfer.X = rawData[i].X;
                                     pointTransfer.Y = (float)(Math.Log10(rawData[i].Y));
-                                    peakRightSideList.Add(pointTransfer);
+                                    if (rawData[i].Y != 0)//prevents infinity solution from log10
+                                    {
+                                        peakRightSideList.Add(pointTransfer);
+                                    }
                                 }
                                 transformedHalfHeight = Math.Log10(Y0HalfHeight);
                             }
@@ -766,7 +783,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                                     XYData pointTransfer = new XYData(0, 0);
                                     pointTransfer.X = rawData[i].X;
                                     pointTransfer.Y = (float)(Math.Log10(rawData[i].Y));
-                                    peakLeftSideList.Add(pointTransfer);
+                                    if (rawData[i].Y != 0)//prevents infinity solution from log10
+                                    {
+                                        peakLeftSideList.Add(pointTransfer);
+                                    }
                                 }
                                 transformedHalfHeight = Math.Log10(Y0HalfHeight);
                             }

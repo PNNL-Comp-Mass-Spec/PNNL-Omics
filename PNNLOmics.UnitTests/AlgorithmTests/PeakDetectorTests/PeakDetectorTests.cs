@@ -49,20 +49,26 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             loadTestScanData(ref xvals, ref yvals);
             Assert.That(xvals != null);
             Assert.AreEqual(122032, xvals.Length);
+            Console.WriteLine("Passed Load" + Environment.NewLine);
 
             List<XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
             PeakCentroider newPeakCentroider = new PeakCentroider();
             List<ProcessedPeak> centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
 
+            Assert.AreEqual(15255, centroidedPeakList.Count);
+            Console.WriteLine("Passed Peak Detection" + Environment.NewLine);
+
             PeakThresholder newPeakThresholder = new PeakThresholder();
-            newPeakThresholder.Parameters.SignalToShoulderCuttoff = 3f;
+            //newPeakThresholder.Parameters.SignalToShoulderCuttoff = 3f;//3 sigma
+            newPeakThresholder.Parameters.SignalToShoulderCuttoff = 4f;//4 sigma// this is very nice
             List<ProcessedPeak> thresholdedData = newPeakThresholder.ApplyThreshold(centroidedPeakList);
 
             Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
 
             Assert.That(thresholdedData.Count > 0);
-            Assert.AreEqual(thresholdedData.Count, 53);
+            //Assert.AreEqual(thresholdedData.Count, 53);
+            Assert.AreEqual(thresholdedData.Count, 414);
 
             displayPeakData(thresholdedData);
             Console.WriteLine();
@@ -86,7 +92,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             Collection<Peak> finalPeakList = newPeakDetector.DetectPeaks(dataInput);
 
             Console.WriteLine("We found " + finalPeakList.Count + " Peaks.");
-            Assert.AreEqual(finalPeakList.Count, 53);
+            //Assert.AreEqual(finalPeakList.Count, 53);
+            Assert.AreEqual(finalPeakList.Count, 3134);
         }
 
 
@@ -95,6 +102,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
         private void displayPeakData(List<ProcessedPeak> centroidedPeakList)
         {
             StringBuilder sb = new StringBuilder();
+            sb.Append("m/z" + '\t' + "Height" + '\t' + "Width");
             foreach (var item in centroidedPeakList)
             {
                 sb.Append(item.XValue);
