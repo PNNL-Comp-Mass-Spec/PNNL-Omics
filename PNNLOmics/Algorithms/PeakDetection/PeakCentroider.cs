@@ -659,11 +659,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(0, 0);
-                                    //pointTransfer = rawData[i];
-                                    //so we break the referencing
-                                    pointTransfer.X = rawData[i].X;
-                                    pointTransfer.Y = rawData[i].Y;
+                                    XYData pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
                                     peakRightSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
@@ -673,10 +669,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(0, 0);
-                                    pointTransfer.X = rawData[i].X;
-                                    pointTransfer.Y = (float)(Math.Log10(rawData[i].Y));
-                                    if (rawData[i].Y != 0)//prevents infinity solution from log10
+                                    float logY = (float) (Math.Log10(rawData[i].Y));
+                                    XYData pointTransfer = new XYData(rawData[i].X, logY);
+
+                                    if (rawData[i].Y > 0)//prevents infinity solution from log10
                                     {
                                         peakRightSideList.Add(pointTransfer);
                                     }
@@ -688,14 +684,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(0, 0);
-                                    pointTransfer = rawData[i];
+                                    XYData pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
                                     peakRightSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
                             }
                             break;
                     }
+
                     #endregion
 
                     //fit parabola to the data so we can extrapolate the missing FWHM 
@@ -769,8 +765,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(0, 0);
-                                    pointTransfer = rawData[i];
+                                    XYData pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
                                     peakLeftSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
@@ -780,10 +775,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(0, 0);
-                                    pointTransfer.X = rawData[i].X;
-                                    pointTransfer.Y = (float)(Math.Log10(rawData[i].Y));
-                                    if (rawData[i].Y != 0)//prevents infinity solution from log10
+                                    float logY = (float)(Math.Log10(rawData[i].Y));
+                                    XYData pointTransfer = new XYData(rawData[i].X, logY);
+
+                                    if (rawData[i].Y > 0)//prevents infinity solution from log10
                                     {
                                         peakLeftSideList.Add(pointTransfer);
                                     }
@@ -795,8 +790,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             {
                                 for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(0, 0);
-                                    pointTransfer = rawData[i];
+                                    XYData pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
                                     peakLeftSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
