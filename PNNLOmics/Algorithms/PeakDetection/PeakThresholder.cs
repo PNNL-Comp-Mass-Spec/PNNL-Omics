@@ -40,8 +40,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <param name="parameters">Peakthreshold parameters</param>
         public List<ProcessedPeak> ApplyThreshold(List<ProcessedPeak> peakList)
         {
-            List<ProcessedPeak> ResultListThresholded = new List<ProcessedPeak>();
-            //int numPoints = peakData.Count;
+            List<ProcessedPeak> resultListThresholded = new List<ProcessedPeak>();
+
+            if (peakList == null || peakList.Count == 0) return resultListThresholded;
+
             int numPoints = peakList.Count;
 
             double signaltoShoulder = 0;
@@ -102,7 +104,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                         thresholdedPeak.SignalToNoiseLocalHighestMinima = signaltoShoulder;
                         thresholdedPeak.SignalToBackground = signaltoBackground;
                        
-                        ResultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);
+                        resultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);
                     }
                     else
                     {
@@ -154,10 +156,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     ProcessedPeak thresholdedPeak = new ProcessedPeak();
 
                     thresholdedPeak = peakList[i];
-                    ResultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);
+                    resultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);
                 }
             }
-            return ResultListThresholded;
+            return resultListThresholded;
         }
 
         private static void CalculateDeviation(List<ProcessedPeak> peakList, int numPoints, double averagePeakNoise, out double stdevSumDeviationsSquared, out double standardDevAllSignal, out double MAD, out double stdevMAD)

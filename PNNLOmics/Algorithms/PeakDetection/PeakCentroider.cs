@@ -48,6 +48,8 @@ namespace PNNLOmics.Algorithms.PeakDetection
         {
             List<ProcessedPeak> resultsListCentroid = new List<ProcessedPeak>();
 
+            if (rawXYData == null || rawXYData.Count == 0) return resultsListCentroid;
+
             int numPoints = rawXYData.Count;
 
             if (Parameters.IsXYDataCentroided)
