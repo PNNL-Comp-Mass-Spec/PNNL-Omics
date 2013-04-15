@@ -36,6 +36,11 @@ namespace PNNLOmics.Data
         public int MinimaOfHigherMassIndex { get; set; }
 
         /// <summary>
+        /// the closes index to the apex on the left.  The closese index to the apex on the right is +1 point over
+        /// </summary>
+        public int CenterIndexLeft { get; set; }
+
+        /// <summary>
         /// Maxintensity/noise threshold (Xsigma above the average noise)
         /// </summary>
         public double SignalToNoiseGlobal { get; set; }
@@ -61,10 +66,36 @@ namespace PNNLOmics.Data
         public int ScanNumber { get; set; }
 
         //TODO: Remove the charge and scannumber and make them part of the feature.
-        public MSFeatureLight Feature
+        public MSFeatureLight Feature {get; set; }
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public ProcessedPeak()
         {
-            get;
-            set;
+        }
+
+        /// <summary>
+        /// simple constructor
+        /// </summary>
+        /// <param name="xValue">x value</param>
+        /// <param name="height">y value</param>
+        public ProcessedPeak(double xValue, double height)
+        {
+            XValue = xValue;
+            Height = height;
+        }
+
+        /// <summary>
+        /// simple constructor
+        /// </summary>
+        /// <param name="xValue">x value</param>
+        /// <param name="height">y value</param>
+        /// <param name="scan">center scan where peak was found</param>
+        public ProcessedPeak(double xValue, double height, int scan)
+            :this(xValue,height)
+        {
+            ScanNumber = scan;
         }
 
         public override void Clear()

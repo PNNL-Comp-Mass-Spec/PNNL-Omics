@@ -102,6 +102,15 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             newcentroidPeak.LocalHighestMinimaHeight = Convert.ToDouble(Math.Max((decimal)rawXYData[shoulderNoiseToLeftIndex].Y, (decimal)rawXYData[shoulderNoiseToRightIndex].Y));
                             newcentroidPeak.LocalHighestMinimaHeight = Convert.ToDouble(Math.Max((decimal)newcentroidPeak.LocalHighestMinimaHeight, 1));//takes care of the 0 condition
 
+                            if (rawXYData[i].Y > rawXYData[i - 2].Y)//decide which flanking point is lower.  the higher will have the max closer to it.  i-1 is the max point
+                            {
+                                newcentroidPeak.CenterIndexLeft = i - 1;//this is interesting because we always return the point just to the left of the parabola apex
+                            }
+                            else
+                            {
+                                newcentroidPeak.CenterIndexLeft = i - 2;
+                            }
+
                             //2.   centroid peaks via fitting a parabola
                             //TODO: decide if sending indexes is better becaus the modulariy of the parabola finder will be broken
                             //store points to go to the parabola fitter
