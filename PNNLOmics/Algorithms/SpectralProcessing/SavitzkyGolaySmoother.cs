@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Numerics.LinearAlgebra.Generic;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
@@ -79,6 +80,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
              return inputValues;
          }
 
+        
         /// <summary>
         /// Performs SavitzkyGolay smoothing on a list of XYData
         /// </summary>
@@ -94,60 +96,62 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
 
             int m = (PointsForSmoothing - 1) / 2;
             int colCount = inputValues.Count;
-            List<XYData> returnYValues = new List<XYData>();
+            double[] yvalues = inputValues.Select(point => point.Y).ToArray();
 
             if (_smoothingFilters == null)
             {
                 _smoothingFilters = CalculateSmoothingFilters(PolynomialOrder, PointsForSmoothing);
             }
 
-            var conjTransposeMatrix = _smoothingFilters.ConjugateTranspose();
+            Matrix<double> conjTransposeMatrix = _smoothingFilters.ConjugateTranspose();
 
+            Vector<double> conjTransposeColumn;
+            double multiplicationResult;
             for (int i = 0; i <= m; i++)
             {
-                var conjTransposeColumn = conjTransposeMatrix.Column(i);
+                conjTransposeColumn = conjTransposeMatrix.Column(i);
 
-                double multiplicationResult = 0;
+                multiplicationResult = 0;
                 for (int z = 0; z < PointsForSmoothing; z++)
                 {
-                    multiplicationResult += (conjTransposeColumn[z] * inputValues[z].Y);
+                    multiplicationResult += (conjTransposeColumn[z] * yvalues[z]);
                 }
-                returnYValues.Add(new XYData(inputValues[i].X,multiplicationResult));
+                inputValues[i].Y = multiplicationResult;
             }
 
-            var conjTransposeColumnResult = conjTransposeMatrix.Column(m);
+            Vector<double> conjTransposeColumnResult = conjTransposeMatrix.Column(m);
 
             for (int i = m + 1; i < colCount - m - 1; i++)
             {
-                double multiplicationResult = 0;
+                multiplicationResult = 0;
                 for (int z = 0; z < PointsForSmoothing; z++)
                 {
-                    multiplicationResult += (conjTransposeColumnResult[z] * inputValues[i - m + z].Y);//3/4
+                    multiplicationResult += (conjTransposeColumnResult[z] * yvalues[i - m + z]);
                 }
-                returnYValues.Add(new XYData(inputValues[i].X, multiplicationResult));
+                inputValues[i].Y = multiplicationResult;
             }
 
             for (int i = 0; i <= m; i++)
             {
-                var conjTransposeColumn = conjTransposeMatrix.Column(m + i);
+                conjTransposeColumn = conjTransposeMatrix.Column(m + i);
 
-                double multiplicationResult = 0;
+                multiplicationResult = 0;
                 for (int z = 0; z < PointsForSmoothing; z++)
                 {
-                    multiplicationResult += (conjTransposeColumn[z] * inputValues[colCount - PointsForSmoothing + z].Y);
+                    multiplicationResult += (conjTransposeColumn[z] * yvalues[colCount - PointsForSmoothing + z]);
                 }
-                returnYValues.Add(new XYData(inputValues[colCount - m + i - 1].X, multiplicationResult));
+                inputValues[colCount - m - 1 + i].Y = multiplicationResult;
             }
 
             if (!AllowNegativeValues)
             {
-                for (int i = 0; i < returnYValues.Count; i++)
+                foreach (XYData t in inputValues)
                 {
-                    if (returnYValues[i].Y < 0) returnYValues[i].Y = 0;
+                    if (t.Y < 0) t.Y = 0;
                 }
             }
 
-            return returnYValues;
+            return inputValues;
         }
 
         /// <summary>
