@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using NUnit.Framework;
+using PNNLOmics.Algorithms.SpectralProcessing;
 using PNNLOmics.Data;
 using PNNLOmics.Algorithms.PeakDetection;
 using System.Collections.ObjectModel;
@@ -94,6 +95,39 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             Console.WriteLine("We found " + finalPeakList.Count + " Peaks.");
             //Assert.AreEqual(finalPeakList.Count, 53);
             Assert.AreEqual(finalPeakList.Count, 3134);
+        }
+
+        [Test]
+        public void SmoothTest()
+        {
+            float[] xvals = null;
+            float[] yvals = null;
+
+            loadTestScanData(ref xvals, ref yvals);
+            Assert.That(xvals != null);
+            Assert.AreEqual(122032, xvals.Length);
+
+            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+            List<XYData> dataInput = new List<XYData>(testXYData);
+
+            int numberOfSmootherPoints = 9;
+            int polynomialOrder = 2;
+            bool allowNegativeValues = true;//faster
+            SavitzkyGolaySmoother smoother = new SavitzkyGolaySmoother(numberOfSmootherPoints, polynomialOrder, allowNegativeValues);
+          
+            List<XYData> smoothedValues = smoother.Smooth(dataInput);
+
+            Console.WriteLine("We found " + smoothedValues.Count + " Peaks.");
+            Assert.AreEqual(122032, smoothedValues.Count);
+
+            Assert.AreEqual(17006.553739209197d, smoothedValues[4000].Y);//this is the correct number
+            Console.WriteLine("The Intensity is " + smoothedValues[4000].Y + " and passes the test.");
+
+            Assert.AreEqual(77942.695035173179d, smoothedValues[3].Y);//this is the correct number
+            Console.WriteLine("The Intensity is " + smoothedValues[3].Y + " and passes the test.");
+
+            Assert.AreEqual(164.94386929598679d, smoothedValues[smoothedValues.Count - 3].Y);//this is the correct number
+            Console.WriteLine("The Intensity is " + smoothedValues[smoothedValues.Count - 3].Y + " and passes the test.");
         }
 
 

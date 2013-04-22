@@ -66,6 +66,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MathNet.Iridium.dll</HintPath>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -148,6 +152,7 @@
     <Compile Include="Algorithms\Solvers\NumericalIntegrationBase.cs" />
     <Compile Include="Algorithms\Solvers\TrapezoidIntegration.cs" />
     <Compile Include="Algorithms\SpectralProcessing\ISpectralComparer.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\SavitzkyGolaySmoother.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralNormalizedDotProductComparer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralMzComparer.cs" />
     <Compile Include="Algorithms\Statistics\WilcoxonSignedRankTest.cs" />
