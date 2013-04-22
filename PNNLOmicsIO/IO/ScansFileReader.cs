@@ -79,10 +79,10 @@ namespace PNNLOmicsIO.IO
 
                 if (columnMapping.ContainsKey(SCAN_NUMBER))     scan.Scan               = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
                 if (columnMapping.ContainsKey(SCAN_TIME))       scan.Time               = double.Parse(columns[columnMapping[SCAN_TIME]]);
-                if (columnMapping.ContainsKey(TYPE))            scan.MSLevel            = int.Parse(columns[columnMapping[TYPE]]);
+                if (columnMapping.ContainsKey(TYPE))            scan.MsLevel            = int.Parse(columns[columnMapping[TYPE]]);
                 if (columnMapping.ContainsKey(BPI))             scan.Bpi                = long.Parse(columns[columnMapping[BPI]]);
                 if (columnMapping.ContainsKey(BPI_MZ))          scan.BpiMz              = int.Parse(columns[columnMapping[BPI_MZ]]);
-                if (columnMapping.ContainsKey(TIC))             scan.Tic                = long.Parse(columns[columnMapping[TIC]]);
+                if (columnMapping.ContainsKey(TIC))             scan.TotalIonCurrent    = long.Parse(columns[columnMapping[TIC]]);
                 if (columnMapping.ContainsKey(NUM_PEAKS))       scan.NumberOfPeaks      = int.Parse(columns[columnMapping[NUM_PEAKS]]);
                 if (columnMapping.ContainsKey(NUM_DEISOTOPED))  scan.NumberOfDeisotoped = int.Parse(columns[columnMapping[NUM_DEISOTOPED]]);
                            

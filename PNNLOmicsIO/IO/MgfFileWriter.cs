@@ -46,10 +46,7 @@ namespace PNNLOmicsIO.IO
                     sb.Append(Environment.NewLine);
                     writer.WriteLine(sb.ToString());
                 }
-            }
-            
+            }            
         }
-
-
     }
 }

@@ -25,6 +25,23 @@ namespace PNNLOmics.Algorithms.Distance
 
             return Math.Sqrt(sum);
         }
+        /// <summary>
+        /// Calculates the Euclidean distance based on drift time, aligned mass, and aligned NET.
+        /// </summary>
+        /// <param name="x">Feature x.</param>
+        /// <param name="y">Feature y.</param>
+        /// <returns>Distance calculated as </returns>
+        public double EuclideanDistanceDalton(T x, T y)
+        {
+            double massDifference   = x.MassMonoisotopicAligned - y.MassMonoisotopicAligned;
+            double netDifference    = x.RetentionTime - y.RetentionTime;
+            double driftDifference  = x.DriftTime - y.DriftTime;
+            double sum              = (massDifference * massDifference) +
+                                        (netDifference * netDifference) +
+                                        (driftDifference * driftDifference);
+
+            return Math.Sqrt(sum);
+        }
 
         /// <summary>
         /// Calculates the weighted Euclidean distance based on drift time, aligned mass, and aligned NET.
@@ -43,5 +60,17 @@ namespace PNNLOmics.Algorithms.Distance
 
             return Math.Sqrt(sum);
         }
+        /// <summary>
+        /// Calculates the Euclidean distance for a list of differences.
+        /// </summary>
+        /// <param name="differences"></param>
+        /// <returns></returns>
+        public static double Distance(List<double> differences)
+        {
+            List<double> squares = new List<double>();
+            differences.ForEach(x => squares.Add(x * x));
+            return Math.Sqrt(squares.Sum());
+        }
+
     }
 }

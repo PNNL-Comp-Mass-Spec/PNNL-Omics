@@ -12,16 +12,15 @@ namespace PNNLOmics.Algorithms.Distance
         public static DistanceFunction<T> CreateDistanceFunction(DistanceMetric metric)
         {
             DistanceFunction<T> function = null;
-
             switch (metric)
-            {
+            {                
                 case DistanceMetric.Euclidean:                    
                     EuclideanDistanceMetric<T> metricFunction = new EuclideanDistanceMetric<T>();
                     function = new DistanceFunction<T>(metricFunction.EuclideanDistance);
                     break;
-                case DistanceMetric.PowerEuclidean:
-                    PowerEuclideanDistanceMetric<T> power = new PowerEuclideanDistanceMetric<T>();
-                    function = new DistanceFunction<T>(power.EuclideanDistance);
+                case DistanceMetric.WeightedEuclidean:
+                    WeightedEuclideanDistance<T> weighted = new WeightedEuclideanDistance<T>();
+                    function = new DistanceFunction<T>(weighted.EuclideanDistance);
                     break;
                 default:
                     break;

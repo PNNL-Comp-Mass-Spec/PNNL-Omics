@@ -1,7 +1,7 @@
 ﻿/*////////////////////////////////////////////////////////////////////////////////////////////////////////////
  * 
  * Name:    IClusterer Interface 
- * File:    IClsuterer.cs
+ * File:    IClusterer.cs
  * Author:  Brian LaMarche 
  * Purpose: Interface for clustering UMC data.
  * Date:    5-19-2010
@@ -20,7 +20,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// </summary>
     /// <typeparam name="T">Type to cluster data objects of.</typeparam>
     /// <typeparam name="U">Type of cluster output objects.</typeparam>
-    public interface IClusterer<T, U>
+    public interface IClusterer<T, U>:  IProgressNotifer
         where T: FeatureLight, new ()
     {
         FeatureClusterParameters<T> Parameters { get; set; }

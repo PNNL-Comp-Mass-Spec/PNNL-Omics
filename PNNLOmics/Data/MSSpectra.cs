@@ -143,7 +143,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets information about the scan from the instrument vendor's file.
         /// </summary>
-        public Dictionary<string, ScanMetaData> ScanMetaData
+        public ScanSummary ScanMetaData
         {
             get;
             set;
@@ -151,7 +151,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the peptide was associated with.
         /// </summary>
-        public Peptide Peptide
+        public List<Peptide> Peptides
         {
             get;
             set;
@@ -163,7 +163,7 @@ namespace PNNLOmics.Data
         /// </summary>
         public override void  Clear()
         {
-            ScanMetaData = new Dictionary<string, ScanMetaData>();
+            ScanMetaData            = new ScanSummary();
             MSLevel                 = CONST_DEFAULT_MS_LEVEL;
             CollisionType           = CollisionType.None;
             Scan                    = 0;
@@ -176,7 +176,7 @@ namespace PNNLOmics.Data
             PeaksProcessed          = new List<ProcessedPeak>();
             PrecursorPeak           = null;
             ParentSpectra           = null;
-            this.Peptide            = new Data.Peptide();
+            Peptides                = new List<Peptide>();
             PeakProcessingLevel     = Data.PeakProcessingLevel.None;
         }
 

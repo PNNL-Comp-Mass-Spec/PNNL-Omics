@@ -41,6 +41,12 @@ namespace PNNLOmics.Data
         /// </summary>
         /// <param name="path"></param>
         /// <param name="groupID"></param>
-        void AddDataFile(string path, int groupID);
+        void AddDataFile(string path, int groupID);      
+        /// <summary>
+        /// Retrieves the scan data for the given dataset ID (i.e. group ID)
+        /// </summary>
+        /// <param name="groupID">Group identifier</param>
+        /// <returns>Mapped scan header data based on scan ID</returns>
+        Dictionary<int, ScanSummary> GetScanData(int groupId);        
     }
 }

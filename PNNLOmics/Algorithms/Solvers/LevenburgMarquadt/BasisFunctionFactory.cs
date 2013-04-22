@@ -4,23 +4,7 @@ using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
     public class BasisFunctionFactory
-    {
-        private BasisFunctionBase FunctionDelegateInterface;
-
-        public double[] Coefficients { get; set; }
-
-        public BasisFunctionFactory(BasisFunctionBase strategy)
-        {
-            FunctionDelegateInterface = strategy;
-            Coefficients = new double[0];
-        }
-
-        public void GetFunction(double[] c, double[] x, ref double functionResult, object obj)
-        {
-            FunctionDelegateInterface.FunctionDelegate(c, x,ref functionResult, obj);
-
-        }
-
+    {        
         public static BasisFunctionBase BasisFunctionSelector(BasisFunctionsEnum functionChoise)
         {
             //default
@@ -46,11 +30,14 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
                 case BasisFunctionsEnum.PolynomialCubic:
                     {
                         solver = new Cubic();
-                        solver.Coefficients = new double[4];
+                        solver.Coefficients = new double[7];
                         solver.Coefficients[0] = 1;//ax^3
                         solver.Coefficients[1] = 1;//bx^2
                         solver.Coefficients[2] = 1;//cx
                         solver.Coefficients[3] = 1;//d
+                        solver.Coefficients[4] = 1;//d
+                        solver.Coefficients[5] = 1;//d
+                        solver.Coefficients[6] = 1;//d
                     }
                     break;
                 case BasisFunctionsEnum.Lorentzian:
@@ -75,8 +62,12 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
                     {
                         solver = new Chebyshev();
                         solver.Coefficients = new double[6];
-                        solver.Coefficients[0] = 1;//?
+                        solver.Coefficients[0] = 0;//?
                         solver.Coefficients[1] = 1;//?
+                        solver.Coefficients[2] = 1;//?
+                        solver.Coefficients[3] = 0;//?
+                        solver.Coefficients[4] = 0;//?
+                        solver.Coefficients[5] = 0;//?
                     }
                     break;
                 case BasisFunctionsEnum.Orbitrap:
@@ -101,7 +92,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
                     }
                     break;
                 default:
-                    Console.WriteLine("No Case Availible");
+                    solver = null;
                     break;
             }
             return solver;

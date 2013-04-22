@@ -1,11 +1,18 @@
 ﻿namespace PNNLOmics.Data
-{
-    //TODO: Remove this class with MSSpectra, by updating the ScansSummaryTextFileReader
+{    
     /// <summary>
     /// Encapsulates MS Spectrum summary information (e.g. BPI, # of peaks, TIC)
     /// </summary>
     public class ScanSummary
     {
+        /// <summary>
+        /// Gets or sets the header data.
+        /// </summary>
+        public string Header
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets or sets the base peak intensity
         /// </summary>
@@ -25,11 +32,21 @@
         /// <summary>
         /// Gets or sets the MS level (1, 2, ..., n).
         /// </summary>
-        public int MSLevel
+        public int MsLevel
         {
             get;
             set;
+        }       
+        public double PrecursorMZ  
+        {   
+            get;
+            set;
         }
+        public CollisionType CollisionType
+        {
+            get;
+            set;
+        }       
         /// <summary>
         /// Gets or sets the scan time in seconds.
         /// </summary>
@@ -49,7 +66,7 @@
         /// <summary>
         /// Gets or sets the total ion current of the scan.
         /// </summary>
-        public long Tic
+        public long TotalIonCurrent
         {
             get;
             set;

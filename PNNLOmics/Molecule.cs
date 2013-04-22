@@ -15,49 +15,48 @@ namespace PNNLOmics.Data
             get;
             set;
         }
-        private string m_description;        
         public string Description
         {
-            get { return m_description; }
-            set { m_description = value; }
+            get;
+            set;
         }
-        private MassTag m_massTag;
-
+        public int ChargeState
+        {
+            get;
+            set;
+        }
         public MassTag MassTag
         {
-            get { return m_massTag; }
-            set { m_massTag = value; }
+            get;
+            set;
         }
-        private string m_name;
-
         public string Name
         {
-            get { return m_name; }
-            set { m_name = value; }
+            get;
+            set;
         }
-        private int m_chemicalFormula;
-
-        public int ChemicalFormula
+        public string ChemicalFormula
         {
-            get { return m_chemicalFormula; }
-            set { m_chemicalFormula = value; }
+            get;
+            set;
         }
-
         public override void Clear()
         {
             Spectrum  = null;
-            m_massTag = null;
+            MassTag   = null;
         }
-
         /// <summary>
         /// Gets the moleculare Weight
         /// </summary>
-        public int MassMonoisotopic
+        public double MassMonoisotopic
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
+            get;
+            set;
+        }
+        public double Mz
+        {
+            get;
+            set;
         }
         /// <summary>
         /// Gets or sets the spectrum that identified the molecule.

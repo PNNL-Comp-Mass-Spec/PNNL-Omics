@@ -79,6 +79,18 @@ namespace PNNLOmics.Data.Features
             }
         }
 
+
+        public double MassStandardDeviation
+        {
+            get;set;
+        }
+        public double NetStandardDeviation
+        {
+            get;
+            set;
+        }
+        
+
 		/// <summary>
 		/// Gets or sets the list of UMC's that comprise this cluster.
 		/// </summary>
@@ -180,17 +192,27 @@ namespace PNNLOmics.Data.Features
 
 
             List<double> distances = new List<double>();
-            double distanceSum = 0;
+            double distanceSum     = 0;
+
+            double massDeviationSum = 0;
+            double netDeviationSum  = 0;
+
             foreach (UMCLight umc in UMCList)
             {
                 double netValue   = RetentionTime       - umc.RetentionTime;
                 double massValue  = MassMonoisotopic    - umc.MassMonoisotopicAligned;
                 double driftValue = DriftTime           - Convert.ToSingle(umc.DriftTime);
 
-                double distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
+                massDeviationSum += (massValue*massValue);
+                netDeviationSum += (netValue * netValue);
+
+                double distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));               
                 distances.Add(distance);
                 distanceSum += distance;
             }
+
+            NetStandardDeviation  = Math.Sqrt(netDeviationSum  / Convert.ToDouble(UMCList.Count));
+            MassStandardDeviation = Math.Sqrt(massDeviationSum / Convert.ToDouble(UMCList.Count));
 
             if (centroid == ClusterCentroidRepresentation.Mean)
             {

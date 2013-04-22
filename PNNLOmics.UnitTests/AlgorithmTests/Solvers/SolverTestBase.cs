@@ -24,9 +24,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         protected SolverReport EvaluateFunction(List<double> x, List<double> y, BasisFunctionBase basisFunction, ref double[] coeffs)
         {
             coeffs = basisFunction.Coefficients;
+            basisFunction.Scale(x);
+            
             alglib.ndimensional_pfunc myDelegate = basisFunction.FunctionDelegate;
-
-            LevenburgMarquadtSolver solver = new LevenburgMarquadtSolver();
+            LevenburgMarquadtSolver solver = new LevenburgMarquadtSolver();                        
             solver.BasisFunction = myDelegate;
             SolverReport worked = solver.Solve(x, y, ref coeffs);
 

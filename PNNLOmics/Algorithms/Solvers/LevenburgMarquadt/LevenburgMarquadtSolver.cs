@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
+using PNNLOmics.Data;
+using PNNLOmics.Extensions;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
@@ -43,7 +45,19 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
             set;
         }
         #endregion
+        /// <summary>
+        /// Fits the X to Y for the given paired data.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="coeffs"></param>
+        /// <returns></returns>
+        public SolverReport Solve(List<XYData> data, ref double[] coeffs)
+        {
+            List<double> x = data.ConvertAll<double>(u => u.X);
+            List<double> y = data.ConvertAll<double>(u => u.X);
 
+            return Solve(x, y, ref coeffs);
+        }
         /// <summary>
         /// Least squares solver 
         /// </summary>
@@ -68,7 +82,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
             {
                 xMatrix[i++, 0] = d;
             }
-
+            
             alglib.lsfitcreatef(xMatrix,
                                 y.ToArray(),
                                 coeffs,

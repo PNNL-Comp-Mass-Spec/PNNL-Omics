@@ -8,6 +8,7 @@ namespace PNNLOmics.Algorithms.Distance
     public enum DistanceMetric
     {
         Euclidean,
-        PowerEuclidean
+        Mahalonobis,
+        WeightedEuclidean
     }
 }

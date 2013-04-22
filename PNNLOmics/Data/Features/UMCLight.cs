@@ -55,7 +55,13 @@ namespace PNNLOmics.Data.Features
             this.ScanStart                          = feature.ScanStart;
             this.Score                              = feature.Score;
             this.SpectralCount                      = feature.SpectralCount;
-            this.Tightness                          = feature.Tightness;                                          
+            this.Tightness                          = feature.Tightness;
+
+            /// Charge state chromatograms.
+            this.ChargeStateChromatograms = new Dictionary<int, Chromatogram>();    
+  
+            // Isotopic chromatograms
+            this.IsotopeChromatograms = new Dictionary<int, List<Chromatogram>>();
         }
 		/// <summary>
 		/// Gets or sets the UMC Cluster this feature is part of.
@@ -119,7 +125,7 @@ namespace PNNLOmics.Data.Features
         }
 
         /// <summary>
-        /// Gets or sets the value of the trailing width of the SIC profile based on charge state.
+        /// Gets or sets the value of the trailing width of the XIC profile based on charge state.
         /// </summary>
         public Dictionary<int, double> HPositive
         {
@@ -127,13 +133,40 @@ namespace PNNLOmics.Data.Features
             set;
         }
         /// <summary>
-        /// Gets or sets the value of the leading width of the SIC profile based on charge state.
+        /// Gets or sets the value of the leading width of the XIC profile based on charge state.
         /// </summary>
         public Dictionary<int, double> HNegative
         {
             get;
             set;
         }
+        /// <summary>
+        /// Gets or sets the chromatograms based on charge state.
+        /// </summary>
+        public Dictionary<int, Chromatogram> ChargeStateChromatograms
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the chromatograms for each isotope for a given charge state.
+        /// </summary>
+        public Dictionary<int, List<Chromatogram>> IsotopeChromatograms
+        {
+            get;
+            set;
+        }
+        public double MeanIsotopicRsquared
+        {
+            get;
+            set;
+        }
+        public double MeanChargeStateRsquared
+        {
+            get;
+            set;
+        }
+        
 
         #region IMS Data Members
         public double AverageInterferenceScore
@@ -215,6 +248,9 @@ namespace PNNLOmics.Data.Features
 		public override void Clear()
 		{
 			base.Clear();
+
+            this.ChargeStateChromatograms = new Dictionary<int, Chromatogram>();
+            this.IsotopeChromatograms     = new Dictionary<int, List<Chromatogram>>();
 
             HPositive = new Dictionary<int, double>();
             HNegative = new Dictionary<int, double>();

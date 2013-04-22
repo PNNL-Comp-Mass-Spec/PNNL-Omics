@@ -34,8 +34,17 @@ namespace PNNLOmicsIO.IO
                     case "peptide":
                         columnMap.Add("Peptide.Sequence", i);
                         break;
+                    case "msgfdb_specprob":                        
+                        columnMap.Add("Peptide.ScorePRISM", i);
+                        break;
                     case "specprob":
                         columnMap.Add("Peptide.Score", i);
+                        break;
+                    case "evalue":
+                        columnMap.Add("peptide.evalue", i);
+                        break;
+                    case "precursormz":
+                        columnMap.Add("Peptide.PrecursorMz", i);
                         break;
                     default:
                         break;
@@ -81,7 +90,18 @@ namespace PNNLOmicsIO.IO
                 {
                     peptide.Score = Convert.ToDouble(columns[columnMapping["Peptide.Score"]]);
                 }
-
+                if (columnMapping.ContainsKey("Peptide.ScorePRISM"))
+                {
+                    peptide.Score = Convert.ToDouble(columns[columnMapping["Peptide.ScorePRISM"]]);
+                }
+                if (columnMapping.ContainsKey("Peptide.evalue"))
+                {
+                    peptide.Score = Convert.ToDouble(columns[columnMapping["peptide.evalue"]]);
+                }
+                if (columnMapping.ContainsKey("Peptide.PrecursorMz"))
+                {
+                    peptide.Mz = Convert.ToDouble(columns[columnMapping["Peptide.PrecursorMz"]]);
+                }
                 peptides.Add(peptide);
             }
             return peptides;

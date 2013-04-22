@@ -66,18 +66,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MathNet.Iridium.dll</HintPath>
     </Reference>
-    <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MathNet.Numerics">
       <HintPath>..\lib\MathNet.Numerics.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\x64\System.Data.SQLite.DLL</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -102,11 +96,18 @@
     </Compile>
     <Compile Include="Algorithms\Alignment\LinearEquation.cs" />
     <Compile Include="Algorithms\Alignment\LinearEquationCalculator.cs" />
-    <Compile Include="Algorithms\Distance\PearsonCorrelation.cs" />
-    <Compile Include="Algorithms\Distance\PowerEuclideanDistance.cs" />
+    <Compile Include="Algorithms\Distance\MahalanobisDistanceCalculator.cs" />
+    <Compile Include="Algorithms\Distance\MahalanobisWrapper.cs" />
     <Compile Include="Algorithms\Distance\DistanceFactory.cs" />
     <Compile Include="Algorithms\Distance\DistanceMetric.cs" />
     <Compile Include="Algorithms\Distance\EuclideanDistance.cs" />
+    <Compile Include="Algorithms\Distance\WeightedEuclideanDistance.cs" />
+    <Compile Include="Algorithms\FeatureClustering\Edge.cs" />
+    <Compile Include="Algorithms\FeatureClustering\FeatureGraph.cs" />
+    <Compile Include="Algorithms\FeatureClustering\IClusterReprocessing.cs" />
+    <Compile Include="Algorithms\FeatureClustering\KMeansClustering.cs" />
+    <Compile Include="Algorithms\FeatureClustering\MedianSplitReprocessor.cs" />
+    <Compile Include="Algorithms\FeatureClustering\MinimumSpanningTree.cs" />
     <Compile Include="Algorithms\FeatureClustering\MSMSClusterer.cs" />
     <Compile Include="Algorithms\Alignment\NumericValues.cs" />
     <Compile Include="Algorithms\FeatureClustering\MSFeatureClusterParameters.cs">
@@ -116,10 +117,13 @@
     <Compile Include="Algorithms\FeatureClustering\UMCCentroidClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\LinkageClustererBase.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCAverageLinkageClusterer.cs" />
+    <Compile Include="Algorithms\FeatureClustering\UMCPrimsClustering.cs" />
+    <Compile Include="Algorithms\FeatureClustering\UniqueEdgeList.cs" />
     <Compile Include="Algorithms\FeatureMatcher\PeakMatcher.cs" />
     <Compile Include="Algorithms\FeatureMatcher\PeakMatcherOptions.cs" />
     <Compile Include="Algorithms\FeatureMatcher\MSnLinker\IMSnLinker.cs" />
     <Compile Include="Algorithms\FeatureMatcher\MSnLinker\MSnLinker.cs" />
+    <Compile Include="Algorithms\FeatureMetrics\ChromatogramMetrics.cs" />
     <Compile Include="Algorithms\IProgressNotifer.cs" />
     <Compile Include="Algorithms\PeakDetection\FullWidthHalfMaximumPeakOptions.cs" />
     <Compile Include="Algorithms\PeakDetection\KronewitterPeakDetector.cs" />
@@ -136,7 +140,10 @@
     <Compile Include="Algorithms\PeakDetection\PeakThresholderParameters.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Algorithms\Solvers\NumericalIntegrationEnum.cs" />
+    <Compile Include="Algorithms\Solvers\NumericalIntegrationFactory.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctionFactory.cs" />
+    <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\AsymmetricGaussian.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\BasisFunctionsEnum.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Chebyshev.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Cubic.cs" />
@@ -147,7 +154,6 @@
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Lorentian.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\OrbitrapFunction.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctions\Quadratic.cs" />
-    <Compile Include="Algorithms\Solvers\ChebyshevDelegate.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\LevenburgMarquadtSolver.cs" />
     <Compile Include="Algorithms\Solvers\NumericalIntegrationBase.cs" />
     <Compile Include="Algorithms\Solvers\TrapezoidIntegration.cs" />
@@ -156,8 +162,6 @@
     <Compile Include="Algorithms\SpectralProcessing\SpectralNormalizedDotProductComparer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralMzComparer.cs" />
     <Compile Include="Algorithms\Statistics\WilcoxonSignedRankTest.cs" />
-    <Compile Include="Databases\DatabaseHandler.cs" />
-    <Compile Include="Databases\SQLiteHandler.cs" />
     <Compile Include="Data\Chromatogram.cs" />
     <Compile Include="Data\Constants\AminoAcidName.cs" />
     <Compile Include="Data\Constants\CrossRingName.cs" />
@@ -168,6 +172,7 @@
     <Compile Include="Data\Constants\SubAtomicParticleName.cs" />
     <Compile Include="Data\Constants\UserUnit.cs" />
     <Compile Include="Data\Constants\UserUnitName.cs" />
+    <Compile Include="Data\DatasetSummary.cs" />
     <Compile Include="Data\Features\IChildFeature.cs" />
     <Compile Include="Data\Features\IFeatureCluster.cs" />
     <Compile Include="Data\FormulaBuilder\AminoAcidFormulaBuilder.cs" />
@@ -202,11 +207,12 @@
     <Compile Include="Data\MSSpectra.cs" />
     <Compile Include="Data\PairwiseUMCDistance.cs" />
     <Compile Include="Data\PrecursorInfo.cs" />
-    <Compile Include="Data\ScanMetaData.cs" />
     <Compile Include="Data\ScanSummary.cs" />
     <Compile Include="Data\XYZData.cs" />
+    <Compile Include="Extensions\ChromatogramExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\MsSpectraExtensions.cs" />
+    <Compile Include="Extensions\XYDataExtensions.cs" />
     <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\Alignment\SimilarityScore.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />
@@ -258,9 +264,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Algorithms\Chromatograms\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

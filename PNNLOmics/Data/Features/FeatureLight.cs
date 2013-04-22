@@ -22,16 +22,17 @@ namespace PNNLOmics.Data.Features
         public FeatureLight(FeatureLight feature)
         {
             Clear();
-            this.Abundance          = feature.Abundance;
-            this.ChargeState        = feature.ChargeState;
-            this.DriftTime          = feature.DriftTime;
-            this.ID                 = feature.ID;
-            this.MassMonoisotopic   = feature.MassMonoisotopic;
-            this.MassMonoisotopicAligned = feature.MassMonoisotopicAligned;
-            this.RetentionTime      = feature.RetentionTime;
-            this.Score              = feature.Score;
-            this.NET                = feature.NET;
-            this.AmbiguityScore     = double.MaxValue;
+
+            this.Abundance                  = feature.Abundance;
+            this.ChargeState                = feature.ChargeState;
+            this.DriftTime                  = feature.DriftTime;
+            this.ID                         = feature.ID;
+            this.MassMonoisotopic           = feature.MassMonoisotopic;
+            this.MassMonoisotopicAligned    = feature.MassMonoisotopicAligned;
+            this.RetentionTime              = feature.RetentionTime;
+            this.Score                      = feature.Score;
+            this.NET                        = feature.NET;
+            this.AmbiguityScore             = double.MaxValue;
         }
         /// <summary>
         /// Gets or sets the abundance.
@@ -82,7 +83,7 @@ namespace PNNLOmics.Data.Features
         /// Resets the data structure back to its default state.
         /// </summary>
 		public override void Clear()
-		{
+		{            
 			this.Abundance          = 0;
 			this.ChargeState        = 0;
 			this.DriftTime          = 0;
@@ -90,6 +91,7 @@ namespace PNNLOmics.Data.Features
 			this.MassMonoisotopic   = 0;
             this.MassMonoisotopicAligned = 0;
             this.NET                = 0;
+            this.NETAligned         = 0;
             this.RetentionTime      = 0;
 		}
 		/// <summary>

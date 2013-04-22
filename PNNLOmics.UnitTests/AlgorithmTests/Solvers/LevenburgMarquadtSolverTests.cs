@@ -12,6 +12,30 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
     [TestFixture]
     public class LevenburgMarquadtSolverTests : SolverTestBase
     {
+
+        [Test]
+        [Description("Tests the Levenburg Marquadt solver using a Chebyshev polynomial.")]
+        public void SolveChebyshev()
+        {
+            List<double> x;
+            List<double> y;
+            ConvertXYDataToArrays(CalculatedParabola(), out x, out y);
+
+            BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Chebyshev);
+            double[] coeffs     = functionSelector.Coefficients;
+            SolverReport report = EvaluateFunction(x, y, functionSelector, ref coeffs);
+
+            // Make sure it converged.
+            Assert.IsTrue(report.DidConverge);
+
+            // Here are the coefficients where this should pass.
+            Assert.LessOrEqual(Math.Abs(coeffs[0] - -161.49999998947484),          .0000001);
+		    Assert.LessOrEqual(Math.Abs(coeffs[1] - -340.99999998132216),          .0000001);
+		    Assert.LessOrEqual(Math.Abs(coeffs[2] - -89.749999993541593),          .0000001);
+		    Assert.LessOrEqual(Math.Abs(coeffs[3] - 0.50000000335890493),          .0000001);
+		    Assert.LessOrEqual(Math.Abs(coeffs[4] - 0.50000000120664689),          .0000001);
+            Assert.LessOrEqual(Math.Abs(coeffs[5] - 0.00000000023672415945361692), .0000001);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -139,6 +163,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
             double[] coeffs = functionSelector.Coefficients;
             SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+
+
 
             //Assert.AreEqual(-0.9999999999984106d, coeffs[0]);
             //Assert.AreEqual(5.0000000000444658d, coeffs[1]);

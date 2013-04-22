@@ -54,7 +54,8 @@ namespace PNNLOmicsIO.IO
                     XYData point    = new XYData(fragment, 100);
                     spectrum.Peaks.Add(point);
                 }
-                spectrum.Peptide = peptide;
+                spectrum.Peptides = new List<Peptide>();
+                spectrum.Peptides.Add(peptide);
                 peptide.Spectrum = spectrum;
                 peptides.Add(peptide);
             }

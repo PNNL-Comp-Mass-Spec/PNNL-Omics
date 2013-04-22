@@ -1,5 +1,7 @@
 ﻿using System;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
+using System.Collections.Generic;
+using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Solvers
 {
@@ -36,8 +38,7 @@ namespace PNNLOmics.Algorithms.Solvers
                 x += delta;
 
                 double y = basis.Evaluate(coefficients, x);
-                sum += (y * 2);
-                
+                sum += (y * 2);                
             }
 
             // Make sure we get the end of the function

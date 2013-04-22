@@ -1,10 +1,18 @@
-﻿namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
+﻿using PNNLOmics.Data.Features;
+using System.Collections.Generic;
+using PNNLOmics.Data;
+namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
     /// <summary>
     /// interface for strategy design pattern
     /// </summary>
     public abstract class BasisFunctionBase
     {
+        public virtual void Scale(List<double> x)
+        {
+            
+        }
+        
         /// <summary>
         /// Coefficients found via solving.
         /// </summary>

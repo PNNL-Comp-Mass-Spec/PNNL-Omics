@@ -8,6 +8,11 @@ namespace PNNLOmics.Data
     /// </summary>
     public class Peptide: Molecule
     {
+        public Peptide():
+            base()
+        {
+            Clear();
+        }
         public int Id
         {
             get;
@@ -42,6 +47,11 @@ namespace PNNLOmics.Data
         {
             get;
             set;            
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}   Score: {1}  Mz: {2}  Scan: {3}", Sequence, Score, Mz, Scan);
         }
     }
 }

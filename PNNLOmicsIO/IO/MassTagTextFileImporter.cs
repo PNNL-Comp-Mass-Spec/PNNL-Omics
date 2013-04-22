@@ -50,8 +50,7 @@ namespace PNNLOmicsIO.Utilities.Importers
                     string line = reader.ReadLine();
                     lineCounter++;
 
-                    List<string> processedLineData = ProcessLine(line);
-
+                    List<string> processedLineData = ProcessLine(line);                    
                     MassTag massTag;
                     try
                     {
