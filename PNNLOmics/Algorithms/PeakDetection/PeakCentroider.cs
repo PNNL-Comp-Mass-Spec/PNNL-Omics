@@ -710,7 +710,16 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     peakTopCalculation.ParabolaABC(peakRightSideList, ref A, ref B, ref C);
 
                     //calculate right X value for half height
-                    deltaXRight = -((B / 2 + Math.Sqrt(B * B - 4 * A * C + 4 * A * transformedHalfHeight) / 2) / A);
+                    double squareRootTest = B*B - 4*A*C + 4*A*transformedHalfHeight;//must be positive
+                    if (squareRootTest > 0)
+                    {
+                        deltaXRight = -((B/2 + Math.Sqrt(squareRootTest)/2)/A);
+                    }
+                    else
+                    {
+                        deltaXRight = deltaXRight / 2;  //deltaXRight was the max distance on the right side
+                                                        //so as an approximation, "deltaXRight / 2" should be somewhere half way inbetween
+                    }
                     detectedMethodRight = FullWidthHalfMaximumPeakOptions.QuadraticExtrapolation;
                     //xcoordinateToRight = rawData[MinimaLeftIndex].X + deltaXRight;//notice the different start point
                     //this is because the parabola starts at the MinLeftIndex rather than the XOCenterMass
@@ -815,7 +824,17 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     peakTopCalculation.ParabolaABC(peakLeftSideList, ref A, ref B, ref C);
 
                     //calculate right X value for half height
-                    deltaXLeft = -((B / 2 + Math.Sqrt(B * B - 4 * A * C + 4 * A * transformedHalfHeight) / 2) / A);
+                    //deltaXLeft = -((B / 2 + Math.Sqrt(B * B - 4 * A * C + 4 * A * transformedHalfHeight) / 2) / A);
+                    double squareRootTest = B * B - 4 * A * C + 4 * A * transformedHalfHeight;//must be positive
+                    if (squareRootTest > 0)
+                    {
+                        deltaXLeft = -((B / 2 + Math.Sqrt(squareRootTest) / 2) / A);
+                    }
+                    else
+                    {
+                        deltaXLeft = deltaXLeft / 2;    //deltaXRight was the max distance on the right side
+                                                        //so as an approximation, "deltaXRight / 2" should be somewhere half way inbetween
+                    }
                     detectedMethodLeft = FullWidthHalfMaximumPeakOptions.QuadraticExtrapolation;
                     //xcoordinateToLeft = rawData[MinimaLeftIndex].X + deltaXLeft;//notice the different start point
                     //this is because the parabola starts at the MinLeftIndex rather than the XOCenterMass
