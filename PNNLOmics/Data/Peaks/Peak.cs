@@ -25,6 +25,27 @@ namespace PNNLOmics.Data
         {
             Clear();
         }
+
+        /// <summary>
+        /// Full Constructor
+        /// </summary>
+        /// <param name="height">Height of Peak</param>
+        /// <param name="xValue">Xvalue of Peak</param>
+        /// <param name="width">Width of peak (often full width at half maximum)</param>
+        /// <param name="leftWidth">Distance to the left from the centroid </param>
+        /// <param name="rightWidth">Distance to the right from the centroid</param>
+        /// <param name="localSignalToNoise">Signal to noise at the local level</param>
+        /// <param name="background">background contribution to the height</param>
+        public Peak(double height, double xValue, float width, double leftWidth, double rightWidth, float localSignalToNoise, float background)
+        {
+            Height = height;
+            XValue = xValue;
+            Width = width;
+            LeftWidth = leftWidth;
+            RightWidth = rightWidth;
+            LocalSignalToNoise = localSignalToNoise;
+            Background = background;
+        }
         
 
         /// <summary>

@@ -254,7 +254,6 @@
     <Compile Include="Data\Features\MSFeature.cs" />
     <Compile Include="Generic\AnonymousComparer.cs" />
     <Compile Include="IonType.cs" />
-    <Compile Include="MessageEventBase.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
     <Compile Include="Organism.cs" />
