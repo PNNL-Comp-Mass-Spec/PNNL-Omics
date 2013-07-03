@@ -64,6 +64,11 @@ namespace PNNLOmics.Data
         /// the Scan Number this peak was found in.
         /// </summary>
         public int ScanNumber { get; set; }
+        
+        /// <summary>
+        /// probability of this peak existing based on neighboring peaks
+        /// </summary>
+        public double Pvalue { get; set; }
 
         //TODO: Remove the charge and scannumber and make them part of the feature.
         public MSFeatureLight Feature {get; set; }
