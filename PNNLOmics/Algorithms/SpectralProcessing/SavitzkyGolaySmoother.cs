@@ -45,7 +45,8 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
         /// <returns></returns>
         public List<XYData> Smooth(List<XYData> xyData)
         {
-            if (xyData == null || xyData.Count == 0) return xyData;
+            //if (xyData == null || xyData.Count == 0) return xyData;
+            if (xyData == null || xyData.Count <3) return xyData;
 
             bool pureArrayTrueOrFalse = false;//defaulted to omicsList
             if (pureArrayTrueOrFalse)
