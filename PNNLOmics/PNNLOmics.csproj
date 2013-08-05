@@ -93,6 +93,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -189,6 +190,7 @@
     <Compile Include="Data\Constants\Libraries\UserUnitLibrary.cs" />
     <Compile Include="Data\Constants\MiscellaneousMatterName.cs" />
     <Compile Include="Data\Constants\MonosaccharideName.cs" />
+    <Compile Include="Data\Constants\ResolveUNCPath.cs" />
     <Compile Include="Data\Constants\SubAtomicParticleName.cs" />
     <Compile Include="Data\Constants\UserUnit.cs" />
     <Compile Include="Data\Constants\UserUnitName.cs" />
