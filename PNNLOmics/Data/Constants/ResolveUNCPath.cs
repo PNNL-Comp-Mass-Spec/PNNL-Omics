@@ -63,7 +63,7 @@ namespace PNNLOmics.Data.Constants
 
                 //4.  re create path by first adding the network root
                 List<string> newPathWords = new List<string>();
-                for (int i = 0; i < rootOfMysteryWords.Count; i++)
+                for (int i = 1; i < rootOfMysteryWords.Count; i++)
                 {
                     newPathWords.Add(rootOfMysteryWords[i]);
                 }
