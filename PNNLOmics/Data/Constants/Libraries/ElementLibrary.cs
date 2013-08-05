@@ -135,10 +135,11 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap = new Dictionary<string, Element>();
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
-            //ResolveUNCPath.MappedDriveResolver uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
-            //string newPath = uncPathCheck.ResolveToUNC(PathUtil.AssemblyDirectory);
+            ResolveUNCPath.MappedDriveResolver uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
+            string asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtil.AssemblyDirectory);
 
-			FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(PathUtil.AssemblyDirectory, OMICS_ELEMENT_DATA_FILE));
+            FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
+			//FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(PathUtil.AssemblyDirectory, OMICS_ELEMENT_DATA_FILE));
 
 			if (!constantsFileInfo.Exists)
             {

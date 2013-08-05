@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Management;
+using PNNLOmics.Utilities;
 
 namespace PNNLOmics.Data.Constants
 {
@@ -12,91 +14,82 @@ namespace PNNLOmics.Data.Constants
         public class MappedDriveResolver
         {
 
-            /// <summary>Resolves the given path to a full UNC path, or full local drive path.</summary>
+            /// <summary>
+            /// returns the path when it has a drive letter or a network path when it has a \\ infront
+            /// </summary>
             /// <param name="pPath"></param>
             /// <returns></returns>
             public string ResolveToUNC(string pPath)
             {
-                if (pPath.StartsWith(@"\\")) { return pPath; }
-
-                string root = ResolveToRootUNC(pPath);
-
-                if (pPath.StartsWith(root))
+                //Simple check for network path
+                if (!pPath.StartsWith(@"\"))
                 {
-                    return pPath; // Local drive, no resolving occurred
+                    return pPath;
                 }
                 else
                 {
-                    return pPath.Replace(GetDriveLetter(pPath), root);
+                    return ResolveToRootUNC(pPath);
                 }
             }
 
-            /// <summary>Resolves the given path to a root UNC path, or root local drive path.</summary>
-            /// <param name="pPath"></param>
-            /// <returns>\\server\share OR C:\</returns>
+           /// <summary>
+           /// updates the path when it starts with a // like a network drive
+           /// </summary>
+           /// <param name="pPath">path without a drive letter</param>
+           /// <returns>full path</returns>
             public string ResolveToRootUNC(string pPath)
             {
-                string scottpath = Directory.GetDirectoryRoot(pPath);
-                Console.WriteLine(scottpath);
-                Directory.GetDirectoryRoot(pPath).Replace(Path.DirectorySeparatorChar.ToString(), "");
-                
-                
-                
-                ManagementObject mo = new ManagementObject();
+                //1.  figure out the drive path using root and active directory
 
-                if (pPath.StartsWith(@"\\")) { return Directory.GetDirectoryRoot(pPath); }
+                //this contains the root + the first folder
+                string rootOfMysteryPath = Directory.GetDirectoryRoot(pPath);
 
-                // Get just the drive letter for WMI call
-                string driveletter = GetDriveLetter(pPath);
+                //this contains all the path - the root
+                string activeDirectoryPath  = PathUtil.AssemblyDirectory;
 
-                mo.Path = new ManagementPath(string.Format("Win32_LogicalDisk='{0}'", driveletter));
+                //2.  repalce // with space for splitting
+                char charSeperator = Path.DirectorySeparatorChar;
+                List<string> activeDirectoryWords = activeDirectoryPath.Split(charSeperator).ToList();
+                List<string> rootOfMysteryWords = rootOfMysteryPath.Split(charSeperator).ToList();
 
-                // Get the data we need
-                uint DriveType = Convert.ToUInt32(mo["DriveType"]);
-                string NetworkRoot = Convert.ToString(mo["ProviderName"]);
-                mo = null;
+                //3.  find intersecting folder between the root and the active directory
+                string startOfRealPath = "";
 
-                // Return the root UNC path if network drive, otherwise return the root path to the local drive
-                if (DriveType == 4)
+                startOfRealPath = rootOfMysteryWords[rootOfMysteryWords.Count - 1];//this is the intersecting folder
+
+                rootOfMysteryWords.RemoveAt(rootOfMysteryWords.Count-1);//remove extra folder
+
+                int startOfRealPathIndex = activeDirectoryWords.IndexOf(startOfRealPath);//this is the index of the intersecting folder in the active directory
+
+                //4.  re create path by first adding the network root
+                List<string> newPathWords = new List<string>();
+                for (int i = 0; i < rootOfMysteryWords.Count; i++)
                 {
-                    return NetworkRoot;
+                    newPathWords.Add(rootOfMysteryWords[i]);
                 }
-                else
+
+                //5.  next adding the rest of the active directory
+                for (int i = startOfRealPathIndex; i < activeDirectoryWords.Count; i++)
                 {
-                    return driveletter + Path.DirectorySeparatorChar;
+                    newPathWords.Add(activeDirectoryWords[i]);
                 }
+
+                //6.  replace "" with Path.DirectorySeparatorChar since that is what we split on at the start
+                string newUNCPath = "";
+                foreach (string word in newPathWords)
+                {
+                    if(word=="")
+                    {
+                        newUNCPath += Path.DirectorySeparatorChar;
+                    }
+                    else
+                    {
+                        newUNCPath += Path.DirectorySeparatorChar + word;
+                    }
+                }
+
+                return newUNCPath;
             }
-
-            /// <summary>Checks if the given path is on a network drive.</summary>
-            /// <param name="pPath"></param>
-            /// <returns></returns>
-            public bool isNetworkDrive(string pPath)
-            {
-                ManagementObject mo = new ManagementObject();
-
-                if (pPath.StartsWith(@"\\")) { return true; }
-
-                // Get just the drive letter for WMI call
-                string driveletter = GetDriveLetter(pPath);
-
-                mo.Path = new ManagementPath(string.Format("Win32_LogicalDisk='{0}'", driveletter));
-
-                // Get the data we need
-                uint DriveType = Convert.ToUInt32(mo["DriveType"]);
-                mo = null;
-
-                return DriveType == 4;
-            }
-
-            /// <summary>Given a path will extract just the drive letter with volume separator.</summary>
-            /// <param name="pPath"></param>
-            /// <returns>C:</returns>
-            public string GetDriveLetter(string pPath)
-            {
-                if (pPath.StartsWith(@"\\")) { throw new ArgumentException("A UNC path was passed to GetDriveLetter"); }
-                return Directory.GetDirectoryRoot(pPath).Replace(Path.DirectorySeparatorChar.ToString(), "");
-            }
-
         }
     }
 }
