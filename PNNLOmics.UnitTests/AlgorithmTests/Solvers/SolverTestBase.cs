@@ -32,6 +32,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             SolverReport worked = solver.Solve(x, y, ref coeffs);
 
             Assert.IsTrue(worked.DidConverge);
+
+            Console.WriteLine("{0}\t{1}\t{2}", "X", "YFit", "YRaw");
             for (int i = 0; i < x.Count; i++)
             {
 
@@ -46,7 +48,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 //quadSolver2.FunctionDelegate(coeffs, new double[] { xValue }, ref fitValue, null);
                 myDelegate.Invoke(coeffs, new double[] { xValue }, ref fitValue, null);
                 Console.WriteLine("{0}\t{1}\t{2}", xValue, fitValue, yValue);
-            }            
+            }         
+            Console.WriteLine(Environment.NewLine);
             return worked;
         }
 
@@ -174,6 +177,44 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             manualData.Add(new XYData(3.3, 2.20436209268553));
             manualData.Add(new XYData(3.4, 2.02831278366901));
             manualData.Add(new XYData(3.5, 1.87241109519877));
+
+
+            return manualData;
+        }
+
+        protected static List<PNNLOmics.Data.XYData> ManualLortentzianC()
+        {
+            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            manualData.Add(new XYData(0.992385714285714, 39.1212121212121));
+            manualData.Add(new XYData(0.993028571428571, 40.0629370629371));
+            manualData.Add(new XYData(0.993671428571429, 40.1888111888112));
+            manualData.Add(new XYData(0.994314285714286, 41.4312354312354));
+            manualData.Add(new XYData(0.994957142857143, 42.1095571095571));
+            manualData.Add(new XYData(0.9956, 44.0862470862471));
+            manualData.Add(new XYData(0.996242857142857, 45.5571095571096));
+            manualData.Add(new XYData(0.996885714285714, 50.7459207459207));
+            manualData.Add(new XYData(0.997528571428572, 54.0862470862471));
+            manualData.Add(new XYData(0.998171428571429, 62.5477855477855));
+            manualData.Add(new XYData(0.998814285714286, 63.9347319347319));
+            manualData.Add(new XYData(0.999457142857143, 69.027972027972));
+            manualData.Add(new XYData(1.0001, 81.3566433566433));
+            manualData.Add(new XYData(1.00074285714286, 100.449883449883));
+            manualData.Add(new XYData(1.00138571428571, 122.475524475524));
+            manualData.Add(new XYData(1.00202857142857, 142.324009324009));
+            manualData.Add(new XYData(1.00267142857143, 152.722610722611));
+            manualData.Add(new XYData(1.00331425666809, 155.358974358974));
+            manualData.Add(new XYData(1.00395715236664, 158.18648018648));
+            manualData.Add(new XYData(1.00460004806519, 150.629370629371));
+            manualData.Add(new XYData(1.00524285714286, 131.878787878788));
+            manualData.Add(new XYData(1.00588571428571, 113.902097902098));
+            manualData.Add(new XYData(1.00652857142857, 98.3846153846154));
+            manualData.Add(new XYData(1.00717142857143, 89.5780885780886));
+            manualData.Add(new XYData(1.00781428571429, 80.6270396270396));
+            manualData.Add(new XYData(1.00845714285714, 71.8671328671329));
+            manualData.Add(new XYData(1.0091, 59.3146853146853));
+            manualData.Add(new XYData(1.0097428560257, 51.3916083916084));
+
+
 
 
             return manualData;

@@ -174,7 +174,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         /// </summary>
         [Test]
         [Description("Tests the Levenburg Marquadt solver using a lorentzian line shape.")]
-        public void SolveLorentzianFactory()
+        public void SolveLorentzianFactoryA()
         {
             List<double> x;
             List<double> y;
@@ -201,6 +201,37 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             //Assert.AreEqual(0.9999999999999587d, coeffs[2]);//real is 1
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [Test]
+        [Description("Tests the Levenburg Marquadt solver using a lorentzian line shape.")]
+        public void SolveLorentzianFactoryB()
+        {
+            List<double> x;
+            List<double> y;
+            ConvertXYDataToArrays(ManualLortentzianB(), out x, out y);
+
+            BasisFunctionsEnum functionChoise = BasisFunctionsEnum.Lorentzian;
+
+            BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
+            double[] coeffs = functionSelector.Coefficients;
+
+            coeffs[0] = 1;//width
+            coeffs[1] = 100;//height
+            coeffs[2] = -1;//xoffset            
+
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+
+            Assert.AreEqual(-0.0018033993446626476d, coeffs[0],0.0000001);//real is 0.5. 
+            Assert.AreEqual(-5.1154290702777061d, coeffs[1],0.001);//real is 75
+            Assert.AreEqual(-0.0094999999962089646d, coeffs[2],0.0000001);//real is 1
+
+            //using 1 instead of 0.5
+            //Assert.AreEqual(0.49999999817701907d, coeffs[0]);//real is 0.5. 
+            //Assert.AreEqual(74.99999972887592d, coeffs[1]);//real is 75
+            //Assert.AreEqual(0.9999999999999587d, coeffs[2]);//real is 1
+        }
 
         /// <summary>
         /// 
