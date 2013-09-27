@@ -13,11 +13,15 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.PeakDetection
 {
+    
+    
     /// <summary>
     /// Converts raw XYdata into differential peaks with an a X-centroid and an apex Y-abundance 
     /// </summary>
     public class PeakCentroider
     {
+       
+        
         /// <summary>
         /// Gets or sets the peak centroider parameters.
         /// </summary>
@@ -126,6 +130,15 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             centroidedPeak = peakTopCalculation.Parabola(peakTopParabolaPoints);
                             newcentroidPeak.XValue = centroidedPeak.X;
                             newcentroidPeak.Height = centroidedPeak.Y;
+
+                            //if it fails, we simply select the center peak.  This fails when the three y values are very very similar (within the tolerence of a single)
+                            if(double.IsNaN(newcentroidPeak.Height))
+                            {
+                                newcentroidPeak.XValue = peakTopParabolaPoints[1].X;
+                                newcentroidPeak.Height = peakTopParabolaPoints[1].Y;
+                            }
+
+                            //if(double.IsPositiveInfinity(newcentroidPeak.XValue) || double.IsNegativeInfinity(newcentroidPeak.XValue) )
 
                             //3.  find FWHM
                             int centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
