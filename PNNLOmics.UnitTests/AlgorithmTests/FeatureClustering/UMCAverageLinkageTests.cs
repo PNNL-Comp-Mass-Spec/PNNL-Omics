@@ -40,14 +40,16 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             return features;
         }
         [Test(Description = "Tests clusters that should have been split.")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-mergedSmall.txt")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-toy.txt")]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-single-smallSpread.txt")]
         [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-ideal.txt")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-nodelin.txt")]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt")]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-nodelin.txt")]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-smallMerged.txt")]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-small.txt")]
+        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-single-1500.txt")]
         public void TestAverageLinkage(string path)
         {
-            Console.WriteLine("Test: " + path);
+            Console.WriteLine("Average Linkage Test: " + path);
             List<UMCLight> features = GetClusterData(path);
 
             Assert.IsNotEmpty(features);
@@ -60,10 +62,41 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             UMCAverageLinkageClusterer<UMCLight, UMCClusterLight> average = new UMCAverageLinkageClusterer<UMCLight, UMCClusterLight>();
             average.Parameters = new FeatureClusterParameters<UMCLight>();
-            average.Parameters.CentroidRepresentation = ClusterCentroidRepresentation.Mean;
+            average.Parameters.CentroidRepresentation = ClusterCentroidRepresentation.Median;
             average.Parameters.Tolerances = new Algorithms.FeatureTolerances();
+            average.Parameters.Tolerances.RetentionTime = .02;
+            average.Parameters.Tolerances.Mass          = 6;
+            average.Parameters.Tolerances.DriftTime     = .3;
 
-            List<UMCClusterLight> clusters = average.Cluster(features);            
+            WeightedEuclideanDistance<UMCLight> distance = new WeightedEuclideanDistance<UMCLight>();
+            average.Parameters.DistanceFunction = distance.EuclideanDistance;
+            EuclideanDistanceMetric<UMCLight> euclid = new EuclideanDistanceMetric<UMCLight>();
+            average.Parameters.DistanceFunction = euclid.EuclideanDistance;
+            List<UMCClusterLight> clusters      = average.Cluster(features);
+
+            Console.WriteLine("Clusters = {0}", clusters.Count);
+            int id = 1;
+            foreach (UMCClusterLight testCluster in clusters)
+            {
+                testCluster.CalculateStatistics(ClusterCentroidRepresentation.Mean);
+                List<double> distances = new List<double>();
+                testCluster.ID = id++;
+                foreach (UMCLight feature in testCluster.Features)
+                {
+                    Console.WriteLine("{0},{1},{2},{3}",
+                                                                feature.RetentionTime,
+                                                                feature.MassMonoisotopicAligned,
+                                                                feature.DriftTime,
+                                                                testCluster.ID);
+
+                    double newDistance = distance.EuclideanDistance(feature, testCluster as FeatureLight);
+                    distances.Add(newDistance);
+                }
+                //Console.WriteLine();
+                //Console.WriteLine("Distances");                
+                //distances.ForEach(x => Console.WriteLine(x));
+                //Console.WriteLine();                
+            }
         }
 
         private double WeightedDistance(UMCLight x, UMCLight y)
@@ -78,9 +111,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-ideal.txt", .09)]
         //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt", .09)]
         //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt", .01)]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt", .0000001, .0001)]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt")]
         //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-nodelin.txt")]
-        public void TestWeightedAverageLinkage(string path, double weight, double driftWeight)
+        public void TestWeightedAverageLinkage(string path)
         {
             Console.WriteLine("Test: " + path);
             List<UMCLight> features = GetClusterData(path);
@@ -98,9 +131,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             average.Parameters.CentroidRepresentation   = ClusterCentroidRepresentation.Mean;
             average.Parameters.Tolerances               = new Algorithms.FeatureTolerances();
             
-            WeightedEuclideanDistance<UMCLight> distance = new WeightedEuclideanDistance<UMCLight>();
-            distance.MassWeight                 = weight;
-            distance.DriftWeight                = driftWeight;
+            WeightedEuclideanDistance<UMCLight> distance = new WeightedEuclideanDistance<UMCLight>();            
             average.Parameters.DistanceFunction = distance.EuclideanDistance;
             List<UMCClusterLight> clusters      = average.Cluster(features);
 

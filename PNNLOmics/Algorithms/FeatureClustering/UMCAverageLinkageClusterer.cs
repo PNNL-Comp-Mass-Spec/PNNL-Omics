@@ -25,6 +25,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             ShouldTestClustersWithinTolerance = true;
             Parameters      = new FeatureClusterParameters<T>();
         }
+
 		
 		/// <summary>
 		/// Performs average linkage clustering over the data and returns a list of UMC clusters.
@@ -70,7 +71,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 						umcX.SetParentFeature(clusterY);
 						clusterY.AddChildFeature(umcX);
 					}
-
+                    clusterY.CalculateStatistics(Parameters.CentroidRepresentation);
 					// Remove the old cluster so we don't process it again.
 					clusters.Remove(clusterX.ID);
 				}
@@ -92,11 +93,16 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
         protected override bool AreClustersWithinTolerance(U clusterX, U clusterY)
         {
-
-            clusterX.CalculateStatistics(Parameters.CentroidRepresentation);
-            clusterY.CalculateStatistics(Parameters.CentroidRepresentation);
+            // We dont need to compute stats everytime we compare, only if we modify the cluster. BLL
+            //clusterX.CalculateStatistics(Parameters.CentroidRepresentation);
+            //clusterY.CalculateStatistics(Parameters.CentroidRepresentation);
 
             return base.AreClustersWithinTolerance(clusterX, clusterY);
+        }
+
+        protected override void CalculateStatistics(U cluster)
+        {
+            // Ignore...the clusters statistics are already clustered.
         }
 	}
 }

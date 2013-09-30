@@ -15,7 +15,31 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     {
         public UMCPrimsClustering()
         {
-            
+            NSigma = 5;
+            DumpLinearRelationship = false;
+            ShouldTestClustersWithinTolerance = true;
+        }
+        public UMCPrimsClustering(double sigmaCutoff)
+        {
+            NSigma = sigmaCutoff;
+            DumpLinearRelationship = false;
+            ShouldTestClustersWithinTolerance = true;
+        }
+
+        public bool DumpLinearRelationship { get; set; }
+
+        /// <summary>
+        /// The number of sigma to allow before cutting the linear relationship.
+        /// </summary>
+        public double NSigma
+        {
+            get;
+            set;
+        }
+
+        protected override bool AreClustersWithinTolerance(T clusterX, T clusterY)
+        {
+            return true;
         }
 
         public override List<U> Cluster(List<T> data, List<U> clusters)
@@ -32,16 +56,54 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns>List of features clustered together.</returns>
         public override List<U> LinkFeatures(List<PairwiseDistance<T>> potentialDistances, Dictionary<int, U> clusters)
         {
+            List<U> newClusters                 = new List<U>();
             List<PairwiseDistance<T>> distances = new List<PairwiseDistance<T>>();
+
+            // There is an edge case with this setup that a singleton outside of the range 
+            // of other features made it into the batch of edges, but there is no corresponding edge 
+            // to the rest of the graph(s).  So here we hash all features
+            // then we ask for within the range, pare down that hash to a set of features that 
+            // have no corresponding edge.  These guys would ultimately be singletons we want 
+            // to capture...
+            HashSet<T> clusterMap = new HashSet<T>();
+            foreach (U cluster in clusters.Values)
+            {
+                foreach (T feature in cluster.Features)
+                {
+                    if (!clusterMap.Contains(feature))
+                    {
+                        clusterMap.Add(feature);
+                    }
+                }
+            }
+
+
             foreach (PairwiseDistance<T> distance in potentialDistances)
             {
                 if (AreClustersWithinTolerance(distance.FeatureX, distance.FeatureY))
                 {
-                    distances.Add(distance);
+                    //distances.Add(distance);
+                    if (clusterMap.Contains(distance.FeatureX))
+                    {
+                        clusterMap.Remove(distance.FeatureX);
+                    }
+                    if (clusterMap.Contains(distance.FeatureY))
+                    {
+                        clusterMap.Remove(distance.FeatureY);
+                    }
                 }
             }
 
-            List<PairwiseDistance<T>> newDistances = (from element in distances
+            // Once we have removed any cluster
+            foreach (T feature in clusterMap)
+            {
+                U cluster = new U();
+                feature.SetParentFeature(cluster);
+                cluster.AddChildFeature(feature);
+                newClusters.Add(cluster);
+            }
+
+            List<PairwiseDistance<T>> newDistances = (from element in potentialDistances
                                                         orderby element.Distance
                                                         select element).ToList();
             
@@ -59,11 +121,15 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             edges.ForEach(x => queue.Enqueue(x));
 
             // This makes sure we have 
-            HashSet<int> seenEdge   = new HashSet<int>();            
-            List<U> newClusters     = new List<U>();
-            
+            HashSet<int> seenEdge   = new HashSet<int>();
+
 
             // Now we start at the MST building
+            if (DumpLinearRelationship)
+            {
+                Console.WriteLine("GraphEdgeLength");
+
+            }
             while(queue.Count > 0)
             {
                 Edge<T> startEdge               = queue.Dequeue();
@@ -75,6 +141,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 MinimumSpanningTree<T> mstGroup = ConstructSubTree(graph,
                                                                    seenEdge,
                                                                    startEdge);
+
+                MstLrTree<Edge<T>> clusterTree = new MstLrTree<Edge<T>>();
+
                 // Get the mst value .
                 double sum  = 0;
                 double mean = 0;
@@ -83,15 +152,24 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     seenEdge.Add(dist.ID);
                     sum += dist.Length;
 
+                    clusterTree.Insert(dist);
+
                     double ppmDist = Feature.ComputeMassPPMDifference(dist.VertexB.MassMonoisotopicAligned,
                                                                       dist.VertexA.MassMonoisotopicAligned);
-                    Console.WriteLine("{0},,{1},{2},{3},{4},{5},{6}", dist, 
-                                                                      dist.VertexA.MassMonoisotopicAligned,
-                                                                      dist.VertexA.RetentionTime,
-                                                                      dist.VertexB.MassMonoisotopicAligned,
-                                                                      dist.VertexB.RetentionTime,
-                                                                      ppmDist,
-                                                                      Math.Abs(dist.VertexA.RetentionTime - dist.VertexB.RetentionTime));                            
+
+                    if (DumpLinearRelationship)
+                    {
+                        Console.WriteLine("{0}", dist.Length); /*,,{1},{2},{3},{4},{5},{6},{7},{8}", dist.Length,
+                                                                          dist.VertexA.RetentionTime,
+                                                                          dist.VertexA.MassMonoisotopicAligned,
+                                                                          dist.VertexA.DriftTime,
+                                                                          dist.VertexB.RetentionTime,
+                                                                          dist.VertexB.MassMonoisotopicAligned,
+                                                                          dist.VertexB.DriftTime,
+                                                                          ppmDist,
+                                                                          Math.Abs(dist.VertexA.RetentionTime - dist.VertexB.RetentionTime));
+                                                         */
+                    }
                 }
 
                 double N = Convert.ToDouble(mstGroup.LinearRelationship.Count);
@@ -106,11 +184,78 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 }
 
                 double stdev  = Math.Sqrt(sum / N);
-                double cutoff = stdev * 3;
+                double cutoff = NSigma; // *stdev; // stdev* NSigma;
 
                 List<U> mstClusters = CreateClusters(mstGroup, cutoff);
                 newClusters.AddRange(mstClusters);                
-            }                      
+            }   
+            //List<MinimumSpanningTree<T>> trees = new List<MinimumSpanningTree<T>>();
+
+            
+            //    // Get the mst value .
+            //double sum  = 0;
+            //double mean = 0;
+            //double N    = 0;
+
+            //while (queue.Count > 0)
+            //{
+            //    Edge<T> startEdge = queue.Dequeue();
+
+            //    // If we have already seen the edge, ignore it...
+            //    if (seenEdge.Contains(startEdge.ID))
+            //        continue;
+
+            //    MinimumSpanningTree<T> mstGroup = ConstructSubTree(graph,
+            //                                                       seenEdge,
+            //                                                       startEdge);
+
+            //    MstLrTree<Edge<T>> clusterTree = new MstLrTree<Edge<T>>();
+
+            //    foreach (Edge<T> dist in mstGroup.LinearRelationship)
+            //    {
+            //        seenEdge.Add(dist.ID);
+            //        sum += dist.Length;
+            //        N++;
+            //    }
+            //    trees.Add(mstGroup);
+            //}
+            
+            //// Calculate the standard deviation.
+            //mean = sum / N;
+            //sum = 0;
+
+            //foreach (MinimumSpanningTree<T> mstGroup in trees)
+            //{
+            //    foreach (Edge<T> dist in mstGroup.LinearRelationship)
+            //    {
+            //        double diff = dist.Length - mean;
+            //        sum += (diff * diff);
+
+            //        if (DumpLinearRelationship)
+            //        {
+            //            double ppmDist = Feature.ComputeMassPPMDifference(dist.VertexB.MassMonoisotopicAligned,
+            //                                                            dist.VertexA.MassMonoisotopicAligned);
+            //            Console.WriteLine("{0},,{1},{2},{3},{4},{5},{6},{7},{8}", dist,
+            //                                                                dist.VertexA.RetentionTime,
+            //                                                                dist.VertexA.MassMonoisotopicAligned,
+            //                                                                dist.VertexA.DriftTime,
+            //                                                                dist.VertexB.RetentionTime,
+            //                                                                dist.VertexB.MassMonoisotopicAligned,
+            //                                                                dist.VertexB.DriftTime,
+            //                                                                ppmDist,
+            //                                                                Math.Abs(dist.VertexA.RetentionTime - dist.VertexB.RetentionTime));
+            //        }
+            //    }
+            //}
+
+            //double stdev = Math.Sqrt(sum / N);
+            //double cutoff = stdev * NSigma;
+
+            //foreach(MinimumSpanningTree<T> mstGroup in trees)
+            //{                                               
+            //    List<U> mstClusters = CreateClusters(mstGroup, cutoff);
+            //    newClusters.AddRange(mstClusters);
+            //}           
             return newClusters;
         }
         /// <summary>
@@ -121,102 +266,89 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="cutoff">Cutoff score</param>
         /// <returns>List of clusters</returns>
         private List<U> CreateClusters(MinimumSpanningTree<T> mst, double cutoff)
-        {
-            List<U> clusters        = new List<U>();           
-            U currentCluster = null;
+        {            
+            List<U> clusters        = new List<U>();     
+            if (mst.LinearRelationship.Count < 1)
+                return clusters;
+            
+            Edge<T> previous          = mst.LinearRelationship[0];
+            U currentCluster          = new U();
+            HashSet<T> hashedFeatures = new HashSet<T>(); // Tracks the current feature
 
-            // Maps features that are not part of a cluster
-            // because their edge is too long (above the cutoff)
-            Dictionary<T, Edge<T>> notMapped = new Dictionary<T,Edge<T>>();
-            HashSet<T> mapped = new HashSet<T>();
+            // These are the features that dont ever get included into a cluster...
+            // This can only happen if the MST building picked a bunch of low-life features that 
+            // dont ever construct a graph...
+            List<T> lowLifeFeatures = new List<T>();
 
             for (int i = 0; i < mst.LinearRelationship.Count; i++)
             {
-                Edge<T> edge = mst.LinearRelationship[i];
+                // note this isnt O(n^2), this is just the search for a sub cluster
+                //                 
+                Edge<T> currentEdge = mst.LinearRelationship[i];
+                T vertexA = currentEdge.VertexA;
+                T vertexB = currentEdge.VertexB;
                 
-                // Add to cluster if above cutoff.
-                if (edge.Length < cutoff)
+                bool seenA = hashedFeatures.Contains(vertexA);
+                bool seenB = hashedFeatures.Contains(vertexB);
+
+                if (currentEdge.Length < cutoff)
                 {
-                    if (currentCluster == null)
+                    if (!seenA)                        
                     {
-                        currentCluster = new U();
+                        hashedFeatures.Add(vertexA);                            
+                        currentCluster.AddChildFeature(vertexA);
                     }
-
-                    T a = edge.VertexA;
-                    T b = edge.VertexB;
-
-
-
-                    // Add the vertices
-                    if (!mapped.Contains(a))
-                        currentCluster.AddChildFeature(a);
-                    if (!mapped.Contains(b))
-                        currentCluster.AddChildFeature(b);
-
-                    // Here we see if the edge was skipped previously, 
-                    // because it was part of an edge that was above the threshold.                    
-                    // But it was part of another edge that allowed it to be clustered
-                    //
-                    //     A-----------------B--C--D-------------E--H--F
-                    //
-                    //  A-B would be skipped, but B would later be added with C,D
-                    //  The same would happen for E,H,F.  We want to make sure that the
-                    //  B is removed from previously being tagged as not mapped.
-                    //
-                    //  Alternatively
-                    //  D-E would be flagged as not mapped...so we need to respect that edge case
-                    //  and make sure we flag those that are mapped
-                    //  that's why we track which ones were mapped.
-                    // 
-                    if (notMapped.ContainsKey(a))                    
-                        notMapped.Remove(a);                    
-                    if (notMapped.ContainsKey(b))                    
-                        notMapped.Remove(b);
+                        
+                    if (!seenB)              
+                    {
+                        hashedFeatures.Add(vertexB);                                    
+                        currentCluster.AddChildFeature(vertexB);
+                    }                        
                 }
                 else
                 {
-                    if (currentCluster != null)
+                    if (currentCluster.Features.Count > 0)
                     {
                         clusters.Add(currentCluster);
-                        currentCluster = null;
                     }
 
-                    T a = edge.VertexA;
-                    T b = edge.VertexB;
-
-                    // Only map if we have not mapped it before...
-                    // see the above comment for reasons why.
-                    if (!mapped.Contains(a))
-                    {                        
-                        if (!notMapped.ContainsKey(a))
-                            notMapped.Add(a, edge);
-                    }
-                    if (!mapped.Contains(b))
+                    currentCluster = new U();
+                    if (!seenA && !seenB)
                     {
-                        if (!notMapped.ContainsKey(b))
-                            notMapped.Add(b, edge);
+                        // I DONT KNOW WHAT TO DO WITH THESE ASSHOLES!
+                        lowLifeFeatures.Add(vertexA);
+                        lowLifeFeatures.Add(vertexB);
+
+                        // We dont hash these guys yet, because later we'll see if they hit the market
+                        // with their fake DVD's 
                     }
-                }                
+                    else if (!seenA)
+                    {
+                        currentCluster.AddChildFeature(vertexA);
+                        hashedFeatures.Add(vertexA);
+                    }
+                    else
+                    {
+                        hashedFeatures.Add(vertexB);
+                        currentCluster.AddChildFeature(vertexB);
+                    }
+                }                                                                
             }
 
-            // Make sure we add the current cluster if it was not cut off
-            if (currentCluster != null)
+            // Make sure we add the current cluster if it's not full yet...
+            if (currentCluster.Features.Count > 0)
             {
                 clusters.Add(currentCluster);
             }
 
-            // Then map all the singletons (any feature that did not make it into a cluster)
-            // these would be part of edges that are not part of a linear relationship            
-            foreach (T feature in notMapped.Keys)
+            foreach (T lowLife in lowLifeFeatures)
             {
-                // Only continue if we have not mapped it yet....
-                if (mapped.Contains(feature))                
-                    continue;
-
-                // Since we havent, create a cluster (singleton)!
-                U cluster = new U();
-                cluster.AddChildFeature(feature);
-                clusters.Add(cluster);
+                if (!hashedFeatures.Contains(lowLife))
+                {
+                    U cluster = new U();
+                    cluster.AddChildFeature(lowLife);
+                    clusters.Add(cluster);
+                }
             }
 
             return clusters;

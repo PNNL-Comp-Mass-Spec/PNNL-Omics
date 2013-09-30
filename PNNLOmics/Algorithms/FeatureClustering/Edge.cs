@@ -12,7 +12,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// Encapsulates an Edge between two vertices.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    class Edge<T> : IComparable<Edge<T>>
+    class Edge<T> : IComparable<Edge<T>>, IComparable
+
         where T : FeatureLight, new()
     {
         /// <summary>
@@ -77,9 +78,19 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns></returns>
         public int CompareTo(Edge<T> other)
         {
+            if (other == null)
+                return -1;
+
             return Length.CompareTo(other.Length);
         }
 
+        #endregion
+
+        #region IComparable Members
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as Edge<T>);
+        }
         #endregion
     }
 }

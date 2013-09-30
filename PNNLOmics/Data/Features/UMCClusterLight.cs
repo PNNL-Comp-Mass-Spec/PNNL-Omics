@@ -51,7 +51,6 @@ namespace PNNLOmics.Data.Features
             MassMonoisotopic     = cluster.MassMonoisotopic;
             MassMonoisotopicAligned = cluster.MassMonoisotopicAligned;
         }
-
         public double Tightness
         {
             get;

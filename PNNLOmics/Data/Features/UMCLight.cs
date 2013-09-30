@@ -395,8 +395,8 @@ namespace PNNLOmics.Data.Features
         #region IFeatureCluster<MSFeatureLight> Members
 
         public void AddChildFeature(MSFeatureLight feature)
-        {
-            feature.UMCID = ID;   
+        {            
+            feature.SetParentFeature(this);
             MSFeatures.Add(feature);
         }
 

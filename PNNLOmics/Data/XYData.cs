@@ -42,7 +42,7 @@ namespace PNNLOmics.Data
 
             for (int i = 0; i < total; i++)
             {
-                XYData part = new XYData(lowMass * i, 0.0);
+                XYData part = new XYData(lowMass + (Convert.ToDouble(i) * binSize), 0.0);
                 newData.Add(part);
             }
 

@@ -34,6 +34,15 @@ namespace PNNLOmics.Data.Features
             this.NET                        = feature.NET;
             this.AmbiguityScore             = double.MaxValue;
         }
+
+        /// <summary>
+        /// Gets or sets the minimum distance between this feature's elements and another
+        /// </summary>
+        public double MinimumCentroidDistance
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets or sets the abundance.
         /// </summary>

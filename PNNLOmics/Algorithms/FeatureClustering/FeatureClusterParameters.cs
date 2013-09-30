@@ -86,7 +86,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {
             Tolerances                      = new FeatureTolerances();
             OnlyClusterSameChargeStates     = CONST_DEFAULT_ONLY_CLUSTER_SAME_CHARGE_STATES;            
-            DistanceFunction                = DistanceFactory<T>.CreateDistanceFunction(DistanceMetric.Euclidean);
+            DistanceFunction                = DistanceFactory<T>.CreateDistanceFunction(DistanceMetric.WeightedEuclidean);
             RangeFunction                   = new WithinTolerances<T>(WithinRange);
             CentroidRepresentation          = ClusterCentroidRepresentation.Median;
         }

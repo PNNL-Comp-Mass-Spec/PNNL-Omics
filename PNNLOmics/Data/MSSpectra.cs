@@ -40,6 +40,7 @@ namespace PNNLOmics.Data
             get;
             set;
         }
+        public MSFeatureLight ParentFeature { get; set; }
         /// <summary>
         /// Gets or sets what group (or dataset) this spectra came from.
         /// </summary>

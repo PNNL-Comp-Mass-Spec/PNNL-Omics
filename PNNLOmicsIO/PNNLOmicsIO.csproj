@@ -62,6 +62,9 @@
   <ItemGroup>
     <Compile Include="IO\BaseTextFileReader.cs" />
     <Compile Include="IO\CommandLineUtil.cs" />
+    <Compile Include="IO\IMsMsSpectraReader.cs" />
+    <Compile Include="IO\MgfFileReader.cs" />
+    <Compile Include="IO\DtaFileWriter.cs" />
     <Compile Include="IO\ImporterBase.cs" />
     <Compile Include="IO\IMsMsSpectraWriter.cs" />
     <Compile Include="IO\IPeptideFileReader.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="IO\MSFeatureFileReader.cs" />
     <Compile Include="IO\MSFeatureLightReader.cs" />
     <Compile Include="IO\MsgfReader.cs" />
+    <Compile Include="IO\MsMsFileWriterFactory.cs" />
     <Compile Include="IO\PeptideReaderFactory.cs" />
     <Compile Include="IO\ScansFileReader.cs" />
     <Compile Include="IO\SkylineTransitionFileReader.cs" />

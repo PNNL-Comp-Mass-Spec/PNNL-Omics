@@ -12,6 +12,14 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
             
             switch (functionChoise)
             {
+                case BasisFunctionsEnum.AsymmetricGaussian:
+                    solver = new AsymmetricGaussian();
+                    solver.Coefficients = new double[4];
+                    solver.Coefficients[0] = .5;
+                    solver.Coefficients[1] = .5;
+                    solver.Coefficients[2] = .3;
+                    solver.Coefficients[3] = 1;
+                    break;
                 case BasisFunctionsEnum.Linear:
                     solver = new Linear();
                     solver.Coefficients = new double[2];

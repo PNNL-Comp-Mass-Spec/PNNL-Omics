@@ -59,25 +59,71 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Dictionary<int, UMCCluster> maps = new Dictionary<int, UMCCluster>();
 
             UMCPrimsClustering<UMCLight, UMCClusterLight> prims = new UMCPrimsClustering<UMCLight, UMCClusterLight>();
-            prims.Parameters = new FeatureClusterParameters<UMCLight>();
+            prims.Parameters                        = new FeatureClusterParameters<UMCLight>();
             prims.Parameters.CentroidRepresentation = ClusterCentroidRepresentation.Mean;
-            prims.Parameters.Tolerances = new Algorithms.FeatureTolerances();
+            prims.Parameters.Tolerances             = new Algorithms.FeatureTolerances();
 
             List<UMCClusterLight> clusters = prims.Cluster(features);
+
+            Dictionary<int, Dictionary<int, int>> counts = new Dictionary<int, Dictionary<int, int>>();
+            int cid = 0;
+            foreach (UMCClusterLight clusterx in clusters)
+            {
+                clusterx.ID = cid++;
+                foreach (UMCLight feature in clusterx.Features)
+                {
+                    if (!counts.ContainsKey(feature.GroupID))
+                    {
+                        counts.Add(feature.GroupID, new Dictionary<int, int>());
+                    }
+                    if (!counts[feature.GroupID].ContainsKey(feature.ID))
+                    {
+                        counts[feature.GroupID].Add(feature.ID, 0);
+                    }
+
+                    if (feature.ID == 51 || feature.ID == 37)
+                    {
+                        Console.WriteLine("Found it {0} cluster {1}", feature.ID, clusterx.ID);
+                    }
+
+                    counts[feature.GroupID][feature.ID]++;
+                    Console.WriteLine("Found {0}", clusterx.ID);
+                    if (counts[feature.GroupID][feature.ID] > 1)
+                    {
+                        Console.WriteLine("Duplicate!!!! cluster {0}  feature {1}", clusterx.ID, feature.ID);
+                    }
+                }
+            }
+
+            Console.WriteLine("Group\tFeature\tCount");
+            foreach (int group in counts.Keys)
+            {
+                foreach (int id in counts[group].Keys)
+                {
+                    Console.WriteLine("{0}\t{1}\t{2}", group, id, counts[group][id]);
+                }
+            }
 
             Console.WriteLine("Clusters = {0}", clusters.Count);
         }
         [Test(Description = "Tests clusters that should have been split.")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-single-smallSpread.txt", .00000001, .0001)]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-ideal.txt", .00000001, .0001)]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt", .09)]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt", .01)]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt", .00000001, .0001)]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-nodelin.txt", .00000001, .0001)]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-smallMerged.txt", .00000001, .0001)]        
-        public void TestPrimsWeighted(string path, double weight, double driftWeight)        
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-multiple-driftTime.txt", 4)]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-ideal.txt", 4)]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt", 4)]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-nodelin.txt", 4)]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-smallMerged.txt", 4)]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-small.txt", 4)]
+        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-small.txt", 4)]
+        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-single-1500.txt", 4)]
+        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-single-1500-two.txt", 4)]
+        public void TestPrimsWeighted(string path, double sigma)        
         {
-            Console.WriteLine("Test: " + path);
+
+            sigma = 1;
+
+            Console.WriteLine();
+            Console.WriteLine("Tests: " + path);
+            Console.WriteLine("Sigma Cutoff: {0}", sigma);
             List<UMCLight> features = GetClusterData(path);
 
             Assert.IsNotEmpty(features);
@@ -88,33 +134,49 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             Dictionary<int, UMCCluster> maps = new Dictionary<int, UMCCluster>();
 
-            UMCPrimsClustering<UMCLight, UMCClusterLight> prims = new UMCPrimsClustering<UMCLight, UMCClusterLight>();
-            prims.Parameters = new FeatureClusterParameters<UMCLight>();
-            prims.Parameters.CentroidRepresentation = ClusterCentroidRepresentation.Mean;
-            prims.Parameters.Tolerances = new Algorithms.FeatureTolerances();
 
+            UMCPrimsClustering<UMCLight, UMCClusterLight> prims = new UMCPrimsClustering<UMCLight, UMCClusterLight>(sigma);
+            prims.Parameters                        = new FeatureClusterParameters<UMCLight>();
+            prims.Parameters.CentroidRepresentation = ClusterCentroidRepresentation.Mean;
+            prims.Parameters.Tolerances             = new Algorithms.FeatureTolerances();
+            prims.Parameters.OnlyClusterSameChargeStates = false;
+            prims.Parameters.Tolerances.DriftTime       = .3;
+            prims.Parameters.Tolerances.Mass            = 15;
+            prims.Parameters.Tolerances.RetentionTime   = .02;
+            prims.DumpLinearRelationship                = true;
 
             WeightedEuclideanDistance<UMCLight> distance = new WeightedEuclideanDistance<UMCLight>();
-            distance.MassWeight                 = weight;
-            distance.DriftWeight                = driftWeight;            
             prims.Parameters.DistanceFunction   = distance.EuclideanDistance;
             List<UMCClusterLight> clusters      = prims.Cluster(features);
 
+
+            Console.WriteLine();
             Console.WriteLine("Clusters = {0}", clusters.Count);
+            int id = 1;
             foreach (UMCClusterLight testCluster in clusters)
             {
-                Console.WriteLine();
-                Console.WriteLine("{0}", testCluster.ID);
+                testCluster.CalculateStatistics(ClusterCentroidRepresentation.Mean);
+
+
+                List<double> distances = new List<double>();
+                testCluster.ID = id++;
                 foreach (UMCLight feature in testCluster.Features)
                 {
-                    Console.WriteLine("{0},{1},,{2},{3},{4}",  feature.GroupID, 
-                                                                feature.ID, 
-                                                                feature.MassMonoisotopicAligned, 
-                                                                feature.RetentionTime, 
-                                                                feature.DriftTime);
-                }                
-            }
+                    Console.WriteLine("{0},{1},{2},{3}",
+                                                                feature.RetentionTime,                                                
+                                                                feature.MassMonoisotopicAligned,
+                                                                feature.DriftTime,
+                                                                testCluster.ID);
 
+                    double newDistance = distance.EuclideanDistance(feature, testCluster as FeatureLight);
+                    distances.Add(newDistance);
+                }
+                //Console.WriteLine();
+                //Console.WriteLine("Distances");                
+                //distances.ForEach(x => Console.WriteLine(x));
+                //Console.WriteLine();                
+            }
+            Console.WriteLine();
             Console.WriteLine("Test Done:");
             Console.WriteLine();
         }                

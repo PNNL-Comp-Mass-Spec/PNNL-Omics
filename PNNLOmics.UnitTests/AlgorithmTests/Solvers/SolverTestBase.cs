@@ -47,7 +47,6 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 double fitValue = 0;
                 //quadSolver2.FunctionDelegate(coeffs, new double[] { xValue }, ref fitValue, null);
                 myDelegate.Invoke(coeffs, new double[] { xValue }, ref fitValue, null);
-                Console.WriteLine("{0}\t{1}\t{2}", xValue, fitValue, yValue);
             }         
             Console.WriteLine(Environment.NewLine);
             return worked;

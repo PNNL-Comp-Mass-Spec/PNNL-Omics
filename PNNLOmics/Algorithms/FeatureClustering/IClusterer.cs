@@ -30,5 +30,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="data">Data to cluster.</param>                
         List<U> Cluster(List<T> data, List<U> clusters);
         List<U> Cluster(List<T> data);
+        /// <summary>
+        /// Clusters and writes data to teh stream writer provided.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="writer"></param>
+        void ClusterAndProcess(List<T> data, IClusterWriter<U> writer);
     }
 }

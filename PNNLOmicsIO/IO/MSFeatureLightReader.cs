@@ -127,7 +127,32 @@ namespace PNNLOmicsIO.IO
                     feature.RetentionTime = Convert.ToDouble(feature.Scan);                    
                 }
                 if (columnMapping.ContainsKey(CHARGE))              feature.ChargeState                 = int.Parse(columns[columnMapping[CHARGE]]);
-                if (columnMapping.ContainsKey(ABUNDANCE))           feature.Abundance                   = long.Parse(columns[columnMapping[ABUNDANCE]]);
+                if (columnMapping.ContainsKey(ABUNDANCE))
+                {
+                    // DeconTools auto processor was outputting the abundances as doubles...
+                    double abundance     = 0;
+                    long   longAbundance = 0;
+
+                    string data     = columns[columnMapping[ABUNDANCE]];
+                    bool worked     = long.TryParse(data, out longAbundance);
+                    if (worked)
+                    {
+                        feature.Abundance = longAbundance;
+                    }
+                    else
+                    {
+                        worked = double.TryParse(data, out abundance);
+                        if (worked)
+                        {
+                            feature.Abundance = Convert.ToInt64(abundance);                            
+                        }
+                        else
+                        {
+                            throw new InvalidDataException("The abundance column in the input ISOS file was not undestood.");
+                        }                        
+                    }
+                    
+                }
                 if (columnMapping.ContainsKey(MZ))                  feature.Mz                          = double.Parse(columns[columnMapping[MZ]]);                
                 if (columnMapping.ContainsKey(MONO_MASS))           feature.MassMonoisotopic            = double.Parse(columns[columnMapping[MONO_MASS]]);  
                 if (columnMapping.ContainsKey(ISOTOPIC_FIT))        feature.Score                       = double.Parse(columns[columnMapping[ISOTOPIC_FIT]]);       

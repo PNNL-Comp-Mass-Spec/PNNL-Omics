@@ -50,6 +50,10 @@ namespace PNNLOmicsIO.IO
             {
                     type = SequenceFileType.MSGF;
             }
+            else if (lowerPath.EndsWith("fht_msgf.txt"))
+            {
+                    type  = SequenceFileType.MSGF;
+            }
             else if (lowerPath.EndsWith("syn.txt"))
             {
                     type = SequenceFileType.SEQUESTSynopsis;

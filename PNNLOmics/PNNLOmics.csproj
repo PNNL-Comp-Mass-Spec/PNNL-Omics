@@ -126,6 +126,7 @@
     <Compile Include="Algorithms\FeatureClustering\Edge.cs" />
     <Compile Include="Algorithms\FeatureClustering\FeatureGraph.cs" />
     <Compile Include="Algorithms\FeatureClustering\IClusterReprocessing.cs" />
+    <Compile Include="Algorithms\FeatureClustering\IClusterWriter.cs" />
     <Compile Include="Algorithms\FeatureClustering\KMeansClustering.cs" />
     <Compile Include="Algorithms\FeatureClustering\MedianSplitReprocessor.cs" />
     <Compile Include="Algorithms\FeatureClustering\MinimumSpanningTree.cs" />
@@ -135,6 +136,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\FeatureClustering\MSFeatureSingleLinkageClustering.cs" />
+    <Compile Include="Algorithms\FeatureClustering\TreeNode.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCCentroidClusterer.cs" />
     <Compile Include="Algorithms\FeatureClustering\LinkageClustererBase.cs" />
     <Compile Include="Algorithms\FeatureClustering\UMCAverageLinkageClusterer.cs" />
@@ -178,11 +180,30 @@
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\LevenburgMarquadtSolver.cs" />
     <Compile Include="Algorithms\Solvers\NumericalIntegrationBase.cs" />
     <Compile Include="Algorithms\Solvers\TrapezoidIntegration.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\BinaryDotProduct.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\BinarySpectraNormalizer.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\SpectralPeakCountComparer.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\SpectralCosineComparer.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\ISpectraFilter.cs" />
     <Compile Include="Algorithms\SpectralProcessing\ISpectralComparer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SavitzkyGolaySmoother.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\SpectralComparerFactory.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\SpectralDotProductComprarer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralNormalizedDotProductComparer.cs" />
     <Compile Include="Algorithms\SpectralProcessing\SpectralMzComparer.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\ISpectralNormalizer.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\SpectrumFilterFactory.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\ThresholdSpectralFilter.cs" />
+    <Compile Include="Algorithms\SpectralProcessing\TopPercentSpectralFilter.cs" />
+    <Compile Include="Algorithms\Statistics\INormalityTest.cs" />
+    <Compile Include="Algorithms\Statistics\JacqueBeraNormalityTest.cs" />
     <Compile Include="Algorithms\Statistics\WilcoxonSignedRankTest.cs" />
+    <Compile Include="Algorithms\Statistics\Distributions\Distributions.cs" />
+    <Compile Include="Algorithms\Statistics\HypothesisTestingFactory.cs" />
+    <Compile Include="Algorithms\Statistics\HypothesisTestingData.cs" />
+    <Compile Include="Algorithms\Statistics\IHypothesisTestingDouble.cs" />
+    <Compile Include="Algorithms\Statistics\TTest.cs" />
+    <Compile Include="Algorithms\Statistics\MannWhitneyTest.cs" />
     <Compile Include="Data\Chromatogram.cs" />
     <Compile Include="Data\Constants\AminoAcidName.cs" />
     <Compile Include="Data\Constants\CrossRingName.cs" />

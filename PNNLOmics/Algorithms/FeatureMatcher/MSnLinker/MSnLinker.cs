@@ -119,14 +119,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                     foreach (MSFeatureLight feature in featureMap[scan])
                     {
                         // Use the most abundant mass because it had a higher chance of being fragmented.
-                        double mz = (feature.MassMonoisotopicMostAbundant / feature.ChargeState) + protonMass;
+                        double mass = feature.Mz;
 
                         List<MSSpectra> matching = suspectSpectra.FindAll(
                                     delegate(MSSpectra x)
                                     {
-                                        return Math.Abs(x.PrecursorMZ - mz) <= ppmRange;                            
+                                        return Math.Abs(x.PrecursorMZ - mass) <= ppmRange;                            
                                     }
-                                    );
+                                    );                        
 
                         // Finally link!
                         foreach (MSSpectra spectrum in matching)
@@ -139,6 +139,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                             }
                             mappedMSSpectra[spectrumID]++;
                             feature.MSnSpectra.Add(spectrum);
+                            spectrum.ParentFeature = feature;
                         }
                     }
                 }                

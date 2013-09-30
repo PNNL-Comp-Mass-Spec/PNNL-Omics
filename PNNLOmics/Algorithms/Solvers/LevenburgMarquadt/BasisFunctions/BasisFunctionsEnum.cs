@@ -2,6 +2,7 @@
 {
     public enum BasisFunctionsEnum
     {
+        AsymmetricGaussian,
         PolynomialQuadratic,
         PolynomialCubic,
         Chebyshev,

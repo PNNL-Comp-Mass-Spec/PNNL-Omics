@@ -68,7 +68,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
         public SolverReport Solve(List<double> x, List<double> y, ref double[] coeffs)
         {
             double epsf     = 0;
-            int maxits      = 0; 
+            int maxits      = 400; 
             int info        = 0;
 
             alglib.lsfitstate   state;

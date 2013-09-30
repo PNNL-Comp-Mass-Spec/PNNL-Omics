@@ -16,6 +16,13 @@ namespace PNNLOmics.Data
         /// <returns></returns>
         List<XYData> GetRawSpectra(int scan, int group);
         /// <summary>
+        /// Gets a list of all raw spectra
+        /// </summary>
+        /// <param name="scan"></param>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        List<MSSpectra> GetRawSpectra(int group);
+        /// <summary>
         /// Retrieves the scan from the underlying stream of MSn type n = scanLevel
         /// </summary>
         /// <param name="scan"></param>
@@ -36,6 +43,14 @@ namespace PNNLOmics.Data
         /// <param name="excludeMap"></param>
         /// <returns></returns>
         List<MSSpectra> GetMSMSSpectra(int group, Dictionary<int, int> excludeMap);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="excludeMap"></param>
+        /// <param name="loadPeaks"></param>
+        /// <returns></returns>
+        List<MSSpectra> GetMSMSSpectra(int group, Dictionary<int, int> excludeMap, bool loadPeaks);
         /// <summary>
         /// Adds a file ID to the path for multi-file support.
         /// </summary>

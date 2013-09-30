@@ -98,6 +98,7 @@
     <Compile Include="AlgorithmTests\Alignment\DriftTimeAlignmentTest.cs" />
     <Compile Include="AlgorithmTests\Alignment\LCMSWarpTests.cs" />
     <Compile Include="AlgorithmTests\Alignment\SimilarityScoreTest.cs" />
+    <Compile Include="AlgorithmTests\Distance\WeightedDistanceCalculatorTests.cs" />
     <Compile Include="AlgorithmTests\Distance\DistanceCalculatorTests.cs" />
     <Compile Include="AlgorithmTests\FeatureClustering\UMCAverageLinkageTests.cs" />
     <Compile Include="AlgorithmTests\FeatureClustering\PrimsTest.cs" />
@@ -110,6 +111,8 @@
     <Compile Include="AlgorithmTests\Solvers\NumericalIntegrationTests.cs" />
     <Compile Include="AlgorithmTests\Solvers\LevenburgMarquadtSolverTests.cs" />
     <Compile Include="AlgorithmTests\Solvers\SolverTestBase.cs" />
+    <Compile Include="AlgorithmTests\Solvers\XicAnnotationTests.cs" />
+    <Compile Include="AlgorithmTests\SpectralComparisons\SpectralComparisonTest.cs" />
     <Compile Include="AlgorithmTests\STACTests\STACTests.cs" />
     <Compile Include="ConstantsTests\ConstantsTest.cs" />
     <Compile Include="DataTests\Features\UMCClusterLightTests.cs" />
@@ -128,6 +131,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PNNLOmicsIO\PNNLOmicsIO.csproj">
+      <Project>{20D49543-CD31-44D2-8403-F045B3FB363D}</Project>
+      <Name>PNNLOmicsIO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PNNLOmics\PNNLOmics.csproj">
       <Project>{8A934DC1-3418-449F-ADF6-9962499F49B2}</Project>
       <Name>PNNLOmics</Name>

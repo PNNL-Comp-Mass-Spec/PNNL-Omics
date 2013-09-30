@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
-using PNNLOmics.Algorithms.Solvers;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
-using PNNLOmics.Data;
+
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 {
@@ -272,6 +272,54 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             Assert.AreEqual(0.50000000014842283d, Math.Abs(coeffs[0]), .00001);//real is 0.5.  may return a negative value
             Assert.AreEqual(99.999999955476071d, coeffs[1], .00001);//real is 100
             Assert.AreEqual(0.99999999999999967d, coeffs[2], .00001);//real is 1
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Test]
+        [Description("Tests the Levenburg Marquadt solver using a gaussian line shape (legacy)")]
+        public void SolveAsymmetricGaussian()
+        {
+            List<double> x;
+            List<double> y;
+            ConvertXYDataToArrays(ManualGaussian(), out x, out y);
+
+            double start = x.Min();
+            double stop  = x.Max();
+            double width = Math.Abs(stop - start);
+            double A = y.Max();
+
+
+            for (int i = 0; i < x.Count; i++)
+            {
+                Console.WriteLine("{0}\t{1}", x[i], y[i]);
+            }
+            Console.WriteLine();
+
+            BasisFunctionBase basisFunction     = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.AsymmetricGaussian);
+            double[] coefficients               = basisFunction.Coefficients;
+            coefficients[0]                     = start + width/2;
+            coefficients[1]                     = A;
+            coefficients[2]                     = width*.9;
+            coefficients[3]                     = coefficients[2];
+            
+            SolverReport worked                 = EvaluateFunction(x, y, basisFunction, ref coefficients);
+            int numberOfSamples = x.Count * 2;
+
+            // Calculate the width an spacing of each of the trapezoids.
+            double delta = width / Convert.ToDouble(numberOfSamples);
+            double xx     = start;
+
+            // We already evaluated the first point, now for each element within
+            for (int i = 0; i < numberOfSamples + 1; i++)
+            {
+                xx += delta;
+                double yy = basisFunction.Evaluate(coefficients, xx);
+
+                Console.WriteLine("{0}\t{1}", xx, yy);
+            }
 
         }
     }     

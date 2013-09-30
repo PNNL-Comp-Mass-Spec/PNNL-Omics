@@ -32,6 +32,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             m_maxDistance  = 10000;
             m_massComparer = new Comparison<T>(FeatureLight.MassAlignedComparison);
 
+            ShouldTestClustersWithinTolerance = true;
 
             ClusterReprocessor = new MedianSplitReprocessor<T, U>();
         }
@@ -189,7 +190,14 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				Dictionary<int, U> localClusters    = CreateSingletonClusters(data, startUMCIndex, totalFeatures - 1);
 				List<U> blockClusters               = LinkFeatures(distances, localClusters);
                 CalculateAmbiguityScore(blockClusters);
-				clusters.AddRange(blockClusters);
+                if (localClusters.Count < 2)
+                {
+                    clusters.AddRange(localClusters.Values);
+                }
+                else
+                {
+                    clusters.AddRange(blockClusters);
+                }
 			}
 
 
@@ -268,7 +276,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {
             for (int i = 0; i < clusters.Count; i++)
             {
-                double minDistance  = m_maxDistance;
+                double minDistance          = m_maxDistance;
+                double minCentroidDistance  = m_maxDistance;
                 U clusterI          = clusters[i];
 
                 for (int j = 0; j < clusters.Count; j++)
@@ -280,9 +289,22 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
                     U clusterJ = clusters[j];
 
+                    T featureJ = new T();
+                    featureJ.MassMonoisotopicAligned = clusterJ.MassMonoisotopicAligned;
+                    featureJ.RetentionTime  = clusterJ.RetentionTime;
+                    featureJ.DriftTime      = clusterJ.DriftTime;
+
+                    T featureI = new T();
+                    featureI.MassMonoisotopicAligned    = clusterI.MassMonoisotopicAligned;
+                    featureI.RetentionTime              = clusterI.RetentionTime;
+                    featureI.DriftTime                  = clusterI.DriftTime;
+                    double centroidDistance             = Parameters.DistanceFunction(featureJ, featureI);
+                    minCentroidDistance                 = Math.Min(centroidDistance, minCentroidDistance);
+
                     double distance = CalculateMinimumFeatureDistance(clusterJ, clusterI);                    
                     minDistance = Math.Min(minDistance, distance);                    
                 }
+                clusterI.MinimumCentroidDistance = minCentroidDistance;
                 clusterI.AmbiguityScore = minDistance;
             }
         }
@@ -319,7 +341,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 					// Calculate the distances here (using a cube).  We dont care if we are going to re-compute
 					// these again later, because here we want to fall within the cube, the distance function used
 					// later is more related to determining a scalar value instead.
-                    bool withinRange = Parameters.RangeFunction(featureX, featureY);
+                    bool withinRange = AreClustersWithinTolerance(featureX, featureY); //Parameters.RangeFunction(featureX, featureY);
 
 					// Make sure we fall within the distance range before computing...
 					if (withinRange)
@@ -433,6 +455,147 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 return false;
             }
         }
-        
+
+
+        #region IClusterer<T,U> Members
+        /// <summary>
+        /// Clusters the data but does not store the results, instead immediately writes the data to the stream writer provided.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="writer"></param>
+        public void ClusterAndProcess(List<T> data, IClusterWriter<U> writer)
+        {        
+            /*
+             * This clustering algorithm first sorts the list of input UMC's by mass.  It then iterates
+             * through this list partitioning the data into blocks of UMC's based on a mass tolerance.
+             * When it finds gaps larger or equal to the mass (ppm) tolerance specified by the user,
+             * it will process the data before the gap (a block) until the current index of the features in question.
+             */
+
+            // Make sure we have data to cluster first.
+            if (data == null)
+            {
+                throw new NullReferenceException("The input feature data list was null.  Cannot process this data.");
+            }
+
+            // Make sure there is no null UMC data in the input list.
+            int nullIndex = data.FindIndex(delegate(T x) { return x == null; });
+            if (nullIndex > 0)
+            {
+                throw new NullReferenceException("The feature at index " + nullIndex.ToString() + " was null.  Cannot process this data.");
+            }
+
+            OnNotify("Sorting cluster mass list");
+
+            // The first thing we do is to sort the features based on mass since we know that has the least variability in the data across runs.
+            data.Sort(m_massComparer);
+
+            // Now partition the data based on mass ranges and the parameter values.
+            double massTolerance = Parameters.Tolerances.Mass;
+
+            // This is the index of first feature of a given mass partition.
+            int startUMCIndex = 0;
+            int totalFeatures = data.Count;
+
+
+            OnNotify("Detecting mass partitions");
+            int tenPercent = Convert.ToInt32(totalFeatures * .1);
+            int counter    = 0;
+            int percent    = 0;
+
+            int clusterId = 0;
+
+            for (int i = 0; i < totalFeatures - 1; i++)
+            {
+                if (counter > tenPercent)
+                {
+                    counter = 0;
+                    percent += 10;
+                    OnNotify(string.Format("Clustering Completed...{0}%", percent));
+                }
+                counter++;
+
+                // Here we compute the ppm mass difference between consecutive features (based on mass).
+                // This will determine if we cluster a block of data or not.                
+                T umcX = data[i];
+                T umcY = data[i + 1];
+                double ppm = Math.Abs(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopicAligned, umcY.MassMonoisotopicAligned));
+
+                // If the difference is greater than the tolerance then we cluster 
+                //  - we dont check the sign of the ppm because the data should be sorted based on mass.
+                if (ppm > massTolerance)
+                {
+                    // If start UMC Index is equal to one, then that means the feature at startUMCIndex
+                    // could not find any other features near it within the mass tolerance specified.
+                    if (startUMCIndex == i)
+                    {
+                        U cluster               = new U();
+                        cluster.AmbiguityScore  = m_maxDistance;
+
+                        umcX.SetParentFeature(cluster);
+                        cluster.AddChildFeature(umcX);
+
+                        cluster.CalculateStatistics(Parameters.CentroidRepresentation);
+                        cluster.ID = clusterId++;
+                        writer.WriteCluster(cluster);
+                    }
+                    else
+                    {
+                        // Otherwise we have more than one feature to to consider.												
+                        List<PairwiseDistance<T>> distances = CalculatePairWiseDistances(startUMCIndex, i, data);
+                        Dictionary<int, U> localClusters    = CreateSingletonClusters(data, startUMCIndex, i);
+                        List<U> blockClusters               = LinkFeatures(distances, localClusters);
+
+                        CalculateAmbiguityScore(blockClusters);
+
+                        foreach (U cluster in localClusters.Values)
+                        {
+                            cluster.ID = clusterId++;
+                            CalculateStatistics(cluster);                            
+                            writer.WriteCluster(cluster);
+                        }
+                    }
+
+                    startUMCIndex = i + 1;
+                }
+            }
+
+            // Make sure that we cluster what is left over.
+            if (startUMCIndex < totalFeatures)
+            {
+                OnNotify(string.Format("Clustering last partition...{0}%", percent));
+                List<PairwiseDistance<T>> distances = CalculatePairWiseDistances(startUMCIndex, totalFeatures - 1, data);
+                Dictionary<int, U> localClusters = CreateSingletonClusters(data, startUMCIndex, totalFeatures - 1);
+                List<U> blockClusters = LinkFeatures(distances, localClusters);
+
+                CalculateAmbiguityScore(blockClusters);
+
+                if (localClusters.Count < 2)
+                {
+                    foreach (U cluster in localClusters.Values)
+                    {
+                        cluster.ID = clusterId++;
+                        CalculateStatistics(cluster); 
+                        writer.WriteCluster(cluster);
+                    }
+                }
+                else
+                {
+                    foreach (U cluster in blockClusters)
+                    {
+                        cluster.ID = clusterId++;
+                        CalculateStatistics(cluster); 
+                        writer.WriteCluster(cluster);
+                    }
+                }
+            }
+           // OnNotify("Generating cluster statistics");                        
+        }
+        #endregion
+
+        protected virtual void CalculateStatistics(U cluster)
+        {
+            cluster.CalculateStatistics(Parameters.CentroidRepresentation);
+        }
     }
 }

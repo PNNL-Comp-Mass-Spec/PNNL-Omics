@@ -14,9 +14,19 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
          sigma = a + b * (x - x0)
          return A * math.exp(-0.5 * ((x - x0) / sigma)**2)
          */
-        public override void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj)
+        public override void FunctionDelegate(double[] c, double[] xv, ref double functionResult, object obj)
         {
-            throw new NotImplementedException();
+            double x     = xv[0];
+            double x0    = c[0];          
+            double A     = c[1];
+            double hm    = c[2];
+            double hp    = c[3];  
+            double denom = Math.Sqrt(2 * Math.Log(2))  * (hp + hm);           
+            double a     = 2 * hp * hm / denom;
+            double b     = (hp - hm) / denom;
+
+            double sigma    = a + b * (x - x0);
+            functionResult = A * Math.Exp(-.5 * Math.Pow(((x - x0) / sigma), 2));            
         }
     }
 }
