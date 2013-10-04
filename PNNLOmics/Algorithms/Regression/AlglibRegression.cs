@@ -9,11 +9,18 @@ namespace PNNLOmics.Algorithms.Regression
 {
     public class AlglibRegression: IRegression<double>
     {
-        public FitReport Fit(IEnumerable<double> x, IEnumerable<double> y, BasisFunctionsEnum basisFunction, out double[] coeffs)
+        public FitReport Fit(IEnumerable<double> x, IEnumerable<double> y, BasisFunctionsEnum basisFunction, ref double[] coeffs)
         {
-           
-            BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Linear);
-            coeffs = functionSelector.Coefficients;
+
+            BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(basisFunction);
+            
+            //incase the coefficients input are the wrong dimension
+            int coeffCount = functionSelector.Coefficients.Count();
+            if(coeffs.Length!=coeffCount)
+            {
+                coeffs = functionSelector.Coefficients;
+            }
+
             SolverReport worked = EvaluateFunction(x.ToList(), y.ToList(), functionSelector, ref coeffs);
 
             FitReportALGLIB results = new FitReportALGLIB(worked, worked.DidConverge);

@@ -64,11 +64,17 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             AlglibRegression regression = new AlglibRegression();
             
-            double[] coeffs;
-            FitReport worked = regression.Fit(x, y, BasisFunctionsEnum.Linear, out coeffs);
+
+            double[] coeffs = new double[2];
+            //initial conditions
+            coeffs[0] = 2;
+            coeffs[1] = 2;
+            FitReport worked = regression.Fit(x, y, BasisFunctionsEnum.Linear, ref coeffs);
 
             Assert.AreEqual(5, coeffs[0], .0001);
             Assert.AreEqual(0, coeffs[1], .0001);
+
+            Assert.AreEqual(true,worked.DidConverge);
         }
 
         
@@ -96,6 +102,27 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             Assert.AreEqual(-0.99999999960388553d, coeffs[0], .000001);
             Assert.AreEqual(2.410211171560969E-10d, coeffs[1], .000001);
             Assert.AreEqual(99.999999976322613d, coeffs[2], .000001);
+        }
+
+        public void SolveQuadraticFunctionViaInterface()
+        {
+            List<double> x;
+            List<double> y;
+            ConvertXYDataToArrays(CalculatedParabola(), out x, out y);
+
+            AlglibRegression regression = new AlglibRegression();
+            double[] coeffs = new double[3];
+            //initial conditions
+            coeffs[0] = 1;
+            coeffs[1] = 1;
+            coeffs[2] = 1;
+            FitReport worked = regression.Fit(x, y, BasisFunctionsEnum.PolynomialQuadratic, ref coeffs);
+
+            Assert.AreEqual(-0.99999999960388553d, coeffs[0], .000001);
+            Assert.AreEqual(2.410211171560969E-10d, coeffs[1], .000001);
+            Assert.AreEqual(99.999999976322613d, coeffs[2], .000001);
+
+            Assert.AreEqual(true, worked.DidConverge);
         }
 
         /// <summary>

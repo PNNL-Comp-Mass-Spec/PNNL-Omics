@@ -19,6 +19,6 @@ namespace PNNLOmics.Algorithms.Regression
         /// <param name="basisFunction">type of curve to fit</param>
         /// <param name="coeffs">Guess (in) and Fit values (out)</param>
         /// <returns></returns>
-        FitReport Fit(IEnumerable<T> x, IEnumerable<T> y, BasisFunctionsEnum basisFunction, out T[] coeffs);
+        FitReport Fit(IEnumerable<T> x, IEnumerable<T> y, BasisFunctionsEnum basisFunction, ref T[] coeffs);
     }
 }
