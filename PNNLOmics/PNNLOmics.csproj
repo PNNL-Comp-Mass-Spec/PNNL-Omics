@@ -163,6 +163,10 @@
     <Compile Include="Algorithms\PeakDetection\PeakThresholderParameters.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Algorithms\Regression\AlglibRegression.cs" />
+    <Compile Include="Algorithms\Regression\FitReport.cs" />
+    <Compile Include="Algorithms\Regression\FitReportALGLIB.cs" />
+    <Compile Include="Algorithms\Regression\IRegression.cs" />
     <Compile Include="Algorithms\Solvers\NumericalIntegrationEnum.cs" />
     <Compile Include="Algorithms\Solvers\NumericalIntegrationFactory.cs" />
     <Compile Include="Algorithms\Solvers\LevenburgMarquadt\BasisFunctionFactory.cs" />

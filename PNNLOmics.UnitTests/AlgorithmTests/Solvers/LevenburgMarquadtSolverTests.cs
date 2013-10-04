@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
 
@@ -54,6 +55,29 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             Assert.AreEqual(5, coeffs[0], .0001);
             Assert.AreEqual(0, coeffs[1], .0001);
         }
+
+        public void SolveLinearFunctionViaInterface()
+        {
+            List<double> x;
+            List<double> y;
+            ConvertXYDataToArrays(CalculateLine(), out x, out y);
+
+            AlglibRegression regression = new AlglibRegression();
+            
+            double[] coeffs;
+            FitReport worked = regression.Fit(x, y, BasisFunctionsEnum.Linear, out coeffs);
+
+            Assert.AreEqual(5, coeffs[0], .0001);
+            Assert.AreEqual(0, coeffs[1], .0001);
+        }
+
+        
+
+
+
+
+
+
         /// <summary>
         /// 
         /// </summary>
