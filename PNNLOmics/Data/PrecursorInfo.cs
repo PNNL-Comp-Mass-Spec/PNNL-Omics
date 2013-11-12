@@ -5,6 +5,10 @@ using System.Text;
 
 namespace PNNLOmics.Data
 {
+	public enum FragmentionType { None, HCD, CID, ETD }
+
+	public enum IonizationMode { Positive, Negative }
+
     //TODO: Scott - Check to see if you use this, otherwise delete as this information is stored in the MSSpectra and related by the data structures.
     public class PrecursorInfo
     { 
@@ -27,6 +31,16 @@ namespace PNNLOmics.Data
         /// Precursor m/z
         /// </summary>
         public double PrecursorMZ { get; set; }
+
+		/// <summary>
+		/// Fragmentation type (HCD, CID, ETD, None) of the MS Scan
+		/// </summary>
+		public FragmentionType FragmentationType { get; set; }
+
+		/// <summary>
+		/// Ionization mode (positive, Negative) of the MS Scan
+		/// </summary>
+		public IonizationMode IonizationMode { get; set; }
 
         /// <summary>
         /// Precursor intensity
