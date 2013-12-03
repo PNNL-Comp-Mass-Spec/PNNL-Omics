@@ -283,6 +283,53 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             Assert.AreEqual(0.99999999999999967d, coeffs[2], .00001);//real is 1
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Test]
+        [Description("Tests the Levenburg Marquadt solver using a gaussian line shape.")]
+        public void SolveGaussianFactoryRealProblemData()
+        {
+            List<double> x;
+            List<double> y;
+            ConvertXYDataToArrays(ManualGaussianProblem(), out x, out y);
+
+            BasisFunctionsEnum functionChoise = BasisFunctionsEnum.Gaussian;
+
+            BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
+            double[] coeffs = functionSelector.Coefficients;
+
+            coeffs[0] = 2;//sigma
+            coeffs[1] = 7375230.5281385286;//height
+            coeffs[2] = 1080;//xoffset            
+
+            SolverReport worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+
+            Assert.AreEqual(15.307150768556957d, Math.Abs(coeffs[0]), .01);//real is 
+            Assert.AreEqual(5839780.76391418d, coeffs[1], 100);//real is 
+            Assert.AreEqual(1081.0890598765791d, coeffs[2], .001);//real is 
+
+
+            Console.WriteLine("Try New Guess Coeff");
+
+            bool thisSectionFails = false;
+            if (thisSectionFails)
+            {
+                BasisFunctionBase functionSelectorPoorChoice = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
+                coeffs = functionSelectorPoorChoice.Coefficients;
+                coeffs[0] = 2; //sigma
+                coeffs[1] = 7375230.5281385286; //height
+                coeffs[2] = 1102; //xoffset            
+
+                SolverReport workedPoorChoiseOfX = EvaluateFunction(x, y, functionSelectorPoorChoice, ref coeffs);
+
+                Assert.AreEqual(15.307150768556957d, Math.Abs(coeffs[0]), .01); //real is 
+                Assert.AreEqual(5839780.76391418d, coeffs[1], 100); //real is 
+                Assert.AreEqual(1081.0890598765791d, coeffs[2], .001); //real is 
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>

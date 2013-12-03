@@ -30,7 +30,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             LevenburgMarquadtSolver solver = new LevenburgMarquadtSolver();                        
             solver.BasisFunction = myDelegate;
             SolverReport worked = solver.Solve(x, y, ref coeffs);
-
+            
             Assert.IsTrue(worked.DidConverge);
 
             Console.WriteLine("{0}\t{1}\t{2}", "X", "YFit", "YRaw");
@@ -273,6 +273,50 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             manualData.Add(new XYData(3.3, 0.00254193465161987));
             manualData.Add(new XYData(3.4, 0.000992950430585087));
             manualData.Add(new XYData(3.5, 0.000372665317207859));
+
+
+            return manualData;
+        }
+
+        protected static List<PNNLOmics.Data.XYData> ManualGaussianProblem()
+        {
+            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            manualData.Add(new XYData(1071, 3524039.91774892));
+            manualData.Add(new XYData(1072, 3780550.24242424));
+            manualData.Add(new XYData(1073, 3931531.09090909));
+            manualData.Add(new XYData(1074, 5260547.31168831));
+            manualData.Add(new XYData(1075, 6244816.04761905));
+            manualData.Add(new XYData(1076, 6990885.12987013));
+            manualData.Add(new XYData(1079, 7308660.42857143));
+            manualData.Add(new XYData(1084, 7375230.52813853));
+            manualData.Add(new XYData(1085, 6718535.54978355));
+            manualData.Add(new XYData(1086, 5752500.93939394));
+            manualData.Add(new XYData(1087, 4578403.7012987));
+            manualData.Add(new XYData(1088, 4257352.83116883));
+            manualData.Add(new XYData(1089, 3625847.22510823));
+            manualData.Add(new XYData(1094, 3267218.19047619));
+            manualData.Add(new XYData(1095, 3100076.36363636));
+            manualData.Add(new XYData(1096, 3098527.64935065));
+            manualData.Add(new XYData(1099, 2968884.06926407));
+            manualData.Add(new XYData(1102, 2822975.68831169));
+            manualData.Add(new XYData(1103, 2520780.71428571));
+            manualData.Add(new XYData(1108, 2165033.09063853));
+            manualData.Add(new XYData(1113, 1782230.47808442));
+            manualData.Add(new XYData(1120, 1389058.0603355));
+            manualData.Add(new XYData(1125, 1130431.85227273));
+            manualData.Add(new XYData(1132, 957820.390016234));
+            manualData.Add(new XYData(1139, 793730.911796537));
+            manualData.Add(new XYData(1146, 687189.360524892));
+            manualData.Add(new XYData(1153, 615781.538690476));
+            manualData.Add(new XYData(1158, 511652.569128788));
+            manualData.Add(new XYData(1165, 417971.257305195));
+            manualData.Add(new XYData(1170, 329680.231737013));
+            manualData.Add(new XYData(1177, 243472.293763528));
+            manualData.Add(new XYData(1184, 176916.870062229));
+            manualData.Add(new XYData(1191, 148494.751691017));
+            manualData.Add(new XYData(1198, 102313.519007035));
+            manualData.Add(new XYData(1205, 88633.2480384199));
+
 
 
             return manualData;
