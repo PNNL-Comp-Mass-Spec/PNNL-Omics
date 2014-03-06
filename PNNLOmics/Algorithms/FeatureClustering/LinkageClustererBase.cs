@@ -34,7 +34,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
             ShouldTestClustersWithinTolerance = true;
 
-            ClusterReprocessor = new MedianSplitReprocessor<T, U>();
+            
         }
 
         public LinkageClustererBase(int id)
@@ -55,14 +55,6 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// </summary>
 		public FeatureClusterParameters<T> Parameters { get; set; }
 
-        /// <summary>
-        /// Gets or sets the cluster reprocessor.
-        /// </summary>
-        public IClusterReprocessor<T, U> ClusterReprocessor
-        {
-            get;
-            set;
-        }
 
 		/// <summary>
 		/// Clusters the UMC data and returns a list of valid UMC Clusters.
@@ -75,13 +67,6 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		}
 
 
-        private void Reprocess(List<U> clusters)
-        {
-            if (ClusterReprocessor != null)
-            {
-                ClusterReprocessor.ProcessClusters(clusters);
-            }
-        }
         
         /// <summary>
         /// 

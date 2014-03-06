@@ -115,7 +115,7 @@ namespace PNNLOmics.Data.Features
                 throw new NullReferenceException("The UMC list was not set to an object reference.");
 
             if (UMCList.Count < 1)
-                throw new Exception("No data to compute statistics over.");
+                throw new Exception("No data to in cluster to compute statistics over.");
 
             // Lists for holding onto masses etc.
             List<double> net        = new List<double>();

@@ -6,14 +6,16 @@ namespace PNNLOmics.Data.Features
 	/// <summary>
 	/// Representation of a UMC with only basic information
 	/// </summary>
-    public class UMCLight : FeatureLight, 
-                            IFeatureCluster<MSFeatureLight>, 
+    public class UMCLight : FeatureLight,
+                            IFeatureCluster<MSFeatureLight>,        // This allows for ms features
+                            IFeatureCluster<UMCLight>,              // This allows for labeled devlepment
                             IChildFeature<UMCClusterLight>
 	{
 		/// <summary>
 		/// Default group ID.
 		/// </summary>
 		private const int DEFAULT_GROUP_ID = -1;
+        private List<UMCLight> m_umcList;
 		
 		/// <summary>
 		/// Default constructor.
@@ -25,45 +27,41 @@ namespace PNNLOmics.Data.Features
 
         public UMCLight(UMCLight feature)
         {
+            HPositive                          = new Dictionary<int, double>();
+            HNegative                          = new Dictionary<int, double>();
+            Abundance                          = feature.Abundance;
+            AbundanceSum                       = feature.AbundanceSum;
+            AmbiguityScore                     = feature.AmbiguityScore;
+            AverageDeconFitScore               = feature.AverageDeconFitScore;
+            AverageInterferenceScore           = feature.AverageInterferenceScore;           
+            ChargeState                        = feature.ChargeState;
+            ClusterID                          = feature.ClusterID;
+            ConformationFitScore               = feature.ConformationFitScore;
+            ConformationID                     = feature.ConformationID;
+            DriftTime                          = feature.DriftTime;
+            GroupID                            = feature.GroupID; 
+            ID                                 = feature.ID;
+            MassMonoisotopic                   = feature.MassMonoisotopic;
+            MassMonoisotopicAligned            = feature.MassMonoisotopicAligned;
+            Mz                                 = feature.Mz;
+            NET                                = feature.NET;
+            NETAligned                         = feature.NETAligned;
+            RetentionTime                      = feature.RetentionTime;
+            SaturatedMemberCount               = feature.SaturatedMemberCount ;
+            Scan                               = feature.Scan;
+            ScanAligned                        = feature.ScanAligned;
+            ScanEnd                            = feature.ScanEnd;
+            ScanStart                          = feature.ScanStart;
+            Score                              = feature.Score;
+            SpectralCount                      = feature.SpectralCount;
+            Tightness                          = feature.Tightness;
+            MsMsCount                          = feature.MsMsCount;
 
-            HPositive = new Dictionary<int, double>();
-            HNegative = new Dictionary<int, double>();
-
-            this.Abundance                          = feature.Abundance;
-            this.AbundanceSum                       = feature.AbundanceSum;
-            this.AmbiguityScore                     = feature.AmbiguityScore;
-            this.AverageDeconFitScore               = feature.AverageDeconFitScore;
-            this.AverageInterferenceScore           = feature.AverageInterferenceScore;           
-            this.ChargeState                        = feature.ChargeState;
-            this.ClusterID                          = feature.ClusterID;
-            this.ConformationFitScore               = feature.ConformationFitScore;
-            this.ConformationID                     = feature.ConformationID;
-            this.DriftTime                          = feature.DriftTime;
-            this.GroupID                            = feature.GroupID; 
-            this.ID                                 = feature.ID;
-            this.MassMonoisotopic                   = feature.MassMonoisotopic;
-            this.MassMonoisotopicAligned            = feature.MassMonoisotopicAligned;
-            this.MSFeatures                         = feature.MSFeatures;
-            this.Mz                                 = feature.Mz;
-            this.NET                                = feature.NET;
-            this.NETAligned                         = feature.NETAligned;
-            this.RetentionTime                      = feature.RetentionTime;
-            this.SaturatedMemberCount               = feature.SaturatedMemberCount ;
-            this.Scan                               = feature.Scan;
-            this.ScanAligned                        = feature.ScanAligned;
-            this.ScanEnd                            = feature.ScanEnd;
-            this.ScanStart                          = feature.ScanStart;
-            this.Score                              = feature.Score;
-            this.SpectralCount                      = feature.SpectralCount;
-            this.Tightness                          = feature.Tightness;
-
-            /// Charge state chromatograms.
-            this.ChargeStateChromatograms = new Dictionary<int, Chromatogram>();    
-  
-            // Isotopic chromatograms
-            this.IsotopeChromatograms = new Dictionary<int, List<Chromatogram>>();
-        }
-		/// <summary>
+            /// Charge state and Isotopic Chromatograms
+            ChargeStateChromatograms           = new Dictionary<int, Chromatogram>();    
+            IsotopeChromatograms               = new Dictionary<int, List<Chromatogram>>();
+        } 
+        /// <summary>
 		/// Gets or sets the UMC Cluster this feature is part of.
 		/// </summary>
 		public UMCClusterLight UMCCluster	{ get; set; }
@@ -252,19 +250,23 @@ namespace PNNLOmics.Data.Features
             this.ChargeStateChromatograms = new Dictionary<int, Chromatogram>();
             this.IsotopeChromatograms     = new Dictionary<int, List<Chromatogram>>();
 
-            HPositive = new Dictionary<int, double>();
-            HNegative = new Dictionary<int, double>();
-
+            HPositive   = new Dictionary<int, double>();
+            HNegative   = new Dictionary<int, double>();
 			GroupID		= DEFAULT_GROUP_ID;
 			UMCCluster	= null;
             Scan        = -1;
             ScanEnd     = Scan;
             ScanStart   = Scan;
             Tightness   = double.NaN;
+            MsMsCount   = 0;
 
             if (MSFeatures == null)
                 MSFeatures = new List<MSFeatureLight>();
             MSFeatures.Clear();
+
+            if (m_umcList == null)
+                m_umcList = new List<UMCLight>();
+            m_umcList.Clear();
 		}
 		#endregion
         /// <summary>
@@ -277,7 +279,7 @@ namespace PNNLOmics.Data.Features
                 throw new NullReferenceException("The UMC list was not set to an object reference.");
 
             if (MSFeatures.Count < 1)
-                throw new Exception("No data to compute statistics over.");
+                throw new Exception("No data in feature to compute statistics over.");
 
             // Lists for holding onto masses etc.
             List<double> net        = new List<double>();
@@ -420,5 +422,16 @@ namespace PNNLOmics.Data.Features
         }
 
         #endregion
+
+        public void AddChildFeature(UMCLight feature)
+        {
+            m_umcList.Add(feature);
+            feature.MSFeatures.ForEach(x => AddChildFeature(x));
+        }
+
+        List<UMCLight> IFeatureCluster<UMCLight>.Features
+        {
+            get { return m_umcList; }
+        }        
     }
 }

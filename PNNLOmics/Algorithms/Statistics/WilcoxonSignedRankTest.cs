@@ -1,11 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-//using Accord.Statistics.Testing;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Algorithms.Statistics
 {
-    /// <summary>
+    public class Normality : INormalityTest
+    {
+        #region INormalityTest Members
+
+        public HypothesisTestingData Test(List<double> dist1)
+        {
+
+            
+
+            return new HypothesisTestingData(0);
+        }
+
+        #endregion
+    }
+    /// <summary
     /// Performs the Wilcoxon Signed Rank Test
     /// </summary>
     public class WilcoxonSignedRankTest : IHypothesisTestingTwoSample

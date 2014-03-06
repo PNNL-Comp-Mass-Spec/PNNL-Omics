@@ -12,12 +12,7 @@ namespace PNNLOmics.Data
             base()
         {
             Clear();
-        }
-        public int Id
-        {
-            get;
-            set;
-        }        
+        }       
         public override void Clear()
         {
             base.Clear();
@@ -48,6 +43,20 @@ namespace PNNLOmics.Data
             get;
             set;            
         }
+        public double QualityScore
+        {
+            get;
+            set;
+        }
+        public double NET
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the false discovery rate of this peptide
+        /// </summary>
+        public double Fdr { get; set; }
 
         public override string ToString()
         {

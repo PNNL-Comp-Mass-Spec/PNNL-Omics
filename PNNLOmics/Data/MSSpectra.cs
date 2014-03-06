@@ -25,10 +25,6 @@ namespace PNNLOmics.Data
 
         #region Properties
         /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        public int ID { get; set; }
-        /// <summary>
         /// Gets or sets the retention time.
         /// </summary>
         public double RetentionTime { get; set; }

@@ -31,14 +31,6 @@ namespace PNNLOmics.Data
             get;
             set;
         }
-        /// <summary>
-        /// Gets or sets the id 
-        /// </summary>
-        public int ID
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Resets the cluster.

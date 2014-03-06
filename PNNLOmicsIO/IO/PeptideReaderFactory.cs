@@ -60,7 +60,11 @@ namespace PNNLOmicsIO.IO
             }
             else if (lowerPath.EndsWith("fht.txt"))
             {
-                    type = SequenceFileType.SEQUESTFirstHit;                    
+                type = SequenceFileType.SEQUESTFirstHit;
+            }
+            else if (lowerPath.EndsWith("msgf.tsv"))
+            {
+                type = SequenceFileType.MSGFTsv;
             }
             return type;
         }
@@ -74,6 +78,7 @@ namespace PNNLOmicsIO.IO
         SEQUESTFirstHit,
         SEQUESTSynopsis,
         MSGF,
+        MSGFTsv,
         SkylineTransitionFile,
         XTandem,
         None

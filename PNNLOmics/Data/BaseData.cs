@@ -7,10 +7,10 @@ using System.ComponentModel;
 namespace PNNLOmics.Data
 {
     [Serializable]
-    public abstract class BaseData: INotifyPropertyChanged
+    public abstract class BaseData
     {
-        int ID { get; set; }
+        public int ID { get; set; }
+
         public abstract void Clear();        
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

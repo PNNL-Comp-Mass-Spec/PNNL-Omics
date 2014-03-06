@@ -7,11 +7,12 @@ namespace PNNLOmics.Data
     /// </summary>
     public enum CollisionType
     {
-        HID,
-        CID,
-        ETD,
+        CID = 0,
         ECD,
-        Other,
-        None
+        ETD,
+        HCD,
+        HID,        
+        None,
+        Other        
     }
 }

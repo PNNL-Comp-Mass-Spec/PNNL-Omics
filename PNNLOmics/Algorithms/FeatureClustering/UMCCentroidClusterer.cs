@@ -181,7 +181,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// <param name="clusterX">One of the two clusters to test</param>
 		/// <param name="clusterY">One of the two clusters to test</param>
 		/// <returns>True if clusters are within tolerance, false otherwise</returns>
-		private bool AreClustersWithinTolerance(U clusterX, U clusterY)
+		protected override bool AreClustersWithinTolerance(U clusterX, U clusterY)
 		{
 			// Grab the tolerances
 			double massTolerance    = Parameters.Tolerances.Mass;

@@ -33,6 +33,9 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
                 case SpectralComparison.PeakCounts:
                     comparer = new SpectralPeakCountComparer();
                     break;
+                case SpectralComparison.SteinDotProduct:
+                    comparer = new SteinDotProduct();
+                    break;
                 default:
                     break;
             }
@@ -47,6 +50,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
         NormalizedDotProduct,
         BinaryDotProduct,
         CosineDotProduct,
+        SteinDotProduct,
         PeakCounts
     }
 }

@@ -33,6 +33,7 @@ namespace PNNLOmics.Data.Features
             ID					= umc.ID;
             RetentionTime       = umc.NETAligned;
             MassMonoisotopic    = umc.MassMonoisotopicAligned;                        
+            MsMsCount           = umc.MsMsCount;
             AddChildFeature(umc);            
         }		
         /// <summary>
@@ -41,16 +42,21 @@ namespace PNNLOmics.Data.Features
         /// <param name="cluster"></param>
         public UMCClusterLight(UMCClusterLight cluster)
         {            
-            List<UMCLight> umcs  = new List<UMCLight>();
+            List<UMCLight> umcs     = new List<UMCLight>();
             umcs.AddRange(cluster.UMCList);
-            UMCList				 = umcs;            
-            Abundance			 = cluster.Abundance;
-            ChargeState			 = cluster.ChargeState;
-            DriftTime			 = cluster.DriftTime;
-            ID					 = cluster.ID;
-            MassMonoisotopic     = cluster.MassMonoisotopic;
+            UMCList				    = umcs;            
+            Abundance			    = cluster.Abundance;
+            ChargeState			    = cluster.ChargeState;
+            DriftTime			    = cluster.DriftTime;
+            ID					    = cluster.ID;
+            MassMonoisotopic        = cluster.MassMonoisotopic;
             MassMonoisotopicAligned = cluster.MassMonoisotopicAligned;
+            MsMsCount               = cluster.MsMsCount;
+            IdentifiedSpectraCount  = cluster.IdentifiedSpectraCount;
+            MeanSpectralSimilarity  = cluster.MeanSpectralSimilarity;
         }
+        public double MeanSpectralSimilarity { get; set; }
+
         public double Tightness
         {
             get;
@@ -302,6 +308,9 @@ namespace PNNLOmics.Data.Features
 				UMCList = new List<UMCLight>();
 			else
 				UMCList.Clear();
+
+            MsMsCount               = 0;
+            IdentifiedSpectraCount  = 0;
 		}
 		#endregion      
     
@@ -319,10 +328,5 @@ namespace PNNLOmics.Data.Features
 
         #endregion
 
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
     }
 }

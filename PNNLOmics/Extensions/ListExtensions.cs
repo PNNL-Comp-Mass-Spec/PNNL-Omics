@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using MathNet.Numerics.LinearAlgebra.Generic.Solvers.Status;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data;
 
@@ -54,6 +54,35 @@ namespace PNNLOmics.Extensions
         }
     }
 
+    public static class UMCLightExtensions
+    {
+
+        /// <summary>
+        /// Creates a charge map for a given ms feature list.
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <returns></returns>
+        public static Dictionary<int, List<MSFeatureLight>> CreateChargeMap(this UMCLight feature)
+        {
+            var chargeMap = new Dictionary<int, List<MSFeatureLight>>();
+            foreach (MSFeatureLight msFeature in feature.MSFeatures)
+            {
+                if (!chargeMap.ContainsKey(msFeature.ChargeState))
+                {
+                    chargeMap.Add(msFeature.ChargeState, new List<MSFeatureLight>());
+                }
+                chargeMap[msFeature.ChargeState].Add(msFeature);
+            }
+
+            var newChargeMap = new Dictionary<int, List<MSFeatureLight>>();            
+            foreach (var charge in chargeMap.Keys)
+            {
+                var ordered       = chargeMap[charge].OrderBy(x => x.Scan);
+                newChargeMap.Add(charge, ordered.ToList());                
+            }
+            return newChargeMap;
+        }
+    }
 
 
     public static class XYDataListExtensions

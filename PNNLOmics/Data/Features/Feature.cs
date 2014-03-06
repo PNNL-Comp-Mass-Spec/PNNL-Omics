@@ -37,10 +37,6 @@ namespace PNNLOmics.Data.Features
         }
 
         #region AutoProperties
-        /// <summary>
-        /// The ID for a feature.
-        /// </summary>
-        public int ID { get; set; }
 		/// <summary>
 		/// The index of this feature. Usually used for keeping multiple sets of IDs.
 		/// </summary>

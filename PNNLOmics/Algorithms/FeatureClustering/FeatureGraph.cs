@@ -96,7 +96,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         public void CreateGraph(List<Edge<T>> edges)
         {
             // Sort out the distances so we dont have to recalculate distances.
-            int id = 0;
+            
             foreach (Edge<T> edge in edges)
             {
                 AddVertex(edge.VertexA);

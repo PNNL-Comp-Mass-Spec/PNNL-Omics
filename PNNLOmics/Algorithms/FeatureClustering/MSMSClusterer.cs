@@ -163,10 +163,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
                         double mzDiff = Math.Abs(mzI - mzJ);
                         if (mzDiff <= MzTolerance)
-                        {                            
+                        {
+                            var scanSummary = new ScanSummary();
                             if (featureI.MSnSpectra[0].Peaks.Count <= 0)
                             {
-                                featureI.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureI.MSnSpectra[0].Scan, featureI.GroupID);
+                                featureI.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureI.MSnSpectra[0].Scan, featureI.GroupID, out scanSummary);
                                 featureI.MSnSpectra[0].Peaks = XYData.Bin(featureI.MSnSpectra[0].Peaks,
                                                                             0,
                                                                             2000,
@@ -174,7 +175,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             }
                             if (featureJ.MSnSpectra[0].Peaks.Count <= 0)
                             {
-                                featureJ.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureJ.MSnSpectra[0].Scan, featureJ.GroupID);
+                                featureJ.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureJ.MSnSpectra[0].Scan, featureJ.GroupID, out scanSummary);
                                 featureJ.MSnSpectra[0].Peaks = XYData.Bin(featureJ.MSnSpectra[0].Peaks, 
                                                                             0,
                                                                             2000,

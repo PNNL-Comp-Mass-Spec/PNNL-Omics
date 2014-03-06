@@ -123,7 +123,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                     worked = EvaluateFunction(xic.x, xic.y, basisFunction, ref coefficients);
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     continue;
                 }
@@ -234,7 +234,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                     worked = EvaluateFunction(xic.x, xic.y, basisFunction, ref coefficients);
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     continue;
                 }

@@ -19,7 +19,7 @@ namespace PNNLOmics.Algorithms.Distance
         public double Mahalanobis(List<T> x, T y)
         {
 
-            DenseMatrix featureX;
+            
            // DenseMatrix featureY = new DenseMatrix(
 
 

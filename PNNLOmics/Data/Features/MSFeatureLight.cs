@@ -60,6 +60,7 @@ namespace PNNLOmics.Data.Features
             MSnSpectra  = new List<MSSpectra>();
             MSPeakList  = new List<Peak>();
             MassMonoisotopicMostAbundant = 0;
+            MsMsCount   = 0;
             UMC         = null;
 			base.Clear();
 		}

@@ -34,7 +34,15 @@ namespace PNNLOmics.Data.Features
             this.NET                        = feature.NET;
             this.AmbiguityScore             = double.MaxValue;
         }
-
+        public int IdentifiedSpectraCount { get; set; }
+        /// <summary>
+        /// Gets or sets the number of MSMS spectra 
+        /// </summary>
+        public int MsMsCount { get; set; }
+        /// <summary>
+        /// Gets or sets the scan value.
+        /// </summary>
+        public int Scan { get; set; }
         /// <summary>
         /// Gets or sets the minimum distance between this feature's elements and another
         /// </summary>
@@ -47,10 +55,6 @@ namespace PNNLOmics.Data.Features
         /// Gets or sets the abundance.
         /// </summary>
 		public long		Abundance			{ get; set; }
-        /// <summary>
-        /// Gets or sets the identification number of the feature.
-        /// </summary>
-		public int		ID					{ get; set; }
         /// <summary>
         /// Gets or sets the monoisotopic mass of the feature.
         /// </summary>

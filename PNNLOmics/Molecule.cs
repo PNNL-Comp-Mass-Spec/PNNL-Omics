@@ -7,6 +7,8 @@ namespace PNNLOmics.Data
 {
     public class Molecule: BaseData
     {
+
+        public int GroupId { get; set; }
         /// <summary>
         /// Gets or sets the scan the molecule was identified in.
         /// </summary>

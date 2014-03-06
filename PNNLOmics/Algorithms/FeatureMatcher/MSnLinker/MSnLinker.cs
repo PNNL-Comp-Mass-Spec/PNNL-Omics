@@ -139,6 +139,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                             }
                             mappedMSSpectra[spectrumID]++;
                             feature.MSnSpectra.Add(spectrum);
+                            feature.MsMsCount++;
                             spectrum.ParentFeature = feature;
                         }
                     }

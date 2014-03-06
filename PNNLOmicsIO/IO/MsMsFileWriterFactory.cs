@@ -35,16 +35,17 @@ namespace PNNLOmicsIO.IO
         /// <returns></returns>
         public static IMsMsSpectraWriter CreateSpectraWriter(string  extension)
         {
+            IMsMsSpectraWriter writer = null;
             switch (extension)
             {
                 case ".dta":
-                    return CreateSpectraWriter(MsMsWriterType.DTA);
+                    writer =  CreateSpectraWriter(MsMsWriterType.DTA);
                     break;
                 case ".mgf":
-                    return CreateSpectraWriter(MsMsWriterType.MGF);
+                    writer = CreateSpectraWriter(MsMsWriterType.MGF);
                     break;
             }
-            return null;
+            return writer;
         }
     }
 

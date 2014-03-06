@@ -12,24 +12,23 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Retrieves the scan from the underlying stream.
         /// </summary>
-        /// <param name="scan"></param>
-        /// <returns></returns>
-        List<XYData> GetRawSpectra(int scan, int group);
+        List<XYData> GetRawSpectra(int scan, int group, out ScanSummary summary);
         /// <summary>
         /// Gets a list of all raw spectra
         /// </summary>
         /// <param name="scan"></param>
         /// <param name="group"></param>
         /// <returns></returns>
-        List<MSSpectra> GetRawSpectra(int group);
+        List<MSSpectra> GetRawSpectra(int group);        
         /// <summary>
-        /// Retrieves the scan from the underlying stream of MSn type n = scanLevel
+        /// Retrieves the scan from the underlying stream including the scan summary
         /// </summary>
         /// <param name="scan"></param>
         /// <param name="group"></param>
-        /// <param name="scanLevel">MS Level of the scan</param>
+        /// <param name="scanLevel"></param>
+        /// <param name="summary"></param>
         /// <returns></returns>
-        List<XYData> GetRawSpectra(int scan, int group, int scanLevel);
+        List<XYData> GetRawSpectra(int scan, int group, int scanLevel, out ScanSummary summary);
         /// <summary>
         /// Retrieves a list of MS/MS spectra from the given group.
         /// </summary>
