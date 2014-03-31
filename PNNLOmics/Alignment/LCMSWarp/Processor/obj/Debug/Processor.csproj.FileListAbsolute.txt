@@ -1,0 +1,13 @@
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\Processor.dll
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\Processor.pdb
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\LCMSWarp.dll
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\PNNLOmics.dll
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\MathNet.Numerics.dll
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\alglibnet2.dll
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\MathNet.Iridium.dll
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\LCMSWarp.pdb
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\MathNet.Numerics.pdb
+C:\Users\dega126\Desktop\LCMSWarp\Processor\bin\Debug\MathNet.Numerics.xml
+C:\Users\dega126\Desktop\LCMSWarp\Processor\obj\Debug\Processor.csprojResolveAssemblyReference.cache
+C:\Users\dega126\Desktop\LCMSWarp\Processor\obj\Debug\Processor.dll
+C:\Users\dega126\Desktop\LCMSWarp\Processor\obj\Debug\Processor.pdb

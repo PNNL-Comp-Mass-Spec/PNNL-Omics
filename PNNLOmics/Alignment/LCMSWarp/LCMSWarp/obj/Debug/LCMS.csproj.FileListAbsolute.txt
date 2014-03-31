@@ -1,0 +1,10 @@
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\bin\Debug\LCMSWarp.dll
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\bin\Debug\LCMSWarp.pdb
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\bin\Debug\MathNet.Numerics.dll
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\bin\Debug\PNNLOmics.dll
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\bin\Debug\alglibnet2.dll
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\bin\Debug\MathNet.Iridium.dll
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\bin\Debug\MathNet.Numerics.pdb
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\bin\Debug\MathNet.Numerics.xml
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\obj\Debug\LCMSWarp.dll
+C:\Users\dega126\Desktop\LCMSWarp\LCMSWarp\obj\Debug\LCMSWarp.pdb

@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCMS", "LCMSWarp\LCMS.csproj", "{6B8AB31D-747C-4AEB-A88F-BABCB9CCED8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aligner", "Aligner\Aligner.csproj", "{D79D90F0-91E8-4618-9C80-AF60269AFC5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Processor", "Processor\Processor.csproj", "{DE43F6F1-90B0-4093-8ADD-DC78272B1B20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCMSWarpTestSuite", "LCMSWarpTestSuite\LCMSWarpTestSuite.csproj", "{529C0B6C-5737-4003-AA86-B19BD16E6DD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B8AB31D-747C-4AEB-A88F-BABCB9CCED8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B8AB31D-747C-4AEB-A88F-BABCB9CCED8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B8AB31D-747C-4AEB-A88F-BABCB9CCED8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B8AB31D-747C-4AEB-A88F-BABCB9CCED8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D79D90F0-91E8-4618-9C80-AF60269AFC5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D79D90F0-91E8-4618-9C80-AF60269AFC5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D79D90F0-91E8-4618-9C80-AF60269AFC5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D79D90F0-91E8-4618-9C80-AF60269AFC5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE43F6F1-90B0-4093-8ADD-DC78272B1B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE43F6F1-90B0-4093-8ADD-DC78272B1B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE43F6F1-90B0-4093-8ADD-DC78272B1B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE43F6F1-90B0-4093-8ADD-DC78272B1B20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{529C0B6C-5737-4003-AA86-B19BD16E6DD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{529C0B6C-5737-4003-AA86-B19BD16E6DD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{529C0B6C-5737-4003-AA86-B19BD16E6DD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{529C0B6C-5737-4003-AA86-B19BD16E6DD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

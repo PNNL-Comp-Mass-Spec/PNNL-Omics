@@ -1,0 +1,15 @@
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\Aligner.dll
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\Aligner.pdb
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\PNNLOmics.dll
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\Processor.dll
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\LCMSWarp.dll
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\MathNet.Numerics.dll
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\alglibnet2.dll
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\MathNet.Iridium.dll
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\Processor.pdb
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\LCMSWarp.pdb
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\MathNet.Numerics.pdb
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\bin\Debug\MathNet.Numerics.xml
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\obj\Debug\Aligner.csprojResolveAssemblyReference.cache
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\obj\Debug\Aligner.dll
+C:\Users\dega126\Desktop\LCMSWarp\Aligner\obj\Debug\Aligner.pdb
