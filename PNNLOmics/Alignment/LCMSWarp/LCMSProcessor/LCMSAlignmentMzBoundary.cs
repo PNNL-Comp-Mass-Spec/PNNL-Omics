@@ -4,7 +4,7 @@
     /// Class that defines the boundary of an MZ range to align to
     /// Holds a lower bound and an upper bound for comparison
     /// </summary>
-    public class LCMSAlignmentMzBoundary
+    public class LcmsAlignmentMzBoundary
     {
         /// <summary>
         /// Lower Boundary auto property
@@ -21,7 +21,7 @@
         /// </summary>
         /// <param name="low"></param>
         /// <param name="high"></param>
-        public LCMSAlignmentMzBoundary(double low, double high)
+        public LcmsAlignmentMzBoundary(double low, double high)
         {
             BoundaryHigh = high;
             BoundaryLow = low;

@@ -7,7 +7,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 {
     public class LCMSNaturalCubicSplineRegression
     {
-        List<LCMSRegressionPts> m_pts;
+        List<LcmsRegressionPts> m_pts;
         List<double> m_intervalStart;
 
         double[] m_coeffs = new double[512];
@@ -19,7 +19,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         public LCMSNaturalCubicSplineRegression()
         {
             m_numKnots = 2;
-            m_pts = new List<LCMSRegressionPts>();
+            m_pts = new List<LcmsRegressionPts>();
             m_intervalStart = new List<double>();
         }
 
@@ -34,13 +34,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             m_numKnots = numKnots;
         }
 
-        public void PreprocessCopyData(List<LCMSRegressionPts> points)
+        public void PreprocessCopyData(List<LcmsRegressionPts> points)
         {
             int numPts = points.Count();
 
             m_minX = double.MaxValue;
             m_maxX = double.MinValue;
-            foreach (LCMSRegressionPts point in points)
+            foreach (LcmsRegressionPts point in points)
             {
                 if (point.X < m_minX)
                 {
@@ -61,7 +61,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         }
 
         // input points are [x, y], order specifies order of the regression line
-        public bool CalculateLSQRegressionCoefficients(ref List<LCMSRegressionPts> Points)
+        public bool CalculateLSQRegressionCoefficients(ref List<LcmsRegressionPts> Points)
         {
             Clear();
             if (m_numKnots < 2)
@@ -91,7 +91,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             for (int pointNum = 0; pointNum < numPts; pointNum++)
             {
-                LCMSRegressionPts point = m_pts[pointNum];
+                LcmsRegressionPts point = m_pts[pointNum];
                 double coeff = 1;
                 A[pointNum, 0] = coeff;
                 A[pointNum, 1] = point.X;

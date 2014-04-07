@@ -66,12 +66,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
     /// <summary>
     /// Class which will use LCMSWarp to process alignment
     /// </summary>
-    public class LCMSAlignmentProcessor
+    public class LcmsAlignmentProcessor
     {
-        bool m_aligningToMassTagDb;
-        bool m_massTagDbLoaded;
-        bool m_clusterAlignee;
-
         // In case alignment was to ms features, this will kepe track of the minimum scan in the
         // reference features. They are needed because LCMSWarp uses NET values for reference and
         // are scaled to between 0 and 1. These will scale it back to actual scan numbers
@@ -83,68 +79,72 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         double m_minAligneeDatasetMz;
         double m_maxAligneeDatasetMz;
 
-        int m_percentDone;
-
         // LCMSWarp instance which will do the alignment when processing
         LCMSWarper.LCMSAlignment.LCMSWarp m_lcmsWarp;
-        LCMSAlignmentOptions m_options;
 
         #region Public properties
-
+        /// <summary>
+        /// Get property for the NET Intercept that LCMS Warp is holding
+        /// Simulates a pure linear regression
+        /// </summary>
         public double NetIntercept
         {
             get { return m_lcmsWarp.NetIntercept; }
         }
+        /// <summary>
+        /// Get property for the NET RSquared that LCMS Warp is holding
+        /// Simulates a pure linear regression
+        /// </summary>
         public double NetRsquared
         {
             get { return m_lcmsWarp.NetLinearRsq; }
         }
+        /// <summary>
+        /// Get property for the NET Slope that LCMS Warp is holding
+        /// Simulates a pure linear regression
+        /// </summary>
         public double NetSlope
         {
             get { return m_lcmsWarp.NetSlope; }
         }
+        /// <summary>
+        /// Options for the Alignment processor
+        /// </summary>
+        public LcmsAlignmentOptions Options { get; set; }
+        /// <summary>
+        /// Flag for if the Processor is aligning to a Mass Tag Database
+        /// </summary>
+        public bool AligningToMassTagDb { get; set; }
+        /// <summary>
+        /// Flag for if the Processor has loaded a MassTag Database
+        /// </summary>
+        public bool MassTagDbLoaded { get; set; }
+        /// <summary>
+        /// Flag for if the alignees are clusters
+        /// </summary>
+        public bool ClusterAlignee { get; set; }
+        /// <summary>
+        /// Property to keep track of the percent done for the Processor
+        /// </summary>
+        public int PercentDone { get; set; }
 
-        public LCMSAlignmentOptions Options
-        {
-            get { return m_options; }
-            set { m_options = value; }
-        }
-
-        public bool AligningToMassTagDb
-        {
-            get { return m_aligningToMassTagDb; }
-            set { m_aligningToMassTagDb = value; }
-        }
-
-        public bool MassTagDbLoaded
-        {
-            get { return m_massTagDbLoaded; }
-            set { m_massTagDbLoaded = value; }
-        }
-
-        public bool ClusterAlignee
-        {
-            get { return m_clusterAlignee; }
-            set { m_clusterAlignee = value; }
-        }
-
-        public int PercentDone
-        {
-            get { return m_percentDone; }
-            set { m_percentDone = value; }
-        }
         #endregion
 
-        public LCMSAlignmentProcessor()
+        /// <summary>
+        /// Public constructor for the LCMS Alignment Processor
+        /// Initializes a new LCMSWarp object using the LCMS Alignment options
+        /// which were passed into the Processor
+        /// </summary>
+        public LcmsAlignmentProcessor()
         {
             m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
-            m_options = new LCMSAlignmentOptions();
+            Options = new LcmsAlignmentOptions();
 
             ApplyAlignmentOptions();
 
-            m_aligningToMassTagDb = false;
-            m_massTagDbLoaded = false;
-            m_clusterAlignee = false;
+            AligningToMassTagDb = false;
+            MassTagDbLoaded = false;
+            ClusterAlignee = false;
         }
 
         // Applies the alignment options to the LCMSWarper, setting the Mass
@@ -153,43 +153,43 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         private void ApplyAlignmentOptions()
         {
             // Applying the Mass and NET Tolerances
-            m_lcmsWarp.MassTolerance = m_options.MassTolerance;
-            m_lcmsWarp.NetTolerance = m_options.NETTolerance;
+            m_lcmsWarp.MassTolerance = Options.MassTolerance;
+            m_lcmsWarp.NetTolerance = Options.NetTolerance;
 
             // Applying options for NET Calibration
-            m_lcmsWarp.NumSections = m_options.NumTimeSections;
-            m_lcmsWarp.MaxSectionDistortion = m_options.ContractionFactor;
-            m_lcmsWarp.MaxJump = m_options.MaxTimeDistortion;
-            m_lcmsWarp.NumBaselineSections = m_options.NumTimeSections * m_options.ContractionFactor;
+            m_lcmsWarp.NumSections = Options.NumTimeSections;
+            m_lcmsWarp.MaxSectionDistortion = Options.ContractionFactor;
+            m_lcmsWarp.MaxJump = Options.MaxTimeDistortion;
+            m_lcmsWarp.NumBaselineSections = Options.NumTimeSections * Options.ContractionFactor;
             //m_lcmsWarp.NumMatchesPerBaselineStart = m_options.ContractionFactor * m_options.ContractionFactor;
             m_lcmsWarp.NumMatchesPerSection = m_lcmsWarp.NumBaselineSections * m_lcmsWarp.NumMatchesPerBaseline;
-            m_lcmsWarp.MaxPromiscuousUmcMatches = m_options.MaxPromiscuity;
+            m_lcmsWarp.MaxPromiscuousUmcMatches = Options.MaxPromiscuity;
 
             // Applying options for Mass Calibration
-            m_lcmsWarp.MassCalibrationWindow = m_options.MassCalibrationWindow;
-            m_lcmsWarp.MassCalNumDeltaBins = m_options.MassCalibNumYSlices;
-            m_lcmsWarp.MassCalNumSlices = m_options.MassCalibNumXSlices;
-            m_lcmsWarp.MassCalNumJump = m_options.MassCalibMaxJump;
+            m_lcmsWarp.MassCalibrationWindow = Options.MassCalibrationWindow;
+            m_lcmsWarp.MassCalNumDeltaBins = Options.MassCalibNumYSlices;
+            m_lcmsWarp.MassCalNumSlices = Options.MassCalibNumXSlices;
+            m_lcmsWarp.MassCalNumJump = Options.MassCalibMaxJump;
 
-            LCMSCombinedRegression.RegressionType regType = LCMSCombinedRegression.RegressionType.Central;
+            LcmsCombinedRegression.RegressionType regType = LcmsCombinedRegression.RegressionType.CENTRAL;
 
-            if (m_options.MassCalibUseLsq)
+            if (Options.MassCalibUseLsq)
             {
-                regType = LCMSCombinedRegression.RegressionType.Hybrid;
+                regType = LcmsCombinedRegression.RegressionType.HYBRID;
             }
             m_lcmsWarp.MzRecalibration.SetCentralRegressionOptions(m_lcmsWarp.MassCalNumSlices, m_lcmsWarp.MassCalNumDeltaBins,
-                                                                   m_lcmsWarp.MassCalNumJump, m_options.MassCalibMaxZScore,
+                                                                   m_lcmsWarp.MassCalNumJump, Options.MassCalibMaxZScore,
                                                                    regType);
             m_lcmsWarp.NetRecalibration.SetCentralRegressionOptions(m_lcmsWarp.MassCalNumSlices, m_lcmsWarp.MassCalNumDeltaBins,
-                                                                    m_lcmsWarp.MassCalNumJump, m_options.MassCalibMaxZScore,
+                                                                    m_lcmsWarp.MassCalNumJump, Options.MassCalibMaxZScore,
                                                                     regType);
 
             // Applying LSQ options
-            m_lcmsWarp.MzRecalibration.SetLSQOptions(m_options.MassCalibLSQNumKnots, m_options.MassCalibLsqMaxZScore);
-            m_lcmsWarp.NetRecalibration.SetLSQOptions(m_options.MassCalibLSQNumKnots, m_options.MassCalibLsqMaxZScore);
+            m_lcmsWarp.MzRecalibration.SetLsqOptions(Options.MassCalibLsqNumKnots, Options.MassCalibLsqMaxZScore);
+            m_lcmsWarp.NetRecalibration.SetLsqOptions(Options.MassCalibLsqNumKnots, Options.MassCalibLsqMaxZScore);
 
             // Setting the calibration type
-            m_lcmsWarp.CalibrationType = (LcmsWarpCalibrationType)m_options.CalibType;
+            m_lcmsWarp.CalibrationType = (LcmsWarpCalibrationType)Options.CalibType;
         }
 
         /// <summary>
@@ -205,14 +205,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
             }
 
-            m_percentDone = 0;
+            PercentDone = 0;
             var umcIndices = new List<int>();
             var umcCalibratedMasses = new List<double>();
             var umcAlignedNets = new List<double>();
             var umcAlignedScans = new List<int>();
             var umcDriftTimes = new List<double>();
 
-            if (m_aligningToMassTagDb)
+            if (AligningToMassTagDb)
             {
                 m_lcmsWarp.GetFeatureCalibratedMassesAndAlignedNets(ref umcIndices, ref umcCalibratedMasses,
                                                                     ref umcAlignedNets, ref umcDriftTimes);
@@ -281,14 +281,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
             }
 
-            m_percentDone = 0;
+            PercentDone = 0;
             var umcIndices = new List<int>();
             var umcCalibratedMasses = new List<double>();
             var umcAlignedNets = new List<double>();
             var umcAlignedScans = new List<int>();
             var umcDriftTimes = new List<double>();
 
-            if (m_aligningToMassTagDb)
+            if (AligningToMassTagDb)
             {
                 m_lcmsWarp.GetFeatureCalibratedMassesAndAlignedNets(ref umcIndices, ref umcCalibratedMasses,
                                                                     ref umcAlignedNets, ref umcDriftTimes);
@@ -361,7 +361,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <param name="boundary"></param>
         /// <returns> Boolean false if and only if split is true and mz is both less than 
         /// the lower boundary and greater than the upper boundary</returns>
-        public bool ValidateAlignmentBoundary(bool split, double mz, LCMSAlignmentMzBoundary boundary)
+        public bool ValidateAlignmentBoundary(bool split, double mz, LcmsAlignmentMzBoundary boundary)
         {
             if (split)
             {
@@ -382,14 +382,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
             }
 
-            m_percentDone = 0;
+            PercentDone = 0;
             var umcIndicies = new List<int>();
             var umcCalibratedMasses = new List<double>();
             var umcAlignedNets = new List<double>();
             var umcAlignedScans = new List<int>();
             var umcDriftTimes = new List<double>();
 
-            if (m_aligningToMassTagDb)
+            if (AligningToMassTagDb)
             {
                 m_lcmsWarp.GetFeatureCalibratedMassesAndAlignedNets(ref umcIndicies, ref umcCalibratedMasses,
                                                                     ref umcAlignedNets, ref umcDriftTimes);
@@ -428,13 +428,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// </summary>
         /// <param name="features"></param>
         /// <param name="boundary"></param>
-        public void SetAligneeDatasetFeatures(List<UMCLight> features, LCMSAlignmentMzBoundary boundary)
+        public void SetAligneeDatasetFeatures(List<UMCLight> features, LcmsAlignmentMzBoundary boundary)
         {
-            m_percentDone = 0;
-            m_clusterAlignee = false;
+            PercentDone = 0;
+            ClusterAlignee = false;
             var numPts = features.Count;
 
-            var mtFeatures = new List<LCMSMassTimeFeature> { Capacity = numPts };
+            var mtFeatures = new List<UMCLight> { Capacity = numPts };
 
             m_minAligneeDatasetScan = int.MaxValue;
             m_maxAligneeDatasetScan = int.MinValue;
@@ -444,23 +444,23 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
             for (var index = 0; index < numPts; index++)
             {
-                var mtFeature = new LCMSMassTimeFeature();
-                m_percentDone = (index * 100) / numPts;
+                var mtFeature = new UMCLight();
+                PercentDone = (index * 100) / numPts;
 
-                mtFeature.MonoMass = features[index].MassMonoisotopic;
-                mtFeature.MonoMassCalibrated = features[index].MassMonoisotopicAligned;
-                mtFeature.MonoMassOriginal = features[index].MassMonoisotopic;
+                mtFeature.MassMonoisotopic = features[index].MassMonoisotopic;
+                mtFeature.MassMonoisotopicAligned = features[index].MassMonoisotopicAligned;
+                //mtFeature.MonoMassOriginal = features[index].MassMonoisotopic;
                 mtFeature.NET = Convert.ToDouble(features[index].Scan);
 
                 // For if we want to split alignment at given M/Z range
-                mtFeature.MZ = features[index].Mz;
+                mtFeature.Mz = features[index].Mz;
                 mtFeature.Abundance = features[index].Abundance;
                 mtFeature.ID = features[index].ID;
                 mtFeature.DriftTime = features[index].DriftTime;
 
                 // Only allow feature to be aligned if we're splitting the alignment in MZ
                 // AND if we are within the specified boundary
-                if (ValidateAlignmentBoundary(m_options.AlignSplitMZs, mtFeature.MZ, boundary))
+                if (ValidateAlignmentBoundary(Options.AlignSplitMZs, mtFeature.Mz, boundary))
                 {
                     mtFeatures.Add(mtFeature);
 
@@ -499,13 +499,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <param name="datasetIndex"></param>
         /// <param name="boundary"></param>
         public void SetAligneeDatasetFeatures(UMCLight[] features, int datasetIndex,
-                                              LCMSAlignmentMzBoundary boundary)
+                                              LcmsAlignmentMzBoundary boundary)
         {
-            m_percentDone = 0;
-            m_clusterAlignee = false;
+            PercentDone = 0;
+            ClusterAlignee = false;
             var numPts = features.Length;
 
-            var mtFeatures = new List<LCMSMassTimeFeature> { Capacity = numPts };
+            var mtFeatures = new List<UMCLight> { Capacity = numPts };
 
             m_minAligneeDatasetScan = int.MaxValue;
             m_maxAligneeDatasetScan = int.MinValue;
@@ -515,23 +515,23 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
             for (var index = 0; index < numPts; index++)
             {
-                var mtFeature = new LCMSMassTimeFeature();
-                m_percentDone = (index * 100) / numPts;
+                var mtFeature = new UMCLight();
+                PercentDone = (index * 100) / numPts;
 
-                mtFeature.MonoMass = features[index].MassMonoisotopic;
-                mtFeature.MonoMassCalibrated = features[index].MassMonoisotopicAligned;
-                mtFeature.MonoMassOriginal = features[index].MassMonoisotopic;
+                mtFeature.MassMonoisotopic = features[index].MassMonoisotopic;
+                mtFeature.MassMonoisotopicAligned = features[index].MassMonoisotopicAligned;
+                //mtFeature.MonoMassOriginal = features[index].MassMonoisotopic;
                 mtFeature.NET = Convert.ToDouble(features[index].Scan);
 
                 // For if we want to split alignment at given M/Z range
-                mtFeature.MZ = features[index].Mz;
+                mtFeature.Mz = features[index].Mz;
                 mtFeature.Abundance = features[index].Abundance;
                 mtFeature.ID = features[index].ID;
                 mtFeature.DriftTime = features[index].DriftTime;
 
                 // Only allow feature to be aligned if we're splitting the alignment in MZ
                 // AND if we are within the specified boundary
-                if (ValidateAlignmentBoundary(m_options.AlignSplitMZs, mtFeature.MZ, boundary))
+                if (ValidateAlignmentBoundary(Options.AlignSplitMZs, mtFeature.Mz, boundary))
                 {
                     mtFeatures.Add(mtFeature);
 
@@ -563,26 +563,26 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <param name="umcData"></param>
         public void SetReferenceDatasetFeatures(List<UMCLight> umcData)
         {
-            m_aligningToMassTagDb = false;
-            m_massTagDbLoaded = false;
-            m_percentDone = 0;
+            AligningToMassTagDb = false;
+            MassTagDbLoaded = false;
+            PercentDone = 0;
 
             var numPts = umcData.Count;
 
-            var mtFeatures = new List<LCMSMassTimeFeature> { Capacity = numPts };
+            var mtFeatures = new List<UMCLight> { Capacity = numPts };
 
             m_minAligneeDatasetScan = int.MaxValue;
             m_maxAligneeDatasetScan = int.MinValue;
 
             for (var index = 0; index < numPts; index++)
             {
-                var feature = new LCMSMassTimeFeature();
-                m_percentDone = (index * 100) / numPts;
-                feature.MonoMass = umcData[index].MassMonoisotopic;
-                feature.MonoMassCalibrated = umcData[index].MassMonoisotopicAligned;
-                feature.MonoMassOriginal = umcData[index].MassMonoisotopic;
+                var feature = new UMCLight();
+                PercentDone = (index * 100) / numPts;
+                feature.MassMonoisotopic = umcData[index].MassMonoisotopic;
+                feature.MassMonoisotopicAligned = umcData[index].MassMonoisotopicAligned;
+                //feature.MonoMassOriginal = umcData[index].MassMonoisotopic;
                 feature.NET = umcData[index].NET;
-                feature.MZ = umcData[index].Mz;
+                feature.Mz = umcData[index].Mz;
                 feature.Abundance = umcData[index].Abundance;
                 feature.DriftTime = umcData[index].DriftTime;
                 feature.ID = umcData[index].ID;
@@ -617,28 +617,28 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <param name="umcData"></param>
         public void SetReferenceDatasetFeatures(UMCLight[] umcData)
         {
-            m_aligningToMassTagDb = false;
-            m_massTagDbLoaded = false;
-            m_percentDone = 0;
+            AligningToMassTagDb = false;
+            MassTagDbLoaded = false;
+            PercentDone = 0;
 
             var numPts = umcData.Length;
 
-            var mtFeatures = new List<LCMSMassTimeFeature> { Capacity = numPts };
+            var mtFeatures = new List<UMCLight> { Capacity = numPts };
 
             m_minAligneeDatasetScan = int.MaxValue;
             m_maxAligneeDatasetScan = int.MinValue;
 
             for (var index = 0; index < numPts; index++)
             {
-                m_percentDone = (index * 100) / numPts;
+                PercentDone = (index * 100) / numPts;
 
-                var feature = new LCMSMassTimeFeature
+                var feature = new UMCLight
                 {
-                    MonoMass = umcData[index].MassMonoisotopic,
-                    MonoMassCalibrated = umcData[index].MassMonoisotopicAligned,
-                    MonoMassOriginal = umcData[index].MassMonoisotopic,
+                    MassMonoisotopic = umcData[index].MassMonoisotopic,
+                    MassMonoisotopicAligned = umcData[index].MassMonoisotopicAligned,
+                    //MonoMassOriginal = umcData[index].MassMonoisotopic,
                     NET = umcData[index].NET,
-                    MZ = umcData[index].Mz,
+                    Mz = umcData[index].Mz,
                     Abundance = umcData[index].Abundance,
                     DriftTime = umcData[index].DriftTime,
                     ID = umcData[index].ID
@@ -672,33 +672,36 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <param name="isDatabase"></param>
         public void SetReferenceDatasetFeatures(List<MassTagLight> features, bool isDatabase)
         {
-            m_percentDone = 0;
-            m_aligningToMassTagDb = true;
+            PercentDone = 0;
+            AligningToMassTagDb = true;
             var numMassTags = features.Count;
 
-            var mtFeatures = new List<LCMSMassTimeFeature> { Capacity = numMassTags };
-
+            var mtFeatures = new List<UMCLight> { Capacity = numMassTags };
+            var umcFeatres = new List<UMCLight> {Capacity = numMassTags};
             foreach (var item in features)
             {
-                var mtFeature = new LCMSMassTimeFeature
+                var feature = new UMCLight();
+                
+                var mtFeature = new UMCLight
                 {
-                    AlignedNet = item.NETAligned,
-                    MonoMass = item.MassMonoisotopic,
-                    MonoMassCalibrated = item.MassMonoisotopicAligned,
-                    MonoMassOriginal = item.MassMonoisotopic,
-                    MZ = item.MassMonoisotopic/item.ChargeState + (1.00782*item.ChargeState - 1),
+                    NETAligned = item.NETAligned,
+                    MassMonoisotopic = item.MassMonoisotopic,
+                    MassMonoisotopicAligned = item.MassMonoisotopicAligned,
+                    //MonoMassOriginal = item.MassMonoisotopic,
+                    Mz = item.MassMonoisotopic/item.ChargeState + (1.00782*(item.ChargeState - 1)),
                     NET = item.NET,
                     DriftTime = item.DriftTime,
                     ID = item.ID,
-                    ConformerID = item.GroupID
+                    //ConformerID = item.GroupID
                 };
+                
                 // Updated from C++ code, uses the charge from the item itself alongside the mass 
                 // rather than trying to calculate it blindly. Originally always divided by 2
                 mtFeatures.Add(mtFeature);
             }
 
             m_lcmsWarp.SetReferenceFeatures(ref mtFeatures);
-            m_massTagDbLoaded = true;
+            MassTagDbLoaded = true;
         }
 
 
@@ -715,22 +718,24 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         public void SetDataForAlignmentToMsFeatures(List<UMCLight> umcData, int aligneeDatasetIndex,
                                                     int referenceDatasetIndex)
         {
-            SetAligneeDatasetFeatures(umcData, m_options.MzBoundaries[0]);
+            SetAligneeDatasetFeatures(umcData, Options.MzBoundaries[0]);
 
             SetReferenceDatasetFeatures(umcData);
         }
 
-
-
+        /// <summary>
+        /// Returns the Alignment Function that the processor determined
+        /// </summary>
+        /// <returns></returns>
         public LCMSAlignmentFunction GetAlignmentFunction()
         {
-            var func = new LCMSAlignmentFunction(m_options.CalibType, m_options.AlignType);
+            var func = new LCMSAlignmentFunction(Options.CalibType, Options.AlignType);
 
             var aligneeNets = new List<double>();
             var referenceNets = new List<double>();
             m_lcmsWarp.AlignmentFunction(ref aligneeNets, ref referenceNets);
 
-            if (m_aligningToMassTagDb)
+            if (AligningToMassTagDb)
             {
                 func.SetNetFunction(aligneeNets, referenceNets);
             }
@@ -745,21 +750,19 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 func.SetNetFunction(ref aligneeNets, ref referenceNets, ref referenceScans);
             }
 
-            if (m_options.AlignType == LCMSAlignmentOptions.AlignmentType.NET_WARP)
+            if (Options.AlignType == LcmsAlignmentOptions.AlignmentType.NET_WARP)
             {
                 return func;
             }
 
             var minAligneeNet = m_lcmsWarp.MinNet;
             var maxAligneeNet = m_lcmsWarp.MaxNet;
-            //double minBaselineNET = m_LCMSWarp.MinBaselineNet;
-            //double maxBaselineNET = m_LCMSWarp.MaxBaselineNet;
 
-            if (m_options.CalibType == LCMSAlignmentOptions.CalibrationType.SCAN_CALIBRATION ||
-                m_options.CalibType == LCMSAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
+            if (Options.CalibType == LcmsAlignmentOptions.CalibrationType.SCAN_CALIBRATION ||
+                Options.CalibType == LcmsAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
             {
                 // Get the mass calibration function with time
-                var numXKnots = m_options.MassCalibNumXSlices;
+                var numXKnots = Options.MassCalibNumXSlices;
                 var aligneeNetMassFunc = new List<double>();
                 var aligneePpmShiftMassFunc = new List<double>();
 
@@ -774,11 +777,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 func.SetMassCalibrationFunctionWithTime(ref aligneeNetMassFunc, ref aligneePpmShiftMassFunc);
             }
 
-            if (m_options.CalibType == LCMSAlignmentOptions.CalibrationType.MZ_CALIBRATION ||
-                m_options.CalibType == LCMSAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
+            if (Options.CalibType == LcmsAlignmentOptions.CalibrationType.MZ_CALIBRATION ||
+                Options.CalibType == LcmsAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
             {
                 // Get the mass calibration function with time
-                var numXKnots = m_options.MassCalibNumXSlices;
+                var numXKnots = Options.MassCalibNumXSlices;
                 var aligneeMzMassFunc = new List<double>();
                 var aligneePpmShiftMassFunc = new List<double>();
 
@@ -796,14 +799,18 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             return func;
         }
 
+        /// <summary>
+        /// Method to determine which warping method to use.
+        /// Throws exception if the options were not set.
+        /// </summary>
         public void PerformAlignmentToMsFeatures()
         {
-            if (m_options == null)
+            if (Options == null)
             {
                 throw new NullReferenceException("Alignment Options were not set in AlignmentProcessor");
             }
 
-            if (m_options.AlignType != LCMSAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (Options.AlignType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 PerformNetWarp();
             }
@@ -813,13 +820,17 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             }
         }
 
+        /// <summary>
+        /// Method to determine which warping method to use when aligning to a database.
+        /// Throws exception if the options were not set.
+        /// </summary>
         public void PerformAlignmentToMassTagDatabase()
         {
-            if (m_options == null)
+            if (Options == null)
             {
                 throw new NullReferenceException("Alignment Options were not set in AlignmentProcessor");
             }
-            if (m_options.AlignType != LCMSAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (Options.AlignType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 PerformNetWarp();
             }
@@ -829,6 +840,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             }
         }
 
+        /// <summary>
+        /// Performs the NET Warping; Generates matches, gets the probabilities,
+        /// calculates the alignment matrix and alignment function, gets the transformed NETs
+        /// and then calculates the alignment matches
+        /// </summary>
         public void PerformNetWarp()
         {
             m_lcmsWarp.GenerateCandidateMatches();
@@ -844,6 +860,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             m_lcmsWarp.CalculateAlignmentMatches();
         }
 
+        /// <summary>
+        /// Performs the NET-Mass Warping; Sets up the mass calibration settings from the options,
+        /// performs NET warping, calibrates matches based on the NETWarp results, recalibrates the mass
+        /// tolerance and then performs Warping again using the mass and Net scores
+        /// </summary>
         public void PerformNetMassWarp()
         {
             // First, perform the net calibration using a mass tolerance of the same size as the mass window
@@ -861,8 +882,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             PerformNetWarp();
         }
 
-
-        public double[,] GetAlignmentHeatMap(out double[,] outputScores, out double[] xIntervals,
+        /// <summary>
+        /// Method to return the heatmap of the alignment (as a 2D array of doubles) based on
+        /// the output scores taht 
+        /// </summary>
+        /// <param name="outputScores"></param>
+        /// <param name="xIntervals"></param>
+        /// <param name="yIntervals"></param>
+        public void GetAlignmentHeatMap(out double[,] outputScores, out double[] xIntervals,
                                         out double[] yIntervals)
         {
             if (m_lcmsWarp == null)
@@ -915,11 +942,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             {
                 yIntervals[i] = baselineIntervals[i];
             }
-
-            return outputScores;
         }
 
-
+        /// <summary>
+        /// Method which copies the baseline nets into the parameters passed in
+        /// </summary>
+        /// <param name="minRefNet"></param>
+        /// <param name="maxRefNet"></param>
         public void GetReferenceNetRange(out double minRefNet, out double maxRefNet)
         {
             minRefNet = m_lcmsWarp.MinBaselineNet;
@@ -927,6 +956,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         }
 
         #region Public Statistic Getter properties
+        /// <summary>
+        /// Returns the Standard Deviation of the Mass of the data
+        /// </summary>
         public double MassStd
         {
             get
@@ -936,6 +968,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 return massStd;
             }
         }
+        /// <summary>
+        /// Returns the Standard Deviation of the NET of the data
+        /// </summary>
         public double NetStd
         {
             get
@@ -945,6 +980,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 return netStd;
             }
         }
+        /// <summary>
+        /// Returns the Mean of the Mass of the data
+        /// </summary>
         public double MassMu
         {
             get
@@ -954,6 +992,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 return massMu;
             }
         }
+        /// <summary>
+        /// Returns the Mean of the NET of the data
+        /// </summary>
         public double NetMu
         {
             get
@@ -966,6 +1007,15 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         #endregion
 
         //TODO: Redesign this so that when we say "align(x,y)" we get this in an object separate from everything
+        /// <summary>
+        /// Copies the histograms from the LCMS Warping and returns them through the Histogram parameters passed in
+        /// </summary>
+        /// <param name="massBin"></param>
+        /// <param name="netBin"></param>
+        /// <param name="driftBin"></param>
+        /// <param name="massHistogram"></param>
+        /// <param name="netHistogram"></param>
+        /// <param name="driftHistogram"></param>
         public void GetErrorHistograms(double massBin, double netBin, double driftBin,
                         out double[,] massHistogram, out double[,] netHistogram, out double[,] driftHistogram)
         {

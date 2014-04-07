@@ -1,97 +1,118 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 {
-    public class LCMSCombinedRegression
+    /// <summary>
+    /// Object that holds instances of all three regression types, as well as providing a wrapper method for all three of the
+    /// regression types that LCMS could use
+    /// </summary>
+    public class LcmsCombinedRegression
     {
         private RegressionType m_regressionType;
-        private bool m_LSQ_Failed;
-        LCMSCentralRegression Central;
+        private bool m_lsqFailed;
+        LcmsCentralRegression Central;
         LCMSLSQSplineRegression LSQReg;
         LCMSNaturalCubicSplineRegression CubicSpline;
 
-        public LCMSCombinedRegression()
+        /// <summary>
+        /// Public constructor for a Hybrid regression
+        /// </summary>
+        public LcmsCombinedRegression()
         {
-            m_regressionType = RegressionType.Hybrid;
-            m_LSQ_Failed = false;
-            Central = new LCMSCentralRegression();
+            m_regressionType = RegressionType.HYBRID;
+            m_lsqFailed = false;
+            Central = new LcmsCentralRegression();
             LSQReg = new LCMSLSQSplineRegression();
             CubicSpline = new LCMSNaturalCubicSplineRegression();
         }
 
-        public void SetLSQOptions(int num_knots, double outlier_zscore)
+        /// <summary>
+        /// Sets the options for all three regression types, setting up the number of knots for
+        /// cubic spline and LSQ while setting the outlier z score for central regression
+        /// </summary>
+        /// <param name="numKnots"></param>
+        /// <param name="outlierZscore"></param>
+        public void SetLsqOptions(int numKnots, double outlierZscore)
         {
-            CubicSpline.SetOptions(num_knots);
-            LSQReg.SetOptions(num_knots);
-            Central.SetOutlierZScore(outlier_zscore);
+            CubicSpline.SetOptions(numKnots);
+            LSQReg.SetOptions(numKnots);
+            Central.SetOutlierZScore(outlierZscore);
         }
 
+        /// <summary>
+        /// Sets all the options for a central regression type
+        /// </summary>
+        /// <param name="numXBins"></param>
+        /// <param name="numYBins"></param>
+        /// <param name="numJumps"></param>
+        /// <param name="regZtolerance"></param>
+        /// <param name="regType"></param>
         public void SetCentralRegressionOptions(int numXBins, int numYBins, int numJumps, double regZtolerance, RegressionType regType)
         {
             Central.SetOptions(numXBins, numYBins, numJumps, regZtolerance);
             m_regressionType = regType;
         }
 
-        public void CalculateRegressionFunction(ref List<LCMSRegressionPts> matches)
+        /// <summary>
+        /// Sets the regression points to the appropriate values for the regression function
+        /// </summary>
+        /// <param name="matches"></param>
+        public void CalculateRegressionFunction(ref List<LcmsRegressionPts> matches)
         {
             switch (m_regressionType)
             {
-                case RegressionType.Central:
+                case RegressionType.CENTRAL:
                     Central.CalculateRegressionFunction(ref matches);
                     //mobj_central...line 47
                     break;
                 default:
                     Central.CalculateRegressionFunction(ref matches);
                     Central.RemoveRegressionOutliers();
-                    List<LCMSRegressionPts> CentralPoints = Central.Points();
-                    m_LSQ_Failed = !CubicSpline.CalculateLSQRegressionCoefficients(ref CentralPoints);
+                    List<LcmsRegressionPts> centralPoints = Central.Points;
+                    m_lsqFailed = !CubicSpline.CalculateLSQRegressionCoefficients(ref centralPoints);
                     //line 50
                     break;
             }
         }
-
+        /// <summary>
+        /// Given a value x, finds the appropriate y value that would correspond to it in the regression function
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public double GetPredictedValue(double x)
         {
             switch (m_regressionType)
             {
-                case RegressionType.Central:
+                case RegressionType.CENTRAL:
                     return Central.GetPredictedValue(x);
-                //break;
+                
                 default:
-                    if (!m_LSQ_Failed)
+                    if (!m_lsqFailed)
                     {
                         return CubicSpline.GetPredictedValue(x);
                     }
-                    else
-                    {
-                        return Central.GetPredictedValue(x);
-                    }
-                //break;
-            }
-            //return 0;
-        }
-
-        public void PrintRegressionFunction(string file_name)
-        {
-            switch (m_regressionType)
-            {
-                case RegressionType.Central:
-                    //central_regression.PrintRegressionFunction(file_name);
-                    break;
-                default:
-                    //lsq_regression.PrintRegressionFunction(file_name);
-                    break;
+                    return Central.GetPredictedValue(x);
+                    
             }
         }
 
+        /// <summary>
+        /// Enumeration for possible regression types for LCMS
+        /// </summary>
         public enum RegressionType
         {
-            Central = 0,
+            /// <summary>
+            /// Performs piecewise linear regression for all of the sections
+            /// </summary>
+            CENTRAL = 0,
+            /// <summary>
+            /// Performs an LSQ Regression for all the sections
+            /// </summary>
             LSQ,
-            Hybrid
+            /// <summary>
+            /// Performs a combination of both regression types (Central and LSQ)
+            /// </summary>
+            HYBRID
         };
     }
 }

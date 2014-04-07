@@ -1,56 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 {
-    public class LCMSCentralRegression
+    /// <summary>
+    /// Object which performs Central Regression for LCMSWarp
+    /// </summary>
+    public class LcmsCentralRegression
     {
-        int m_num_y_bins;
-        int m_num_jumps;
+        private int m_numYBins;
+        private int m_numJumps;
 
         // number of matches for each x section
-        int m_num_section_matches;
+        private int m_numSectionMatches;
         // Minimum number of points to be present in a section
         // for it to be considered in computing function
-        int m_min_section_pts;
+        private readonly int m_minSectionPts;
 
-        List<double> m_matchScores;
-        List<double> m_sectionMisMatchScore;
-        List<double> m_sectionTolerance;
-        List<double> m_alignmentScores;
-        List<int> m_bestPreviousIndex;
-        List<int> m_count;
+        private readonly List<double> m_matchScores;
+        private readonly List<double> m_sectionMisMatchScore;
+        private readonly List<double> m_sectionTolerance;
+        private readonly List<double> m_alignmentScores;
+        private readonly List<int> m_bestPreviousIndex;
+        private readonly List<int> m_count;
 
-        LCMSNormUnifEM m_normUnifEM;
+        private readonly LcmsNormUnifEm m_normUnifEm;
 
-        double m_minY;
-        double m_maxY;
+        private double m_minY;
+        private double m_maxY;
         //the tolerance to apply
-        double m_tolerance;
+        private double m_tolerance;
         //outlier zscore
-        double m_outlierZScore;
+        private double m_outlierZScore;
 
         //Storage for standard deviations at each slice
-        List<double> m_stdY;
+        private readonly List<double> m_stdY;
         //Storage for alignment
-        Dictionary<int, int> m_alignmentFunction;
+        private readonly Dictionary<int, int> m_alignmentFunction;
 
-        double m_minX;
-        double m_maxX;
+        private double m_minX;
+        private double m_maxX;
 
-        int m_num_x_bins;
-        List<LCMSRegressionPts> m_pts;
+        private int m_numXBins;
+        private readonly List<LcmsRegressionPts> m_pts;
 
-        public LCMSCentralRegression()
+        /// <summary>
+        /// Default constructor the Central regression, sets parameters to default
+        /// values and allocates memory space for the lists that will be used
+        /// </summary>
+        public LcmsCentralRegression()
         {
-            m_num_x_bins = 0;
-            m_num_y_bins = 0;
-            m_num_jumps = 0;
+            m_numXBins = 0;
+            m_numYBins = 0;
+            m_numJumps = 0;
             m_tolerance = 0.8; // 5 standard devs
             m_outlierZScore = m_tolerance;
-            m_min_section_pts = 5;
+            m_minSectionPts = 5;
             m_matchScores = new List<double>();
             m_sectionMisMatchScore = new List<double>();
             m_sectionTolerance = new List<double>();
@@ -58,39 +64,57 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             m_bestPreviousIndex = new List<int>();
             m_count = new List<int>();
 
-            m_normUnifEM = new LCMSNormUnifEM();
+            m_normUnifEm = new LcmsNormUnifEm();
 
             m_stdY = new List<double>();
             m_alignmentFunction = new Dictionary<int, int>();
 
-            m_pts = new List<LCMSRegressionPts>();
+            m_pts = new List<LcmsRegressionPts>();
         }
 
-        public List<LCMSRegressionPts> Points()
+        /// <summary>
+        /// Getter to return the list of regression points
+        /// </summary>
+        /// <returns></returns>
+        public List<LcmsRegressionPts> Points
         {
-            return m_pts;
+            get { return m_pts; }
         }
 
-        public void SetOptions(int num_x_bins, int num_y_bins, int num_jumps, double zTolerance)
+        /// <summary>
+        /// Sets up all the options for the Central Regression
+        /// </summary>
+        /// <param name="numXBins"></param>
+        /// <param name="numYBins"></param>
+        /// <param name="numJumps"></param>
+        /// <param name="zTolerance"></param>
+        public void SetOptions(int numXBins, int numYBins, int numJumps, double zTolerance)
         {
-            m_num_x_bins = num_x_bins;
-            m_num_y_bins = num_y_bins;
-            m_num_jumps = num_jumps;
+            m_numXBins = numXBins;
+            m_numYBins = numYBins;
+            m_numJumps = numJumps;
             m_tolerance = zTolerance;
             m_outlierZScore = zTolerance;
 
-            m_num_section_matches = m_num_y_bins * (2 * num_jumps + 1);
+            m_numSectionMatches = m_numYBins * (2 * numJumps + 1);
 
             m_matchScores.Clear();
             m_alignmentScores.Clear();
             m_bestPreviousIndex.Clear();
         }
 
+        /// <summary>
+        /// Method to set the outlier score for Central regression.
+        /// </summary>
+        /// <param name="outlierZScore"></param>
         public void SetOutlierZScore(double outlierZScore)
         {
             m_outlierZScore = outlierZScore;
         }
 
+        /// <summary>
+        /// Finds the min and max mass error and Net
+        /// </summary>
         public void CalculateMinMax()
         {
             int numPts = m_pts.Count();
@@ -103,7 +127,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             for (int i = 0; i < numPts; i++)
             {
-                LCMSRegressionPts point = m_pts[i];
+                LcmsRegressionPts point = m_pts[i];
                 if (point.X < m_minX)
                 {
                     m_minX = point.X;
@@ -123,60 +147,66 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             }
         }
 
-        public void CalculateSectionStdAndCount(int interval_num)
+        /// <summary>
+        /// Computers the Sections standard deviation and number in each match
+        /// </summary>
+        /// <param name="intervalNum"></param>
+        private void CalculateSectionStdAndCount(int intervalNum)
         {
             List<double> points = new List<double>();
 
-            int num_points = m_pts.Count();
-            double x_interval = (m_maxX - m_minX) / m_num_x_bins;
+            int numPoints = m_pts.Count();
+            double xInterval = (m_maxX - m_minX) / m_numXBins;
 
-            for (int pt_num = 0; pt_num < num_points; pt_num++)
+            for (int ptNum = 0; ptNum < numPoints; ptNum++)
             {
-                LCMSRegressionPts pt = new LCMSRegressionPts();
-                pt = m_pts[pt_num];
-                int sectionNum = Convert.ToInt32((pt.X - m_minX) / x_interval);
-                if (sectionNum == m_num_x_bins)
+                LcmsRegressionPts pt = m_pts[ptNum];
+                int sectionNum = Convert.ToInt32((pt.X - m_minX) / xInterval);
+                if (sectionNum == m_numXBins)
                 {
-                    sectionNum = m_num_x_bins - 1;
+                    sectionNum = m_numXBins - 1;
                 }
-                if (interval_num == sectionNum)
+                if (intervalNum == sectionNum)
                 {
                     m_count[sectionNum]++;
                     points.Add(pt.MassError);
                 }
             }
 
-            if (m_count[interval_num] > m_min_section_pts)
+            if (m_count[intervalNum] > m_minSectionPts)
             {
-                m_normUnifEM.CalculateDistributions(points);
-                m_stdY[interval_num] = m_normUnifEM.StandDev;
-                if (m_stdY[interval_num] != 0)
+                m_normUnifEm.CalculateDistributions(points);
+                m_stdY[intervalNum] = m_normUnifEm.StandDev;
+                if (Math.Abs(m_stdY[intervalNum]) > double.Epsilon)
                 {
-                    double tolerance = m_stdY[interval_num] * m_tolerance;
-                    m_sectionTolerance[interval_num] = tolerance;
+                    double tolerance = m_stdY[intervalNum] * m_tolerance;
+                    m_sectionTolerance[intervalNum] = tolerance;
 
-                    double misMatch_score = (tolerance * tolerance) / (m_stdY[interval_num] * m_stdY[interval_num]);
-                    m_sectionMisMatchScore[interval_num] = misMatch_score;
+                    double misMatchScore = (tolerance * tolerance) / (m_stdY[intervalNum] * m_stdY[intervalNum]);
+                    m_sectionMisMatchScore[intervalNum] = misMatchScore;
                 }
                 else
                 {
-                    m_sectionMisMatchScore[interval_num] = m_tolerance * m_tolerance;
-                    m_sectionTolerance[interval_num] = 0;
+                    m_sectionMisMatchScore[intervalNum] = m_tolerance * m_tolerance;
+                    m_sectionTolerance[intervalNum] = 0;
                 }
             }
             else
             {
-                m_stdY[interval_num] = 0.1;
+                m_stdY[intervalNum] = 0.1;
             }
         }
 
+        /// <summary>
+        /// Calculate standard deviations for all sections
+        /// </summary>
         public void CalculateSectionsStd()
         {
-            m_count.Capacity = m_num_x_bins;
-            m_stdY.Capacity = m_num_x_bins;
+            m_count.Capacity = m_numXBins;
+            m_stdY.Capacity = m_numXBins;
             m_stdY.Clear();
 
-            for (int interval = 0; interval < m_num_x_bins; interval++)
+            for (int interval = 0; interval < m_numXBins; interval++)
             {
                 m_stdY.Add(0);
                 m_count.Add(0);
@@ -186,6 +216,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             }
         }
 
+        /// <summary>
+        /// Removes all the residual data from prior regressions
+        /// </summary>
         public void Clear()
         {
             m_matchScores.Clear();
@@ -199,7 +232,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             m_sectionTolerance.Clear();
         }
 
-        public void SetUnmatchedScoreMatrix()
+        private void SetUnmatchedScoreMatrix()
         {
             // Assigns each section's score to the minimum for that section
             // for each possible matching sections, the minimum score would correspond 
@@ -207,20 +240,20 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             m_matchScores.Clear();
 
             // At the moment, assumes that the tolerance is in zscore units
-            for (int x_section = 0; x_section < m_num_x_bins; x_section++)
+            for (int xSection = 0; xSection < m_numXBins; xSection++)
             {
-                double section_mismatchScore = m_sectionMisMatchScore[x_section] * m_count[x_section];
+                double sectionMismatchScore = m_sectionMisMatchScore[xSection] * m_count[xSection];
 
-                for (int section_match_num = 0; section_match_num < m_num_section_matches; section_match_num++)
+                for (int sectionMatchNum = 0; sectionMatchNum < m_numSectionMatches; sectionMatchNum++)
                 {
-                    m_matchScores.Add(section_mismatchScore);
+                    m_matchScores.Add(sectionMismatchScore);
                 }
             }
         }
 
-        public void CalculateScoreMatrix()
+        private void CalculateScoreMatrix()
         {
-            m_matchScores.Capacity = m_num_x_bins * m_num_section_matches;
+            m_matchScores.Capacity = m_numXBins * m_numSectionMatches;
 
             // Neww to calculate the score matrix for all possible score blocks.
             // For every x section, all y secments between y_interest - m_num_jumps
@@ -229,126 +262,123 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             // First set the unmatched score.
             SetUnmatchedScoreMatrix();
 
-            double y_interval_size = (m_maxY - m_minY) / m_num_y_bins;
-            double x_interval_size = (m_maxX - m_minX) / m_num_x_bins;
+            double yIntervalSize = (m_maxY - m_minY) / m_numYBins;
+            double xIntervalSize = (m_maxX - m_minX) / m_numXBins;
 
             // For each point that is seen, add the supporting score to the appropriate section.
-            int num_pts = m_pts.Count();
+            int numPts = m_pts.Count();
 
-            for (int pointNum = 0; pointNum < num_pts; pointNum++)
+            for (int pointNum = 0; pointNum < numPts; pointNum++)
             {
-                LCMSRegressionPts point = m_pts[pointNum];
-                int x_section = Convert.ToInt32((point.X - m_minX) / x_interval_size);
-                if (x_section == m_num_x_bins)
+                LcmsRegressionPts point = m_pts[pointNum];
+                int xSection = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
+                if (xSection == m_numXBins)
                 {
-                    x_section = m_num_x_bins - 1;
+                    xSection = m_numXBins - 1;
                 }
 
                 // If the point belongs to a section where the num # of points is not met, ignore it
-                if (m_count[x_section] < m_min_section_pts || m_stdY[x_section] == 0)
+                if (m_count[xSection] < m_minSectionPts || Math.Abs(m_stdY[xSection]) < double.Epsilon)
                 {
                     continue;
                 }
 
-                double y_tolerance = m_sectionTolerance[x_section];
+                double yTolerance = m_sectionTolerance[xSection];
 
-                int y_interval = Convert.ToInt32((0.0001 + (point.MassError - m_minY) / y_interval_size));
+                int yInterval = Convert.ToInt32((0.0001 + (point.MassError - m_minY) / yIntervalSize));
 
-                if (y_interval == m_num_y_bins)
+                if (yInterval == m_numYBins)
                 {
-                    y_interval = m_num_y_bins - 1;
+                    yInterval = m_numYBins - 1;
                 }
 
                 // Matches to the section that the point would contribute to.
-                int min_y_start = Convert.ToInt32(y_interval - y_tolerance / y_interval_size);
-                int max_y_start = Convert.ToInt32(y_interval + y_tolerance / y_interval_size);
+                int minYStart = Convert.ToInt32(yInterval - yTolerance / yIntervalSize);
+                int maxYStart = Convert.ToInt32(yInterval + yTolerance / yIntervalSize);
 
-                double section_mismatch_score = m_sectionMisMatchScore[x_section];
+                double sectionMismatchScore = m_sectionMisMatchScore[xSection];
 
-                double x_fraction = (point.X - m_minX) / x_interval_size - x_section;
-                double y_estimated = 0;
+                double xFraction = (point.X - m_minX) / xIntervalSize - xSection;
 
-                for (int y_from = min_y_start; y_from <= max_y_start; y_from++)
+                for (int yFrom = minYStart; yFrom <= maxYStart; yFrom++)
                 {
-                    if (y_from < 0)
+                    if (yFrom < 0)
                     {
                         continue;
                     }
-                    if (y_from >= m_num_y_bins)
+                    if (yFrom >= m_numYBins)
                     {
                         break;
                     }
-                    for (int y_to = y_from - m_num_jumps; y_to <= y_from + m_num_jumps; y_to++)
+                    for (int yTo = yFrom - m_numJumps; yTo <= yFrom + m_numJumps; yTo++)
                     {
-                        if (y_to < 0)
+                        if (yTo < 0)
                         {
                             continue;
                         }
-                        if (y_to >= m_num_y_bins)
+                        if (yTo >= m_numYBins)
                         {
                             break;
                         }
 
                         //Assumes linear piecewise transform to calculate the estimated y
-                        y_estimated = (y_from + (y_to - y_from) * x_fraction) * y_interval_size + m_minY;
-                        double y_delta = point.MassError - y_estimated;
+                        double yEstimated = (yFrom + (yTo - yFrom) * xFraction) * yIntervalSize + m_minY;
+                        double yDelta = point.MassError - yEstimated;
 
                         //Make sure the point is in the linear range to effect the score
-                        if (Math.Abs(y_delta) > y_tolerance)
+                        if (Math.Abs(yDelta) > yTolerance)
                         {
                             continue;
                         }
 
-                        double match_score = (y_delta * y_delta) / (m_stdY[x_section] * m_stdY[x_section]);
-                        int jump = y_to - y_from + m_num_jumps;
-                        int section_index = x_section * m_num_section_matches + y_from * (2 * m_num_jumps + 1) + jump;
-                        double current_match_score = m_matchScores[section_index];
-                        m_matchScores[section_index] = current_match_score - section_mismatch_score + match_score;
+                        double matchScore = (yDelta * yDelta) / (m_stdY[xSection] * m_stdY[xSection]);
+                        int jump = yTo - yFrom + m_numJumps;
+                        int sectionIndex = xSection * m_numSectionMatches + yFrom * (2 * m_numJumps + 1) + jump;
+                        double currentMatchScore = m_matchScores[sectionIndex];
+                        m_matchScores[sectionIndex] = currentMatchScore - sectionMismatchScore + matchScore;
                     }
                 }
             }
         }
 
-        public void CalculateAlignmentMatrix()
+        private void CalculateAlignmentMatrix()
         {
             m_bestPreviousIndex.Clear();
             m_alignmentScores.Clear();
-            m_alignmentScores.Capacity = m_num_x_bins + 1 * m_num_y_bins;
-            m_bestPreviousIndex.Capacity = m_num_x_bins + 1 * m_num_y_bins;
+            m_alignmentScores.Capacity = m_numXBins + 1 * m_numYBins;
+            m_bestPreviousIndex.Capacity = m_numXBins + 1 * m_numYBins;
 
-            for (int y_section = 0; y_section < m_num_y_bins; y_section++)
+            for (int ySection = 0; ySection < m_numYBins; ySection++)
             {
-                int index = y_section;
                 m_bestPreviousIndex.Add(-2);
                 m_alignmentScores.Add(0);
             }
 
-            for (int x_section = 1; x_section <= m_num_x_bins; x_section++)
+            for (int xSection = 1; xSection <= m_numXBins; xSection++)
             {
-                for (int y_section = 0; y_section < m_num_y_bins; y_section++)
+                for (int ySection = 0; ySection < m_numYBins; ySection++)
                 {
-                    int index = x_section * m_num_y_bins + y_section;
                     m_bestPreviousIndex.Add(-1);
                     m_alignmentScores.Add(double.MaxValue);
                 }
             }
 
-            for (int x_section = 1; x_section <= m_num_x_bins; x_section++)
+            for (int xSection = 1; xSection <= m_numXBins; xSection++)
             {
-                for (int y_section = 0; y_section < m_num_y_bins; y_section++)
+                for (int ySection = 0; ySection < m_numYBins; ySection++)
                 {
-                    int index = x_section * m_num_y_bins + y_section;
+                    int index = xSection * m_numYBins + ySection;
                     double bestAlignmentScore = double.MaxValue;
 
-                    for (int jump = m_num_jumps; jump < 2 * m_num_jumps + 1; jump++)
+                    for (int jump = m_numJumps; jump < 2 * m_numJumps + 1; jump++)
                     {
-                        int y_section_from = y_section - jump + m_num_jumps;
-                        if (y_section_from < 0)
+                        int ySectionFrom = ySection - jump + m_numJumps;
+                        if (ySectionFrom < 0)
                         {
                             break;
                         }
-                        int previousAlignmentIndex = (x_section - 1) * m_num_y_bins + y_section_from;
-                        int previousMatchIndex = (x_section - 1) * m_num_section_matches + y_section_from * (2 * m_num_jumps + 1) + jump;
+                        int previousAlignmentIndex = (xSection - 1) * m_numYBins + ySectionFrom;
+                        int previousMatchIndex = (xSection - 1) * m_numSectionMatches + ySectionFrom * (2 * m_numJumps + 1) + jump;
                         double previousAlignmentScore = m_alignmentScores[previousAlignmentIndex];
                         double previousMatchScore = m_matchScores[previousMatchIndex];
                         if (previousAlignmentScore + previousMatchScore < bestAlignmentScore)
@@ -359,15 +389,15 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
                         }
                     }
 
-                    for (int jump = 0; jump < m_num_jumps; jump++)
+                    for (int jump = 0; jump < m_numJumps; jump++)
                     {
-                        int y_section_from = y_section - jump + m_num_jumps;
-                        if (y_section_from < 0)
+                        int ySectionFrom = ySection - jump + m_numJumps;
+                        if (ySectionFrom < 0)
                         {
                             break;
                         }
-                        int previousAlignmentIndex = (x_section - 1) * m_num_y_bins + y_section_from;
-                        int previousMatchIndex = (x_section - 1) * m_num_section_matches + y_section_from * (2 * m_num_jumps + 1) + jump;
+                        int previousAlignmentIndex = (xSection - 1) * m_numYBins + ySectionFrom;
+                        int previousMatchIndex = (xSection - 1) * m_numSectionMatches + ySectionFrom * (2 * m_numJumps + 1) + jump;
                         if ((previousAlignmentIndex > m_alignmentScores.Count-1) || (previousMatchIndex > m_matchScores.Count-1))
                         {
                             break;
@@ -385,75 +415,70 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             }
         }
 
-        public void CalculateRegressionFunction()
+        private void CalculateRegressionFunction()
         {
             m_alignmentFunction.Clear();
             //Start at the last section best score and trace backwards
             double bestScore = double.MaxValue;
             int bestPreviousIndex = 0;
-            int bestYShift = m_num_y_bins / 2;
-            int x_section = m_num_x_bins;
+            int bestYShift = m_numYBins / 2;
+            int xSection = m_numXBins;
 
-            while (x_section >= 1)
+            while (xSection >= 1)
             {
-                if (m_count[x_section - 1] >= m_min_section_pts)
+                if (m_count[xSection - 1] >= m_minSectionPts)
                 {
-                    for (int y_section = 0; y_section < m_num_y_bins; y_section++)
+                    for (int ySection = 0; ySection < m_numYBins; ySection++)
                     {
-                        int index = x_section * m_num_y_bins + y_section;
+                        int index = xSection * m_numYBins + ySection;
                         double ascore = m_alignmentScores[index];
                         if (ascore < bestScore)
                         {
                             bestScore = ascore;
-                            bestYShift = y_section;
+                            bestYShift = ySection;
                             bestPreviousIndex = m_bestPreviousIndex[index];
                         }
                     }
                     break;
                 }
-                else
-                {
-                    x_section--;
-                }
+                xSection--;
             }
 
-            for (int i = x_section; i <= m_num_x_bins; i++)
+            for (int i = xSection; i <= m_numXBins; i++)
             {
                 m_alignmentFunction.Add(i, bestYShift);
             }
-            while (x_section > 0)
+            while (xSection > 0)
             {
-                x_section--;
-                int y_shift = bestPreviousIndex % m_num_y_bins;
-                m_alignmentFunction.Add(x_section, y_shift);
+                xSection--;
+                int yShift = bestPreviousIndex % m_numYBins;
+                m_alignmentFunction.Add(xSection, yShift);
                 bestPreviousIndex = m_bestPreviousIndex[bestPreviousIndex];
             }
 
         }
 
-        public void RemoveOutliersAndCopy(ref List<LCMSRegressionPts> calibMatches)
+        /// <summary>
+        /// Calculates Central regression for the matches found and passed in
+        /// </summary>
+        /// <param name="calibMatches"></param>
+        public void CalculateRegressionFunction(ref List<LcmsRegressionPts> calibMatches)
         {
-            foreach (LCMSRegressionPts point in calibMatches)
+            Clear();
+            foreach (LcmsRegressionPts point in calibMatches)
             {
                 m_pts.Add(point);
             }
-
-        }
-
-        public void CalculateRegressionFunction(ref List<LCMSRegressionPts> calibMatches)
-        {
-            Clear();
-            RemoveOutliersAndCopy(ref calibMatches);
 
             // First find the boundaries
             CalculateMinMax();
 
             // For if it's constant answer
-            if (m_minY == m_maxY)
+            if (Math.Abs(m_minY - m_maxY) < double.Epsilon)
             {
-                for (int x_section = 0; x_section < m_num_x_bins; x_section++)
+                for (int xSection = 0; xSection < m_numXBins; xSection++)
                 {
-                    m_alignmentFunction.Add(x_section, 0);
+                    m_alignmentFunction.Add(xSection, 0);
                 }
                 return;
             }
@@ -464,88 +489,76 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             CalculateRegressionFunction();
         }
 
-        public void PrintScoreMatrix(string fileName)
-        {
-
-        }
-
-        public void PrintAlignmentScoreMatrix(string fileName)
-        {
-
-        }
-
-        public void PrintRegressionFunction(string fileName)
-        {
-
-        }
-
-        public void PrintPoints(string fileName)
-        {
-
-        }
-
+        /// <summary>
+        /// Goes through all the regression points and only retains the ones that are within the outlier z score
+        /// </summary>
         public void RemoveRegressionOutliers()
         {
-            double x_interval_size = (m_maxX - m_minX) / m_num_x_bins;
-            List<LCMSRegressionPts> tempPts = new List<LCMSRegressionPts>();
+            double xIntervalSize = (m_maxX - m_minX) / m_numXBins;
+            var tempPts = new List<LcmsRegressionPts>();
             int numPts = m_pts.Count;
 
             for (int pointNum = 0; pointNum < numPts; pointNum++)
             {
-                LCMSRegressionPts point = new LCMSRegressionPts();
-                point = m_pts[pointNum];
-                int intervalNum = Convert.ToInt32((point.X - m_minX) / x_interval_size);
-                if (intervalNum == m_num_x_bins)
+                LcmsRegressionPts point  = m_pts[pointNum];
+                int intervalNum = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
+                if (intervalNum == m_numXBins)
                 {
-                    intervalNum = m_num_x_bins - 1;
+                    intervalNum = m_numXBins - 1;
                 }
-                double std_y = m_stdY[intervalNum];
+                double stdY = m_stdY[intervalNum];
                 double val = GetPredictedValue(point.X);
-                double delta = (val - point.MassError) / std_y;
+                double delta = (val - point.MassError) / stdY;
                 if (Math.Abs(delta) < m_outlierZScore)
                 {
                     tempPts.Add(point);
                 }
-                m_pts.Clear();
             }
 
-            foreach (LCMSRegressionPts point in tempPts)
+            m_pts.Clear();
+
+            foreach (LcmsRegressionPts point in tempPts)
             {
                 m_pts.Add(point);
             }
         }
 
+        /// <summary>
+        /// Given a value x, finds the appropriate y value that would correspond to it in the regression function
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public double GetPredictedValue(double x)
         {
-            double yIntervalSize = (m_maxY - m_minY) / m_num_y_bins;
-            double xIntervalSize = (m_maxX - m_minX) / m_num_x_bins;
+            double yIntervalSize = (m_maxY - m_minY) / m_numYBins;
+            double xIntervalSize = (m_maxX - m_minX) / m_numXBins;
 
-            int x_section = Convert.ToInt32((x - m_minX) / xIntervalSize);
-            int y_section_from;
-            if (x_section >= m_num_x_bins)
+            int xSection = Convert.ToInt32((x - m_minX) / xIntervalSize);
+            int ySectionFrom;
+            if (xSection >= m_numXBins)
             {
-                x_section = m_num_x_bins - 1;
+                xSection = m_numXBins - 1;
             }
-            if (x_section < 0)
+            if (xSection < 0)
             {
-                x_section = 0;
-                y_section_from = m_alignmentFunction.ElementAt(x_section).Value;
-                return m_minY + y_section_from * yIntervalSize;
-            }
-
-            double x_fraction = (x - m_minX) / xIntervalSize - x_section;
-            y_section_from = m_alignmentFunction.ElementAt(x_section).Value;
-            int y_section_to = y_section_from;
-
-            if (x_section < m_num_x_bins - 1)
-            {
-                y_section_to = m_alignmentFunction.ElementAt(x_section + 1).Value;
+                xSection = 0;
+                ySectionFrom = m_alignmentFunction.ElementAt(xSection).Value;
+                return m_minY + ySectionFrom * yIntervalSize;
             }
 
-            double y_pred = x_fraction * yIntervalSize * (y_section_to - y_section_from)
-                            + y_section_from * yIntervalSize + m_minY;
+            double xFraction = (x - m_minX) / xIntervalSize - xSection;
+            ySectionFrom = m_alignmentFunction.ElementAt(xSection).Value;
+            int ySectionTo = ySectionFrom;
 
-            return y_pred;
+            if (xSection < m_numXBins - 1)
+            {
+                ySectionTo = m_alignmentFunction.ElementAt(xSection + 1).Value;
+            }
+
+            double yPred = xFraction * yIntervalSize * (ySectionTo - ySectionFrom)
+                            + ySectionFrom * yIntervalSize + m_minY;
+
+            return yPred;
         }
     }
 }

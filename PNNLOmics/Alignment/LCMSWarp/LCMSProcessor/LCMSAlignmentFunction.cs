@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 {
+    /// <summary>
+    /// Object to house the Alignment Function from LCMS warping, including the
+    /// calibration and alignment type
+    /// </summary>
     public class LCMSAlignmentFunction
     {
-        string m_dataset;
-        string m_reference;
-        LCMSAlignmentOptions.CalibrationType m_calibrationType;
-        LCMSAlignmentOptions.AlignmentType m_alignmentType;
+        readonly LcmsAlignmentOptions.CalibrationType m_calibrationType;
+        readonly LcmsAlignmentOptions.AlignmentType m_alignmentType;
 
         List<double> m_NETFuncTimeInput = new List<double>();
         List<double> m_NETFuncNETOutput = new List<double>();
@@ -23,17 +23,15 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         List<double> m_MassFuncMZInput = new List<double>();
         List<double> m_MassFuncMZPPMOutput = new List<double>();
 
-        public string Dataset
-        {
-            get { return m_dataset; }
-            set { m_dataset = value; }
-        }
+        /// <summary>
+        /// AutoProperty for the name of the Alignee dataset
+        /// </summary>
+        public string Dataset { get; set; }
 
-        public string Reference
-        {
-            get { return m_reference; }
-            set { m_reference = value; }
-        }
+        /// <summary>
+        /// AutoProperty for the name of the Baseline dataset
+        /// </summary>
+        public string Reference { get; set; }
 
         /// <summary>
         /// Constructs the Alignment function data members, copying the alignee and reference names, the
@@ -44,11 +42,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <param name="calibType"></param>
         /// <param name="alignmentType"></param>
         public LCMSAlignmentFunction(string alignee, string reference,
-                                 LCMSAlignmentOptions.CalibrationType calibType,
-                                 LCMSAlignmentOptions.AlignmentType alignmentType)
+                                 LcmsAlignmentOptions.CalibrationType calibType,
+                                 LcmsAlignmentOptions.AlignmentType alignmentType)
         {
-            m_dataset = alignee;
-            m_reference = reference;
+            Dataset = alignee;
+            Reference = reference;
             m_calibrationType = calibType;
             m_alignmentType = alignmentType;
         }
@@ -59,8 +57,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// </summary>
         /// <param name="calibType"></param>
         /// <param name="alignmentType"></param>
-        public LCMSAlignmentFunction(LCMSAlignmentOptions.CalibrationType calibType,
-                                 LCMSAlignmentOptions.AlignmentType alignmentType)
+        public LCMSAlignmentFunction(LcmsAlignmentOptions.CalibrationType calibType,
+                                 LcmsAlignmentOptions.AlignmentType alignmentType)
         {
             m_calibrationType = calibType;
             m_alignmentType = alignmentType;
@@ -147,12 +145,12 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 throw new ArgumentException("Input Mass Calibration Function with time has no ppm data.");
             }
 
-            if (m_calibrationType == LCMSAlignmentOptions.CalibrationType.MZ_CALIBRATION)
+            if (m_calibrationType == LcmsAlignmentOptions.CalibrationType.MZ_CALIBRATION)
             {
                 throw new InvalidOperationException("Attempting to set time calibration of masses when option chosen was MZ_CALIB");
             }
 
-            if (m_alignmentType != LCMSAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (m_alignmentType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 throw new InvalidOperationException("Recalibration of mass not enabled with NET_WARP alignment type. PPM shift cannot be retrieved. Used NET_MASS_WARP as alignment type instead");
             }
@@ -180,12 +178,12 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 throw new ArgumentException("Input Mass Calibration Function with time has no ppm data.");
             }
 
-            if (m_alignmentType != LCMSAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (m_alignmentType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 throw new InvalidOperationException("Recalibration of mass not enabled with NET_WARP alignment type. PPM shift cannot be retrieved. Used NET_MASS_WARP as alignment type instead");
             }
 
-            if (m_calibrationType == LCMSAlignmentOptions.CalibrationType.SCAN_CALIBRATION)
+            if (m_calibrationType == LcmsAlignmentOptions.CalibrationType.SCAN_CALIBRATION)
             {
                 throw new InvalidOperationException("Attempting to set MZ calibration of masses when option chosen was SCAN_CALIBRATION");
             }
@@ -220,11 +218,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <returns></returns>
         public double GetPpmShiftFromTime(double time)
         {
-            if (m_alignmentType != LCMSAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (m_alignmentType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 throw new InvalidOperationException("Recalibration of masses not enabled with NET_WARP alignment type. PPM shift cannot be retrieved");
             }
-            if (m_calibrationType == LCMSAlignmentOptions.CalibrationType.MZ_CALIBRATION)
+            if (m_calibrationType == LcmsAlignmentOptions.CalibrationType.MZ_CALIBRATION)
             {
                 throw new InvalidOperationException("Attempting to get time calibration of masses when option chosen was MZ_CALIBRATION");
             }
@@ -241,11 +239,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <returns></returns>
         public double GetPpmShiftFromMz(double mz)
         {
-            if (m_alignmentType != LCMSAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (m_alignmentType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 throw new InvalidOperationException("Recalibration of masses not enabled with NET_WARP alignment type. PPM shift cannot be retrieved");
             }
-            if (m_calibrationType == LCMSAlignmentOptions.CalibrationType.SCAN_CALIBRATION)
+            if (m_calibrationType == LcmsAlignmentOptions.CalibrationType.SCAN_CALIBRATION)
             {
                 throw new InvalidOperationException("Attempting to get mz calibration of masses when option chosen was SCAN_CALIBRATION");
             }
@@ -263,11 +261,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <returns></returns>
         public double GetPpmShiftFromTimeMz(double time, double mz)
         {
-            if (m_alignmentType != LCMSAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (m_alignmentType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 throw new InvalidOperationException("Recalibration of masses not enabled with NET_WARP alignment type. PPM shift cannot be retrieved");
             }
-            if (m_calibrationType != LCMSAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
+            if (m_calibrationType != LcmsAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
             {
                 throw new InvalidOperationException("Attempting to get hybrid calibration of masses when option chosen was not HYBRID_CALIB");
             }

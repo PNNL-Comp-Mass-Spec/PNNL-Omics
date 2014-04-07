@@ -1,5 +1,6 @@
 ﻿using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression;
 using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities;
+using PNNLOmics.Data.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 {
     public class LCMSWarp
     {
-    #region Private values
+        #region Private values
         private readonly List<double> m_tempFeatureBestDelta;
         private readonly List<int> m_tempFeatureBestIndex;
 
@@ -18,39 +19,39 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         private readonly List<int> m_numFeaturesInBaselineSections;
 
         //Interpolation m_interpolation;
-        double[] m_alignmentScore;
-        int[] m_bestPreviousIndex;
+        private double[] m_alignmentScore;
+        private int[] m_bestPreviousIndex;
 
-        double m_netStd;
+        private double m_netStd;
 
         private const double MinMassNetLikelihood = 1e-4;
 
-        bool m_useMass;
+        private bool m_useMass;
         // Decides whether or not promiscuousmatches are kept in the scoring function for allignment
         // to a MTDD. This can be used safely because MTDB will not have split UMCs but for Ms to MS
         // alignments it is best to keep this false or all split UMCs will match to the first instance.
-        readonly bool m_keepPromiscuousMatches;
+        private readonly bool m_keepPromiscuousMatches;
 
         // Used to control the granularity of the MSMS section size when comparing against MS Sections.
         // The number of sectiosn in the MSMS will be # of sectiosn in MS * m_maxSectionDistortion.
         // Thus each section of the MS can be compared to MSMS section wich are 1/m_maxSectionDistortion to
         // m_maxSectionDistortion times the ms section size of the chromatographic run.
 
-        readonly double m_minScore;
+        private readonly double m_minScore;
 
         // Mass window around which the mass tolerance is applied
 
-        double m_massStd;
+        private double m_massStd;
 
-        double m_normalProb;
-        double m_u;
-        double m_muMass;
-        double m_muNet;
-        readonly List<LCMSAlignmentMatch> m_alignmentFunc;
-        readonly List<LCMSMassTimeFeature> m_features;
-        readonly List<LCMSMassTimeFeature> m_baselineFeatures;
-        List<LCMSFeatureMatch> m_featureMatches;
-        readonly List<double> m_subsectionMatchScores;
+        private double m_normalProb;
+        private double m_u;
+        private double m_muMass;
+        private double m_muNet;
+        private readonly List<LCMSAlignmentMatch> m_alignmentFunc;
+        private readonly List<UMCLight> m_features;
+        private readonly List<UMCLight> m_baselineFeatures;
+        private List<LCMSFeatureMatch> m_featureMatches;
+        private readonly List<double> m_subsectionMatchScores;
         // Slope and intercept calculated using likelihood score in m_subsectionMatchScores.
         // Range of scans used is the range which covers the start scan of the Q2 and the end
         // scan of the Q3 of the nets of the matched features.
@@ -215,12 +216,12 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         /// <summary>
         /// AutoProperty to hold the MzCalibration object
         /// </summary>
-        public LCMSCombinedRegression MzRecalibration { get; set; }
+        public LcmsCombinedRegression MzRecalibration { get; set; }
 
         /// <summary>
         /// AutoProperty to hold the NetCalibration object
         /// </summary>
-        public LCMSCombinedRegression NetRecalibration { get; set; }
+        public LcmsCombinedRegression NetRecalibration { get; set; }
 
         #endregion
 
@@ -240,12 +241,12 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
             //m_interpolation = new Interpolation();
 
-            MzRecalibration = new LCMSCombinedRegression();
-            NetRecalibration = new LCMSCombinedRegression();
+            MzRecalibration = new LcmsCombinedRegression();
+            NetRecalibration = new LcmsCombinedRegression();
 
             m_alignmentFunc = new List<LCMSAlignmentMatch>();
-            m_features = new List<LCMSMassTimeFeature>();
-            m_baselineFeatures = new List<LCMSMassTimeFeature>();
+            m_features = new List<UMCLight>();
+            m_baselineFeatures = new List<UMCLight>();
             m_featureMatches = new List<LCMSFeatureMatch>();
             m_subsectionMatchScores = new List<double>();
 
@@ -271,7 +272,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             MassCalNumJump = 50;
 
             var ztolerance = 3;
-            var regType = LCMSCombinedRegression.RegressionType.Central;
+            var regType = LcmsCombinedRegression.RegressionType.CENTRAL;
 
             MzRecalibration.SetCentralRegressionOptions(MassCalNumSlices, MassCalNumDeltaBins, MassCalNumJump,
                                                           ztolerance, regType);
@@ -280,8 +281,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
             var outlierZScore = 2.5;
             var numKnots = 12;
-            MzRecalibration.SetLSQOptions(numKnots, outlierZScore);
-            NetRecalibration.SetLSQOptions(numKnots, outlierZScore);
+            MzRecalibration.SetLsqOptions(numKnots, outlierZScore);
+            NetRecalibration.SetLsqOptions(numKnots, outlierZScore);
 
             m_minScore = -100000;
             m_muMass = 0;
@@ -367,14 +368,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             {
                 int msFeatureIndex = m_sectionUniqueFeatureIndices[i];
                 int msmsFeatureIndex = m_tempFeatureBestIndex[msFeatureIndex];
-                LCMSMassTimeFeature feature = m_features[msFeatureIndex];
-                LCMSMassTimeFeature baselineFeature = m_baselineFeatures[msmsFeatureIndex];
+                UMCLight feature = m_features[msFeatureIndex];
+                UMCLight baselineFeature = m_baselineFeatures[msmsFeatureIndex];
 
                 double deltaNet = m_tempFeatureBestDelta[msFeatureIndex];
 
                 if (m_useMass)
                 {
-                    double massDelta = (feature.MonoMass - baselineFeature.MonoMass) * 100000 / baselineFeature.MonoMass;
+                    double massDelta = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic) * 100000 / baselineFeature.MassMonoisotopic;
                     double likelihood = GetMatchLikelihood(massDelta, deltaNet);
                     matchScore = matchScore + Math.Log(likelihood);
                 }
@@ -432,11 +433,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             MassCalNumSlices = numSlices;
             MassCalNumJump = massJump;
 
-            LCMSCombinedRegression.RegressionType regType = LCMSCombinedRegression.RegressionType.Central;
+            LcmsCombinedRegression.RegressionType regType = LcmsCombinedRegression.RegressionType.CENTRAL;
 
             if (useLsq)
             {
-                regType = LCMSCombinedRegression.RegressionType.Hybrid;
+                regType = LcmsCombinedRegression.RegressionType.HYBRID;
             }
             MzRecalibration.SetCentralRegressionOptions(MassCalNumSlices, MassCalNumDeltaBins,
                                                           MassCalNumJump, zTolerance, regType);
@@ -452,8 +453,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
         public void SetMassCalLsqOptions(int numKnots, double outlierZScore)
         {
-            MzRecalibration.SetLSQOptions(numKnots, outlierZScore);
-            NetRecalibration.SetLSQOptions(numKnots, outlierZScore);
+            MzRecalibration.SetLsqOptions(numKnots, outlierZScore);
+            NetRecalibration.SetLsqOptions(numKnots, outlierZScore);
         }
 
         public void GetStatistics(out double massStd, out double netStd, out double massMu, out double netMu)
@@ -497,23 +498,23 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
             foreach (LCMSFeatureMatch match in m_featureMatches)
             {
-                LCMSMassTimeFeature feature = m_features[match.FeatureIndex];
+                UMCLight feature = m_features[match.FeatureIndex];
                 double predictedLinear = (NetSlope * match.Net2) + NetIntercept;
                 double ppmMassError = match.PpmMassError;
                 double scanNumber = match.Net;
 
                 // NET
                 net.Add(scanNumber);
-                linearNet.Add(feature.AlignedNet - predictedLinear);
+                linearNet.Add(feature.NETAligned - predictedLinear);
                 customNet.Add(match.NetError);
-                linearCustomNet.Add(feature.AlignedNet - predictedLinear);
+                linearCustomNet.Add(feature.NETAligned - predictedLinear);
 
                 double ppmShift = 0.0;
                 if (m_useMass)
                 {
-                    ppmShift = GetPpmShift(feature.MZ, scanNumber);
+                    ppmShift = GetPpmShift(feature.Mz, scanNumber);
                 }
-                mz.Add(feature.MZ);
+                mz.Add(feature.Mz);
                 massError.Add(ppmMassError);
 
                 massErrorCorrected.Add(ppmMassError - ppmShift);
@@ -555,7 +556,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             int featureIndex;
             int numFeatures = m_features.Count;
 
-            LCMSMassTimeFeature feature;
+            UMCLight feature;
             int alignmentFuncLength = m_alignmentFunc.Count;
             var dicSectionToIndex = new Dictionary<int, int>();
 
@@ -581,7 +582,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                     netEndBaseline = m_alignmentFunc[0].NetEnd2;
 
                     double msNetTransformed = ((feature.NET - netStart) * (netEndBaseline - netStartBaseline)) / (netEnd - netStart) + netStartBaseline;
-                    m_features[featureIndex].AlignedNet = msNetTransformed;
+                    m_features[featureIndex].NETAligned = msNetTransformed;
                     continue;
                 }
                 if (feature.NET > m_alignmentFunc[alignmentFuncLength - 1].NetEnd)
@@ -592,7 +593,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                     netEndBaseline = m_alignmentFunc[alignmentFuncLength - 1].NetEnd2;
 
                     netTransformed = ((feature.NET - netStart) * (netEndBaseline - netStartBaseline)) / (netEnd - netStart) + netStartBaseline;
-                    m_features[featureIndex].AlignedNet = netTransformed;
+                    m_features[featureIndex].NETAligned = netTransformed;
                     continue;
                 }
 
@@ -611,7 +612,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                 netEndBaseline = m_alignmentFunc[msSectionIndex].NetEnd2;
 
                 netTransformed = ((feature.NET - netStart) * (netEndBaseline - netStartBaseline)) / (netEnd - netStart) + netStartBaseline;
-                m_features[featureIndex].AlignedNet = netTransformed;
+                m_features[featureIndex].NETAligned = netTransformed;
             }
         }
 
@@ -671,7 +672,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             int numFeatures = m_features.Count;
             int numBaselineFeatures = m_baselineFeatures.Count;
 
-            LCMSMassTimeFeature feature;
+            UMCLight feature;
             LCMSFeatureMatch match = new LCMSFeatureMatch();
 
             m_featureMatches.Clear();
@@ -683,14 +684,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             {
                 feature = m_features[featureIndex];
 
-                double massTolerance = feature.MonoMass * MassTolerance / 1000000;
+                double massTolerance = feature.MassMonoisotopic * MassTolerance / 1000000;
 
                 if (baselineFeatureIndex == numBaselineFeatures)
                 {
                     baselineFeatureIndex = numBaselineFeatures - 1;
                 }
 
-                while (baselineFeatureIndex >= 0 && m_baselineFeatures[baselineFeatureIndex].MonoMass > feature.MonoMass - massTolerance)
+                while (baselineFeatureIndex >= 0 && m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic > feature.MassMonoisotopic - massTolerance)
                 {
                     baselineFeatureIndex--;
                 }
@@ -698,15 +699,15 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
                 int bestMatch = int.MaxValue;
                 double bestMatchScore = minMatchScore;
-                while (baselineFeatureIndex < numBaselineFeatures && m_baselineFeatures[baselineFeatureIndex].MonoMass < feature.MonoMass + massTolerance)
+                while (baselineFeatureIndex < numBaselineFeatures && m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic < feature.MassMonoisotopic + massTolerance)
                 {
-                    if (m_baselineFeatures[baselineFeatureIndex].MonoMass > feature.MonoMass - massTolerance)
+                    if (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic > feature.MassMonoisotopic - massTolerance)
                     {
                         //Calculate the mass and net errors
-                        double netDiff = m_baselineFeatures[baselineFeatureIndex].NET - feature.AlignedNet;
+                        double netDiff = m_baselineFeatures[baselineFeatureIndex].NET - feature.NETAligned;
                         double baselineDrift = m_baselineFeatures[baselineFeatureIndex].DriftTime;
                         double driftDiff = baselineDrift - feature.DriftTime;
-                        double massDiff = (m_baselineFeatures[baselineFeatureIndex].MonoMass - feature.MonoMass) * 1000000.0 / feature.MonoMass;
+                        double massDiff = (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic - feature.MassMonoisotopic) * 1000000.0 / feature.MassMonoisotopic;
 
                         //Calculate the match score
                         double matchScore = -0.5 * (netDiff * netDiff) / (m_netStd * m_netStd);
@@ -763,14 +764,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             {
                 var feature = m_features[featureIndex];
 
-                double massTolerance = feature.MonoMass * MassTolerance / 1000000;
+                double massTolerance = feature.MassMonoisotopic * MassTolerance / 1000000;
 
                 if (baselineFeatureIndex == numBaselineFeatures)
                 {
                     baselineFeatureIndex = numBaselineFeatures - 1;
                 }
 
-                while (baselineFeatureIndex >= 0 && m_baselineFeatures[baselineFeatureIndex].MonoMass > feature.MonoMass - massTolerance)
+                while (baselineFeatureIndex >= 0 && m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic > feature.MassMonoisotopic - massTolerance)
                 {
                     baselineFeatureIndex--;
                 }
@@ -778,15 +779,15 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
                 int bestMatch = int.MaxValue;
                 double bestMatchScore = minMatchScore;
-                while (baselineFeatureIndex < numBaselineFeatures && m_baselineFeatures[baselineFeatureIndex].MonoMass < feature.MonoMass + massTolerance)
+                while (baselineFeatureIndex < numBaselineFeatures && m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic < feature.MassMonoisotopic + massTolerance)
                 {
-                    if (m_baselineFeatures[baselineFeatureIndex].MonoMass > feature.MonoMass - massTolerance)
+                    if (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic > feature.MassMonoisotopic - massTolerance)
                     {
                         //Calculate the mass and net errors
-                        double netDiff = m_baselineFeatures[baselineFeatureIndex].NET - feature.AlignedNet;
+                        double netDiff = m_baselineFeatures[baselineFeatureIndex].NET - feature.NETAligned;
                         double baselineDrift = m_baselineFeatures[baselineFeatureIndex].DriftTime;
                         double driftDiff = baselineDrift - feature.DriftTime;
-                        double massDiff = (m_baselineFeatures[baselineFeatureIndex].MonoMass - feature.MonoMass) * 1000000.0 / feature.MonoMass;
+                        double massDiff = (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic - feature.MassMonoisotopic) * 1000000.0 / feature.MassMonoisotopic;
 
                         //Calculate the match score
                         double matchScore = -0.5 * (netDiff * netDiff) / (m_netStd * m_netStd);
@@ -845,7 +846,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             Histogram.CreateHistogram(driftErrors, ref driftErrorBin, ref driftErrorFrequency, driftBin);
         }
 
-        public void SetFeatures(ref List<LCMSMassTimeFeature> features)
+        public void SetFeatures(ref List<UMCLight> features)
         {
             m_features.Clear();
             foreach (var feature in features)
@@ -860,8 +861,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             foreach (var feature in m_features)
             {
                 umcIndices.Add(feature.ID);
-                umcCalibratedMass.Add(feature.MonoMassCalibrated);
-                umcAlignedNets.Add(feature.AlignedNet);
+                umcCalibratedMass.Add(feature.MassMonoisotopicAligned);
+                umcAlignedNets.Add(feature.NETAligned);
                 alignedDriftTimes.Add(feature.DriftTime);
             }
         }
@@ -875,14 +876,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             {
                 var feature = m_features[featureNum];
                 umcIndices.Add(feature.ID);
-                umcCalibratedMasses.Add(feature.MonoMassCalibrated);
-                umcAlignedNets.Add(feature.AlignedNet);
-                umcAlignedScans.Add(minScan + (int)(feature.AlignedNet * (maxScan - minScan)));
+                umcCalibratedMasses.Add(feature.MassMonoisotopicAligned);
+                umcAlignedNets.Add(feature.NETAligned);
+                umcAlignedScans.Add(minScan + (int)(feature.NETAligned * (maxScan - minScan)));
                 umcDriftTimes.Add(feature.DriftTime);
             }
         }
 
-        public void SetReferenceFeatures(ref List<LCMSMassTimeFeature> features)
+        public void SetReferenceFeatures(ref List<UMCLight> features)
         {
             m_baselineFeatures.Clear();
             foreach (var feature in features)
@@ -891,12 +892,12 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             }
         }
 
-        public void AddFeature(ref LCMSMassTimeFeature feature)
+        public void AddFeature(ref UMCLight feature)
         {
             m_features.Add(feature);
         }
 
-        public void AddReferenceFeature(ref LCMSMassTimeFeature feature)
+        public void AddReferenceFeature(ref UMCLight feature)
         {
             m_baselineFeatures.Add(feature);
         }
@@ -935,14 +936,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             {
                 PercentComplete = (100*featureIndex)/numFeatures;
                 var feature = m_features[featureIndex];
-                var massTolerance = feature.MonoMass*(MassTolerance/1000000);
+                var massTolerance = feature.MassMonoisotopic*(MassTolerance/1000000);
 
                 if (baselineFeatureIndex == numBaselineFeatures)
                 {
                     baselineFeatureIndex = numBaselineFeatures - 1;
                 }
                 var baselineFeature = m_baselineFeatures[baselineFeatureIndex];
-                while (baselineFeatureIndex >= 0 && (baselineFeature.MonoMass > feature.MonoMass - massTolerance))
+                while (baselineFeatureIndex >= 0 && (baselineFeature.MassMonoisotopic > feature.MassMonoisotopic - massTolerance))
                 {
                     baselineFeatureIndex --;
                     if (baselineFeatureIndex >= 0)
@@ -953,9 +954,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                 baselineFeatureIndex++;
 
                 while (baselineFeatureIndex < numBaselineFeatures &&
-                       (m_baselineFeatures[baselineFeatureIndex].MonoMass < (feature.MonoMass + massTolerance)))
+                       (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic < (feature.MassMonoisotopic + massTolerance)))
                 {
-                    if (m_baselineFeatures[baselineFeatureIndex].MonoMass > (feature.MonoMass - massTolerance))
+                    if (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic > (feature.MassMonoisotopic - massTolerance))
                     {
                         var matchToAdd = new LCMSFeatureMatch
                         {
@@ -1012,7 +1013,6 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                         tempMatches.Add(match);
                     }
                 }
-                    //TODO: BOUNDS CHECKING
                 else if (m_keepPromiscuousMatches)
                 {
                     // keep the matches that have the minimum scan numbers.
@@ -1035,7 +1035,6 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                         int matchIndex = netMatchesToIndex.ElementAt(index).Value[0];
                         LCMSFeatureMatch match = m_featureMatches[matchIndex];
                         tempMatches.Add(match);
-                        //scanMatches = netMatchesToIndex
                     }
                 }
             }
@@ -1058,8 +1057,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                 int msIndex = match.FeatureIndex;
                 int baselineIndex = match.FeatureIndex2;
 
-                double massDiff = m_features[msIndex].MonoMass - m_baselineFeatures[baselineIndex].MonoMass;
-                double massPpmDiff = (massDiff * 1000.0 * 1000.0) / m_features[msIndex].MonoMass;
+                double massDiff = m_features[msIndex].MassMonoisotopic - m_baselineFeatures[baselineIndex].MassMonoisotopic;
+                double massPpmDiff = (massDiff * 1000.0 * 1000.0) / m_features[msIndex].MassMonoisotopic;
                 ppms.Add(massPpmDiff);
             }
             PercentComplete = 100;
@@ -1095,7 +1094,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             int numFeatures = m_features.Count;
             for (int featureNum = 0; featureNum < numFeatures; featureNum++)
             {
-                m_features[featureNum].MonoMassCalibrated = m_features[featureNum].MonoMassOriginal;
+                m_features[featureNum].MassMonoisotopicAligned = m_features[featureNum].MassMonoisotopic;
             }
         }
 
@@ -1112,9 +1111,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                 for (int matchNum = 0; matchNum < numMatches; matchNum++)
                 {
                     match = m_featureMatches[matchNum];
-                    LCMSMassTimeFeature feature = m_features[match.FeatureIndex];
-                    LCMSMassTimeFeature baselineFeature = m_baselineFeatures[match.FeatureIndex2];
-                    double currentMassDelta = ((baselineFeature.MonoMass - feature.MonoMass) * 1000000) / feature.MonoMass;
+                    UMCLight feature = m_features[match.FeatureIndex];
+                    UMCLight baselineFeature = m_baselineFeatures[match.FeatureIndex2];
+                    double currentMassDelta = ((baselineFeature.MassMonoisotopic - feature.MassMonoisotopic) * 1000000) / feature.MassMonoisotopic;
                     double currentNetDelta = baselineFeature.NET - feature.NET;
 
                     massDeltas.Add(currentMassDelta);
@@ -1143,19 +1142,19 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         public void PerformMzMassErrorRegression()
         {
             //Copy all MZs and mass errors into a list of regression points
-            var calibrations = new List<LCMSRegressionPts>();
+            var calibrations = new List<LcmsRegressionPts>();
             
             int numMatches = m_featureMatches.Count;
 
             for (int matchNum = 0; matchNum < numMatches; matchNum++)
             {
-                var calibrationMatch = new LCMSRegressionPts();
+                var calibrationMatch = new LcmsRegressionPts();
                 LCMSFeatureMatch match = m_featureMatches[matchNum];
                 var feature = m_features[match.FeatureIndex];
                 var baselineFeature = m_baselineFeatures[match.FeatureIndex2];
-                double ppm = (feature.MonoMass - baselineFeature.MonoMass);
-                double mz = feature.MZ;
-                double netDiff = baselineFeature.NET - feature.AlignedNet;
+                double ppm = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic);
+                double mz = feature.Mz;
+                double netDiff = baselineFeature.NET - feature.NETAligned;
                 calibrationMatch.X = mz;
                 calibrationMatch.NetError = netDiff;
                 calibrationMatch.MassError = ppm;
@@ -1167,31 +1166,31 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             int numFeatures = m_features.Count;
             for (int featureNum = 0; featureNum < numFeatures; featureNum++)
             {
-                double mz = m_features[featureNum].MZ;
-                double mass = m_features[featureNum].MonoMassOriginal;
+                double mz = m_features[featureNum].Mz;
+                double mass = m_features[featureNum].MassMonoisotopic;
                 double ppmShift = MzRecalibration.GetPredictedValue(mz);
                 double newMass = mass - (mass * ppmShift) / 1000000;
-                m_features[featureNum].MonoMassCalibrated = newMass;
-                m_features[featureNum].MonoMass = newMass;
+                m_features[featureNum].MassMonoisotopicAligned = newMass;
+                m_features[featureNum].MassMonoisotopic = newMass;
             }
 
         }
 
         public void PerformScanMassErrorRegression()
         {
-            var calibrations = new List<LCMSRegressionPts>();
+            var calibrations = new List<LcmsRegressionPts>();
             
             int numMatches = m_featureMatches.Count;
 
             for (int matchNum = 0; matchNum < numMatches; matchNum++)
             {
-                LCMSRegressionPts calibrationMatch = new LCMSRegressionPts();
+                LcmsRegressionPts calibrationMatch = new LcmsRegressionPts();
                 LCMSFeatureMatch match = m_featureMatches[matchNum];
-                LCMSMassTimeFeature feature = m_features[match.FeatureIndex];
-                LCMSMassTimeFeature baselineFeature = m_baselineFeatures[match.FeatureIndex2];
-                double ppm = (feature.MonoMass - baselineFeature.MonoMass);
+                UMCLight feature = m_features[match.FeatureIndex];
+                UMCLight baselineFeature = m_baselineFeatures[match.FeatureIndex2];
+                double ppm = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic);
                 double net = feature.NET;
-                double netDiff = baselineFeature.NET - feature.AlignedNet;
+                double netDiff = baselineFeature.NET - feature.NETAligned;
                 calibrationMatch.X = net;
                 calibrationMatch.NetError = netDiff;
                 calibrationMatch.MassError = ppm;
@@ -1205,11 +1204,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             for (int featureNum = 0; featureNum < numFeatures; featureNum++)
             {
                 double net = m_features[featureNum].NET;
-                double mass = m_features[featureNum].MonoMass;
+                double mass = m_features[featureNum].MassMonoisotopic;
                 double ppmShift = MzRecalibration.GetPredictedValue(net);
                 double newMass = mass - (mass * ppmShift) / 1000000;
-                m_features[featureNum].MonoMassCalibrated = newMass;
-                m_features[featureNum].MonoMass = newMass;
+                m_features[featureNum].MassMonoisotopicAligned = newMass;
+                m_features[featureNum].MassMonoisotopic = newMass;
             }
         }
 
@@ -1590,10 +1589,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
                     // Now that we have msmsSection and matching msSection, transform the scan numbers to nets using a
                     // transformation of the two sections, and use a temporary list to keep only the best match
-                    LCMSFeatureMatch match;// = new FeatureMatch();
                     for (int i = 0; i < numMatchingFeatures; i++)
                     {
-                        match = sectionMatchingFeatures[i];
+                        LCMSFeatureMatch match = sectionMatchingFeatures[i];
                         int msFeatureIndex = match.FeatureIndex;
                         double featureNet = match.Net;
 

@@ -230,7 +230,6 @@
     <Compile Include="Alignment\LCMSWarp\LCMSProcessor\LCMSAlignmentProcessor.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSWarper\LCMSAlignment\LCMSAlignmentMatch.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSWarper\LCMSAlignment\LCMSFeatureMatch.cs" />
-    <Compile Include="Alignment\LCMSWarp\LCMSWarper\LCMSAlignment\LCMSMassTimeFeature.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSWarper\LCMSAlignment\LCMSWarp.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSWarper\LCMSRegression\LCMSCentralRegression.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSWarper\LCMSRegression\LCMSCombinedRegression.cs" />

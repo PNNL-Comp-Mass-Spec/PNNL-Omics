@@ -1,49 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra.Double;
-using System.Linq;
-using System.Text;
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 {
     public class LCMSLSQSplineRegression
     {
-        List<LCMSRegressionPts> m_pts;
-        double[] m_coeffs = new double[512];
-        static int m_maxOrder = 16; // Maximum order of spline regression supported
+        readonly List<LcmsRegressionPts> m_pts;
+        readonly double[] m_coeffs = new double[512];
+        private const int MaxOrder = 16; // Maximum order of spline regression supported
 
         int m_order;
         int m_numKnots;
         double m_minX;
         double m_maxX;
 
+        /// <summary>
+        /// Cleans any remaining data from previous regression
+        /// </summary>
         public void Clear()
         {
             m_pts.Clear();
         }
 
+        /// <summary>
+        /// Constructor for an LSQSplineRegressor. Initializes number of knots, order and sets up
+        /// new memory space for the regression points
+        /// </summary>
         public LCMSLSQSplineRegression()
         {
             m_numKnots = 0;
             m_order = 1;
-            m_pts = new List<LCMSRegressionPts>();
+            m_pts = new List<LcmsRegressionPts>();
         }
 
+        /// <summary>
+        /// Copies the number of knots to internal for LSQ regression
+        /// </summary>
+        /// <param name="numKnots"></param>
         public void SetOptions(int numKnots)
         {
             m_numKnots = numKnots;
         }
 
-        public void PreprocessCopyData(ref List<LCMSRegressionPts> Points)
+        /// <summary>
+        /// Determines the min and max range for the regression
+        /// </summary>
+        /// <param name="points"></param>
+        public void PreprocessCopyData(ref List<LcmsRegressionPts> points)
         {
             // find the min and max
-            int numPoints = Points.Count;
+            int numPoints = points.Count;
             m_minX = double.MaxValue;
             m_maxX = double.MinValue;
 
             for (int pointNum = 0; pointNum < numPoints; pointNum++)
             {
-                LCMSRegressionPts point = Points[pointNum];
+                LcmsRegressionPts point = points[pointNum];
                 if (point.X < m_minX)
                 {
                     m_minX = point.X;
@@ -56,37 +69,41 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             }
         }
 
-        public bool CalculateLSQRegressionCoefficients(int order, ref List<LCMSRegressionPts> Points)
+        /// <summary>
+        /// Computes the Regressor coefficients based on the order of the LSQ and the points to regress
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        public bool CalculateLsqRegressionCoefficients(int order, ref List<LcmsRegressionPts> points)
         {
             Clear();
             m_order = order;
 
-            if (order > m_maxOrder)
+            if (order > MaxOrder)
             {
-                order = m_maxOrder;
-                m_order = m_maxOrder;
+                m_order = MaxOrder;
             }
 
-            PreprocessCopyData(ref Points);
+            PreprocessCopyData(ref points);
 
-            DenseMatrix A, B, C, BInterp;
-            DenseMatrix ATrans;
-            DenseMatrix ATransA, InvATransA, InvATransAATrans;
+            DenseMatrix BInterp;
+            DenseMatrix InvATransAATrans;
 
             int numPoints = m_pts.Count;
 
-            A = new DenseMatrix(numPoints, m_order + m_numKnots + 1);
-            B = new DenseMatrix(numPoints, 1);
+            DenseMatrix a = new DenseMatrix(numPoints, m_order + m_numKnots + 1);
+            DenseMatrix b = new DenseMatrix(numPoints, 1);
 
             for (int pointNum = 0; pointNum < numPoints; pointNum++)
             {
-                LCMSRegressionPts calib = m_pts[pointNum];
+                LcmsRegressionPts calib = m_pts[pointNum];
                 double coeff = 1;
-                A[pointNum, 0] = coeff;
+                a[pointNum, 0] = coeff;
                 for (int colNum = 1; colNum <= m_order; colNum++)
                 {
                     coeff = coeff * calib.X;
-                    A[pointNum, colNum] = coeff;
+                    a[pointNum, colNum] = coeff;
                 }
 
                 if (m_numKnots > 0 && m_order > 0)
@@ -100,49 +117,54 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
                     for (int colNum = m_order + 1; colNum <= m_order + xInterval; colNum++)
                     {
                         double xIntervalStart = m_minX + ((colNum - m_order) * (m_maxX - m_minX)) / (m_numKnots + 1);
-                        A[pointNum, colNum] = Math.Pow(calib.X - xIntervalStart, m_order);
+                        a[pointNum, colNum] = Math.Pow(calib.X - xIntervalStart, m_order);
                     }
                     for (int colNum = m_order + xInterval + 1; colNum <= m_order + m_numKnots; colNum++)
                     {
-                        A[pointNum, colNum] = 0;
+                        a[pointNum, colNum] = 0;
                     }
                 }
 
-                B[pointNum, 0] = calib.MassError;
+                b[pointNum, 0] = calib.MassError;
             }
 
-            ATrans = (DenseMatrix)A.Transpose();
-            ATransA = (DenseMatrix)ATrans.Multiply(A);
+            DenseMatrix aTrans = (DenseMatrix)a.Transpose();
+            DenseMatrix aTransA = (DenseMatrix)aTrans.Multiply(a);
 
             // Can't invert a matrix with a determinant of 0, if so return false
-            if (ATransA.Determinant() == 0)
+            if (Math.Abs(aTransA.Determinant()) < double.Epsilon)
             {
                 return false;
             }
 
-            InvATransA = (DenseMatrix)ATransA.Inverse();
-            InvATransAATrans = (DenseMatrix)InvATransA.Multiply(ATrans);
+            DenseMatrix invATransA = (DenseMatrix)aTransA.Inverse();
+            InvATransAATrans = (DenseMatrix)invATransA.Multiply(aTrans);
 
-            C = (DenseMatrix)InvATransA.Multiply(B);
-            BInterp = (DenseMatrix)A.Multiply(C);
+            DenseMatrix c = (DenseMatrix)invATransA.Multiply(b);
+            BInterp = (DenseMatrix)a.Multiply(c);
 
             for (int colNum = 0; colNum <= m_order + m_numKnots; colNum++)
             {
-                m_coeffs[colNum] = C[colNum, 0];
+                m_coeffs[colNum] = c[colNum, 0];
             }
 
             return true;
         }
 
+        /// <summary>
+        /// Given a value "x", returns where on the regression line the appropriate "y" would fall
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public double GetPredictedValue(double x)
         {
-            double power_n = 1;
+            double powerN = 1;
             double val = m_coeffs[0];
 
             for (int power = 1; power <= m_order; power++)
             {
-                power_n = power_n * x;
-                val = val + m_coeffs[power] * power_n;
+                powerN = powerN * x;
+                val = val + m_coeffs[power] * powerN;
             }
 
             if (m_numKnots > 0 && m_order > 0)

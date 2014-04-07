@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 {
-    public class LCMSAlignmentOptions
+    /// <summary>
+    /// Object to hold the options for LcmsWarp Alignment. 
+    /// </summary>
+    public class LcmsAlignmentOptions
     {
         #region Auto Properties
         /// <summary>
@@ -59,25 +59,44 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         public int MassCalibMaxJump { get; set; }
 
         /// <summary>
-        /// 
+        /// Z Tolerance for the calibration that Central Regression would use
         /// </summary>
         public double MassCalibMaxZScore { get; set; }
 
+        /// <summary>
+        /// Z Tolerance for the calibration that LSQ Regression would use
+        /// </summary>
         public double MassCalibLsqMaxZScore { get; set; }
 
-        public int MassCalibLSQNumKnots { get; set; }
+        /// <summary>
+        /// Number of Knots that LSQ Regression would use
+        /// </summary>
+        public int MassCalibLsqNumKnots { get; set; }
 
+        /// <summary>
+        /// Mass tolerance for the Alignment and warping
+        /// </summary>
         public double MassTolerance { get; set; }
 
-        public double NETTolerance { get; set; }
+        /// <summary>
+        /// NET tolerance for the Alignment and warping
+        /// </summary>
+        public double NetTolerance { get; set; }
 
+        /// <summary>
+        /// The type of alignment which will be performed; either Net warping or Net-Mass warping
+        /// </summary>
         public AlignmentType AlignType { get; set; }
 
+        /// <summary>
+        /// The type of calibration which will be performed; Either MZ, Scan or hybrid 
+        /// </summary>
         public CalibrationType CalibType { get; set; }
 
+        /// <summary>
+        /// Flag for if the warper is aligning to a database of mass tags
+        /// </summary>
         public bool AlignToMassTagDatabase { get; set; }
-
-        public string AlignmentBaselineName { get; set; }
 
         /// <summary>
         /// How wide the Mass histogram bins are
@@ -87,7 +106,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <summary>
         /// How wide the NET histogram bins are
         /// </summary>
-        public double NETBinSize { get; set; }
+        public double NetBinSize { get; set; }
 
         /// <summary>
         /// How wide the Drift time histogram bins are
@@ -102,7 +121,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <summary>
         /// List of the MZ boundaries for the alignment
         /// </summary>
-        public List<LCMSAlignmentMzBoundary> MzBoundaries { get; set; }
+        public List<LcmsAlignmentMzBoundary> MzBoundaries { get; set; }
 
         /// <summary>
         /// Abundance percentage under which to filter alignment.
@@ -126,7 +145,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <summary>
         /// Default constructor, initializes every value to commonly used values and flags
         /// </summary>
-        public LCMSAlignmentOptions()
+        public LcmsAlignmentOptions()
         {
             NumTimeSections = 100;
             TopFeatureAbundancePercent = 0;
@@ -141,43 +160,73 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             MassCalibMaxJump = 20;
             MassCalibMaxZScore = 3;
             MassCalibLsqMaxZScore = 2.5;
-            MassCalibLSQNumKnots = 12;
+            MassCalibLsqNumKnots = 12;
             MassTolerance = 6.0;
-            NETTolerance = 0.03;
+            NetTolerance = 0.03;
 
             AlignType = AlignmentType.NET_MASS_WARP;
             CalibType = CalibrationType.HYBRID_CALIBRATION;
 
             AlignToMassTagDatabase = false;
-            AlignmentBaselineName = null;
             MassBinSize = 0.2;
-            NETBinSize = 0.001;
+            NetBinSize = 0.001;
             DriftTimeBinSize = 0.03;
             AlignSplitMZs = false;
-            MzBoundaries = new List<LCMSAlignmentMzBoundary>();
-            MzBoundaries.Add(new LCMSAlignmentMzBoundary(0.0, 505.7));
-            MzBoundaries.Add(new LCMSAlignmentMzBoundary(505.7, 999999999.0));
+            MzBoundaries = new List<LcmsAlignmentMzBoundary>();
+            MzBoundaries.Add(new LcmsAlignmentMzBoundary(0.0, 505.7));
+            MzBoundaries.Add(new LcmsAlignmentMzBoundary(505.7, 999999999.0));
             StoreAlignmentFunction = false;
-            AlignmentAlgorithmType = FeatureAlignmentType.LCMSWarp;
+            AlignmentAlgorithmType = FeatureAlignmentType.LCMS_WARP;
         }
 
+        /// <summary>
+        /// Enumerations of possible Calibration types
+        /// </summary>
         public enum CalibrationType
         {
+            /// <summary>
+            /// Calibration based on the M/Z value of the features and baseline
+            /// </summary>
             MZ_CALIBRATION = 0,
+            /// <summary>
+            /// Calibration based on the scan number of the features and baseline
+            /// </summary>
             SCAN_CALIBRATION,
+            /// <summary>
+            /// Calibration that utilizes both Scan and M/Z calibrations
+            /// </summary>
             HYBRID_CALIBRATION
         }
 
+        /// <summary>
+        /// Enumerations of possible Alignment Types
+        /// </summary>
         public enum AlignmentType
         {
+            /// <summary>
+            /// Alignment type that uses a single NET warp
+            /// </summary>
             NET_WARP = 0,
+            /// <summary>
+            /// Alignment type that performs a NET warp, recalibrates with regards to Mass
+            /// and then performs warping again
+            /// </summary>
             NET_MASS_WARP
         }
 
+        /// <summary>
+        /// Enumerations of possible Feature aligner types
+        /// </summary>
         public enum FeatureAlignmentType
         {
-            LCMSWarp,
-            DirectImsInfusion
+            /// <summary>
+            /// Uses LCMSWarp
+            /// </summary>
+            LCMS_WARP,
+            /// <summary>
+            /// Not Implemented.
+            /// </summary>
+            DIRECT_IMS_INFUSION
         }
     }
 }

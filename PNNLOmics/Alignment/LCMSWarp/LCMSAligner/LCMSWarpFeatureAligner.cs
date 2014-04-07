@@ -6,7 +6,10 @@ using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 {
-    public class LCMSWarpFeatureAligner
+    /// <summary>
+    /// Wrapper object for LCMSWarp Feature Aligning
+    /// </summary>
+    public class LcmsWarpFeatureAligner
     {
         /// <summary>
         /// Uses a list of MassTagLights as a baseline for aligning a list of UMCLights to it, using
@@ -20,10 +23,10 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
         /// <param name="options"></param>
         /// <param name="alignDriftTimes"></param>
         /// <returns></returns>
-        public LCMSAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> features,
-            LCMSAlignmentOptions options, bool alignDriftTimes)
+        public LcmsAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> features,
+            LcmsAlignmentOptions options, bool alignDriftTimes)
         {
-            var processor = new LCMSAlignmentProcessor
+            var processor = new LcmsAlignmentProcessor
             {
                 Options = options
             };
@@ -53,9 +56,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
         /// <param name="alignee"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public LCMSAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> alignee, LCMSAlignmentOptions options)
+        public LcmsAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> alignee, LcmsAlignmentOptions options)
         {
-            var alignmentProcessor = new LCMSAlignmentProcessor
+            var alignmentProcessor = new LcmsAlignmentProcessor
             {
                 Options = options
             };
@@ -64,7 +67,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 
             alignmentProcessor.SetReferenceDatasetFeatures(filteredFeatures);
 
-            LCMSAlignmentData data = AlignFeatures(alignmentProcessor, alignee, options);
+            LcmsAlignmentData data = AlignFeatures(alignmentProcessor, alignee, options);
 
             int minScan = int.MaxValue;
             int maxScan = int.MinValue;
@@ -75,19 +78,19 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
                 maxScan = Math.Max(maxScan, feature.Scan);
             }
 
-            data.maxMTDBNET = maxScan;
-            data.minMTDBNET = minScan;
+            data.MaxMtdbnet = maxScan;
+            data.MinMtdbnet = minScan;
 
             return data;
         }
 
-        LCMSAlignmentData AlignFeatures(LCMSAlignmentProcessor processor, List<UMCLight> features, LCMSAlignmentOptions options)
+        LcmsAlignmentData AlignFeatures(LcmsAlignmentProcessor processor, List<UMCLight> features, LcmsAlignmentOptions options)
         {
             var alignmentFunctions = new List<LCMSAlignmentFunction>();
             var netErrorHistograms = new List<double[,]>();
             var massErrorHistograms = new List<double[,]>();
             var driftErrorHistograms = new List<double[,]>();
-            var alignmentData = new List<LCMSAlignmentData>();
+            var alignmentData = new List<LcmsAlignmentData>();
             var heatScores = new List<double[,]>();
             var xIntervals = new List<double[]>();
             var yIntervals = new List<double[]>();
@@ -169,7 +172,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
                 double[,] netErrorHistogram;
                 double[,] driftErrorHistogram;
 
-                processor.GetErrorHistograms(options.MassBinSize, options.NETBinSize, options.DriftTimeBinSize,
+                processor.GetErrorHistograms(options.MassBinSize, options.NetBinSize, options.DriftTimeBinSize,
                                              out massErrorHistogram, out netErrorHistogram, out driftErrorHistogram);
 
                 massErrorHistograms.Add(massErrorHistogram);
@@ -179,36 +182,36 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
                 // Get the residual data
                 var residualData = processor.GetResidualData();
 
-                var data = new LCMSAlignmentData
+                var data = new LcmsAlignmentData
                 {
-                    massErrorHistogram = massErrorHistogram,
-                    driftErrorHistogram = driftErrorHistogram,
-                    netErrorHistogram = netErrorHistogram,
-                    alignmentFunction = alignmentFunction,
-                    heatScores = heatScore,
-                    minScanBaseline = minScanBaseline,
-                    maxScanBaseline = maxScanBaseline,
-                    NETIntercept = processor.NetIntercept,
-                    NETRsquared = processor.NetRsquared,
-                    NETSlope = processor.NetSlope,
+                    MassErrorHistogram = massErrorHistogram,
+                    DriftErrorHistogram = driftErrorHistogram,
+                    NetErrorHistogram = netErrorHistogram,
+                    AlignmentFunction = alignmentFunction,
+                    HeatScores = heatScore,
+                    MinScanBaseline = minScanBaseline,
+                    MaxScanBaseline = maxScanBaseline,
+                    NetIntercept = processor.NetIntercept,
+                    NetRsquared = processor.NetRsquared,
+                    NetSlope = processor.NetSlope,
                     ResidualData = residualData,
                     MassMean = processor.MassMu,
                     MassStandardDeviation = processor.MassStd,
-                    NETMean = processor.NetMu,
-                    NETStandardDeviation = processor.NetStd
+                    NetMean = processor.NetMu,
+                    NetStandardDeviation = processor.NetStd
                 };
 
                 if (options.AlignToMassTagDatabase)
                 {
-                    data.minMTDBNET = minMtdbNet;
-                    data.maxMTDBNET = maxMtdbNet;
+                    data.MinMtdbnet = minMtdbNet;
+                    data.MaxMtdbnet = maxMtdbNet;
                 }
 
                 alignmentData.Add(data);
             }
 
             // Combine for split analysis
-            var mergedData = new LCMSAlignmentData();
+            var mergedData = new LcmsAlignmentData();
             var mergedAlignmentFunction = alignmentFunctions[alignmentFunctions.Count - 1];
 
             // Merge mass error histogram data
@@ -218,13 +221,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 
             foreach (var t in alignmentData)
             {
-                maxMassHistoLength = Math.Max(maxMassHistoLength, t.massErrorHistogram.GetLength(0));
-                maxNetHistoLength = Math.Max(maxNetHistoLength, t.netErrorHistogram.GetLength(0));
-                maxDriftHistoLength = Math.Max(maxDriftHistoLength, t.driftErrorHistogram.GetLength(0));
+                maxMassHistoLength = Math.Max(maxMassHistoLength, t.MassErrorHistogram.GetLength(0));
+                maxNetHistoLength = Math.Max(maxNetHistoLength, t.NetErrorHistogram.GetLength(0));
+                maxDriftHistoLength = Math.Max(maxDriftHistoLength, t.DriftErrorHistogram.GetLength(0));
             }
 
             var massErrorHistogramData = new double[maxMassHistoLength, 2];
-            MergeHistogramData(massErrorHistogramData, alignmentData[0].massErrorHistogram, false);
+            MergeHistogramData(massErrorHistogramData, alignmentData[0].MassErrorHistogram, false);
 
             // Residual Arrays are the same size, start process to count the size so we can merge everything back into one array
             var countMassResiduals = 0;
@@ -234,7 +237,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
             {
                 if (i > 0)
                 {
-                    MergeHistogramData(massErrorHistogramData, alignmentData[i].massErrorHistogram, true);
+                    MergeHistogramData(massErrorHistogramData, alignmentData[i].MassErrorHistogram, true);
                 }
 
                 countMassResiduals += alignmentData[i].ResidualData.Mz.Length;
@@ -243,7 +246,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 
             // Merge net Error histogram data and Mass residual data
             var netErrorHistogramData = new double[maxNetHistoLength, 2];
-            MergeHistogramData(netErrorHistogramData, alignmentData[0].netErrorHistogram, false);
+            MergeHistogramData(netErrorHistogramData, alignmentData[0].NetErrorHistogram, false);
 
             mergedData.ResidualData = new ResidualData
             {
@@ -281,30 +284,30 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
                 mergedData.MassMean = alignmentData[i].MassMean;
                 mergedData.MassStandardDeviation = alignmentData[i].MassStandardDeviation;
 
-                mergedData.NETIntercept = alignmentData[i].NETIntercept;
-                mergedData.NETMean = alignmentData[i].NETMean;
-                mergedData.NETStandardDeviation = alignmentData[i].NETStandardDeviation;
-                mergedData.NETRsquared = alignmentData[i].NETRsquared;
-                mergedData.NETSlope = alignmentData[i].NETSlope;
+                mergedData.NetIntercept = alignmentData[i].NetIntercept;
+                mergedData.NetMean = alignmentData[i].NetMean;
+                mergedData.NetStandardDeviation = alignmentData[i].NetStandardDeviation;
+                mergedData.NetRsquared = alignmentData[i].NetRsquared;
+                mergedData.NetSlope = alignmentData[i].NetSlope;
 
                 if (i > 0)
                 {
-                    MergeHistogramData(netErrorHistogramData, alignmentData[i].netErrorHistogram, true);
+                    MergeHistogramData(netErrorHistogramData, alignmentData[i].NetErrorHistogram, true);
                 }
             }
 
             // Get the heat scores one last time
-            mergedData.heatScores = alignmentData[alignmentData.Count - 1].heatScores;
-            mergedData.massErrorHistogram = massErrorHistogramData;
-            mergedData.netErrorHistogram = netErrorHistogramData;
+            mergedData.HeatScores = alignmentData[alignmentData.Count - 1].HeatScores;
+            mergedData.MassErrorHistogram = massErrorHistogramData;
+            mergedData.NetErrorHistogram = netErrorHistogramData;
 
-            mergedData.driftErrorHistogram = driftErrorHistograms[0];
-            mergedData.alignmentFunction = mergedAlignmentFunction;
+            mergedData.DriftErrorHistogram = driftErrorHistograms[0];
+            mergedData.AlignmentFunction = mergedAlignmentFunction;
 
             return mergedData;
         }
 
-        private static IEnumerable<UMCLight> FilterFeaturesByAbundance(List<UMCLight> features, LCMSAlignmentOptions options)
+        private static IEnumerable<UMCLight> FilterFeaturesByAbundance(List<UMCLight> features, LcmsAlignmentOptions options)
         {
             features.Sort((x, y) => x.AbundanceSum.CompareTo(y.AbundanceSum));
 

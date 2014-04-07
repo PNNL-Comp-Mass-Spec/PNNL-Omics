@@ -5,22 +5,25 @@ using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 {
+    /// <summary>
+    /// Object which performs feature alignment through LCMSWarp
+    /// </summary>
     public class FeatureMatching : IAligner
     {
-        public LCMSAlignmentData Align(IEnumerable<UMCLight> baseline, IEnumerable<UMCLight> features)
+        public LcmsAlignmentData Align(IEnumerable<UMCLight> baseline, IEnumerable<UMCLight> features)
         {
-            LCMSAlignmentOptions options = new LCMSAlignmentOptions();
+            LcmsAlignmentOptions options = new LcmsAlignmentOptions();
 
-            LCMSWarpFeatureAligner aligner = new LCMSWarpFeatureAligner();
+            LcmsWarpFeatureAligner aligner = new LcmsWarpFeatureAligner();
 
             return aligner.AlignFeatures(baseline as List<UMCLight>, features as List<UMCLight>, options);
         }
 
-        public LCMSAlignmentData Align(IEnumerable<MassTagLight> baseline, IEnumerable<UMCLight> features)
+        public LcmsAlignmentData Align(IEnumerable<MassTagLight> baseline, IEnumerable<UMCLight> features)
         {
-            LCMSAlignmentOptions options = new LCMSAlignmentOptions();
+            LcmsAlignmentOptions options = new LcmsAlignmentOptions();
 
-            LCMSWarpFeatureAligner aligner = new LCMSWarpFeatureAligner();
+            LcmsWarpFeatureAligner aligner = new LcmsWarpFeatureAligner();
 
             return aligner.AlignFeatures(baseline as List<MassTagLight>, features as List<UMCLight>, options, true);
         }

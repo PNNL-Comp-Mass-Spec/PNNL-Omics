@@ -6,7 +6,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
     /// <summary>
     /// Class to hold onto the uniform distribution data for the LCMSWarp alignment
     /// </summary>
-    public class LCMSNormUnifEM
+    public class LcmsNormUnifEm
     {
         private double m_mean;
         private double m_var;
@@ -46,7 +46,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// Constructor which initializes everything to a set value and
         /// allocates data space for the probabilities
         /// </summary>
-        public LCMSNormUnifEM()
+        public LcmsNormUnifEm()
         {
             m_mean = 0.0;
             m_var = 10.0;
