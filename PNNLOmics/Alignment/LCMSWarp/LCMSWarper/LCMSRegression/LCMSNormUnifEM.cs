@@ -85,16 +85,10 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             double minVal = double.MaxValue;
             double maxVal = double.MinValue;
-            for (int i = 0; i < listVals.Count; i++)
+            foreach (double val in listVals)
             {
-                if (listVals[i] < minVal)
-                {
-                    minVal = listVals[i];
-                }
-                if (listVals[i] > maxVal)
-                {
-                    maxVal = listVals[i];
-                }
+                minVal = Math.Min(val, minVal);
+                maxVal = Math.Min(val, maxVal);
             }
             if (Math.Abs(minVal - maxVal) < double.Epsilon)
             {

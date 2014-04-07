@@ -3,7 +3,12 @@
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 {
-    class LCMSAlignmentMatch: IComparable<LCMSAlignmentMatch>
+    /// <summary>
+    /// Object to hold the Alignment Match Data from LCMS Warp
+    /// Contains the Normalized elution time start and end for both the alignee and the baseline
+    /// as well as the section start and end. Also contains the alignment score and the match score
+    /// </summary>
+    class LcmsAlignmentMatch: IComparable<LcmsAlignmentMatch>
     {
         private double m_netStart;
         private double m_netEnd;
@@ -92,7 +97,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             m_matchScore = matchScore;
         }
 
-        public int CompareTo(LCMSAlignmentMatch compareFeature)
+        public int CompareTo(LcmsAlignmentMatch compareFeature)
         {
             if (compareFeature == null)
             {

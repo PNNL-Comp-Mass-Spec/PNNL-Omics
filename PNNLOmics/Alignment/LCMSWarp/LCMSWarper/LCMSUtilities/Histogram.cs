@@ -6,23 +6,23 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities
 {
     class Histogram
     {
-        public static void CreateHistogram(List<double> InputValues, ref List<double> Bins,
-                                            ref List<int> frequency, double ValStep)
+        public static void CreateHistogram(List<double> inputValues, ref List<double> bins,
+                                            ref List<int> frequency, double valStep)
         {
-            Bins.Clear();
+            bins.Clear();
             frequency.Clear();
-            int num_pts = InputValues.Count;
+            int numPts = inputValues.Count;
 
             // Tried to pass an empty list to the histogram creator
-            if (num_pts == 0)
+            if (numPts == 0)
             {
                 return;
             }
 
-            double minVal = InputValues[0];
-            double maxVal = InputValues[0];
+            double minVal = inputValues[0];
+            double maxVal = inputValues[0];
 
-            foreach (double val in InputValues)
+            foreach (double val in inputValues)
             {
                 if (val < minVal)
                 {
@@ -35,31 +35,31 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities
             }
 
             //Only one unique value in the input values
-            if (minVal == maxVal)
+            if (Math.Abs(minVal - maxVal) < double.Epsilon)
             {
-                Bins.Add(minVal);
+                bins.Add(minVal);
                 frequency.Add(1);
                 return;
             }
 
-            int num_bins = (int)Math.Floor((maxVal - minVal) / ValStep);
+            var numBins = (int)Math.Floor((maxVal - minVal) / valStep);
 
-            double bin_val = minVal;
-            for (int i = 0; i < num_bins; i++)
+            double binVal = minVal;
+            for (int i = 0; i < numBins; i++)
             {
-                Bins.Add(bin_val);
+                bins.Add(binVal);
                 frequency.Add(0);
-                bin_val += ValStep;
+                binVal += valStep;
             }
 
-            for (int i = 0; i < num_pts; i++)
+            for (int i = 0; i < numPts; i++)
             {
-                int bin_index = (int)Math.Floor((InputValues[i] - minVal) / ValStep);
-                if (bin_index >= num_bins)
+                var binIndex = (int)Math.Floor((inputValues[i] - minVal) / valStep);
+                if (binIndex >= numBins)
                 {
-                    bin_index = num_bins - 1;
+                    binIndex = numBins - 1;
                 }
-                frequency[bin_index]++;
+                frequency[binIndex]++;
             }
         }
     }

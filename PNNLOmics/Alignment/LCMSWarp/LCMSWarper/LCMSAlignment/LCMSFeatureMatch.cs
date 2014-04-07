@@ -3,13 +3,18 @@
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 {
-    public class LCMSFeatureMatch: IComparable<LCMSFeatureMatch>
+    /// <summary>
+    /// Object to contain the feature match data for LCMS Warp.
+    /// Contains the feature index, baseline index, feature normalized elution time,
+    /// baseline normalized elution time and the error for the mass, the net and the drift time
+    /// </summary>
+    public class LcmsFeatureMatch: IComparable<LcmsFeatureMatch>
     {
         /// <summary>
         /// Constructor, initializes the testing values to -1 to ensure ability to see
         /// when there hasn't been a match made
         /// </summary>
-        public LCMSFeatureMatch()
+        public LcmsFeatureMatch()
         {
             FeatureIndex = -1;
             FeatureIndex2 = -1;
@@ -63,7 +68,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         /// </summary>
         public int FeatureIndex2 { get; set; }
 
-        public int CompareTo(LCMSFeatureMatch compareFeature)
+        public int CompareTo(LcmsFeatureMatch compareFeature)
         {
             if (compareFeature == null)
             {

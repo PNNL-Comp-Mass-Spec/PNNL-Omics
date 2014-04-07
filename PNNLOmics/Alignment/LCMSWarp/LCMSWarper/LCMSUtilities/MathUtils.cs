@@ -8,7 +8,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities
     {
         private const double El = 0.5772156649015329;
 
-        public static void TwoDEM(List<double> x, List<double> y, out double p, out double u, out double muX,
+        public static void TwoDem(List<double> x, List<double> y, out double p, out double u, out double muX,
                            out double muY, out double stdX, out double stdY)
         {
             const int numIterations = 40;

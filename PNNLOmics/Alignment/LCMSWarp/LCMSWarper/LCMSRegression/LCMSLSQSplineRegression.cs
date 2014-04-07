@@ -4,7 +4,10 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 {
-    public class LCMSLSQSplineRegression
+    /// <summary>
+    /// Object to hold the necesary information for an LSQ regression for LCMSWarp
+    /// </summary>
+    public class LcmsLsqSplineRegression
     {
         readonly List<LcmsRegressionPts> m_pts;
         readonly double[] m_coeffs = new double[512];
@@ -27,7 +30,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// Constructor for an LSQSplineRegressor. Initializes number of knots, order and sets up
         /// new memory space for the regression points
         /// </summary>
-        public LCMSLSQSplineRegression()
+        public LcmsLsqSplineRegression()
         {
             m_numKnots = 0;
             m_order = 1;
@@ -87,13 +90,10 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             PreprocessCopyData(ref points);
 
-            DenseMatrix BInterp;
-            DenseMatrix InvATransAATrans;
-
             int numPoints = m_pts.Count;
 
-            DenseMatrix a = new DenseMatrix(numPoints, m_order + m_numKnots + 1);
-            DenseMatrix b = new DenseMatrix(numPoints, 1);
+            var a = new DenseMatrix(numPoints, m_order + m_numKnots + 1);
+            var b = new DenseMatrix(numPoints, 1);
 
             for (int pointNum = 0; pointNum < numPoints; pointNum++)
             {
@@ -128,8 +128,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
                 b[pointNum, 0] = calib.MassError;
             }
 
-            DenseMatrix aTrans = (DenseMatrix)a.Transpose();
-            DenseMatrix aTransA = (DenseMatrix)aTrans.Multiply(a);
+            var aTrans = (DenseMatrix)a.Transpose();
+            var aTransA = (DenseMatrix)aTrans.Multiply(a);
 
             // Can't invert a matrix with a determinant of 0, if so return false
             if (Math.Abs(aTransA.Determinant()) < double.Epsilon)
@@ -137,11 +137,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
                 return false;
             }
 
-            DenseMatrix invATransA = (DenseMatrix)aTransA.Inverse();
-            InvATransAATrans = (DenseMatrix)invATransA.Multiply(aTrans);
+            var invATransA = (DenseMatrix)aTransA.Inverse();
 
-            DenseMatrix c = (DenseMatrix)invATransA.Multiply(b);
-            BInterp = (DenseMatrix)a.Multiply(c);
+            var c = (DenseMatrix)invATransA.Multiply(b);
 
             for (int colNum = 0; colNum <= m_order + m_numKnots; colNum++)
             {

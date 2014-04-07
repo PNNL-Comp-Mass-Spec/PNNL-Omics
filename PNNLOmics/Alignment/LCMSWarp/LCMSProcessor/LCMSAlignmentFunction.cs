@@ -7,21 +7,21 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
     /// Object to house the Alignment Function from LCMS warping, including the
     /// calibration and alignment type
     /// </summary>
-    public class LCMSAlignmentFunction
+    public class LcmsAlignmentFunction
     {
         readonly LcmsAlignmentOptions.CalibrationType m_calibrationType;
         readonly LcmsAlignmentOptions.AlignmentType m_alignmentType;
 
-        List<double> m_NETFuncTimeInput = new List<double>();
-        List<double> m_NETFuncNETOutput = new List<double>();
+        readonly List<double> m_netFuncTimeInput = new List<double>();
+        readonly List<double> m_netFuncNetOutput = new List<double>();
 
-        List<double> m_NETFuncTimeOutput = new List<double>();
+        readonly List<double> m_netFuncTimeOutput = new List<double>();
 
-        List<double> m_MassFuncTimeInput = new List<double>();
-        List<double> m_MassFuncTimePPMOutput = new List<double>();
+        readonly List<double> m_massFuncTimeInput = new List<double>();
+        readonly List<double> m_massFuncTimePpmOutput = new List<double>();
 
-        List<double> m_MassFuncMZInput = new List<double>();
-        List<double> m_MassFuncMZPPMOutput = new List<double>();
+        readonly List<double> m_massFuncMzInput = new List<double>();
+        readonly List<double> m_massFuncMzppmOutput = new List<double>();
 
         /// <summary>
         /// AutoProperty for the name of the Alignee dataset
@@ -41,7 +41,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <param name="reference"></param>
         /// <param name="calibType"></param>
         /// <param name="alignmentType"></param>
-        public LCMSAlignmentFunction(string alignee, string reference,
+        public LcmsAlignmentFunction(string alignee, string reference,
                                  LcmsAlignmentOptions.CalibrationType calibType,
                                  LcmsAlignmentOptions.AlignmentType alignmentType)
         {
@@ -57,7 +57,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// </summary>
         /// <param name="calibType"></param>
         /// <param name="alignmentType"></param>
-        public LCMSAlignmentFunction(LcmsAlignmentOptions.CalibrationType calibType,
+        public LcmsAlignmentFunction(LcmsAlignmentOptions.CalibrationType calibType,
                                  LcmsAlignmentOptions.AlignmentType alignmentType)
         {
             m_calibrationType = calibType;
@@ -123,11 +123,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
             foreach (double value in time)
             {
-                m_NETFuncTimeInput.Add(value);
+                m_netFuncTimeInput.Add(value);
             }
             foreach (double value in time)
             {
-                m_NETFuncNETOutput.Add(value);
+                m_netFuncNetOutput.Add(value);
             }
         }
 
@@ -156,11 +156,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             }
             foreach (double value in time)
             {
-                m_MassFuncTimeInput.Add(value);
+                m_massFuncTimeInput.Add(value);
             }
             foreach (double value in ppm)
             {
-                m_MassFuncTimePPMOutput.Add(value);
+                m_massFuncTimePpmOutput.Add(value);
             }
         }
 
@@ -190,11 +190,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
             foreach (double value in mz)
             {
-                m_MassFuncMZInput.Add(value);
+                m_massFuncMzInput.Add(value);
             }
             foreach (double value in ppm)
             {
-                m_MassFuncMZPPMOutput.Add(value);
+                m_massFuncMzppmOutput.Add(value);
             }
         }
 
@@ -206,7 +206,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <returns></returns>
         public double GetNetFromTime(double time)
         {
-            return Interpolate(m_NETFuncTimeInput, m_NETFuncNETOutput, time, false);
+            return Interpolate(m_netFuncTimeInput, m_netFuncNetOutput, time, false);
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 throw new InvalidOperationException("Attempting to get time calibration of masses when option chosen was MZ_CALIBRATION");
             }
 
-            return Interpolate(m_MassFuncTimeInput, m_MassFuncTimePPMOutput, time, false);
+            return Interpolate(m_massFuncTimeInput, m_massFuncTimePpmOutput, time, false);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 throw new InvalidOperationException("Attempting to get mz calibration of masses when option chosen was SCAN_CALIBRATION");
             }
 
-            return Interpolate(m_MassFuncMZInput, m_MassFuncMZPPMOutput, mz, false);
+            return Interpolate(m_massFuncMzInput, m_massFuncMzppmOutput, mz, false);
         }
 
         /// <summary>
@@ -282,11 +282,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             foreach (double value in aligneeTimes)
             {
-                m_NETFuncTimeInput.Add(value);
+                m_netFuncTimeInput.Add(value);
             }
             foreach (double value in referenceNets)
             {
-                m_NETFuncNETOutput.Add(value);
+                m_netFuncNetOutput.Add(value);
             }
         }
 
@@ -302,15 +302,15 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             foreach (double value in aligneeTimes)
             {
-                m_NETFuncTimeInput.Add(value);
+                m_netFuncTimeInput.Add(value);
             }
             foreach (double value in referenceNets)
             {
-                m_NETFuncNETOutput.Add(value);
+                m_netFuncNetOutput.Add(value);
             }
             foreach (double value in referenceScans)
             {
-                m_NETFuncTimeOutput.Add(value);
+                m_netFuncTimeOutput.Add(value);
             }
         }
 
@@ -323,11 +323,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             foreach (double value in aligneeTimes)
             {
-                m_MassFuncTimeInput.Add(value);
+                m_massFuncTimeInput.Add(value);
             }
             foreach (double value in ppmShifts)
             {
-                m_MassFuncTimePPMOutput.Add(value);
+                m_massFuncTimePpmOutput.Add(value);
             }
         }
 
@@ -340,11 +340,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             foreach (double value in aligneeMZs)
             {
-                m_MassFuncMZInput.Add(value);
+                m_massFuncMzInput.Add(value);
             }
             foreach (double value in ppmShifts)
             {
-                m_MassFuncMZPPMOutput.Add(value);
+                m_massFuncMzppmOutput.Add(value);
             }
         }
     }

@@ -12,18 +12,18 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
     {
         public LcmsAlignmentData Align(IEnumerable<UMCLight> baseline, IEnumerable<UMCLight> features)
         {
-            LcmsAlignmentOptions options = new LcmsAlignmentOptions();
+            var options = new LcmsAlignmentOptions();
 
-            LcmsWarpFeatureAligner aligner = new LcmsWarpFeatureAligner();
+            var aligner = new LcmsWarpFeatureAligner();
 
             return aligner.AlignFeatures(baseline as List<UMCLight>, features as List<UMCLight>, options);
         }
 
         public LcmsAlignmentData Align(IEnumerable<MassTagLight> baseline, IEnumerable<UMCLight> features)
         {
-            LcmsAlignmentOptions options = new LcmsAlignmentOptions();
+            var options = new LcmsAlignmentOptions();
 
-            LcmsWarpFeatureAligner aligner = new LcmsWarpFeatureAligner();
+            var aligner = new LcmsWarpFeatureAligner();
 
             return aligner.AlignFeatures(baseline as List<MassTagLight>, features as List<UMCLight>, options, true);
         }

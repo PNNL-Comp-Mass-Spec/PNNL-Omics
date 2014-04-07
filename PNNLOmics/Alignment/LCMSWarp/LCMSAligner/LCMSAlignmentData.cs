@@ -18,7 +18,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
         /// <summary>
         /// Property to hold the function for the alignment
         /// </summary>
-        public LCMSAlignmentFunction AlignmentFunction { get; set; }
+        public LcmsAlignmentFunction AlignmentFunction { get; set; }
         /// <summary>
         /// Property to hold the name of the alignee dataset
         /// </summary>
@@ -116,7 +116,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 
         public override bool Equals(object obj)
         {
-            LcmsAlignmentData factor = (LcmsAlignmentData)obj;
+            var factor = (LcmsAlignmentData)obj;
 
             if (factor == null)
             {

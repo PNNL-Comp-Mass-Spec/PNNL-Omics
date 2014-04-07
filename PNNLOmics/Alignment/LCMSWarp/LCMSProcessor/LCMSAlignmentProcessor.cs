@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment;
 using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression;
 using PNNLOmics.Data.Features;
@@ -80,7 +81,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         double m_maxAligneeDatasetMz;
 
         // LCMSWarp instance which will do the alignment when processing
-        LCMSWarper.LCMSAlignment.LCMSWarp m_lcmsWarp;
+        LCMSWarper.LCMSAlignment.LcmsWarp m_lcmsWarp;
 
         #region Public properties
         /// <summary>
@@ -137,7 +138,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// </summary>
         public LcmsAlignmentProcessor()
         {
-            m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
+            m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
             Options = new LcmsAlignmentOptions();
 
             ApplyAlignmentOptions();
@@ -171,7 +172,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             m_lcmsWarp.MassCalNumSlices = Options.MassCalibNumXSlices;
             m_lcmsWarp.MassCalNumJump = Options.MassCalibMaxJump;
 
-            LcmsCombinedRegression.RegressionType regType = LcmsCombinedRegression.RegressionType.CENTRAL;
+            var regType = LcmsCombinedRegression.RegressionType.CENTRAL;
 
             if (Options.MassCalibUseLsq)
             {
@@ -202,7 +203,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             if (m_lcmsWarp == null)
             {
-                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
+                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
             }
 
             PercentDone = 0;
@@ -219,11 +220,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
                 for (int i = 0; i < umcIndices.Count; i++)
                 {
-                    var point = new UMCLight();
-                    point.ID = umcIndices[i];
-                    point.MassMonoisotopicAligned = umcCalibratedMasses[i];
-                    point.NETAligned = umcAlignedNets[i];
-                    point.DriftTime = umcDriftTimes[i];
+                    var point = new UMCLight
+                    {
+                        ID = umcIndices[i],
+                        MassMonoisotopicAligned = umcCalibratedMasses[i],
+                        NETAligned = umcAlignedNets[i],
+                        DriftTime = umcDriftTimes[i]
+                    };
 
                     if (i < data.Count)
                     {
@@ -245,12 +248,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
                 for (int i = 0; i < umcIndices.Count; i++)
                 {
-                    UMCLight point = new UMCLight();
-                    point.ID = umcIndices[i];
-                    point.MassMonoisotopicAligned = umcCalibratedMasses[i];
-                    point.NETAligned = umcAlignedNets[i];
-                    point.ScanAligned = umcAlignedScans[i];
-                    point.DriftTime = umcDriftTimes[i];
+                    var point = new UMCLight
+                    {
+                        ID = umcIndices[i],
+                        MassMonoisotopicAligned = umcCalibratedMasses[i],
+                        NETAligned = umcAlignedNets[i],
+                        ScanAligned = umcAlignedScans[i],
+                        DriftTime = umcDriftTimes[i]
+                    };
 
                     if (i < data.Count)
                     {
@@ -278,7 +283,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             if (m_lcmsWarp == null)
             {
-                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
+                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
             }
 
             PercentDone = 0;
@@ -294,11 +299,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                                                                     ref umcAlignedNets, ref umcDriftTimes);
                 for (int i = 0; i < umcIndices.Count; i++)
                 {
-                    UMCLight point = new UMCLight();
-                    point.ID = umcIndices[i];
-                    point.MassMonoisotopicAligned = umcCalibratedMasses[i];
-                    point.NETAligned = umcAlignedNets[i];
-                    point.DriftTime = umcDriftTimes[i];
+                    var point = new UMCLight
+                    {
+                        ID = umcIndices[i],
+                        MassMonoisotopicAligned = umcCalibratedMasses[i],
+                        NETAligned = umcAlignedNets[i],
+                        DriftTime = umcDriftTimes[i]
+                    };
 
                     if (i < dataList.Length)
                     {
@@ -306,7 +313,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                     }
                     else
                     {
-                        UMCLight[] newDataList = new UMCLight[dataList.Length + 1];
+                        var newDataList = new UMCLight[dataList.Length + 1];
                         for (int j = 0; j < dataList.Length; j++)
                         {
                             newDataList[j] = dataList[j];
@@ -326,12 +333,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
                 for (int i = 0; i < umcIndices.Count; i++)
                 {
-                    UMCLight point = new UMCLight();
-                    point.ID = umcIndices[i];
-                    point.MassMonoisotopicAligned = umcCalibratedMasses[i];
-                    point.NETAligned = umcAlignedNets[i];
-                    point.ScanAligned = umcAlignedScans[i];
-                    point.DriftTime = umcDriftTimes[i];
+                    var point = new UMCLight
+                    {
+                        ID = umcIndices[i],
+                        MassMonoisotopicAligned = umcCalibratedMasses[i],
+                        NETAligned = umcAlignedNets[i],
+                        ScanAligned = umcAlignedScans[i],
+                        DriftTime = umcDriftTimes[i]
+                    };
 
                     if (i < dataList.Length)
                     {
@@ -339,7 +348,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                     }
                     else
                     {
-                        UMCLight[] newDataList = new UMCLight[dataList.Length + 1];
+                        var newDataList = new UMCLight[dataList.Length + 1];
                         for (int j = 0; j < dataList.Length; j++)
                         {
                             newDataList[j] = dataList[j];
@@ -379,7 +388,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             // If there isn't a LCMSWarp object, create one first.
             if (m_lcmsWarp == null)
             {
-                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
+                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
             }
 
             PercentDone = 0;
@@ -677,28 +686,16 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             var numMassTags = features.Count;
 
             var mtFeatures = new List<UMCLight> { Capacity = numMassTags };
-            var umcFeatres = new List<UMCLight> {Capacity = numMassTags};
-            foreach (var item in features)
+            mtFeatures.AddRange(features.Select(item => new UMCLight
             {
-                var feature = new UMCLight();
-                
-                var mtFeature = new UMCLight
-                {
-                    NETAligned = item.NETAligned,
-                    MassMonoisotopic = item.MassMonoisotopic,
-                    MassMonoisotopicAligned = item.MassMonoisotopicAligned,
-                    //MonoMassOriginal = item.MassMonoisotopic,
-                    Mz = item.MassMonoisotopic/item.ChargeState + (1.00782*(item.ChargeState - 1)),
-                    NET = item.NET,
-                    DriftTime = item.DriftTime,
-                    ID = item.ID,
-                    //ConformerID = item.GroupID
-                };
-                
-                // Updated from C++ code, uses the charge from the item itself alongside the mass 
-                // rather than trying to calculate it blindly. Originally always divided by 2
-                mtFeatures.Add(mtFeature);
-            }
+                NETAligned = item.NETAligned, 
+                MassMonoisotopic = item.MassMonoisotopic, 
+                MassMonoisotopicAligned = item.MassMonoisotopicAligned, 
+                Mz = item.MassMonoisotopic/item.ChargeState + (1.00782*(item.ChargeState - 1)), 
+                NET = item.NET, 
+                DriftTime = item.DriftTime, 
+                ID = item.ID,
+            }));
 
             m_lcmsWarp.SetReferenceFeatures(ref mtFeatures);
             MassTagDbLoaded = true;
@@ -727,9 +724,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// Returns the Alignment Function that the processor determined
         /// </summary>
         /// <returns></returns>
-        public LCMSAlignmentFunction GetAlignmentFunction()
+        public LcmsAlignmentFunction GetAlignmentFunction()
         {
-            var func = new LCMSAlignmentFunction(Options.CalibType, Options.AlignType);
+            var func = new LcmsAlignmentFunction(Options.CalibType, Options.AlignType);
 
             var aligneeNets = new List<double>();
             var referenceNets = new List<double>();
@@ -894,7 +891,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             if (m_lcmsWarp == null)
             {
-                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LCMSWarp();
+                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
             }
 
             var alignmentScores = new List<double>();

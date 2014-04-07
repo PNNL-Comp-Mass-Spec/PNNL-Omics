@@ -172,9 +172,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             NetBinSize = 0.001;
             DriftTimeBinSize = 0.03;
             AlignSplitMZs = false;
-            MzBoundaries = new List<LcmsAlignmentMzBoundary>();
-            MzBoundaries.Add(new LcmsAlignmentMzBoundary(0.0, 505.7));
-            MzBoundaries.Add(new LcmsAlignmentMzBoundary(505.7, 999999999.0));
+            MzBoundaries = new List<LcmsAlignmentMzBoundary>
+            {
+                new LcmsAlignmentMzBoundary(0.0, 505.7),
+                new LcmsAlignmentMzBoundary(505.7, 999999999.0)
+            };
             StoreAlignmentFunction = false;
             AlignmentAlgorithmType = FeatureAlignmentType.LCMS_WARP;
         }

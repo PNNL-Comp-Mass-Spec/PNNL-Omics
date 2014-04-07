@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PNNLOmics.Alignment.LCMSWarp.LCMSProcessor;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
@@ -86,7 +87,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 
         LcmsAlignmentData AlignFeatures(LcmsAlignmentProcessor processor, List<UMCLight> features, LcmsAlignmentOptions options)
         {
-            var alignmentFunctions = new List<LCMSAlignmentFunction>();
+            var alignmentFunctions = new List<LcmsAlignmentFunction>();
             var netErrorHistograms = new List<double[,]>();
             var massErrorHistograms = new List<double[,]>();
             var driftErrorHistograms = new List<double[,]>();
@@ -100,7 +101,6 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
             processor.GetReferenceNetRange(out minMtdbNet, out maxMtdbNet);
 
             var filteredFeatures = FilterFeaturesByAbundance(features, options);
-            var originalFeatures = new List<UMCLight>();
             var transformedFeatures = new List<UMCLight>();
             var map = new Dictionary<int, UMCLight>();
 
@@ -110,10 +110,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
                 map.Add(feature.ID, feature);
             }
 
-            foreach (var filtered in filteredFeatures)
-            {
-                originalFeatures.Add(filtered);
-            }
+            var originalFeatures = filteredFeatures.ToList();
 
             var minScanBaseline = int.MaxValue;
             var maxScanBaseline = int.MinValue;

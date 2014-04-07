@@ -10,9 +10,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
     {
         private RegressionType m_regressionType;
         private bool m_lsqFailed;
-        LcmsCentralRegression Central;
-        LCMSLSQSplineRegression LSQReg;
-        LCMSNaturalCubicSplineRegression CubicSpline;
+        readonly LcmsCentralRegression m_central;
+        readonly LcmsLsqSplineRegression m_lsqReg;
+        readonly LcmsNaturalCubicSplineRegression m_cubicSpline;
 
         /// <summary>
         /// Public constructor for a Hybrid regression
@@ -21,9 +21,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         {
             m_regressionType = RegressionType.HYBRID;
             m_lsqFailed = false;
-            Central = new LcmsCentralRegression();
-            LSQReg = new LCMSLSQSplineRegression();
-            CubicSpline = new LCMSNaturalCubicSplineRegression();
+            m_central = new LcmsCentralRegression();
+            m_lsqReg = new LcmsLsqSplineRegression();
+            m_cubicSpline = new LcmsNaturalCubicSplineRegression();
         }
 
         /// <summary>
@@ -34,9 +34,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// <param name="outlierZscore"></param>
         public void SetLsqOptions(int numKnots, double outlierZscore)
         {
-            CubicSpline.SetOptions(numKnots);
-            LSQReg.SetOptions(numKnots);
-            Central.SetOutlierZScore(outlierZscore);
+            m_cubicSpline.SetOptions(numKnots);
+            m_lsqReg.SetOptions(numKnots);
+            m_central.SetOutlierZScore(outlierZscore);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// <param name="regType"></param>
         public void SetCentralRegressionOptions(int numXBins, int numYBins, int numJumps, double regZtolerance, RegressionType regType)
         {
-            Central.SetOptions(numXBins, numYBins, numJumps, regZtolerance);
+            m_central.SetOptions(numXBins, numYBins, numJumps, regZtolerance);
             m_regressionType = regType;
         }
 
@@ -62,14 +62,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             switch (m_regressionType)
             {
                 case RegressionType.CENTRAL:
-                    Central.CalculateRegressionFunction(ref matches);
+                    m_central.CalculateRegressionFunction(ref matches);
                     //mobj_central...line 47
                     break;
                 default:
-                    Central.CalculateRegressionFunction(ref matches);
-                    Central.RemoveRegressionOutliers();
-                    List<LcmsRegressionPts> centralPoints = Central.Points;
-                    m_lsqFailed = !CubicSpline.CalculateLSQRegressionCoefficients(ref centralPoints);
+                    m_central.CalculateRegressionFunction(ref matches);
+                    m_central.RemoveRegressionOutliers();
+                    List<LcmsRegressionPts> centralPoints = m_central.Points;
+                    m_lsqFailed = !m_cubicSpline.CalculateLsqRegressionCoefficients(ref centralPoints);
                     //line 50
                     break;
             }
@@ -84,14 +84,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             switch (m_regressionType)
             {
                 case RegressionType.CENTRAL:
-                    return Central.GetPredictedValue(x);
+                    return m_central.GetPredictedValue(x);
                 
                 default:
                     if (!m_lsqFailed)
                     {
-                        return CubicSpline.GetPredictedValue(x);
+                        return m_cubicSpline.GetPredictedValue(x);
                     }
-                    return Central.GetPredictedValue(x);
+                    return m_central.GetPredictedValue(x);
                     
             }
         }

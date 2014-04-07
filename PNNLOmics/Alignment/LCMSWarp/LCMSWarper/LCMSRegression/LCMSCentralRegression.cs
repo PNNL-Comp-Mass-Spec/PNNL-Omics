@@ -153,7 +153,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// <param name="intervalNum"></param>
         private void CalculateSectionStdAndCount(int intervalNum)
         {
-            List<double> points = new List<double>();
+            var points = new List<double>();
 
             int numPoints = m_pts.Count();
             double xInterval = (m_maxX - m_minX) / m_numXBins;
