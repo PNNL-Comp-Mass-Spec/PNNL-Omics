@@ -669,6 +669,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             }
         }
 
+        /// <summary>
+        /// Initially, clears any residual feature matches to ensure no carryover of prior runs,
+        /// then goes through and calculates the match score for each feature with relation to
+        /// the baselines, holding onto the "best match" for each one
+        /// </summary>
         public void CalculateAlignmentMatches()
         {
             m_features.Sort();
@@ -679,8 +684,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             int numFeatures = m_features.Count;
             int numBaselineFeatures = m_baselineFeatures.Count;
 
-            UMCLight feature;
-            LcmsFeatureMatch match = new LcmsFeatureMatch();
+            var match = new LcmsFeatureMatch();
 
             m_featureMatches.Clear();
 
@@ -689,7 +693,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
             while (featureIndex < numFeatures)
             {
-                feature = m_features[featureIndex];
+                UMCLight feature = m_features[featureIndex];
 
                 double massTolerance = feature.MassMonoisotopic * MassTolerance / 1000000;
 
@@ -931,8 +935,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             // most m_maxPromiscuousUMCMatches (or non if m_keepPromiscuousMatches is false)
             // keeping only the first m_maxPromisuousUMCMatches by scan
 
-            var tempMatches = new List<LcmsFeatureMatch>();
-            tempMatches.Capacity = m_featureMatches.Count;
+            var tempMatches = new List<LcmsFeatureMatch> {Capacity = m_featureMatches.Count};
             var netMatchesToIndex = new Dictionary<double, List<int>>();
 
             foreach (var matchIterator in massTagToMatches)
@@ -977,7 +980,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             m_featureMatches = tempMatches;
         }
 
-
+        /// <summary>
+        /// Performs Mass calibrtion, depending on calibration type, utilizing MZ
+        /// regression, scan regression, or both (with the MZ regression preceeding
+        /// the scan regression
+        /// </summary>
         public void PerformMassCalibration()
         {
             switch (CalibrationType)
@@ -995,6 +1002,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             }
         }
         
+        /// <summary>
+        /// Calculates the Standard deviations of the matches.
+        /// Note: method requires more than 6 matches to produce meaningful
+        /// results.
+        /// </summary>
         public void CalculateStandardDeviations()
         {
             int numMatches = m_featureMatches.Count;
@@ -1024,11 +1036,19 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             }
         }
         
+        /// <summary>
+        /// Method to set the flag for whether to use the Mass and the Net
+        /// match scores with the LCMSWarper
+        /// </summary>
+        /// <param name="use"></param>
         public void UseMassAndNetScore(bool use)
         {
             m_useMass = use;
         }
 
+        /// <summary>
+        /// Performs Mass error regression based on MZ of the match
+        /// </summary>
         public void PerformMzMassErrorRegression()
         {
             //Copy all MZs and mass errors into a list of regression points
@@ -1056,16 +1076,19 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             int numFeatures = m_features.Count;
             for (int featureNum = 0; featureNum < numFeatures; featureNum++)
             {
-                double mz = m_features[featureNum].Mz;
-                double mass = m_features[featureNum].MassMonoisotopic;
+                var feature = m_features[featureNum];
+                double mz = feature.Mz;
+                double mass = feature.MassMonoisotopic;
                 double ppmShift = MzRecalibration.GetPredictedValue(mz);
                 double newMass = mass - (mass * ppmShift) / 1000000;
-                m_features[featureNum].MassMonoisotopicAligned = newMass;
-                m_features[featureNum].MassMonoisotopic = newMass;
+                feature.MassMonoisotopicAligned = newMass;
+                feature.MassMonoisotopic = newMass;
             }
-
         }
 
+        /// <summary>
+        /// Performs Mass error regression based on Scan of the match
+        /// </summary>
         public void PerformScanMassErrorRegression()
         {
             var calibrations = new List<LcmsRegressionPts>();
@@ -1074,7 +1097,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
             for (int matchNum = 0; matchNum < numMatches; matchNum++)
             {
-                LcmsRegressionPts calibrationMatch = new LcmsRegressionPts();
+                var calibrationMatch = new LcmsRegressionPts();
                 LcmsFeatureMatch match = m_featureMatches[matchNum];
                 UMCLight feature = m_features[match.FeatureIndex];
                 UMCLight baselineFeature = m_baselineFeatures[match.FeatureIndex2];
@@ -1093,15 +1116,20 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             int numFeatures = m_features.Count;
             for (int featureNum = 0; featureNum < numFeatures; featureNum++)
             {
-                double net = m_features[featureNum].NET;
-                double mass = m_features[featureNum].MassMonoisotopic;
+                var feature = m_features[featureNum];
+                double net = feature.NET;
+                double mass = feature.MassMonoisotopic;
                 double ppmShift = MzRecalibration.GetPredictedValue(net);
                 double newMass = mass - (mass * ppmShift) / 1000000;
-                m_features[featureNum].MassMonoisotopicAligned = newMass;
-                m_features[featureNum].MassMonoisotopic = newMass;
+                feature.MassMonoisotopicAligned = newMass;
+                feature.MassMonoisotopic = newMass;
             }
         }
 
+        /// <summary>
+        /// Goes through the matched features and determines the probability
+        /// of each that the match is correct
+        /// </summary>
         public void GetMatchProbabilities()
         {
             PercentComplete = 0;
@@ -1175,7 +1203,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             for (int i = 0; i < numBaselineFeatures; i++)
             {
                 double net = m_baselineFeatures[i].NET;
-                int msmsSectionNum = (int)(((net - MinBaselineNet) * NumBaselineSections) / (MaxBaselineNet - MinBaselineNet));
+                var msmsSectionNum = (int)(((net - MinBaselineNet) * NumBaselineSections) / (MaxBaselineNet - MinBaselineNet));
                 if (msmsSectionNum == NumBaselineSections)
                 {
                     msmsSectionNum--;
@@ -1187,7 +1215,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
             int numMatches = m_featureMatches.Count;
 
-            List<LcmsFeatureMatch> sectionFeatures = new List<LcmsFeatureMatch>();
+            var sectionFeatures = new List<LcmsFeatureMatch>();
 
             int numSectionMatches = NumSections * NumMatchesPerSection;
             m_subsectionMatchScores.Clear();
@@ -1231,6 +1259,10 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             }
         }
 
+        /// <summary>
+        /// Calculates the alignment function for each of the sections, based
+        /// on the match scores for every feature in the subsection
+        /// </summary>
         public void CalculateAlignmentFunction()
         {
             PercentComplete = 0;
@@ -1315,6 +1347,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             m_alignmentFunc.Sort();
         }
 
+        /// <summary>
+        /// Computes the alignment matrix for all possible alignments, holding
+        /// onto each and every possible alignment score and then linking the feature
+        /// to the best previous index of possible alignments
+        /// </summary>
         public void CalculateAlignmentMatrix()
         {
             PercentComplete = 0;
@@ -1401,7 +1438,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                                 bestPreviousAlignmentIndex = previousAlignmentIndex;
                             }
                         }
-                        if (Math.Abs(currentBestScore - -1 * double.MaxValue) > double.Epsilon)
+                        if (Math.Abs(currentBestScore - double.MinValue) > double.Epsilon)
                         {
                             m_alignmentScore[alignmentIndex] = currentBestScore + m_subsectionMatchScores[alignmentIndex];
                             m_bestPreviousIndex[alignmentIndex] = bestPreviousAlignmentIndex;
@@ -1419,11 +1456,6 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         {
             int numMatchingFeatures = sectionMatchingFeatures.Count;
             double baselineSectionWidth = (MaxBaselineNet - MinBaselineNet) / NumBaselineSections;
-            double maxMissZScore = 3;
-            if (maxMissZScore < NetTolerance / m_netStd)
-            {
-                maxMissZScore = NetTolerance / m_netStd;
-            }
 
             // keep track of only the unique indices of ms features because we only want the best matches for each
             m_sectionUniqueFeatureIndices.Clear();
@@ -1501,6 +1533,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             }
         }
 
+        /// <summary>
+        /// Given an MZ value, return the appropriate ppm shift
+        /// Note: Requires LCMSWarp to be calibrating based on MZ Regression or
+        /// Hybrid regression to process.
+        /// </summary>
+        /// <param name="mz"></param>
+        /// <returns></returns>
         public double GetPpmShiftFromMz(double mz)
         {
             if (CalibrationType == LcmsWarpCalibrationType.MZ_REGRESSION || CalibrationType == LcmsWarpCalibrationType.BOTH)
@@ -1510,6 +1549,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             return 0;
         }
 
+        /// <summary>
+        /// Given an NET value, return the appropriate ppm shift
+        /// Note: Requires LCMSWarp to be calibrating based on Scan Regression or
+        /// Hybrid regression to process.
+        /// </summary>
+        /// <param name="net"></param>
+        /// <returns></returns>
         public double GetPpmShiftFromNet(double net)
         {
             if (CalibrationType == LcmsWarpCalibrationType.SCAN_REGRESSION || CalibrationType == LcmsWarpCalibrationType.BOTH)
@@ -1519,6 +1565,15 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
             return 0;
         }
 
+        /// <summary>
+        /// Calculates the match score of the subsection, saving
+        /// the match scores to the first parameter and the alignee and
+        /// reference values to the second and third parameters.
+        /// </summary>
+        /// <param name="subsectionMatchScores"></param>
+        /// <param name="aligneeVals"></param>
+        /// <param name="refVals"></param>
+        /// <param name="standardize"></param>
         public void GetSubsectionMatchScore(ref List<double> subsectionMatchScores, ref List<double> aligneeVals,
                                             ref List<double> refVals, bool standardize)
         {
@@ -1615,10 +1670,23 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         }
     }
 
+    /// <summary>
+    /// Enumeration of calibration types for LCMSWarping
+    /// </summary>
     public enum LcmsWarpCalibrationType
     {
+        /// <summary>
+        /// Performs Regression based on MZ of the features
+        /// </summary>
         MZ_REGRESSION = 0,
+        /// <summary>
+        /// Performs Regression based on the Scan of the features
+        /// </summary>
         SCAN_REGRESSION,
+        /// <summary>
+        /// Performs a hybrid regression, performing MZ regression and then
+        /// subsequently performing Scan regression
+        /// </summary>
         BOTH
     };
 }

@@ -114,16 +114,6 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         public double DriftTimeBinSize { get; set; }
 
         /// <summary>
-        /// Flag for whether to align split MZ boundaries or not
-        /// </summary>
-        public bool AlignSplitMZs { get; set; }
-
-        /// <summary>
-        /// List of the MZ boundaries for the alignment
-        /// </summary>
-        public List<LcmsAlignmentMzBoundary> MzBoundaries { get; set; }
-
-        /// <summary>
         /// Abundance percentage under which to filter alignment.
         /// Set to 0 means all features are matched, set to 100 means no features are matched,
         /// set to 33 the top 67% of features sorted by abundance are matched
@@ -171,12 +161,6 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             MassBinSize = 0.2;
             NetBinSize = 0.001;
             DriftTimeBinSize = 0.03;
-            AlignSplitMZs = false;
-            MzBoundaries = new List<LcmsAlignmentMzBoundary>
-            {
-                new LcmsAlignmentMzBoundary(0.0, 505.7),
-                new LcmsAlignmentMzBoundary(505.7, 999999999.0)
-            };
             StoreAlignmentFunction = false;
             AlignmentAlgorithmType = FeatureAlignmentType.LCMS_WARP;
         }

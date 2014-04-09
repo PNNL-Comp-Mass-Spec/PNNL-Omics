@@ -81,7 +81,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         double m_maxAligneeDatasetMz;
 
         // LCMSWarp instance which will do the alignment when processing
-        LCMSWarper.LCMSAlignment.LcmsWarp m_lcmsWarp;
+        LcmsWarp m_lcmsWarp;
 
         #region Public properties
         /// <summary>
@@ -138,7 +138,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// </summary>
         public LcmsAlignmentProcessor()
         {
-            m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
+            m_lcmsWarp = new LcmsWarp();
             Options = new LcmsAlignmentOptions();
 
             ApplyAlignmentOptions();
@@ -162,7 +162,6 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             m_lcmsWarp.MaxSectionDistortion = Options.ContractionFactor;
             m_lcmsWarp.MaxJump = Options.MaxTimeDistortion;
             m_lcmsWarp.NumBaselineSections = Options.NumTimeSections * Options.ContractionFactor;
-            //m_lcmsWarp.NumMatchesPerBaselineStart = m_options.ContractionFactor * m_options.ContractionFactor;
             m_lcmsWarp.NumMatchesPerSection = m_lcmsWarp.NumBaselineSections * m_lcmsWarp.NumMatchesPerBaseline;
             m_lcmsWarp.MaxPromiscuousUmcMatches = Options.MaxPromiscuity;
 
@@ -203,7 +202,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             if (m_lcmsWarp == null)
             {
-                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
+                m_lcmsWarp = new LcmsWarp();
             }
 
             PercentDone = 0;
@@ -283,7 +282,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             if (m_lcmsWarp == null)
             {
-                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
+                m_lcmsWarp = new LcmsWarp();
             }
 
             PercentDone = 0;
@@ -362,24 +361,6 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         }
 
         /// <summary>
-        /// Temporary hack solution to align between certain MZ's. Test to see if the MZ is
-        /// within a range between a lower bound and an upper bound.
-        /// </summary>
-        /// <param name="split"></param>
-        /// <param name="mz"></param>
-        /// <param name="boundary"></param>
-        /// <returns> Boolean false if and only if split is true and mz is both less than 
-        /// the lower boundary and greater than the upper boundary</returns>
-        public bool ValidateAlignmentBoundary(bool split, double mz, LcmsAlignmentMzBoundary boundary)
-        {
-            if (split)
-            {
-                return (mz < boundary.BoundaryHigh && mz < boundary.BoundaryLow);
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Applies a previously determined NET/Mass function to a dataset of UMCLights
         /// </summary>
         /// <param name="data"></param>
@@ -388,7 +369,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             // If there isn't a LCMSWarp object, create one first.
             if (m_lcmsWarp == null)
             {
-                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
+                m_lcmsWarp = new LcmsWarp();
             }
 
             PercentDone = 0;
@@ -432,12 +413,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
         /// <summary>
         /// For a given List of UMCLights, warp the alignee features to the baseline.
-        /// Above boundary will determine if we should allow features above the m/z range or below
-        /// if the splitMZBoundary flag is set to true in the alignment options
         /// </summary>
         /// <param name="features"></param>
-        /// <param name="boundary"></param>
-        public void SetAligneeDatasetFeatures(List<UMCLight> features, LcmsAlignmentMzBoundary boundary)
+        public void SetAligneeDatasetFeatures(List<UMCLight> features)
         {
             PercentDone = 0;
             ClusterAlignee = false;
@@ -469,8 +447,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
 
                 // Only allow feature to be aligned if we're splitting the alignment in MZ
                 // AND if we are within the specified boundary
-                if (ValidateAlignmentBoundary(Options.AlignSplitMZs, mtFeature.Mz, boundary))
-                {
+                //if (ValidateAlignmentBoundary(Options.AlignSplitMZs, mtFeature.Mz, boundary))
+                //{
                     mtFeatures.Add(mtFeature);
 
                     if (features[index].Scan > m_maxAligneeDatasetScan)
@@ -489,16 +467,14 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                     {
                         m_minAligneeDatasetMz = features[index].Mz;
                     }
-                }
+                //}
             }
             m_lcmsWarp.SetFeatures(ref mtFeatures);
         }
 
 
         /// <summary>
-        /// For a given array of UMCLights, warps the alignee featurs to the baseline. Above boundary
-        /// will determine if we should allow features above the m/z range or below if the splitMZBoundary
-        /// flag is set to true in the alignment options.
+        /// For a given array of UMCLights, warps the alignee featurs to the baseline. 
         /// 
         /// Similar to ApplyNETMassFunctionToAligneeDatasetFeatures, Original c++ processor had
         /// a separate class for a list of UMCData, but UMCLight does not have a similar class. 
@@ -506,9 +482,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// </summary>
         /// <param name="features"></param>
         /// <param name="datasetIndex"></param>
-        /// <param name="boundary"></param>
-        public void SetAligneeDatasetFeatures(UMCLight[] features, int datasetIndex,
-                                              LcmsAlignmentMzBoundary boundary)
+        public void SetAligneeDatasetFeatures(UMCLight[] features, int datasetIndex)
         {
             PercentDone = 0;
             ClusterAlignee = false;
@@ -526,40 +500,34 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             {
                 var mtFeature = new UMCLight();
                 PercentDone = (index * 100) / numPts;
-
-                mtFeature.MassMonoisotopic = features[index].MassMonoisotopic;
-                mtFeature.MassMonoisotopicAligned = features[index].MassMonoisotopicAligned;
-                //mtFeature.MonoMassOriginal = features[index].MassMonoisotopic;
-                mtFeature.NET = Convert.ToDouble(features[index].Scan);
+                var feature = features[index];
+                mtFeature.MassMonoisotopic = feature.MassMonoisotopic;
+                mtFeature.MassMonoisotopicAligned = feature.MassMonoisotopicAligned;
+                mtFeature.NET = Convert.ToDouble(feature.Scan);
 
                 // For if we want to split alignment at given M/Z range
-                mtFeature.Mz = features[index].Mz;
-                mtFeature.Abundance = features[index].Abundance;
-                mtFeature.ID = features[index].ID;
-                mtFeature.DriftTime = features[index].DriftTime;
+                mtFeature.Mz = feature.Mz;
+                mtFeature.Abundance = feature.Abundance;
+                mtFeature.ID = feature.ID;
+                mtFeature.DriftTime = feature.DriftTime;
 
-                // Only allow feature to be aligned if we're splitting the alignment in MZ
-                // AND if we are within the specified boundary
-                if (ValidateAlignmentBoundary(Options.AlignSplitMZs, mtFeature.Mz, boundary))
+                mtFeatures.Add(mtFeature);
+
+                if (feature.Scan > m_maxAligneeDatasetScan)
                 {
-                    mtFeatures.Add(mtFeature);
-
-                    if (features[index].Scan > m_maxAligneeDatasetScan)
-                    {
-                        m_maxAligneeDatasetScan = features[index].Scan;
-                    }
-                    if (features[index].Scan < m_minAligneeDatasetScan)
-                    {
-                        m_minAligneeDatasetScan = features[index].Scan;
-                    }
-                    if (features[index].Mz > m_maxAligneeDatasetMz)
-                    {
-                        m_maxAligneeDatasetMz = features[index].Mz;
-                    }
-                    if (features[index].Mz < m_minAligneeDatasetMz)
-                    {
-                        m_minAligneeDatasetMz = features[index].Mz;
-                    }
+                    m_maxAligneeDatasetScan = feature.Scan;
+                }
+                if (feature.Scan < m_minAligneeDatasetScan)
+                {
+                    m_minAligneeDatasetScan = feature.Scan;
+                }
+                if (feature.Mz > m_maxAligneeDatasetMz)
+                {
+                    m_maxAligneeDatasetMz = feature.Mz;
+                }
+                if (feature.Mz < m_minAligneeDatasetMz)
+                {
+                    m_minAligneeDatasetMz = feature.Mz;
                 }
             }
             m_lcmsWarp.SetFeatures(ref mtFeatures);
@@ -586,33 +554,33 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             for (var index = 0; index < numPts; index++)
             {
                 var feature = new UMCLight();
+                var data = umcData[index];
                 PercentDone = (index * 100) / numPts;
-                feature.MassMonoisotopic = umcData[index].MassMonoisotopic;
-                feature.MassMonoisotopicAligned = umcData[index].MassMonoisotopicAligned;
-                //feature.MonoMassOriginal = umcData[index].MassMonoisotopic;
-                feature.NET = umcData[index].NET;
-                feature.Mz = umcData[index].Mz;
-                feature.Abundance = umcData[index].Abundance;
-                feature.DriftTime = umcData[index].DriftTime;
-                feature.ID = umcData[index].ID;
+                feature.MassMonoisotopic = data.MassMonoisotopic;
+                feature.MassMonoisotopicAligned = data.MassMonoisotopicAligned;
+                feature.NET = data.NET;
+                feature.Mz = data.Mz;
+                feature.Abundance = data.Abundance;
+                feature.DriftTime = data.DriftTime;
+                feature.ID = data.ID;
 
                 mtFeatures.Add(feature);
 
-                if (umcData[index].Scan > m_maxReferenceDatasetScan)
+                if (data.Scan > m_maxReferenceDatasetScan)
                 {
-                    m_maxReferenceDatasetScan = umcData[index].Scan;
+                    m_maxReferenceDatasetScan = data.Scan;
                 }
-                if (umcData[index].Scan < m_minReferenceDatasetScan)
+                if (data.Scan < m_minReferenceDatasetScan)
                 {
-                    m_minReferenceDatasetScan = umcData[index].Scan;
+                    m_minReferenceDatasetScan = data.Scan;
                 }
-                if (umcData[index].Mz > m_maxAligneeDatasetMz)
+                if (data.Mz > m_maxAligneeDatasetMz)
                 {
-                    m_maxAligneeDatasetMz = umcData[index].Mz;
+                    m_maxAligneeDatasetMz = data.Mz;
                 }
-                if (umcData[index].Mz < m_minAligneeDatasetMz)
+                if (data.Mz < m_minAligneeDatasetMz)
                 {
-                    m_minAligneeDatasetMz = umcData[index].Mz;
+                    m_minAligneeDatasetMz = data.Mz;
                 }
             }
             m_lcmsWarp.SetReferenceFeatures(ref mtFeatures);
@@ -641,34 +609,34 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             {
                 PercentDone = (index * 100) / numPts;
 
+                var data = umcData[index];
                 var feature = new UMCLight
                 {
-                    MassMonoisotopic = umcData[index].MassMonoisotopic,
-                    MassMonoisotopicAligned = umcData[index].MassMonoisotopicAligned,
-                    //MonoMassOriginal = umcData[index].MassMonoisotopic,
-                    NET = umcData[index].NET,
-                    Mz = umcData[index].Mz,
-                    Abundance = umcData[index].Abundance,
-                    DriftTime = umcData[index].DriftTime,
-                    ID = umcData[index].ID
+                    MassMonoisotopic = data.MassMonoisotopic,
+                    MassMonoisotopicAligned = data.MassMonoisotopicAligned,
+                    NET = data.NET,
+                    Mz = data.Mz,
+                    Abundance = data.Abundance,
+                    DriftTime = data.DriftTime,
+                    ID = data.ID
                 };
                 mtFeatures.Add(feature);
 
-                if (umcData[index].Scan > m_maxReferenceDatasetScan)
+                if (data.Scan > m_maxReferenceDatasetScan)
                 {
-                    m_maxReferenceDatasetScan = umcData[index].Scan;
+                    m_maxReferenceDatasetScan = data.Scan;
                 }
-                if (umcData[index].Scan < m_minReferenceDatasetScan)
+                if (data.Scan < m_minReferenceDatasetScan)
                 {
-                    m_minReferenceDatasetScan = umcData[index].Scan;
+                    m_minReferenceDatasetScan = data.Scan;
                 }
-                if (umcData[index].Mz > m_maxAligneeDatasetMz)
+                if (data.Mz > m_maxAligneeDatasetMz)
                 {
-                    m_maxAligneeDatasetMz = umcData[index].Mz;
+                    m_maxAligneeDatasetMz = data.Mz;
                 }
-                if (umcData[index].Mz < m_minAligneeDatasetMz)
+                if (data.Mz < m_minAligneeDatasetMz)
                 {
-                    m_minAligneeDatasetMz = umcData[index].Mz;
+                    m_minAligneeDatasetMz = data.Mz;
                 }
             }
             m_lcmsWarp.SetReferenceFeatures(ref mtFeatures);
@@ -715,7 +683,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         public void SetDataForAlignmentToMsFeatures(List<UMCLight> umcData, int aligneeDatasetIndex,
                                                     int referenceDatasetIndex)
         {
-            SetAligneeDatasetFeatures(umcData, Options.MzBoundaries[0]);
+            SetAligneeDatasetFeatures(umcData);
 
             SetReferenceDatasetFeatures(umcData);
         }
@@ -891,7 +859,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         {
             if (m_lcmsWarp == null)
             {
-                m_lcmsWarp = new LCMSWarper.LCMSAlignment.LcmsWarp();
+                m_lcmsWarp = new LcmsWarp();
             }
 
             var alignmentScores = new List<double>();

@@ -112,8 +112,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
             }
         }
 
-
-
+        /// <summary>
+        /// Test to see if the alignment datasets are equal based on
+        /// the ID number of the alignment data. Returns true if
+        /// the dataset IDs are the same, false in any other case
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             var factor = (LcmsAlignmentData)obj;

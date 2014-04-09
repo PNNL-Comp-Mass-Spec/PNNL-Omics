@@ -68,6 +68,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         /// </summary>
         public int FeatureIndex2 { get; set; }
 
+        /// <summary>
+        /// Compares two feature matches based on the Normalized elution time
+        /// </summary>
+        /// <param name="compareFeature"></param>
+        /// <returns></returns>
         public int CompareTo(LcmsFeatureMatch compareFeature)
         {
             if (compareFeature == null)

@@ -225,7 +225,6 @@
     <Compile Include="Alignment\LCMSWarp\LCMSAligner\LCMSFeatureMatching.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSAligner\LCMSWarpFeatureAligner.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSProcessor\LCMSAlignmentFunction.cs" />
-    <Compile Include="Alignment\LCMSWarp\LCMSProcessor\LCMSAlignmentMzBoundary.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSProcessor\LCMSAlignmentOptions.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSProcessor\LCMSAlignmentProcessor.cs" />
     <Compile Include="Alignment\LCMSWarp\LCMSWarper\LCMSAlignment\LCMSAlignmentMatch.cs" />
