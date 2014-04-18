@@ -162,6 +162,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             m_lcmsWarp.MaxSectionDistortion = Options.ContractionFactor;
             m_lcmsWarp.MaxJump = Options.MaxTimeDistortion;
             m_lcmsWarp.NumBaselineSections = Options.NumTimeSections * Options.ContractionFactor;
+            m_lcmsWarp.NumMatchesPerBaseline = Options.ContractionFactor*Options.ContractionFactor;
             m_lcmsWarp.NumMatchesPerSection = m_lcmsWarp.NumBaselineSections * m_lcmsWarp.NumMatchesPerBaseline;
             m_lcmsWarp.MaxPromiscuousUmcMatches = Options.MaxPromiscuity;
 

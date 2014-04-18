@@ -1,4 +1,5 @@
-﻿using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression;
+﻿using System.Runtime.InteropServices;
+using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression;
 using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities;
 using PNNLOmics.Data.Features;
 using System;
@@ -228,11 +229,27 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
 
         #endregion
 
+        private static int ByMass(UMCLight left, UMCLight right)
+        {
+            if (left == null)
+            {
+                if (right == null)
+                {
+                    return 0;
+                }
+                return -1;
+            }  
+            if (right == null)
+            {
+                return 1;
+            }  
+            return left.MassMonoisotopic.CompareTo(right.MassMonoisotopic);
+        }
+
         /// <summary>
         /// Public Constructor, doesn't take arguements, initializes memory space and sets it
         /// to default values
         /// </summary>
- 
         public LcmsWarp()
         {
             m_tempFeatureBestDelta = new List<double>();
@@ -676,8 +693,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         /// </summary>
         public void CalculateAlignmentMatches()
         {
-            m_features.Sort();
-            m_baselineFeatures.Sort();
+            m_features.Sort(ByMass);
+            m_baselineFeatures.Sort(ByMass);
 
             int featureIndex = 0;
             int baselineFeatureIndex = 0;
@@ -855,8 +872,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
                 return;
             }
 
-            m_features.Sort();
-            m_baselineFeatures.Sort();
+            m_features.Sort(ByMass);
+            m_baselineFeatures.Sort(ByMass);
 
             // Go through each MassTimeFeature and see if the next baseline MassTimeFeature matches it
             int featureIndex = 0;
