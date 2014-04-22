@@ -992,6 +992,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             var netErrorFreq = new List<int>();
             var driftErrorFreq = new List<int>();
 
+            m_lcmsWarp.GetErrorHistograms(massBin, netBin, driftBin, ref massErrorBin, ref massErrorFreq, ref netErrorBin,
+                                          ref netErrorFreq, ref driftErrorBin, ref driftErrorFreq);
+
             //ErrorHistogram massErrorHistogram = new ErrorHistogram(massErrorBin, massErrorFreq);
             //ErrorHistogram netErrorHistogram = new ErrorHistogram(netErrorBin, netErrorFreq);
             //ErrorHistogram driftErrorHistogram = new ErrorHistogram(driftErrorBin, driftErrorFreq);
