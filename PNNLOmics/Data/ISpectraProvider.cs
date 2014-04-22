@@ -19,7 +19,8 @@ namespace PNNLOmics.Data
         /// <param name="scan"></param>
         /// <param name="group"></param>
         /// <returns></returns>
-        List<MSSpectra> GetRawSpectra(int group);        
+        List<MSSpectra> GetRawSpectra(int group);
+        MSSpectra       GetSpectrum(int scan, int group, int scanLevel, out ScanSummary summary, bool loadPeaks);
         /// <summary>
         /// Retrieves the scan from the underlying stream including the scan summary
         /// </summary>
@@ -54,13 +55,19 @@ namespace PNNLOmics.Data
         /// Adds a file ID to the path for multi-file support.
         /// </summary>
         /// <param name="path"></param>
-        /// <param name="groupID"></param>
-        void AddDataFile(string path, int groupID);      
+        /// <param name="groupId"></param>
+        void AddDataFile(string path, int groupId);      
         /// <summary>
         /// Retrieves the scan data for the given dataset ID (i.e. group ID)
         /// </summary>
         /// <param name="groupID">Group identifier</param>
         /// <returns>Mapped scan header data based on scan ID</returns>
-        Dictionary<int, ScanSummary> GetScanData(int groupId);        
+        Dictionary<int, ScanSummary> GetScanData(int groupId);
+        /// <summary>
+        /// Gets the total number ofscans
+        /// </summary>
+        /// <param name="group">Group (or dataset) provider</param>
+        /// <returns>Total scans for that dataset.</returns>
+        int GetTotalScans(int group);
     }
 }

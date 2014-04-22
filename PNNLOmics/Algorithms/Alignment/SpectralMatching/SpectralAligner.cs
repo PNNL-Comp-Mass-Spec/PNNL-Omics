@@ -116,7 +116,8 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             foreach (var feature in alignee)
             {
                 feature.NETAligned = aligner.AlignNet(feature.NET);
-     //           feature.MassMonoisotopic = aligner.AlignNet(feature.MassMonoisotopic);
+                feature.RetentionTime = feature.NETAligned;
+                //           feature.MassMonoisotopic = aligner.AlignNet(feature.MassMonoisotopic);
             }
 
             return spectralAnchorPointMatches;

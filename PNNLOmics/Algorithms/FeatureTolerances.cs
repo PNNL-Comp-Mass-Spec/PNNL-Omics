@@ -45,6 +45,10 @@ namespace PNNLOmics.Algorithms
 
         #region Properties 
         /// <summary>
+        /// Gets or sets the approximate size of a fragmentation window.
+        /// </summary>
+        public double FragmentationWindowSize { get; set; }
+        /// <summary>
         /// Gets or sets the drift time tolerance.
         /// </summary>
         public double DriftTime

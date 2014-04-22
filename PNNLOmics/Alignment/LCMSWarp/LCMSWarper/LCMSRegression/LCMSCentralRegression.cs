@@ -51,9 +51,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// </summary>
         public LcmsCentralRegression()
         {
-            m_numXBins = 0;
-            m_numYBins = 0;
-            m_numJumps = 0;
+            m_numXBins = 100;
+            m_numYBins = 100;
+            m_numJumps = 30;
             m_tolerance = 0.8; // 5 standard devs
             m_outlierZScore = m_tolerance;
             m_minSectionPts = 5;
@@ -70,6 +70,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             m_alignmentFunction = new Dictionary<int, int>();
 
             m_pts = new List<LcmsRegressionPts>();
+
+            SetOptions(m_numXBins, m_numYBins, m_numJumps, m_outlierZScore);
         }
 
         /// <summary>

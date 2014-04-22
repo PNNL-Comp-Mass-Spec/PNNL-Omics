@@ -12,11 +12,9 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
     public class TopPercentSpectralFilter : ISpectraFilter
     {
         #region ISpectraFilter Members
-        public MSSpectra Threshold(MSSpectra spectrum, double threshold)
+        public List<XYData> Threshold(List<XYData> peaks, double threshold)
         {
-            MSSpectra filteredSpectrum = new MSSpectra();
-            List<XYData> peaks = spectrum.Peaks;
-
+                        
             // Find the non-zero peaks and order them based on intensity.
             var nonZeroPeaks = (from peak in peaks
                                 where peak.Y > 0
@@ -26,7 +24,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
             // If the spectrum is empty, so will be the filtered version.
             if (nonZeroPeaks.Count < 1)
             {
-                return filteredSpectrum;
+                return peaks;
             }
 
             int N               = nonZeroPeaks.Count;                                   // make sure 
@@ -39,14 +37,8 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
                                  where peak.Y > peakHeight
                                  orderby peak.X ascending
                                  select peak).ToList();
-
-            foreach (XYData peak in filteredPeaks)
-            {
-                XYData data = new XYData(peak.X, peak.Y);
-                filteredSpectrum.Peaks.Add(data);
-            }
-
-            return filteredSpectrum;
+            
+            return filteredPeaks;
         }
         #endregion
     }

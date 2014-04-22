@@ -63,8 +63,8 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                 netXvalues.Add(match.AnchorPointX.Net);
                 netYvalues.Add(match.AnchorPointY.Net);                
             }
-            
-            var netInterpolator = new LoessInterpolator();
+
+            var netInterpolator = new LoessInterpolator(.05, 5);
             netInterpolator.Smooth(  netXvalues,
                                                            netYvalues,
                                                            FitFunctionFactory.Create(FitFunctionTypes.TriCubic));
@@ -78,7 +78,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                 massYvalues.Add(match.AnchorPointY.Mz);
             }
 
-            var massInterpolator = new LoessInterpolator();
+            var massInterpolator = new LoessInterpolator(.05,5);
             massInterpolator.Smooth(massXvalues,
                                     massYvalues,
                                     FitFunctionFactory.Create(FitFunctionTypes.TriCubic));

@@ -17,7 +17,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
         /// <param name="spectrum"></param>
         /// <param name="threshold"></param>
         /// <returns></returns>
-        MSSpectra Threshold(MSSpectra spectrum,  double threshold);
+        List<XYData> Threshold(List<XYData> spectrum, double threshold);
     }
 
     
