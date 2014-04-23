@@ -6,6 +6,8 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Alignment
 {
+    //TODO: Move to regression folder - and rename to linear regression
+
 	public static class LinearEquationCalculator
 	{
 		public static LinearEquation CalculateLinearEquation(IEnumerable<XYData> xyDataList)
