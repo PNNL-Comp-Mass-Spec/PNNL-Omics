@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Algorithms.FeatureMatcher.Data;
 using PNNLOmics.Algorithms.FeatureMatcher;
@@ -46,12 +47,12 @@ namespace PNNLOmics.Algorithms.Alignment
 			}
 
 			// Find the Linear Equation for the <ObservedDriftTime, TargetDriftTime> XYData List
-			LinearEquation linearEquation = LinearEquationCalculator.CalculateLinearEquation(xyDataList);
+			LinearEquation linearEquation = LinearRegression.CalculateLinearEquation(xyDataList);
 
 			// Set the Aligned Drift Time value for each of the observed Features, even if they were not found in matching
 			foreach (T observedT in fullObservedEnumerable)
 			{
-				observedT.DriftTimeAligned = LinearEquationCalculator.CalculateNewValue(observedT.DriftTime, linearEquation);
+				observedT.DriftTimeAligned = LinearRegression.CalculateNewValue(observedT.DriftTime, linearEquation);
 			}
 
             DriftTimeAlignmentResults<T, U> results = new DriftTimeAlignmentResults<T, U>(matchList, linearEquation);

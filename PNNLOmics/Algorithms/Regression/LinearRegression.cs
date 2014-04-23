@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using PNNLOmics.Algorithms.Alignment;
 using PNNLOmics.Data;
 
-namespace PNNLOmics.Algorithms.Alignment
+namespace PNNLOmics.Algorithms.Regression
 {
     //TODO: Move to regression folder - and rename to linear regression
 
-	public static class LinearEquationCalculator
+	public static class LinearRegression
 	{
 		public static LinearEquation CalculateLinearEquation(IEnumerable<XYData> xyDataList)
 		{
