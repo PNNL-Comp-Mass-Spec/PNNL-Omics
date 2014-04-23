@@ -6,7 +6,7 @@ namespace PNNLOmics.Algorithms.Regression
 {
     public class LoessInterpolator
     {
-        public static double DEFAULT_BANDWIDTH = 0.250;
+        public static double DEFAULT_BANDWIDTH = 0.50;
         public static int DEFAULT_ROBUSTNESS_ITERS = 2;
 
         /**
@@ -39,9 +39,8 @@ namespace PNNLOmics.Algorithms.Regression
         private Func<double, double> m_fitFunction;
 
         public LoessInterpolator()
+            : this(DEFAULT_BANDWIDTH, DEFAULT_ROBUSTNESS_ITERS)
         {
-            bandwidth       = DEFAULT_BANDWIDTH;
-            robustnessIters = DEFAULT_ROBUSTNESS_ITERS;
         }
 
         public LoessInterpolator(double bandwidth, int robustnessIters)
@@ -56,6 +55,8 @@ namespace PNNLOmics.Algorithms.Regression
                 throw new ApplicationException(string.Format("the number of robustness iterations must be non-negative, but got {0}", robustnessIters));
             }
             this.robustnessIters = robustnessIters;
+
+            MaxDistance = .15;
         }
 
         private void Predict(double x,  out double res, out double residuals, double[] robustnessWeights, int[] bandwidthInterval, int i)
@@ -335,7 +336,7 @@ namespace PNNLOmics.Algorithms.Regression
          * <tt>(right==xval.length-1 or xval[right+1] - xval[i] > xval[i] - xval[left])</tt>.
          * The array will be updated.
          */
-        private void updateBandwidthIntervalOld(IList<double> xval, int i, int[] bandwidthInterval)
+        private void updateBandwidthInterval(IList<double> xval, int i, int[] bandwidthInterval)
         {
             int left  = bandwidthInterval[0];
             int right = bandwidthInterval[1];
@@ -348,26 +349,32 @@ namespace PNNLOmics.Algorithms.Regression
             }
         }
 
-        private void updateBandwidthInterval(IList<double> xval, int i, int[] bandwidthInterval)
-        {
-            int left  = bandwidthInterval[0];
-            int right = bandwidthInterval[1];
-            // The right edge should be adjusted if the next point to the right
-            // is closer to xval[i] than the leftmost point of the current interval
-            //if (right < xval.Count - 1 && xval[right + 1] - xval[i] < xval[i] - xval[left])
-            //{
-            //    bandwidthInterval[0]++;
-            //    bandwidthInterval[1]++;
-            //}
+        //private void updateBandwidthInterval(IList<double> xval, int i, int[] bandwidthInterval)
+        //{
+        //    int left  = bandwidthInterval[0];
+        //    int right = bandwidthInterval[1];
+        //    // The right edge should be adjusted if the next point to the right
+        //    // is closer to xval[i] than the leftmost point of the current interval
+        //    //if (right < xval.Count - 1 && xval[right + 1] - xval[i] < xval[i] - xval[left])
+        //    //{
+        //    //    bandwidthInterval[0]++;
+        //    //    bandwidthInterval[1]++;
+        //    //}
 
-            var value = xval[i];
-            while (right < xval.Count && xval[right] - value > MaxDistance)
-            {
-                
-            }
+        //    var value = xval[i];
+        //    while (right < xval.Count - 1 && xval[right] - value < MaxDistance)
+        //    {
+        //        right++;
+        //    }
 
-            while(left >= 0 && (value - xval[left]) > MaxDistance && )
-        }
+        //    while (left >= 0 && (value - xval[left]) > MaxDistance && left < right)
+        //    {
+        //        left++;
+        //    }
+
+        //    bandwidthInterval[0] = left;
+        //    bandwidthInterval[1] = right;
+        //}
 
         public double MaxDistance { get; set; }
 
