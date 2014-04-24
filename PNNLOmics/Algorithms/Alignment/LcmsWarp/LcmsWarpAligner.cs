@@ -11,18 +11,18 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// <summary>
     /// Object which performs feature alignment through LCMSWarp
     /// </summary>
-    public class LcmsWarpAligner :
+    public class LcmsWarpAdapter :
         IFeatureAligner<IEnumerable<UMCLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>,
         IFeatureAligner<IEnumerable<MassTagLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>
     {
         public event EventHandler<ProgressNotifierArgs> Progress;
 
-        public LcmsWarpAligner()
+        public LcmsWarpAdapter()
             : this(new LcmsWarpAlignmentOptions())
         {
         }
 
-        public LcmsWarpAligner(LcmsWarpAlignmentOptions options)
+        public LcmsWarpAdapter(LcmsWarpAlignmentOptions options)
         {
             Options = options;
         }
