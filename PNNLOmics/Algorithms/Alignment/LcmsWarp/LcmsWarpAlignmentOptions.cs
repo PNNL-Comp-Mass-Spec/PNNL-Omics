@@ -1,4 +1,4 @@
-﻿namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+﻿namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Object to hold the options for LcmsWarp Alignment. 

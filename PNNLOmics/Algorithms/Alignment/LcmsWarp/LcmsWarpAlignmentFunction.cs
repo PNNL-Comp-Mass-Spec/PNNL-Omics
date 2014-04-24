@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Object to house the Alignment Function from LCMS warping, including the

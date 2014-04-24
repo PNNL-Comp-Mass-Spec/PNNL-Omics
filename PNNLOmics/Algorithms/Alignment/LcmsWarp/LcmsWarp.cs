@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PNNLOmics.Algorithms.Statistics;
+using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Utilities;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Object which performs the LCMS Warping functionality
@@ -281,13 +283,13 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
             m_alignmentScore = null;
             m_bestPreviousIndex = null;
 
-            CalibrationType = LcmsWarpCalibrationType.MZ_REGRESSION;
+            CalibrationType = LcmsWarpCalibrationType.MzRegression;
             MassCalNumDeltaBins = 100;
             MassCalNumSlices = 12;
             MassCalNumJump = 50;
 
             var ztolerance = 3;
-            var regType = LcmsWarpCombinedRegression.RegressionType.CENTRAL;
+            var regType = LcmsWarpRegressionType.Central;
 
             MzRecalibration.SetCentralRegressionOptions(MassCalNumSlices, MassCalNumDeltaBins, MassCalNumJump,
                                                           ztolerance, regType);
@@ -475,11 +477,11 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
             MassCalNumSlices = numSlices;
             MassCalNumJump = massJump;
 
-            var regType = LcmsWarpCombinedRegression.RegressionType.CENTRAL;
+            var regType = LcmsWarpRegressionType.Central;
 
             if (useLsq)
             {
-                regType = LcmsWarpCombinedRegression.RegressionType.HYBRID;
+                regType = LcmsWarpRegressionType.Hybrid;
             }
             MzRecalibration.SetCentralRegressionOptions(MassCalNumSlices, MassCalNumDeltaBins,
                                                           MassCalNumJump, zTolerance, regType);
@@ -536,13 +538,13 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
             double ppmShift = 0;
             switch (CalibrationType)
             {
-                case LcmsWarpCalibrationType.MZ_REGRESSION:
+                case LcmsWarpCalibrationType.MzRegression:
                     ppmShift = MzRecalibration.GetPredictedValue(mz);
                     break;
-                case LcmsWarpCalibrationType.SCAN_REGRESSION:
+                case LcmsWarpCalibrationType.ScanRegression:
                     ppmShift = NetRecalibration.GetPredictedValue(net);
                     break;
-                case LcmsWarpCalibrationType.BOTH:
+                case LcmsWarpCalibrationType.Both:
                     ppmShift = MzRecalibration.GetPredictedValue(mz);
                     ppmShift = ppmShift + NetRecalibration.GetPredictedValue(net);
                     break;
@@ -1001,13 +1003,13 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
         {
             switch (CalibrationType)
             {
-                case LcmsWarpCalibrationType.MZ_REGRESSION:
+                case LcmsWarpCalibrationType.MzRegression:
                     PerformMzMassErrorRegression();
                     break;
-                case LcmsWarpCalibrationType.SCAN_REGRESSION:
+                case LcmsWarpCalibrationType.ScanRegression:
                     PerformScanMassErrorRegression();
                     break;
-                case LcmsWarpCalibrationType.BOTH:
+                case LcmsWarpCalibrationType.Both:
                     PerformMzMassErrorRegression();
                     PerformScanMassErrorRegression();
                     break;
@@ -1554,7 +1556,7 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
         /// <returns></returns>
         public double GetPpmShiftFromMz(double mz)
         {
-            if (CalibrationType == LcmsWarpCalibrationType.MZ_REGRESSION || CalibrationType == LcmsWarpCalibrationType.BOTH)
+            if (CalibrationType == LcmsWarpCalibrationType.MzRegression || CalibrationType == LcmsWarpCalibrationType.Both)
             {
                 return MzRecalibration.GetPredictedValue(mz);
             }
@@ -1570,7 +1572,7 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
         /// <returns></returns>
         public double GetPpmShiftFromNet(double net)
         {
-            if (CalibrationType == LcmsWarpCalibrationType.SCAN_REGRESSION || CalibrationType == LcmsWarpCalibrationType.BOTH)
+            if (CalibrationType == LcmsWarpCalibrationType.ScanRegression || CalibrationType == LcmsWarpCalibrationType.Both)
             {
                 return NetRecalibration.GetPredictedValue(net);
             }
@@ -1713,15 +1715,15 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
         /// <summary>
         /// Performs Regression based on MZ of the features
         /// </summary>
-        MZ_REGRESSION = 0,
+        MzRegression = 0,
         /// <summary>
         /// Performs Regression based on the Scan of the features
         /// </summary>
-        SCAN_REGRESSION,
+        ScanRegression,
         /// <summary>
         /// Performs a hybrid regression, performing MZ regression and then
         /// subsequently performing Scan regression
         /// </summary>
-        BOTH
+        Both
     };
 }

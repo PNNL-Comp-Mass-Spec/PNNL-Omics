@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PNNLOmics.Algorithms.Regression;
+using PNNLOmics.Data;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Object which performs Central Regression for LCMSWarp

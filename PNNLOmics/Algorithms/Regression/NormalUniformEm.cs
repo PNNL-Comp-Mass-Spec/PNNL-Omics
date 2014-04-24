@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Regression
 {
     /// <summary>
     /// Class to hold onto the uniform distribution data for expectation maximization

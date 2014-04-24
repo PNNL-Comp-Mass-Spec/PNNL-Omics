@@ -1,4 +1,4 @@
-﻿namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+﻿namespace PNNLOmics.Data
 {
     /// <summary>
     /// Object used for the LCMS Warp regressions, has a Net (or MZ), Mass error and Net Error

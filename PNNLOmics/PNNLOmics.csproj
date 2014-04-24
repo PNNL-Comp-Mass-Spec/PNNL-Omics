@@ -114,24 +114,47 @@
     <Compile Include="Algorithms\Alignment\DriftTimeAlignmentResults.cs" />
     <Compile Include="Algorithms\Alignment\IFeatureAligner.cs" />
     <Compile Include="Algorithms\Alignment\ISpectralAnchorPointMatchValidator.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\Histogram.cs" />
-    <Compile Include="OmicsMath\SplineInterpolation.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSAlignmentData.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSAlignmentFunction.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSAlignmentMatch.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSAlignmentOptions.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSAlignmentProcessor.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSCentralRegression.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSCombinedRegression.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSFeatureMatch.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSFeatureMatching.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSLSQSplineRegression.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSNaturalCubicSplineRegression.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSNormUnifEM.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSRegressionPts.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSWarp.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSWarpFeatureAligner.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\MathUtils.cs" />
+    <Compile Include="Algorithms\Alignment\LCMSWarp\RegressionType.cs" />
+    <Compile Include="Algorithms\Regression\LeastSquaresSplineRegression.cs" />
+    <Compile Include="Algorithms\Regression\NaturalCubicSplineRegression.cs" />
+    <Compile Include="Algorithms\Regression\NormalUniformEm.cs" />
+    <Compile Include="Data\RegressionPoint.cs" />
+    <Compile Include="Algorithms\Statistics\Histogram.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSWarp.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpAlignmentData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpAlignmentFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpAlignmentMatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpAlignmentOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpAlignmentProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpCentralRegression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpCombinedRegression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSWarpFeatureAligner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpFeatureMatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpFeatureMatching.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Algorithms\Alignment\LinearEquation.cs" />
     <Compile Include="Algorithms\Alignment\AlignmentMeasurement.cs" />
     <Compile Include="Algorithms\Alignment\SequenceMatching\PeptideAnchorPointFinder.cs" />
@@ -147,6 +170,7 @@
     <Compile Include="Algorithms\FeatureClustering\IFeatureFinder.cs" />
     <Compile Include="Algorithms\FeatureClustering\LcmsClusteringOptions.cs" />
     <Compile Include="Algorithms\FeatureClustering\LcmsFeatureFindingOptions.cs" />
+    <Compile Include="Algorithms\Interpolation\SplineInterpolation.cs" />
     <Compile Include="Algorithms\Regression\FitFunctionFactory.cs" />
     <Compile Include="Algorithms\Regression\FitFunctions.cs" />
     <Compile Include="Algorithms\Regression\FitFunctionTypes.cs" />
@@ -253,7 +277,6 @@
     <Compile Include="Algorithms\Statistics\INormalityTest.cs" />
     <Compile Include="Algorithms\Statistics\JacqueBeraNormalityTest.cs" />
     <Compile Include="Algorithms\Statistics\WilcoxonSignedRankTest.cs" />
-    <Compile Include="Algorithms\Statistics\Distributions\Distributions.cs" />
     <Compile Include="Algorithms\Statistics\HypothesisTestingFactory.cs" />
     <Compile Include="Algorithms\Statistics\HypothesisTestingData.cs" />
     <Compile Include="Algorithms\Statistics\IHypothesisTestingDouble.cs" />

@@ -1,16 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
+
     /// <summary>
-    /// Wrapper object for LCMSWarp Feature Aligning
+    /// Object which performs feature alignment through LCMSWarp
     /// </summary>
-    public class LcmsWarpFeatureAligner
+    public class LcmsWarpAligner :
+        IFeatureAligner<IEnumerable<UMCLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>,
+        IFeatureAligner<IEnumerable<MassTagLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>
     {
+        public event EventHandler<ProgressNotifierArgs> Progress;
+
+        public LcmsWarpAligner()
+            : this(new LcmsWarpAlignmentOptions())
+        {
+        }
+
+        public LcmsWarpAligner(LcmsWarpAlignmentOptions options)
+        {
+            Options = options;
+        }
+
+        /// <summary>
+        /// Gets or sets LCMSWarp options
+        /// </summary>
+        public LcmsWarpAlignmentOptions Options { get; set; }
+        /// <summary>
+        /// Gets or sets the baseline spectra provider
+        /// </summary>
+        public ISpectraProvider BaselineSpectraProvider { get; set; }
+        /// <summary>
+        /// Gets or sets the alignee spectra provider.
+        /// </summary>
+        public ISpectraProvider AligneeSpectraProvider { get; set; }
+
+        /// <summary>
+        /// Method to align two UMCLight Enumerables, the first parameter
+        /// used as the baseline to align the second parameter
+        /// </summary>
+        /// <param name="baseline"></param>
+        /// <param name="features"></param>
+        /// <returns></returns>
+        public LcmsWarpAlignmentData Align(IEnumerable<UMCLight> baseline, IEnumerable<UMCLight> features)
+        {
+            
+            return AlignFeatures(baseline as List<UMCLight>, features as List<UMCLight>, Options);
+        }
+
+        /// <summary>
+        /// Method to align a UMCLight Enumerable to a MassTagLight enumberable.
+        /// The MassTagLight Enumberable is used as the baseline to align the
+        /// UMCLight enumberable.
+        /// </summary>
+        /// <param name="baseline"></param>
+        /// <param name="features"></param>
+        /// <returns></returns>
+        public LcmsWarpAlignmentData Align(IEnumerable<MassTagLight> baseline, IEnumerable<UMCLight> features)
+        {            
+            return AlignFeatures(baseline as List<MassTagLight>, features as List<UMCLight>, Options);
+        }
+
+        
+    
         /// <summary>
         /// Uses a list of MassTagLights as a baseline for aligning a list of UMCLights to it, using
         /// the passed in options for processor options as well as a boolean for whether to align based on
@@ -83,7 +140,7 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
             return data;
         }
 
-        LcmsWarpAlignmentData AlignFeatures(LcmsWarpAlignmentProcessor processor, List<UMCLight> features, LcmsWarpAlignmentOptions options)
+        private LcmsWarpAlignmentData AlignFeatures(LcmsWarpAlignmentProcessor processor, List<UMCLight> features, LcmsWarpAlignmentOptions options)
         {
             var alignmentFunctions = new List<LcmsWarpAlignmentFunction>();
             var netErrorHistograms = new List<double[,]>();

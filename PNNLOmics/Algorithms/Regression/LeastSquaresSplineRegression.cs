@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra.Double;
+using PNNLOmics.Data;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Regression
 {
     /// <summary>
     /// Object to hold the necesary information for an LSQ regression for LCMSWarp

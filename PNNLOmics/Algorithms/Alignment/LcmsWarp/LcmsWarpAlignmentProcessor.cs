@@ -4,7 +4,7 @@ using System.Linq;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {    
     /// <summary>
     /// Class to hold the residual data from the alignment process
@@ -170,11 +170,11 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
             m_lcmsWarp.MassCalNumSlices = Options.MassCalibNumXSlices;
             m_lcmsWarp.MassCalNumJump = Options.MassCalibMaxJump;
 
-            var regType = LcmsWarpCombinedRegression.RegressionType.CENTRAL;
+            var regType = LcmsWarpRegressionType.Central;
 
             if (Options.MassCalibUseLsq)
             {
-                regType = LcmsWarpCombinedRegression.RegressionType.HYBRID;
+                regType = LcmsWarpRegressionType.Hybrid;
             }
             m_lcmsWarp.MzRecalibration.SetCentralRegressionOptions(m_lcmsWarp.MassCalNumSlices, m_lcmsWarp.MassCalNumDeltaBins,
                                                                    m_lcmsWarp.MassCalNumJump, Options.MassCalibMaxZScore,

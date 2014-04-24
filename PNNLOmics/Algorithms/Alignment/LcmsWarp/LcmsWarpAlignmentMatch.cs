@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Object to hold the Alignment Match Data from LCMS Warp

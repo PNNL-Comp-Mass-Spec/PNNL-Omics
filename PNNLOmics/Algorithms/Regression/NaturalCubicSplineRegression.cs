@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra.Double;
+using PNNLOmics.Data;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Regression
 {
     /// <summary>
     /// Object which contains all the information necesary for a natural cubic spline regression

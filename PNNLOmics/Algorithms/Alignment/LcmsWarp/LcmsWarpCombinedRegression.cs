@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using PNNLOmics.Algorithms.Regression;
+using PNNLOmics.Data;
 
-namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Object that holds instances of all three regression types, as well as providing a wrapper method for all three of the
@@ -8,7 +10,7 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
     /// </summary>
     public class LcmsWarpCombinedRegression
     {
-        private RegressionType m_regressionType;
+        private LcmsWarpRegressionType m_regressionType;
         private bool m_lsqFailed;
         readonly LcmsWarpCentralRegression m_central;
         readonly LeastSquaresSplineRegression m_lsqReg;
@@ -19,7 +21,7 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
         /// </summary>
         public LcmsWarpCombinedRegression()
         {
-            m_regressionType = RegressionType.HYBRID;
+            m_regressionType = LcmsWarpRegressionType.Hybrid;
             m_lsqFailed = false;
             m_central = new LcmsWarpCentralRegression();
             m_lsqReg = new LeastSquaresSplineRegression();
@@ -47,7 +49,7 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
         /// <param name="numJumps"></param>
         /// <param name="regZtolerance"></param>
         /// <param name="regType"></param>
-        public void SetCentralRegressionOptions(int numXBins, int numYBins, int numJumps, double regZtolerance, RegressionType regType)
+        public void SetCentralRegressionOptions(int numXBins, int numYBins, int numJumps, double regZtolerance, LcmsWarpRegressionType regType)
         {
             m_central.SetOptions(numXBins, numYBins, numJumps, regZtolerance);
             m_regressionType = regType;
@@ -61,16 +63,14 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
         {
             switch (m_regressionType)
             {
-                case RegressionType.CENTRAL:
-                    m_central.CalculateRegressionFunction(ref matches);
-                    //mobj_central...line 47
+                case LcmsWarpRegressionType.Central:
+                    m_central.CalculateRegressionFunction(ref matches);                    
                     break;
                 default:
                     m_central.CalculateRegressionFunction(ref matches);
                     m_central.RemoveRegressionOutliers();
                     List<RegressionPoint> centralPoints = m_central.Points;
-                    m_lsqFailed = !m_cubicSpline.CalculateLsqRegressionCoefficients(centralPoints);
-                    //line 50
+                    m_lsqFailed = !m_cubicSpline.CalculateLsqRegressionCoefficients(centralPoints);                    
                     break;
             }
         }
@@ -83,7 +83,7 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
         {
             switch (m_regressionType)
             {
-                case RegressionType.CENTRAL:
+                case LcmsWarpRegressionType.Central:
                     return m_central.GetPredictedValue(x);
                 
                 default:
@@ -96,23 +96,5 @@ namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
             }
         }
 
-        /// <summary>
-        /// Enumeration for possible regression types for LCMS
-        /// </summary>
-        public enum RegressionType
-        {
-            /// <summary>
-            /// Performs piecewise linear regression for all of the sections
-            /// </summary>
-            CENTRAL = 0,
-            /// <summary>
-            /// Performs an LSQ Regression for all the sections
-            /// </summary>
-            LSQ,
-            /// <summary>
-            /// Performs a combination of both regression types (Central and LSQ)
-            /// </summary>
-            HYBRID
-        };
     }
 }
