@@ -218,20 +218,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             var featureList = features.ToList();
             foreach (var x in featureList)
             {
-                x.ID = id++;
-                //var charges = x.CreateChargeMap();
-                //var fixedFeatures = new List<MSFeatureLight>();
-                //foreach (var charge in charges.Keys)
-                //{
-                //    var msFeatures     = charges[charge];
-                //    var sortedFeatures = msFeatures.OrderBy(y => y.Scan).ToList();
-                    
-                //    for (var i = 0; i < sortedFeatures.Count; i++)
-                //    {
-                //        if (
-                //    }
-
-                //}
+                x.ID = id++;                
             }
             return featureList;
         }

@@ -106,31 +106,111 @@ namespace PNNLOmics.Utilities
             }
             return histogramValues;
         }
+
+
         #endregion
 
-        #region XYData manipulators
-        /// <summary>
-        /// Convert XYData to arrays to interact with other functions more easily.
-        /// </summary>
-        /// <param name="xyList">List of XYData values to be converted.</param>
-        /// <param name="xArray">Array to be populated with X values.</param>
-        /// <param name="yArray">Array to be populated with Y values.</param>
-        static public void XYDataListToArrays(List<XYData> xyList, double[] xArray, double[] yArray)
+
+        public static void TwoDem(List<double> x, List<double> y, out double p, out double u, out double muX,
+                           out double muY, out double stdX, out double stdY)
         {
-            if (xArray.Length == xyList.Count || yArray.Length == xyList.Count)
+            const int numIterations = 40;
+            var numPoints = x.Count;
+            var pVals = new double[2, numPoints];
+
+            double minX = x[0], maxX = x[0];
+            double minY = y[0], maxY = y[0];
+
+            for (int pointNumber = 0; pointNumber < numPoints; pointNumber++)
             {
-                for (int i = 0; i < xyList.Count; i++)
+                if (x[pointNumber] < minX)
                 {
-                    xArray[i] = xyList[i].X;
-                    yArray[i] = xyList[i].Y;
+                    minX = x[pointNumber];
+                }
+                if (x[pointNumber] > maxX)
+                {
+                    maxX = x[pointNumber];
+                }
+                if (y[pointNumber] < minY)
+                {
+                    minY = y[pointNumber];
+                }
+                if (y[pointNumber] > maxY)
+                {
+                    maxY = y[pointNumber];
                 }
             }
-            else
+
+            u = 1.0 / ((maxX - minX) * (maxY - minY));
+            p = 0.5;
+
+            CalcMeanAndStd(x, out muX, out stdX);
+            stdX = stdX / 3.0;
+            CalcMeanAndStd(y, out muY, out stdY);
+            stdY = stdY / 3.0;
+
+            for (int iterNum = 0; iterNum < numIterations; iterNum++)
             {
-                throw new InvalidOperationException("X and Y arrays must be same length as XYData list in function XYDataListToArrays.");
+                // Calculate current probability assignments
+                for (int pointNum = 0; pointNum < numPoints; pointNum++)
+                {
+                    double xDiff = (x[pointNum] - muX) / stdX;
+                    double yDiff = (y[pointNum] - muY) / stdY;
+                    pVals[0, pointNum] = p * Math.Exp(-0.5 * (xDiff * xDiff + yDiff * yDiff)) / (2 * Math.PI * stdX * stdY);
+                    pVals[1, pointNum] = (1 - p) * u;
+                    double sum = pVals[0, pointNum] + pVals[1, pointNum];
+                    pVals[0, pointNum] = pVals[0, pointNum] / sum;
+                    pVals[1, pointNum] = pVals[1, pointNum] / sum;
+                }
+
+                // Calculates new estimates from maximization step
+                double pNumerator = 0;
+                double muXNumerator = 0;
+                double muYNumerator = 0;
+                double sigmaXNumerator = 0;
+                double sigmaYNumerator = 0;
+
+                double pDenominator = 0;
+                double denominator = 0;
+
+                for (int pointNum = 0; pointNum < numPoints; pointNum++)
+                {
+                    pNumerator = pNumerator + pVals[0, pointNum];
+                    pDenominator = pDenominator + (pVals[0, pointNum] + pVals[1, pointNum]);
+
+                    double xDiff = (x[pointNum] - muX);
+                    muXNumerator = muXNumerator + pVals[0, pointNum] * x[pointNum];
+                    sigmaXNumerator = sigmaXNumerator + pVals[0, pointNum] * xDiff * xDiff;
+
+                    double yDiff = (y[pointNum] - muY);
+                    muYNumerator = muYNumerator + pVals[0, pointNum] * y[pointNum];
+                    sigmaYNumerator = sigmaYNumerator + pVals[0, pointNum] * yDiff * yDiff;
+
+                    denominator = denominator + pVals[0, pointNum];
+                }
+
+                muX = muXNumerator / denominator;
+                muY = muYNumerator / denominator;
+                stdX = Math.Sqrt(sigmaXNumerator / denominator);
+                stdY = Math.Sqrt(sigmaYNumerator / denominator);
+                p = pNumerator / pDenominator;
             }
         }
-        #endregion
+
+        public static void CalcMeanAndStd(List<double> values, out double mean, out double stdev)
+        {
+            int numPoints = values.Count;
+            double sumSquare = 0;
+            double sum = 0;
+            for (int pointNum = 0; pointNum < numPoints; pointNum++)
+            {
+                double val = values[pointNum];
+                sum = sum + val;
+                sumSquare = sumSquare + (val * val);
+            }
+            mean = sum / numPoints;
+            stdev = Math.Sqrt((numPoints * sumSquare - sum * sum)) / (Math.Sqrt(numPoints) * Math.Sqrt(numPoints - 1));
+        }
 
         #region Helper functions
         /// <summary>
@@ -143,118 +223,6 @@ namespace PNNLOmics.Utilities
         {
             return ((mass1 - mass2) / mass2 * 1000000);
         }
-
-		/// <summary>
-		/// Convert value to a string with 5 digits of precision
-		/// </summary>
-		/// <param name="value">Number to convert to text</param>
-		/// <returns>Number as text; numbers larger than 1000000 or smaller than 0.000001 will be in scientific notation</returns>
-		public static string ValueToString(double value)
-		{
-			return ValueToString(value, 5, 1000000);
-		}
-
-		/// <summary>
-		/// Convert value to a string with the specified digits of precision
-		/// </summary>
-		/// <param name="value">Number to convert to text</param>
-		/// <param name="digitsOfPrecision">Total digits of precision (before and after the decimal point)</param>
-		/// <returns>Number as text; numbers larger than 1000000 or smaller than 0.000001 will be in scientific notation</returns>
-		public static string ValueToString(double value, int digitsOfPrecision)
-		{
-			return ValueToString(value, digitsOfPrecision, 1000000);
-		}
-
-		/// <summary>
-		/// Convert value to a string with the specified digits of precision and customized scientific notation threshold
-		/// </summary>
-		/// <param name="value">Number to convert to text</param>
-		/// <param name="digitsOfPrecision">Total digits of precision (before and after the decimal point)</param>
-		/// <param name="scientificNotationThreshold">Values larger than this threshold (positive or negative) will be converted to scientific notation</param>
-		/// <returns>Number as text</returns>
-		public static string ValueToString(double value, int digitsOfPrecision, double scientificNotationThreshold)
-		{
-			string strValue;
-			string strMantissa;
-
-			if (digitsOfPrecision < 1)
-				digitsOfPrecision = 1;
-
-			scientificNotationThreshold = Math.Abs(scientificNotationThreshold);
-			if (scientificNotationThreshold < 10)
-				scientificNotationThreshold = 10;
-
-			try
-			{
-				strMantissa = "0." + new string('0', Math.Max(digitsOfPrecision - 1, 1)) + "E+00";
-
-				if (value == 0)
-				{
-					strValue = "0";
-				}
-				else if (Math.Abs(value) <= 1 / scientificNotationThreshold ||
-					     Math.Abs(value) >= scientificNotationThreshold)
-				{
-					// Use scientific notation
-					strValue = value.ToString(strMantissa);
-				}
-				else if (Math.Abs(value) < 1)
-				{
-					int intDigitsAfterDecimal = (int)Math.Floor(-Math.Log10(Math.Abs(value))) + digitsOfPrecision;
-					string strFormatString = "0." + new string('0', intDigitsAfterDecimal);
-
-					strValue = value.ToString(strFormatString);
-					if (double.Parse(strValue) == 0)
-					{
-						// Value was converted to 0; use scientific notation
-						strValue = value.ToString(strMantissa);
-					}
-					else
-					{
-						strValue = strValue.TrimEnd('0').TrimEnd('.');
-					}
-				}
-				else
-				{
-					int intDigitsAfterDecimal = digitsOfPrecision - (int)Math.Ceiling(Math.Log10(Math.Abs(value)));
-
-					if (intDigitsAfterDecimal > 0)
-					{
-						strValue = value.ToString("0." + new string('0', intDigitsAfterDecimal));
-						strValue = strValue.TrimEnd('0').TrimEnd('.');
-					}
-					else
-					{
-						strValue = value.ToString("0");
-					}
-				}
-
-				if (digitsOfPrecision > 1)
-				{
-					// Look for numbers with scientific notation
-					// If there is a series of zeroes before the E then remove them
-					// For example, change 1.5000E-43 to 1.5E-43
-					if (m_scientificNotationTrim.IsMatch(strValue))
-					{
-						strValue = m_scientificNotationTrim.Replace(strValue, "E");
-
-						// The number may now look like 1.E+43
-						// If it does, then re-insert a zero after the decimal point
-						strValue = strValue.Replace(".E", ".0E");
-					}
-				}
-
-				return strValue;
-
-			}
-			catch (System.Exception ex)
-			{
-				Console.WriteLine("Error in ValueToString: " + ex.Message);
-				return value.ToString();
-			}
-
-		}
-
         #endregion
     }
 }

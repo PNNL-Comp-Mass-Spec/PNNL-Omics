@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities
+namespace PNNLOmics.OmicsMath
 {
-    class Interpolation
+    public class SplineInterpolation
     {
         // used to temporarily store the spline coefficients
         private readonly List<double> m_tempSpline = new List<double>();
+
         // vector to store the second derivatives at knot points of spline
         private readonly List<double> m_y2 = new List<double>();
 
@@ -76,7 +75,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities
                 }
             }
             double h = xa[khi] - xa[klo];
-            if (Math.Abs(h) < double.Epsilon)
+            if (System.Math.Abs(h) < double.Epsilon)
             {
                 return -1;
             }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
-    class Histogram
+    public class Histogram
     {
         public static void CreateHistogram(List<double> inputValues, ref List<double> bins,
                                             ref List<int> frequency, double valStep)
@@ -35,7 +34,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSUtilities
             }
 
             //Only one unique value in the input values
-            if (Math.Abs(minVal - maxVal) < double.Epsilon)
+            if (System.Math.Abs(minVal - maxVal) < double.Epsilon)
             {
                 bins.Add(minVal);
                 frequency.Add(1);

@@ -1,9 +1,9 @@
-﻿namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
+﻿namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Object used for the LCMS Warp regressions, has a Net (or MZ), Mass error and Net Error
     /// </summary>
-    public class LcmsRegressionPts
+    public class RegressionPoint
     {
         /// <summary>
         /// AutoProperty for the Net (or MZ) of a calibratin match

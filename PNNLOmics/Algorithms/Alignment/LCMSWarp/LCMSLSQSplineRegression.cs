@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MathNet.Numerics.LinearAlgebra.Double;
 
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Object to hold the necesary information for an LSQ regression for LCMSWarp
     /// </summary>
-    public class LcmsLsqSplineRegression
+    public class LeastSquaresSplineRegression
     {
-        readonly List<LcmsRegressionPts> m_pts;
+        readonly List<RegressionPoint> m_points;
         readonly double[] m_coeffs = new double[512];
-        private const int MaxOrder = 16; // Maximum order of spline regression supported
+        private const int MAX_ORDER = 16; // Maximum order of spline regression supported
 
         int m_order;
         int m_numKnots;
@@ -23,18 +24,18 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// </summary>
         public void Clear()
         {
-            m_pts.Clear();
+            m_points.Clear();
         }
 
         /// <summary>
         /// Constructor for an LSQSplineRegressor. Initializes number of knots, order and sets up
         /// new memory space for the regression points
         /// </summary>
-        public LcmsLsqSplineRegression()
+        public LeastSquaresSplineRegression()
         {
             m_numKnots = 0;
             m_order = 1;
-            m_pts = new List<LcmsRegressionPts>();
+            m_points = new List<RegressionPoint>();
         }
 
         /// <summary>
@@ -46,31 +47,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             m_numKnots = numKnots;
         }
 
-        /// <summary>
-        /// Determines the min and max range for the regression
-        /// </summary>
-        /// <param name="points"></param>
-        public void PreprocessCopyData(ref List<LcmsRegressionPts> points)
-        {
-            // find the min and max
-            int numPoints = points.Count;
-            m_minX = double.MaxValue;
-            m_maxX = double.MinValue;
-
-            for (int pointNum = 0; pointNum < numPoints; pointNum++)
-            {
-                LcmsRegressionPts point = points[pointNum];
-                if (point.X < m_minX)
-                {
-                    m_minX = point.X;
-                }
-                if (point.X > m_maxX)
-                {
-                    m_maxX = point.X;
-                }
-                m_pts.Add(point);
-            }
-        }
+        
 
         /// <summary>
         /// Computes the Regressor coefficients based on the order of the LSQ and the points to regress
@@ -78,26 +55,30 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// <param name="order"></param>
         /// <param name="points"></param>
         /// <returns></returns>
-        public bool CalculateLsqRegressionCoefficients(int order, ref List<LcmsRegressionPts> points)
+        public bool CalculateLsqRegressionCoefficients(int order, ref List<RegressionPoint> points)
         {
             Clear();
             m_order = order;
 
-            if (order > MaxOrder)
+            if (order > MAX_ORDER)
             {
-                m_order = MaxOrder;
+                m_order = MAX_ORDER;
             }
 
-            PreprocessCopyData(ref points);
-
-            int numPoints = m_pts.Count;
+            m_minX = double.MaxValue;
+            m_maxX = double.MinValue;
+            m_minX = points.Min(x => x.X);
+            m_maxX = points.Max(x => x.X);
+            m_points.AddRange(points);
+            
+            int numPoints = m_points.Count;
 
             var a = new DenseMatrix(numPoints, m_order + m_numKnots + 1);
             var b = new DenseMatrix(numPoints, 1);
 
             for (int pointNum = 0; pointNum < numPoints; pointNum++)
             {
-                LcmsRegressionPts calib = m_pts[pointNum];
+                RegressionPoint calib = m_points[pointNum];
                 double coeff = 1;
                 a[pointNum, 0] = coeff;
                 for (int colNum = 1; colNum <= m_order; colNum++)

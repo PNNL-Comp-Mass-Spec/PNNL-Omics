@@ -1,7 +1,6 @@
 ﻿using System;
-using PNNLOmics.Alignment.LCMSWarp.LCMSProcessor;
 
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Holds the alignment data relevant to the LCMSWarp alignment.
@@ -9,7 +8,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
     /// Dataset name, Heatmap scores, the NET slope, intercept and r squared values,
     /// the mean and standard deviations for NET and Mass and the alignment function itself.
     /// </summary>
-    public class LcmsAlignmentData
+    public class LcmsWarpAlignmentData
     {
         /// <summary>
         /// Property for the dataset ID
@@ -18,7 +17,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
         /// <summary>
         /// Property to hold the function for the alignment
         /// </summary>
-        public LcmsAlignmentFunction AlignmentFunction { get; set; }
+        public LcmsWarpAlignmentFunction AlignmentFunction { get; set; }
         /// <summary>
         /// Property to hold the name of the alignee dataset
         /// </summary>
@@ -121,7 +120,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            var factor = (LcmsAlignmentData)obj;
+            var factor = (LcmsWarpAlignmentData)obj;
 
             if (factor == null)
             {

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment;
-using PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
 
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {    
     /// <summary>
     /// Class to hold the residual data from the alignment process
@@ -67,7 +65,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
     /// <summary>
     /// Class which will use LCMSWarp to process alignment
     /// </summary>
-    public class LcmsAlignmentProcessor
+    public class LcmsWarpAlignmentProcessor
     {
         // In case alignment was to ms features, this will kepe track of the minimum scan in the
         // reference features. They are needed because LCMSWarp uses NET values for reference and
@@ -111,7 +109,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <summary>
         /// Options for the Alignment processor
         /// </summary>
-        public LcmsAlignmentOptions Options { get; set; }
+        public LcmsWarpAlignmentOptions Options { get; set; }
         /// <summary>
         /// Flag for if the Processor is aligning to a Mass Tag Database
         /// </summary>
@@ -136,10 +134,10 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// Initializes a new LCMSWarp object using the LCMS Alignment options
         /// which were passed into the Processor
         /// </summary>
-        public LcmsAlignmentProcessor()
+        public LcmsWarpAlignmentProcessor()
         {
             m_lcmsWarp = new LcmsWarp();
-            Options = new LcmsAlignmentOptions();
+            Options = new LcmsWarpAlignmentOptions();
 
             ApplyAlignmentOptions();
 
@@ -172,11 +170,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             m_lcmsWarp.MassCalNumSlices = Options.MassCalibNumXSlices;
             m_lcmsWarp.MassCalNumJump = Options.MassCalibMaxJump;
 
-            var regType = LcmsCombinedRegression.RegressionType.CENTRAL;
+            var regType = LcmsWarpCombinedRegression.RegressionType.CENTRAL;
 
             if (Options.MassCalibUseLsq)
             {
-                regType = LcmsCombinedRegression.RegressionType.HYBRID;
+                regType = LcmsWarpCombinedRegression.RegressionType.HYBRID;
             }
             m_lcmsWarp.MzRecalibration.SetCentralRegressionOptions(m_lcmsWarp.MassCalNumSlices, m_lcmsWarp.MassCalNumDeltaBins,
                                                                    m_lcmsWarp.MassCalNumJump, Options.MassCalibMaxZScore,
@@ -693,9 +691,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// Returns the Alignment Function that the processor determined
         /// </summary>
         /// <returns></returns>
-        public LcmsAlignmentFunction GetAlignmentFunction()
+        public LcmsWarpAlignmentFunction GetAlignmentFunction()
         {
-            var func = new LcmsAlignmentFunction(Options.CalibType, Options.AlignType);
+            var func = new LcmsWarpAlignmentFunction(Options.CalibType, Options.AlignType);
 
             var aligneeNets = new List<double>();
             var referenceNets = new List<double>();
@@ -716,7 +714,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 func.SetNetFunction(ref aligneeNets, ref referenceNets, ref referenceScans);
             }
 
-            if (Options.AlignType == LcmsAlignmentOptions.AlignmentType.NET_WARP)
+            if (Options.AlignType == LcmsWarpAlignmentOptions.AlignmentType.NET_WARP)
             {
                 return func;
             }
@@ -724,8 +722,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             var minAligneeNet = m_lcmsWarp.MinNet;
             var maxAligneeNet = m_lcmsWarp.MaxNet;
 
-            if (Options.CalibType == LcmsAlignmentOptions.CalibrationType.SCAN_CALIBRATION ||
-                Options.CalibType == LcmsAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
+            if (Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.SCAN_CALIBRATION ||
+                Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
             {
                 // Get the mass calibration function with time
                 var numXKnots = Options.MassCalibNumXSlices;
@@ -743,8 +741,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 func.SetMassCalibrationFunctionWithTime(ref aligneeNetMassFunc, ref aligneePpmShiftMassFunc);
             }
 
-            if (Options.CalibType == LcmsAlignmentOptions.CalibrationType.MZ_CALIBRATION ||
-                Options.CalibType == LcmsAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
+            if (Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.MZ_CALIBRATION ||
+                Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
             {
                 // Get the mass calibration function with time
                 var numXKnots = Options.MassCalibNumXSlices;
@@ -776,7 +774,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
                 throw new NullReferenceException("Alignment Options were not set in AlignmentProcessor");
             }
 
-            if (Options.AlignType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (Options.AlignType != LcmsWarpAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 PerformNetWarp();
             }
@@ -796,7 +794,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
             {
                 throw new NullReferenceException("Alignment Options were not set in AlignmentProcessor");
             }
-            if (Options.AlignType != LcmsAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (Options.AlignType != LcmsWarpAlignmentOptions.AlignmentType.NET_MASS_WARP)
             {
                 PerformNetWarp();
             }

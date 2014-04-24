@@ -62,5 +62,28 @@ namespace PNNLOmics.Data
 
             return newData;
         }
+
+
+        /// <summary>
+        /// Convert XYData to arrays to interact with other functions more easily.
+        /// </summary>
+        /// <param name="xyList">List of XYData values to be converted.</param>
+        /// <param name="xArray">Array to be populated with X values.</param>
+        /// <param name="yArray">Array to be populated with Y values.</param>
+        public static void XYDataListToArrays(List<XYData> xyList, double[] xArray, double[] yArray)
+        {
+            if (xArray.Length == xyList.Count || yArray.Length == xyList.Count)
+            {
+                for (int i = 0; i < xyList.Count; i++)
+                {
+                    xArray[i] = xyList[i].X;
+                    yArray[i] = xyList[i].Y;
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("X and Y arrays must be same length as XYData list in function XYDataListToArrays.");
+            }
+        }
     }
 }

@@ -115,8 +115,7 @@
     <Compile Include="Algorithms\Alignment\IFeatureAligner.cs" />
     <Compile Include="Algorithms\Alignment\ISpectralAnchorPointMatchValidator.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\Histogram.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\IAligner.cs" />
-    <Compile Include="Algorithms\Alignment\LCMSWarp\Interpolation.cs" />
+    <Compile Include="OmicsMath\SplineInterpolation.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSAlignmentData.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSAlignmentFunction.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSAlignmentMatch.cs" />
@@ -139,7 +138,7 @@
     <Compile Include="Algorithms\Alignment\SequenceMatching\PeptideAnchorPointMatcher.cs" />
     <Compile Include="Algorithms\Alignment\SpectralMatching\AlignedFeatureData.cs" />
     <Compile Include="Algorithms\Alignment\SpectralMatching\AlignmentDataset.cs" />
-    <Compile Include="Algorithms\Alignment\AnchorPointErrorMeasurement.cs" />
+    <Compile Include="Algorithms\Alignment\SpectralMatching\AnchorPointErrorMeasurement.cs" />
     <Compile Include="Algorithms\Alignment\SpectralMatching\IAlignmentFunction.cs" />
     <Compile Include="Algorithms\Alignment\SpectralMatching\ISpectralAnalysisWriter.cs" />
     <Compile Include="Algorithms\Alignment\SpectralMatching\SpectralAnchorPointAligner.cs" />
@@ -312,7 +311,6 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\MsSpectraExtensions.cs" />
     <Compile Include="Extensions\XYDataExtensions.cs" />
-    <Compile Include="Generic\Pair.cs" />
     <Compile Include="Algorithms\DelegateDefinitions.cs" />
     <Compile Include="Algorithms\FeatureClustering\FeatureClusterParameters.cs" />
     <Compile Include="Algorithms\FeatureTolerances.cs" />
@@ -330,7 +328,6 @@
     <Compile Include="Data\Features\FeatureMatch.cs" />
     <Compile Include="Data\Features\UMC.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
-    <Compile Include="Generic\AnonymousComparer.cs" />
     <Compile Include="IonType.cs" />
     <Compile Include="Molecule.cs" />
     <Compile Include="MRMTransition.cs" />
@@ -341,13 +338,11 @@
     <Compile Include="Data\MassTags\Peptide.cs" />
     <Compile Include="Data\Peaks\Peak.cs" />
     <Compile Include="Data\XYData.cs" />
-    <Compile Include="Generic\Processor.cs" />
     <Compile Include="Data\Features\Feature.cs" />
     <Compile Include="Data\BaseData.cs" />
     <Compile Include="Data\Features\UMCCluster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\MassTags\Protein.cs" />
-    <Compile Include="Generic\Task.cs" />
     <Compile Include="Utilities\MessageEventArgs.cs" />
     <Compile Include="Utilities\MolecularWeightCalculator.cs" />
     <Compile Include="Utilities\PathUtil.cs" />

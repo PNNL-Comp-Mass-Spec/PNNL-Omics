@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PNNLOmics.Alignment.LCMSWarp.LCMSProcessor;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
 
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Wrapper object for LCMSWarp Feature Aligning
@@ -21,13 +20,12 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
         /// </summary>
         /// <param name="massTags"></param>
         /// <param name="features"></param>
-        /// <param name="options"></param>
-        /// <param name="alignDriftTimes"></param>
+        /// <param name="options"></param>        
         /// <returns></returns>
-        public LcmsAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> features,
-            LcmsAlignmentOptions options, bool alignDriftTimes)
+        public LcmsWarpAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> features,
+            LcmsWarpAlignmentOptions options)
         {
-            var processor = new LcmsAlignmentProcessor
+            var processor = new LcmsWarpAlignmentProcessor
             {
                 Options = options
             };
@@ -57,9 +55,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
         /// <param name="alignee"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public LcmsAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> alignee, LcmsAlignmentOptions options)
+        public LcmsWarpAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> alignee, LcmsWarpAlignmentOptions options)
         {
-            var alignmentProcessor = new LcmsAlignmentProcessor
+            var alignmentProcessor = new LcmsWarpAlignmentProcessor
             {
                 Options = options
             };
@@ -68,7 +66,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 
             alignmentProcessor.SetReferenceDatasetFeatures(filteredFeatures);
 
-            LcmsAlignmentData data = AlignFeatures(alignmentProcessor, alignee, options);
+            LcmsWarpAlignmentData data = AlignFeatures(alignmentProcessor, alignee, options);
 
             int minScan = int.MaxValue;
             int maxScan = int.MinValue;
@@ -85,9 +83,9 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
             return data;
         }
 
-        LcmsAlignmentData AlignFeatures(LcmsAlignmentProcessor processor, List<UMCLight> features, LcmsAlignmentOptions options)
+        LcmsWarpAlignmentData AlignFeatures(LcmsWarpAlignmentProcessor processor, List<UMCLight> features, LcmsWarpAlignmentOptions options)
         {
-            var alignmentFunctions = new List<LcmsAlignmentFunction>();
+            var alignmentFunctions = new List<LcmsWarpAlignmentFunction>();
             var netErrorHistograms = new List<double[,]>();
             var massErrorHistograms = new List<double[,]>();
             var driftErrorHistograms = new List<double[,]>();
@@ -170,7 +168,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
             // Get the residual data
             var residualData = processor.GetResidualData();
 
-            var data = new LcmsAlignmentData
+            var data = new LcmsWarpAlignmentData
             {
                 MassErrorHistogram = massErrorHistogram,
                 DriftErrorHistogram = driftErrorHistogram,
@@ -199,7 +197,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSAligner
 
         }
 
-        private static IEnumerable<UMCLight> FilterFeaturesByAbundance(List<UMCLight> features, LcmsAlignmentOptions options)
+        private static IEnumerable<UMCLight> FilterFeaturesByAbundance(List<UMCLight> features, LcmsWarpAlignmentOptions options)
         {
             features.Sort((x, y) => x.AbundanceSum.CompareTo(y.AbundanceSum));
 

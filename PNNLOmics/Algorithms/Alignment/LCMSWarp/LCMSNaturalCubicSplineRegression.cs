@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra.Double;
 
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Object which contains all the information necesary for a natural cubic spline regression
@@ -10,7 +10,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
     /// </summary>
     public class LcmsNaturalCubicSplineRegression
     {
-        readonly List<LcmsRegressionPts> m_pts;
+        readonly List<RegressionPoint> m_pts;
         readonly List<double> m_intervalStart;
 
         readonly double[] m_coeffs = new double[512];
@@ -26,7 +26,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         public LcmsNaturalCubicSplineRegression()
         {
             m_numKnots = 2;
-            m_pts = new List<LcmsRegressionPts>();
+            m_pts = new List<RegressionPoint>();
             m_intervalStart = new List<double>();
         }
 
@@ -46,11 +46,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             m_numKnots = numKnots;
         }
 
-        private void PreprocessCopyData(IEnumerable<LcmsRegressionPts> points)
+        private void PreprocessCopyData(IEnumerable<RegressionPoint> points)
         {
             m_minX = double.MaxValue;
             m_maxX = double.MinValue;
-            foreach (LcmsRegressionPts point in points)
+            foreach (RegressionPoint point in points)
             {
                 if (point.X < m_minX)
                 {
@@ -77,7 +77,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// </summary>
         /// <param name="points"></param>
         /// <returns></returns>
-        public bool CalculateLsqRegressionCoefficients(ref List<LcmsRegressionPts> points)
+        public bool CalculateLsqRegressionCoefficients(List<RegressionPoint> points)
         {
             Clear();
             if (m_numKnots < 2)
@@ -103,7 +103,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             for (int pointNum = 0; pointNum < numPts; pointNum++)
             {
-                LcmsRegressionPts point = m_pts[pointNum];
+                RegressionPoint point = m_pts[pointNum];
                 a[pointNum, 0] = 1.0;
                 a[pointNum, 1] = point.X;
 

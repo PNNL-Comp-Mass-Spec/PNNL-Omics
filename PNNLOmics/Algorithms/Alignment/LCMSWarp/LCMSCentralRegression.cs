@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Object which performs Central Regression for LCMSWarp
     /// </summary>
-    public class LcmsCentralRegression
+    public class LcmsWarpCentralRegression
     {
         private int m_numYBins;
         private int m_numJumps;
@@ -25,7 +25,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         private readonly List<int> m_bestPreviousIndex;
         private readonly List<int> m_count;
 
-        private readonly LcmsNormUnifEm m_normUnifEm;
+        private readonly NormalUniformEm m_normUnifEm;
 
         private double m_minY;
         private double m_maxY;
@@ -43,13 +43,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         private double m_maxX;
 
         private int m_numXBins;
-        private readonly List<LcmsRegressionPts> m_pts;
+        private readonly List<RegressionPoint> m_pts;
 
         /// <summary>
         /// Default constructor the Central regression, sets parameters to default
         /// values and allocates memory space for the lists that will be used
         /// </summary>
-        public LcmsCentralRegression()
+        public LcmsWarpCentralRegression()
         {
             m_numXBins = 100;
             m_numYBins = 100;
@@ -64,12 +64,12 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
             m_bestPreviousIndex = new List<int>();
             m_count = new List<int>();
 
-            m_normUnifEm = new LcmsNormUnifEm();
+            m_normUnifEm = new NormalUniformEm();
 
             m_stdY = new List<double>();
             m_alignmentFunction = new Dictionary<int, int>();
 
-            m_pts = new List<LcmsRegressionPts>();
+            m_pts = new List<RegressionPoint>();
 
             SetOptions(m_numXBins, m_numYBins, m_numJumps, m_outlierZScore);
         }
@@ -78,7 +78,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// Getter to return the list of regression points
         /// </summary>
         /// <returns></returns>
-        public List<LcmsRegressionPts> Points
+        public List<RegressionPoint> Points
         {
             get { return m_pts; }
         }
@@ -129,7 +129,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             for (int i = 0; i < numPts; i++)
             {
-                LcmsRegressionPts point = m_pts[i];
+                RegressionPoint point = m_pts[i];
                 if (point.X < m_minX)
                 {
                     m_minX = point.X;
@@ -162,7 +162,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             for (int ptNum = 0; ptNum < numPoints; ptNum++)
             {
-                LcmsRegressionPts pt = m_pts[ptNum];
+                RegressionPoint pt = m_pts[ptNum];
                 int sectionNum = Convert.ToInt32((pt.X - m_minX) / xInterval);
                 if (sectionNum == m_numXBins)
                 {
@@ -272,7 +272,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             for (int pointNum = 0; pointNum < numPts; pointNum++)
             {
-                LcmsRegressionPts point = m_pts[pointNum];
+                RegressionPoint point = m_pts[pointNum];
                 int xSection = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
                 if (xSection == m_numXBins)
                 {
@@ -464,10 +464,10 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// Calculates Central regression for the matches found and passed in
         /// </summary>
         /// <param name="calibMatches"></param>
-        public void CalculateRegressionFunction(ref List<LcmsRegressionPts> calibMatches)
+        public void CalculateRegressionFunction(ref List<RegressionPoint> calibMatches)
         {
             Clear();
-            foreach (LcmsRegressionPts point in calibMatches)
+            foreach (RegressionPoint point in calibMatches)
             {
                 m_pts.Add(point);
             }
@@ -497,12 +497,12 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         public void RemoveRegressionOutliers()
         {
             double xIntervalSize = (m_maxX - m_minX) / m_numXBins;
-            var tempPts = new List<LcmsRegressionPts>();
+            var tempPts = new List<RegressionPoint>();
             int numPts = m_pts.Count;
 
             for (int pointNum = 0; pointNum < numPts; pointNum++)
             {
-                LcmsRegressionPts point  = m_pts[pointNum];
+                RegressionPoint point  = m_pts[pointNum];
                 int intervalNum = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
                 if (intervalNum == m_numXBins)
                 {
@@ -519,7 +519,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
 
             m_pts.Clear();
 
-            foreach (LcmsRegressionPts point in tempPts)
+            foreach (RegressionPoint point in tempPts)
             {
                 m_pts.Add(point);
             }

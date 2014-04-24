@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
+﻿namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Object to hold the options for LcmsWarp Alignment. 
     /// </summary>
-    public class LcmsAlignmentOptions
+    public class LcmsWarpAlignmentOptions
     {
         #region Auto Properties
         /// <summary>
@@ -135,7 +133,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSProcessor
         /// <summary>
         /// Default constructor, initializes every value to commonly used values and flags
         /// </summary>
-        public LcmsAlignmentOptions()
+        public LcmsWarpAlignmentOptions()
         {
             NumTimeSections = 100;
             TopFeatureAbundancePercent = 0;

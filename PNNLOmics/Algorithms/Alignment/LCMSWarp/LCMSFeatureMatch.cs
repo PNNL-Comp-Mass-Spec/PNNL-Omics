@@ -1,20 +1,19 @@
 ﻿using System;
 
-
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Object to contain the feature match data for LCMS Warp.
     /// Contains the feature index, baseline index, feature normalized elution time,
     /// baseline normalized elution time and the error for the mass, the net and the drift time
     /// </summary>
-    public class LcmsFeatureMatch: IComparable<LcmsFeatureMatch>
+    public class LcmsWarpFeatureMatch: IComparable<LcmsWarpFeatureMatch>
     {
         /// <summary>
         /// Constructor, initializes the testing values to -1 to ensure ability to see
         /// when there hasn't been a match made
         /// </summary>
-        public LcmsFeatureMatch()
+        public LcmsWarpFeatureMatch()
         {
             FeatureIndex = -1;
             FeatureIndex2 = -1;
@@ -56,12 +55,13 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         /// </summary>
         public double Net2 { get; set; }
 
+        //TODO: probably just point to the reference of the feature
         /// <summary>
         /// Index of the feature that this match corresponds to
-        /// Auto property
+        /// Auto property - 
         /// </summary>
         public int FeatureIndex { get; set; }
-
+        //TODO: probably just point to the reference of the feature
         /// <summary>
         /// Index of the baseline feature that this match corresponds to
         /// Auto property
@@ -73,7 +73,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSAlignment
         /// </summary>
         /// <param name="compareFeature"></param>
         /// <returns></returns>
-        public int CompareTo(LcmsFeatureMatch compareFeature)
+        public int CompareTo(LcmsWarpFeatureMatch compareFeature)
         {
             if (compareFeature == null)
             {

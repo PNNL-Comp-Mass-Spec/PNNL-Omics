@@ -1,6 +1,7 @@
 ﻿using PNNLOmics.Algorithms.Regression;
 using System.Collections.Generic;
 using System.Linq;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {
@@ -8,6 +9,19 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
     {
         private LoessInterpolator m_netInterpolator;
         private LoessInterpolator m_massInterpolator;
+
+        public SpectralAnchorPointAligner():
+            this(.25)
+        {
+            
+        }
+
+        public SpectralAnchorPointAligner(double bandwidth)
+        {
+            Bandwidth = bandwidth;
+        }
+
+        public double Bandwidth { get; set; }
 
         public void CreateAlignmentFunctions(IEnumerable<SpectralAnchorPointMatch> matches)
         {
@@ -56,22 +70,26 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             }
 
             // Then generate the NET Alignment using R1
-            var anchorPoints = all.Values.OrderBy(x => x.AnchorPointX.Net).ToList();
+            var anchorPoints = all.Values.OrderBy(x => x.AnchorPointY.Net).ToList();
 
-            foreach (var match in anchorPoints)
-            {
+            matches =
+                anchorPoints.Where(
+                    x => Feature.ComputeMassPPMDifference(x.AnchorPointX.Mz, x.AnchorPointY.Mz) < 20 && 
+                        x.AnchorPointX.Spectrum.ParentFeature.ChargeState == x.AnchorPointY.Spectrum.ParentFeature.ChargeState
+                            ).ToList();
+
+            foreach (var match in matches)
+            {                
                 netXvalues.Add(match.AnchorPointX.Net);
                 netYvalues.Add(match.AnchorPointY.Net);                
             }
 
-            var netInterpolator = new LoessInterpolator();
-            netInterpolator.Smooth(  netXvalues,
-                                                           netYvalues,
-                                                           FitFunctionFactory.Create(FitFunctionTypes.TriCubic));
+            var netInterpolator = new LoessInterpolator(Bandwidth, 5);
+            netInterpolator.Smooth(netYvalues, netXvalues, FitFunctionFactory.Create(FitFunctionTypes.TriCubic));
             
             // Then generate the Mass Alignment using R1
             // We also have to resort the matches based on mass now too
-            anchorPoints = all.Values.OrderBy(x => x.AnchorPointX.Mz).ToList();
+            anchorPoints = all.Values.OrderBy(x => x.AnchorPointY.Mz).ToList();
             foreach (var match in anchorPoints)
             {
                 massXvalues.Add(match.AnchorPointX.Mz);
@@ -79,28 +97,25 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             }
 
             var massInterpolator = new LoessInterpolator();
-            massInterpolator.Smooth(massXvalues,
-                                    massYvalues,
-                                    FitFunctionFactory.Create(FitFunctionTypes.TriCubic));
+            massInterpolator.Smooth(massYvalues, massXvalues, FitFunctionFactory.Create(FitFunctionTypes.TriCubic));
 
             m_netInterpolator  = netInterpolator;
             m_massInterpolator = massInterpolator;
 
-
             foreach (var match in anchorPoints)
             {
                 match.AnchorPointY.NetAligned = netInterpolator.Predict(match.AnchorPointY.Net);
-                match.AnchorPointY.MzAligned  = massInterpolator.Predict(match.AnchorPointY.Mz);
+                match.AnchorPointY.MzAligned = massInterpolator.Predict(match.AnchorPointY.Mz);
             }
         }
 
         public double AlignMass(double mass)
         {
-            return m_massInterpolator.Predict(mass);
+            return m_massInterpolator.Predict(mass);            
         }
         public double AlignNet(double net)
         {
-            return m_netInterpolator.Predict(net);
+            return m_netInterpolator.Predict(net);            
         }
     }
 }

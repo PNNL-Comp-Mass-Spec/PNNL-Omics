@@ -29,6 +29,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             get; set;
         }
 
+        public double Bandwidth { get; set; }
 
         /// <summary>
         /// Gets or sets the baseline spectra provider
@@ -108,16 +109,16 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                                                     Options);
 
             OnProgress("Creating Alignment Functions");
-            var aligner                     = new SpectralAnchorPointAligner();
+            var aligner                     = new SpectralAnchorPointAligner(Bandwidth);
             var spectralAnchorPointMatches  = matches as SpectralAnchorPointMatch[] ?? matches.ToArray();
             aligner.CreateAlignmentFunctions(spectralAnchorPointMatches);
 
             OnProgress("Transforming sub-features");
             foreach (var feature in alignee)
             {
-                feature.NETAligned          = aligner.AlignNet(feature.NET);
-                feature.RetentionTime       = feature.NETAligned;
-                feature.MassMonoisotopic    = aligner.AlignNet(feature.MassMonoisotopic);
+                feature.NETAligned              = aligner.AlignNet(feature.NET);
+                feature.RetentionTime           = feature.NETAligned;
+                feature.MassMonoisotopicAligned    = aligner.AlignMass(feature.MassMonoisotopic);
             }
 
             return spectralAnchorPointMatches;

@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
 
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
     /// Object that holds instances of all three regression types, as well as providing a wrapper method for all three of the
     /// regression types that LCMS could use
     /// </summary>
-    public class LcmsCombinedRegression
+    public class LcmsWarpCombinedRegression
     {
         private RegressionType m_regressionType;
         private bool m_lsqFailed;
-        readonly LcmsCentralRegression m_central;
-        readonly LcmsLsqSplineRegression m_lsqReg;
+        readonly LcmsWarpCentralRegression m_central;
+        readonly LeastSquaresSplineRegression m_lsqReg;
         readonly LcmsNaturalCubicSplineRegression m_cubicSpline;
 
         /// <summary>
         /// Public constructor for a Hybrid regression
         /// </summary>
-        public LcmsCombinedRegression()
+        public LcmsWarpCombinedRegression()
         {
             m_regressionType = RegressionType.HYBRID;
             m_lsqFailed = false;
-            m_central = new LcmsCentralRegression();
-            m_lsqReg = new LcmsLsqSplineRegression();
+            m_central = new LcmsWarpCentralRegression();
+            m_lsqReg = new LeastSquaresSplineRegression();
             m_cubicSpline = new LcmsNaturalCubicSplineRegression();
         }
 
@@ -57,7 +57,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// Sets the regression points to the appropriate values for the regression function
         /// </summary>
         /// <param name="matches"></param>
-        public void CalculateRegressionFunction(ref List<LcmsRegressionPts> matches)
+        public void CalculateRegressionFunction(ref List<RegressionPoint> matches)
         {
             switch (m_regressionType)
             {
@@ -68,8 +68,8 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
                 default:
                     m_central.CalculateRegressionFunction(ref matches);
                     m_central.RemoveRegressionOutliers();
-                    List<LcmsRegressionPts> centralPoints = m_central.Points;
-                    m_lsqFailed = !m_cubicSpline.CalculateLsqRegressionCoefficients(ref centralPoints);
+                    List<RegressionPoint> centralPoints = m_central.Points;
+                    m_lsqFailed = !m_cubicSpline.CalculateLsqRegressionCoefficients(centralPoints);
                     //line 50
                     break;
             }

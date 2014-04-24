@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using PNNLOmics.Algorithms.Alignment.SpectralMatching;
 using PNNLOmics.Data.Features;
 
-namespace PNNLOmics.Algorithms.Alignment
+namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {
     public class AnchorPointErrorMeasurement
     {

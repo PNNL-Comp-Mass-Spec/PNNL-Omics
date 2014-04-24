@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
+namespace PNNLOmics.Algorithms.Alignment.LCMSWarp
 {
     /// <summary>
-    /// Class to hold onto the uniform distribution data for the LCMSWarp alignment
+    /// Class to hold onto the uniform distribution data for expectation maximization
     /// </summary>
-    public class LcmsNormUnifEm
+    public class NormalUniformEm
     {
         private double m_mean;
         private double m_var;
@@ -46,7 +46,7 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// Constructor which initializes everything to a set value and
         /// allocates data space for the probabilities
         /// </summary>
-        public LcmsNormUnifEm()
+        public NormalUniformEm()
         {
             m_mean = 0.0;
             m_var = 10.0;
@@ -60,11 +60,11 @@ namespace PNNLOmics.Alignment.LCMSWarp.LCMSWarper.LCMSRegression
         /// </summary>
         public void Reset()
         {
-            m_mean = 0.0;
-            m_var = 10.0;
-            m_normFraction = 0.5;
+            m_mean          = 0.0;
+            m_var           = 10.0;
+            m_normFraction  = 0.5;
             m_numIterations = 16;
-            m_unifProb = new List<double>();
+            m_unifProb      = new List<double>();
         }
 
         /// <summary>
