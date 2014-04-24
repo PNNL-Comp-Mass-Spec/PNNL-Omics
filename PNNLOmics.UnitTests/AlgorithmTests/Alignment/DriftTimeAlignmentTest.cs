@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Algorithms.Alignment;
 using PNNLOmics.Data;
@@ -50,7 +51,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
 				xyDataList.Add(xyData);
 			}
 
-			LinearEquation linearEquation = LinearEquationCalculator.CalculateLinearEquation(xyDataList);
+			LinearEquation linearEquation = LinearRegression.CalculateLinearEquation(xyDataList);
 			Assert.AreEqual(Math.Round(linearEquation.Slope, 4), 0.7142);
 			Assert.AreEqual(Math.Round(linearEquation.Intercept, 4), 1.1324);
 		}
