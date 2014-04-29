@@ -1175,13 +1175,13 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             MinNet = double.MaxValue;
             for (int i = 0; i < numFeatures; i++)
             {
-                if (m_featureMatches[i].Net > MaxNet)
+                if (m_features[i].NET > MaxNet)
                 {
-                    MaxNet = m_featureMatches[i].Net;
+                    MaxNet = m_features[i].NET;
                 }
-                if (m_featureMatches[i].Net < MinNet)
+                if (m_features[i].NET < MinNet)
                 {
-                    MinNet = m_featureMatches[i].Net;
+                    MinNet = m_features[i].NET;
                 }
                 m_tempFeatureBestDelta.Add(double.MaxValue);
                 m_tempFeatureBestIndex.Add(-1);
@@ -1189,11 +1189,15 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             for (int i = 0; i < numFeatures; i++)
             {
-                double net = m_featureMatches[i].Net;
+                double net = m_features[i].NET;
                 int sectionNum = Convert.ToInt32(((net - MinNet) * NumSections) / (MaxNet - MinNet));
                 if (sectionNum >= NumSections)
                 {
                     sectionNum--;
+                }
+                if (sectionNum < 0)
+                {
+                    sectionNum = 0;
                 }
                 m_numFeaturesInSections[sectionNum]++;
             }
@@ -1261,6 +1265,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 while (endMatchIndex < numMatches && ((m_featureMatches[endMatchIndex].Net) < sectionEndNet))
                 {
                     endMatchIndex++;
+                    if (endMatchIndex == 818)
+                    {
+                        int debug = 1;
+                    }
+                }
+                if (endMatchIndex == numMatches)
+                {
+                    endMatchIndex--;
                 }
                 if (endMatchIndex != startMatchIndex)
                 {

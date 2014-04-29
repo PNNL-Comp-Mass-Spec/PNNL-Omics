@@ -114,6 +114,7 @@
     <Compile Include="Algorithms\Alignment\DriftTimeAlignmentResults.cs" />
     <Compile Include="Algorithms\Alignment\IFeatureAligner.cs" />
     <Compile Include="Algorithms\Alignment\ISpectralAnchorPointMatchValidator.cs" />
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpAdapter.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\RegressionType.cs" />
     <Compile Include="Algorithms\Regression\LeastSquaresSplineRegression.cs" />
     <Compile Include="Algorithms\Regression\NaturalCubicSplineRegression.cs" />
@@ -146,13 +147,7 @@
     <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpCombinedRegression.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LCMSWarpFeatureAligner.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpFeatureMatch.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpFeatureMatching.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Algorithms\Alignment\LinearEquation.cs" />

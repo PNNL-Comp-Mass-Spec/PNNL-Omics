@@ -215,21 +215,21 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             double[,] netErrorHistogram;
             double[,] driftErrorHistogram;
 
-            processor.GetErrorHistograms(options.MassBinSize, options.NetBinSize, options.DriftTimeBinSize,
-                out massErrorHistogram, out netErrorHistogram, out driftErrorHistogram);
+            //processor.GetErrorHistograms(options.MassBinSize, options.NetBinSize, options.DriftTimeBinSize,
+            //    out massErrorHistogram, out netErrorHistogram, out driftErrorHistogram);
 
-            massErrorHistograms.Add(massErrorHistogram);
-            netErrorHistograms.Add(netErrorHistogram);
-            driftErrorHistograms.Add(driftErrorHistogram);
+            //massErrorHistograms.Add(massErrorHistogram);
+            //netErrorHistograms.Add(netErrorHistogram);
+            //driftErrorHistograms.Add(driftErrorHistogram);
 
             // Get the residual data
             var residualData = processor.GetResidualData();
 
             var data = new LcmsWarpAlignmentData
             {
-                MassErrorHistogram = massErrorHistogram,
-                DriftErrorHistogram = driftErrorHistogram,
-                NetErrorHistogram = netErrorHistogram,
+                //MassErrorHistogram = massErrorHistogram,
+                //DriftErrorHistogram = driftErrorHistogram,
+                //NetErrorHistogram = netErrorHistogram,
                 AlignmentFunction = alignmentFunction,
                 HeatScores = heatScore,
                 MinScanBaseline = minScanBaseline,
