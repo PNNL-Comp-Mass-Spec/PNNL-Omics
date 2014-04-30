@@ -5,67 +5,11 @@ using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
-{    
-    /// <summary>
-    /// Class to hold the residual data from the alignment process
-    /// </summary>
-    public class ResidualData
-    {
-        #region Public Properties
-        /// <summary>
-        /// AutoProperty to hold all the scans from the alignment data
-        /// </summary>
-        public double[] Scan { get; set; }
-
-        /// <summary>
-        /// AutoProperty to hold all the M/Z from the alignment data
-        /// </summary>
-        public double[] Mz { get; set; }
-
-        /// <summary>
-        /// AutoProperty to hold all the Linear NETs from the alignment data
-        /// </summary>
-        public double[] LinearNet { get; set; }
-
-        /// <summary>
-        /// AutoProperty to hold all the NET Errors from the alignment data
-        /// </summary>
-        public double[] CustomNet { get; set; }
-
-        /// <summary>
-        /// Autoproperty, holds the Aligned net minus the predicted linear net the data
-        /// </summary>
-        public double[] LinearCustomNet { get; set; }
-
-        /// <summary>
-        /// Autoproperty to hold all the Mass Errors from the alignment data
-        /// </summary>
-        public double[] MassError { get; set; }
-
-        /// <summary>
-        /// AutoProperty to hold all the corrected mass error (mass error - ppmShift) for the alignment
-        /// </summary>
-        public double[] MassErrorCorrected { get; set; }
-
-        /// <summary>
-        /// Autoproperty to hold all the Mass Errors from the alignment data
-        /// Same as MassError
-        /// </summary>
-        public double[] MzMassError { get; set; }
-
-        /// <summary>
-        /// AutoProperty to hold all the corrected mass error (mass error - ppmShift) for the alignment
-        /// Same as MassErrorCorrected
-        /// </summary>
-        public double[] MzMassErrorCorrected { get; set; }
-
-        #endregion
-    }
-
+{
     /// <summary>
     /// Class which will use LCMSWarp to process alignment
     /// </summary>
-    public class LcmsWarpAlignmentProcessor
+    public sealed class LcmsWarpAlignmentProcessor
     {
         // In case alignment was to ms features, this will kepe track of the minimum scan in the
         // reference features. They are needed because LCMSWarp uses NET values for reference and
@@ -109,24 +53,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <summary>
         /// Options for the Alignment processor
         /// </summary>
-        public LcmsWarpAlignmentOptions Options { get; set; }
+        public LcmsWarpAlignmentOptions Options { private get; set; }
         /// <summary>
         /// Flag for if the Processor is aligning to a Mass Tag Database
         /// </summary>
-        public bool AligningToMassTagDb { get; set; }
-        /// <summary>
-        /// Flag for if the Processor has loaded a MassTag Database
-        /// </summary>
-        public bool MassTagDbLoaded { get; set; }
-        /// <summary>
-        /// Flag for if the alignees are clusters
-        /// </summary>
-        public bool ClusterAlignee { get; set; }
-        /// <summary>
-        /// Property to keep track of the percent done for the Processor
-        /// </summary>
-        public int PercentDone { get; set; }
-
+        private bool AligningToMassTagDb { get; set; }                
         #endregion
 
         /// <summary>
@@ -142,8 +73,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             ApplyAlignmentOptions();
 
             AligningToMassTagDb = false;
-            MassTagDbLoaded = false;
-            ClusterAlignee = false;
         }
 
         // Applies the alignment options to the LCMSWarper, setting the Mass
@@ -156,8 +85,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_lcmsWarp.NetTolerance = Options.NetTolerance;
 
             // Applying options for NET Calibration
-            m_lcmsWarp.NumSections = Options.NumTimeSections;
-            m_lcmsWarp.MaxSectionDistortion = Options.ContractionFactor;
+            m_lcmsWarp.NumSections = Options.NumTimeSections;            
             m_lcmsWarp.MaxJump = Options.MaxTimeDistortion;
             m_lcmsWarp.NumBaselineSections = Options.NumTimeSections * Options.ContractionFactor;
             m_lcmsWarp.NumMatchesPerBaseline = Options.ContractionFactor*Options.ContractionFactor;
@@ -204,7 +132,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 m_lcmsWarp = new LcmsWarp();
             }
 
-            PercentDone = 0;
             var umcIndices = new List<int>();
             var umcCalibratedMasses = new List<double>();
             var umcAlignedNets = new List<double>();
@@ -216,7 +143,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 m_lcmsWarp.GetFeatureCalibratedMassesAndAlignedNets(ref umcIndices, ref umcCalibratedMasses,
                                                                     ref umcAlignedNets, ref umcDriftTimes);
 
-                for (int i = 0; i < umcIndices.Count; i++)
+                for (var i = 0; i < umcIndices.Count; i++)
                 {
                     var point = new UMCLight
                     {
@@ -244,7 +171,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                                                                     ref umcDriftTimes, m_minReferenceDatasetScan,
                                                                     m_maxReferenceDatasetScan);
 
-                for (int i = 0; i < umcIndices.Count; i++)
+                for (var i = 0; i < umcIndices.Count; i++)
                 {
                     var point = new UMCLight
                     {
@@ -266,158 +193,13 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 }
             }
         }
-
-        /// <summary>
-        /// Temporary function accepts an array of UMCLight Data and applies the NET/Mass Function
-        /// to the dataset and aligns it to the baseline. Updates the data in place for the 
-        /// calibrated Masses and Alignment. 
-        /// 
-        /// Might be able to kill this function. C++ processor had a method for UMCData pointer
-        /// and another one for a list of UMC pointers. Change to UMCLight doesn't have a separate class
-        /// for a list of UMCLights, so a method for this type of function is extraneous.
-        /// </summary>
-        /// <param name="dataList"></param>
-        public void ApplyNetMassFunctionToAligneeDatasetFeatures(UMCLight[] dataList)
-        {
-            if (m_lcmsWarp == null)
-            {
-                m_lcmsWarp = new LcmsWarp();
-            }
-
-            PercentDone = 0;
-            var umcIndices = new List<int>();
-            var umcCalibratedMasses = new List<double>();
-            var umcAlignedNets = new List<double>();
-            var umcAlignedScans = new List<int>();
-            var umcDriftTimes = new List<double>();
-
-            if (AligningToMassTagDb)
-            {
-                m_lcmsWarp.GetFeatureCalibratedMassesAndAlignedNets(ref umcIndices, ref umcCalibratedMasses,
-                                                                    ref umcAlignedNets, ref umcDriftTimes);
-                for (int i = 0; i < umcIndices.Count; i++)
-                {
-                    var point = new UMCLight
-                    {
-                        ID = umcIndices[i],
-                        MassMonoisotopicAligned = umcCalibratedMasses[i],
-                        NETAligned = umcAlignedNets[i],
-                        DriftTime = umcDriftTimes[i]
-                    };
-
-                    if (i < dataList.Length)
-                    {
-                        dataList[i] = point;
-                    }
-                    else
-                    {
-                        var newDataList = new UMCLight[dataList.Length + 1];
-                        for (int j = 0; j < dataList.Length; j++)
-                        {
-                            newDataList[j] = dataList[j];
-                        }
-                        newDataList[dataList.Length] = point;
-                        dataList = newDataList;
-                    }
-                }
-
-            }
-            else
-            {
-                m_lcmsWarp.GetFeatureCalibratedMassesAndAlignedNets(ref umcIndices, ref umcCalibratedMasses,
-                                                                    ref umcAlignedNets, ref umcAlignedScans,
-                                                                    ref umcDriftTimes, m_minReferenceDatasetScan,
-                                                                    m_maxReferenceDatasetScan);
-
-                for (int i = 0; i < umcIndices.Count; i++)
-                {
-                    var point = new UMCLight
-                    {
-                        ID = umcIndices[i],
-                        MassMonoisotopicAligned = umcCalibratedMasses[i],
-                        NETAligned = umcAlignedNets[i],
-                        ScanAligned = umcAlignedScans[i],
-                        DriftTime = umcDriftTimes[i]
-                    };
-
-                    if (i < dataList.Length)
-                    {
-                        dataList[i] = point;
-                    }
-                    else
-                    {
-                        var newDataList = new UMCLight[dataList.Length + 1];
-                        for (int j = 0; j < dataList.Length; j++)
-                        {
-                            newDataList[j] = dataList[j];
-                        }
-                        newDataList[dataList.Length] = point;
-                        dataList = newDataList;
-                    }
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Applies a previously determined NET/Mass function to a dataset of UMCLights
-        /// </summary>
-        /// <param name="data"></param>
-        public void ApplyNetMassFunctionToAlignee(List<UMCLight> data)
-        {
-            // If there isn't a LCMSWarp object, create one first.
-            if (m_lcmsWarp == null)
-            {
-                m_lcmsWarp = new LcmsWarp();
-            }
-
-            PercentDone = 0;
-            var umcIndicies = new List<int>();
-            var umcCalibratedMasses = new List<double>();
-            var umcAlignedNets = new List<double>();
-            var umcAlignedScans = new List<int>();
-            var umcDriftTimes = new List<double>();
-
-            if (AligningToMassTagDb)
-            {
-                m_lcmsWarp.GetFeatureCalibratedMassesAndAlignedNets(ref umcIndicies, ref umcCalibratedMasses,
-                                                                    ref umcAlignedNets, ref umcDriftTimes);
-
-                for (var i = 0; i < umcIndicies.Count; i++)
-                {
-                    data[i].ID = umcIndicies[i];
-                    data[i].MassMonoisotopicAligned = umcCalibratedMasses[i];
-                    data[i].NETAligned = umcAlignedNets[i];
-                    data[i].DriftTime = umcDriftTimes[i];
-                }
-
-            }
-            else
-            {
-                m_lcmsWarp.GetFeatureCalibratedMassesAndAlignedNets(ref umcIndicies, ref umcCalibratedMasses,
-                                                                    ref umcAlignedNets, ref umcAlignedScans,
-                                                                    ref umcDriftTimes, m_minReferenceDatasetScan,
-                                                                    m_maxReferenceDatasetScan);
-
-                for (var i = 0; i < umcIndicies.Count; i++)
-                {
-                    data[i].ID = umcIndicies[i];
-                    data[i].MassMonoisotopicAligned = umcCalibratedMasses[i];
-                    data[i].ScanAligned = umcAlignedScans[i];
-                    data[i].NETAligned = umcAlignedNets[i];
-                    data[i].DriftTime = umcDriftTimes[i];
-                }
-            }
-        }
-
+        
         /// <summary>
         /// For a given List of UMCLights, warp the alignee features to the baseline.
         /// </summary>
         /// <param name="features"></param>
         public void SetAligneeDatasetFeatures(List<UMCLight> features)
         {
-            PercentDone = 0;
-            ClusterAlignee = false;
             var numPts = features.Count;
 
             var mtFeatures = new List<UMCLight> { Capacity = numPts };
@@ -430,19 +212,20 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             for (var index = 0; index < numPts; index++)
             {
-                var mtFeature = new UMCLight();
-                PercentDone = (index * 100) / numPts;
+                var mtFeature = new UMCLight
+                {
+                    MassMonoisotopic = features[index].MassMonoisotopic,
+                    MassMonoisotopicAligned = features[index].MassMonoisotopicAligned,
+                    NET = Convert.ToDouble(features[index].Scan),
+                    Mz = features[index].Mz,
+                    Abundance = features[index].Abundance,
+                    ID = features[index].ID,
+                    DriftTime = features[index].DriftTime
+                };
 
-                mtFeature.MassMonoisotopic = features[index].MassMonoisotopic;
-                mtFeature.MassMonoisotopicAligned = features[index].MassMonoisotopicAligned;
                 //mtFeature.MonoMassOriginal = features[index].MassMonoisotopic;
-                mtFeature.NET = Convert.ToDouble(features[index].Scan);
 
                 // For if we want to split alignment at given M/Z range
-                mtFeature.Mz = features[index].Mz;
-                mtFeature.Abundance = features[index].Abundance;
-                mtFeature.ID = features[index].ID;
-                mtFeature.DriftTime = features[index].DriftTime;
 
                 // Only allow feature to be aligned if we're splitting the alignment in MZ
                 // AND if we are within the specified boundary
@@ -470,68 +253,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             }
             m_lcmsWarp.SetFeatures(ref mtFeatures);
         }
-
-
-        /// <summary>
-        /// For a given array of UMCLights, warps the alignee featurs to the baseline. 
-        /// 
-        /// Similar to ApplyNETMassFunctionToAligneeDatasetFeatures, Original c++ processor had
-        /// a separate class for a list of UMCData, but UMCLight does not have a similar class. 
-        /// Might be able to kill this method if it's not used
-        /// </summary>
-        /// <param name="features"></param>
-        /// <param name="datasetIndex"></param>
-        public void SetAligneeDatasetFeatures(UMCLight[] features, int datasetIndex)
-        {
-            PercentDone = 0;
-            ClusterAlignee = false;
-            var numPts = features.Length;
-
-            var mtFeatures = new List<UMCLight> { Capacity = numPts };
-
-            m_minAligneeDatasetScan = int.MaxValue;
-            m_maxAligneeDatasetScan = int.MinValue;
-            m_minAligneeDatasetMz = double.MaxValue;
-            m_maxAligneeDatasetMz = double.MinValue;
-
-
-            for (var index = 0; index < numPts; index++)
-            {
-                var mtFeature = new UMCLight();
-                PercentDone = (index * 100) / numPts;
-                var feature = features[index];
-                mtFeature.MassMonoisotopic = feature.MassMonoisotopic;
-                mtFeature.MassMonoisotopicAligned = feature.MassMonoisotopicAligned;
-                mtFeature.NET = Convert.ToDouble(feature.Scan);
-
-                // For if we want to split alignment at given M/Z range
-                mtFeature.Mz = feature.Mz;
-                mtFeature.Abundance = feature.Abundance;
-                mtFeature.ID = feature.ID;
-                mtFeature.DriftTime = feature.DriftTime;
-
-                mtFeatures.Add(mtFeature);
-
-                if (feature.Scan > m_maxAligneeDatasetScan)
-                {
-                    m_maxAligneeDatasetScan = feature.Scan;
-                }
-                if (feature.Scan < m_minAligneeDatasetScan)
-                {
-                    m_minAligneeDatasetScan = feature.Scan;
-                }
-                if (feature.Mz > m_maxAligneeDatasetMz)
-                {
-                    m_maxAligneeDatasetMz = feature.Mz;
-                }
-                if (feature.Mz < m_minAligneeDatasetMz)
-                {
-                    m_minAligneeDatasetMz = feature.Mz;
-                }
-            }
-            m_lcmsWarp.SetFeatures(ref mtFeatures);
-        }
-
+        
         /// <summary>
         /// 
         /// Use the NET value of the UMCs in the List as the value to align to, the predictor variable
@@ -540,8 +262,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public void SetReferenceDatasetFeatures(List<UMCLight> umcData)
         {
             AligningToMassTagDb = false;
-            MassTagDbLoaded = false;
-            PercentDone = 0;
 
             var numPts = umcData.Count;
 
@@ -553,8 +273,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             for (var index = 0; index < numPts; index++)
             {
                 var feature = new UMCLight();
-                var data = umcData[index];
-                PercentDone = (index * 100) / numPts;
+                var data = umcData[index];                
                 feature.MassMonoisotopic = data.MassMonoisotopic;
                 feature.MassMonoisotopicAligned = data.MassMonoisotopicAligned;
                 feature.NET = data.NET;
@@ -593,21 +312,15 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <param name="umcData"></param>
         public void SetReferenceDatasetFeatures(UMCLight[] umcData)
         {
-            AligningToMassTagDb = false;
-            MassTagDbLoaded = false;
-            PercentDone = 0;
-
-            var numPts = umcData.Length;
-
-            var mtFeatures = new List<UMCLight> { Capacity = numPts };
+            AligningToMassTagDb = false;            
+            var numPts          = umcData.Length;
+            var mtFeatures      = new List<UMCLight> { Capacity = numPts };
 
             m_minAligneeDatasetScan = int.MaxValue;
             m_maxAligneeDatasetScan = int.MinValue;
 
             for (var index = 0; index < numPts; index++)
             {
-                PercentDone = (index * 100) / numPts;
-
                 var data = umcData[index];
                 var feature = new UMCLight
                 {
@@ -645,10 +358,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// Sets alignment features for a MSFeature dataset from a database
         /// </summary>
         /// <param name="features"></param>
-        /// <param name="isDatabase"></param>
-        public void SetReferenceDatasetFeatures(List<MassTagLight> features, bool isDatabase)
+        public void SetReferenceDatasetFeatures(List<MassTagLight> features)
         {
-            PercentDone = 0;
             AligningToMassTagDb = true;
             var numMassTags = features.Count;
 
@@ -665,26 +376,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             }));
 
             m_lcmsWarp.SetReferenceFeatures(ref mtFeatures);
-            MassTagDbLoaded = true;
-        }
-
-
-        /// <summary>
-        /// MAY BE ABLE TO KILL THIS METHOD
-        /// 
-        /// Takes a list of UMCLights and initializes the reference dataset features to the features that
-        /// pass the boundaries set in the options.
-        /// Index Parameters not used, but included in code for compatability with C++ version
-        /// </summary>
-        /// <param name="umcData"></param>
-        /// <param name="aligneeDatasetIndex"></param>
-        /// <param name="referenceDatasetIndex"></param>
-        public void SetDataForAlignmentToMsFeatures(List<UMCLight> umcData, int aligneeDatasetIndex,
-                                                    int referenceDatasetIndex)
-        {
-            SetAligneeDatasetFeatures(umcData);
-
-            SetReferenceDatasetFeatures(umcData);
         }
 
         /// <summary>
@@ -701,7 +392,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             if (AligningToMassTagDb)
             {
-                func.SetNetFunction(aligneeNets, referenceNets);
+                func.SetNetFunction(ref aligneeNets, ref referenceNets);
             }
             else
             {
@@ -722,14 +413,15 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             var minAligneeNet = m_lcmsWarp.MinNet;
             var maxAligneeNet = m_lcmsWarp.MaxNet;
 
+            // Get the mass calibration function with time
+            var numXKnots = Options.MassCalibNumXSlices;
+            var aligneeMzMassFunc = new List<double>();
+            var aligneeNetMassFunc = new List<double>();
+            var aligneePpmShiftMassFunc = new List<double>();
+
             if (Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.SCAN_CALIBRATION ||
                 Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
             {
-                // Get the mass calibration function with time
-                var numXKnots = Options.MassCalibNumXSlices;
-                var aligneeNetMassFunc = new List<double>();
-                var aligneePpmShiftMassFunc = new List<double>();
-
                 // get the PPM for each knot
                 for (var knotNum = 0; knotNum < numXKnots; knotNum++)
                 {
@@ -741,25 +433,20 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 func.SetMassCalibrationFunctionWithTime(ref aligneeNetMassFunc, ref aligneePpmShiftMassFunc);
             }
 
-            if (Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.MZ_CALIBRATION ||
-                Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
-            {
-                // Get the mass calibration function with time
-                var numXKnots = Options.MassCalibNumXSlices;
-                var aligneeMzMassFunc = new List<double>();
-                var aligneePpmShiftMassFunc = new List<double>();
+            if (Options.CalibType != LcmsWarpAlignmentOptions.CalibrationType.MZ_CALIBRATION &&
+                Options.CalibType != LcmsWarpAlignmentOptions.CalibrationType.HYBRID_CALIBRATION) return func;
 
-                // Get the ppm for each knot
-                for (var knotNum = 0; knotNum < numXKnots; knotNum++)
-                {
-                    var net = knotNum * 1.0 / numXKnots;
-                    var mz = m_minAligneeDatasetMz + (int)((m_maxAligneeDatasetMz - m_minAligneeDatasetMz) * net);
-                    var ppm = m_lcmsWarp.GetPpmShiftFromMz(mz);
-                    aligneeMzMassFunc.Add(mz);
-                    aligneePpmShiftMassFunc.Add(ppm);
-                }
-                func.SetMassCalibrationFunctionWithMz(aligneeMzMassFunc, aligneePpmShiftMassFunc);
+
+            // Get the ppm for each knot
+            for (var knotNum = 0; knotNum < numXKnots; knotNum++)
+            {
+                var net = knotNum * 1.0 / numXKnots;
+                var mz = m_minAligneeDatasetMz + (int)((m_maxAligneeDatasetMz - m_minAligneeDatasetMz) * net);
+                var ppm = m_lcmsWarp.GetPpmShiftFromMz(mz);
+                aligneeMzMassFunc.Add(mz);
+                aligneePpmShiftMassFunc.Add(ppm);
             }
+            func.SetMassCalibrationFunctionWithMz(aligneeMzMassFunc, aligneePpmShiftMassFunc);
             return func;
         }
 
@@ -783,33 +470,13 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 PerformNetMassWarp();
             }
         }
-
-        /// <summary>
-        /// Method to determine which warping method to use when aligning to a database.
-        /// Throws exception if the options were not set.
-        /// </summary>
-        public void PerformAlignmentToMassTagDatabase()
-        {
-            if (Options == null)
-            {
-                throw new NullReferenceException("Alignment Options were not set in AlignmentProcessor");
-            }
-            if (Options.AlignType != LcmsWarpAlignmentOptions.AlignmentType.NET_MASS_WARP)
-            {
-                PerformNetWarp();
-            }
-            else
-            {
-                PerformNetMassWarp();
-            }
-        }
-
+        
         /// <summary>
         /// Performs the NET Warping; Generates matches, gets the probabilities,
         /// calculates the alignment matrix and alignment function, gets the transformed NETs
         /// and then calculates the alignment matches
         /// </summary>
-        public void PerformNetWarp()
+        private void PerformNetWarp()
         {
             m_lcmsWarp.GenerateCandidateMatches();
             if (m_lcmsWarp.NumCandidateMatches < 10)
@@ -829,7 +496,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// performs NET warping, calibrates matches based on the NETWarp results, recalibrates the mass
         /// tolerance and then performs Warping again using the mass and Net scores
         /// </summary>
-        public void PerformNetMassWarp()
+        private void PerformNetMassWarp()
         {
             // First, perform the net calibration using a mass tolerance of the same size as the mass window
             // and then perform the net calibration again using the appropriate mass tolerance
@@ -1049,7 +716,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             var mzMassErrorCorrecteds = new double[count];
 
             //List<ResidualData> dataList = new List<ResidualData>();
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
 
                 scans[i] = net[i];

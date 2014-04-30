@@ -1,13 +1,10 @@
-﻿using System.Linq.Expressions;
-using MathNet.Numerics;
-using PNNLOmics.Algorithms.FeatureClustering;
-using PNNLOmics.Algorithms.SpectralProcessing;
+﻿using PNNLOmics.Algorithms.SpectralProcessing;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
+using PNNLOmics.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PNNLOmics.Extensions;
 
 namespace PNNLOmics.Algorithms.Chromatograms
 {
@@ -148,10 +145,13 @@ namespace PNNLOmics.Algorithms.Chromatograms
                             PrecursorMZ     = summary.PrecursorMZ,
                             TotalIonCurrent = summary.TotalIonCurrent
                         };
-
+                        
                         match.MSnSpectra.Add(spectraData);
                         spectraData.ParentFeature = match;
                     }
+
+                    if (spectrum != null)
+                        spectrum.Clear();                    
                     msmsFeatureId++;
 
                     continue;
@@ -286,6 +286,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     // Add the features back
                     for (var i = startIndex; i <= stopIndex; i++)
                     {
+                        msFeatures[i].Abundance = Convert.ToInt64(points[i].Y);
                         feature.AddChildFeature(msFeatures[i]);
                     }
                 }

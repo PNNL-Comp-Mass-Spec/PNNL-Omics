@@ -115,10 +115,16 @@
     <Compile Include="Algorithms\Alignment\IFeatureAligner.cs" />
     <Compile Include="Algorithms\Alignment\ISpectralAnchorPointMatchValidator.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpAdapter.cs" />
+    <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpCalibrationType.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\RegressionType.cs" />
+    <Compile Include="Algorithms\Alignment\LCMSWarp\ResidualData.cs" />
     <Compile Include="Algorithms\Regression\LeastSquaresSplineRegression.cs" />
     <Compile Include="Algorithms\Regression\NaturalCubicSplineRegression.cs" />
     <Compile Include="Algorithms\Regression\NormalUniformEm.cs" />
+    <Compile Include="Data\Features\LcmsFeatureFilteringOptions.cs" />
+    <Compile Include="Data\Features\LcmsFeatureFilters.cs" />
+    <Compile Include="Data\Features\MsFeatureFilteringOptions.cs" />
+    <Compile Include="Data\FilterRange.cs" />
     <Compile Include="Data\RegressionPoint.cs" />
     <Compile Include="Algorithms\Statistics\Histogram.cs">
       <SubType>Code</SubType>

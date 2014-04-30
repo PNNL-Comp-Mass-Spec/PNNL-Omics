@@ -11,26 +11,23 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// <summary>
     /// Object which performs feature alignment through LCMSWarp
     /// </summary>
-    public class LcmsWarpAdapter :
+    public sealed class LcmsWarpAdapter :
         IFeatureAligner<IEnumerable<UMCLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>,
         IFeatureAligner<IEnumerable<MassTagLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>
     {
         public event EventHandler<ProgressNotifierArgs> Progress;
+
+        private readonly LcmsWarpAlignmentOptions m_options;
 
         public LcmsWarpAdapter()
             : this(new LcmsWarpAlignmentOptions())
         {
         }
 
-        public LcmsWarpAdapter(LcmsWarpAlignmentOptions options)
+        private LcmsWarpAdapter(LcmsWarpAlignmentOptions options)
         {
-            Options = options;
+            m_options = options;
         }
-
-        /// <summary>
-        /// Gets or sets LCMSWarp options
-        /// </summary>
-        public LcmsWarpAlignmentOptions Options { get; set; }
         /// <summary>
         /// Gets or sets the baseline spectra provider
         /// </summary>
@@ -49,8 +46,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <returns></returns>
         public LcmsWarpAlignmentData Align(IEnumerable<UMCLight> baseline, IEnumerable<UMCLight> features)
         {
-            
-            return AlignFeatures(baseline as List<UMCLight>, features as List<UMCLight>, Options);
+
+            return AlignFeatures(baseline as List<UMCLight>, features as List<UMCLight>, m_options);
         }
 
         /// <summary>
@@ -62,8 +59,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <param name="features"></param>
         /// <returns></returns>
         public LcmsWarpAlignmentData Align(IEnumerable<MassTagLight> baseline, IEnumerable<UMCLight> features)
-        {            
-            return AlignFeatures(baseline as List<MassTagLight>, features as List<UMCLight>, Options);
+        {
+            return AlignFeatures(baseline as List<MassTagLight>, features as List<UMCLight>, m_options);
         }
 
         
@@ -79,7 +76,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <param name="features"></param>
         /// <param name="options"></param>        
         /// <returns></returns>
-        public LcmsWarpAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> features,
+        private LcmsWarpAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> features,
             LcmsWarpAlignmentOptions options)
         {
             var processor = new LcmsWarpAlignmentProcessor
@@ -95,7 +92,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 // Warming! Data has drift time info, but the mass tags do not.
             }
 
-            processor.SetReferenceDatasetFeatures(massTags, true);
+            processor.SetReferenceDatasetFeatures(massTags);
 
             var data = AlignFeatures(processor, features, options);
 
@@ -112,7 +109,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <param name="alignee"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public LcmsWarpAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> alignee, LcmsWarpAlignmentOptions options)
+        private LcmsWarpAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> alignee, LcmsWarpAlignmentOptions options)
         {
             var alignmentProcessor = new LcmsWarpAlignmentProcessor
             {
@@ -123,10 +120,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             alignmentProcessor.SetReferenceDatasetFeatures(filteredFeatures);
 
-            LcmsWarpAlignmentData data = AlignFeatures(alignmentProcessor, alignee, options);
+            var data = AlignFeatures(alignmentProcessor, alignee, options);
 
-            int minScan = int.MaxValue;
-            int maxScan = int.MinValue;
+            var minScan = int.MaxValue;
+            var maxScan = int.MinValue;
 
             foreach (var feature in baseline)
             {
@@ -244,11 +241,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 NetStandardDeviation = processor.NetStd
             };
 
-            if (options.AlignToMassTagDatabase)
-            {
-                data.MinMtdbnet = minMtdbNet;
-                data.MaxMtdbnet = maxMtdbNet;
-            }
+            if (!options.AlignToMassTagDatabase) return data;
+
+            data.MinMtdbnet = minMtdbNet;
+            data.MaxMtdbnet = maxMtdbNet;
 
             return data;
 

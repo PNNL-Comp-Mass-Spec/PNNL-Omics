@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
@@ -8,20 +7,13 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// Dataset name, Heatmap scores, the NET slope, intercept and r squared values,
     /// the mean and standard deviations for NET and Mass and the alignment function itself.
     /// </summary>
-    public class LcmsWarpAlignmentData
-    {
-        /// <summary>
-        /// Property for the dataset ID
-        /// </summary>
-        public int DatasetId { get; set; }
+    public sealed class LcmsWarpAlignmentData
+    {       
         /// <summary>
         /// Property to hold the function for the alignment
         /// </summary>
-        public LcmsWarpAlignmentFunction AlignmentFunction { get; set; }
-        /// <summary>
-        /// Property to hold the name of the alignee dataset
-        /// </summary>
-        public string AligneeDataset { get; set; }
+        public LcmsWarpAlignmentFunction AlignmentFunction {  get; set; }
+        
         /// <summary>
         /// Property to hold the heat scores for the alignment
         /// </summary>
@@ -88,54 +80,28 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>        
         public ResidualData ResidualData { get; set; }
 
-        /// <summary>
-        /// Returns the mass based on the Kurtosis method
-        /// (MassMean ^ 4) / (MassStdv ^ 4)
-        /// </summary>
-        public double MassKurtosis
-        {
-            get
-            {
-                return Math.Pow(MassMean, 4) / Math.Pow(MassStandardDeviation, 4);
-            }
-        }
-        /// <summary>
-        /// Returns the normalized elution time based on the Kurtosis method
-        /// (NetMean ^ 4) / (NetStdv ^ 4)
-        /// </summary>
-        public double NetKurtosis
-        {
-            get
-            {
-                return Math.Pow(NetMean, 4) / Math.Pow(NetStandardDeviation, 4);
-            }
-        }
 
-        /// <summary>
-        /// Test to see if the alignment datasets are equal based on
-        /// the ID number of the alignment data. Returns true if
-        /// the dataset IDs are the same, false in any other case
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            var factor = (LcmsWarpAlignmentData)obj;
+        ///// <summary>
+        ///// Test to see if the alignment datasets are equal based on
+        ///// the ID number of the alignment data. Returns true if
+        ///// the dataset IDs are the same, false in any other case
+        ///// </summary>
+        ///// <param name="obj"></param>
+        ///// <returns></returns>
+        //public override bool Equals(object obj)
+        //{
+        //    var factor = (LcmsWarpAlignmentData)obj;
 
-            if (factor == null)
-            {
-                return false;
-            }
-            return DatasetId.Equals(factor.DatasetId);
-        }
+        //    return factor != null && m_datasetId.Equals(factor.DatasetId);
+        //}
 
-        public override int GetHashCode()
-        {
-            int hash = 17;
+        //public override int GetHashCode()
+        //{
+        //    int hash = 17;
 
-            hash = hash * 23 + DatasetId.GetHashCode();
+        //    hash = hash * 23 + m_datasetId.GetHashCode();
 
-            return hash;
-        }
+        //    return hash;
+        //}
     }
 }

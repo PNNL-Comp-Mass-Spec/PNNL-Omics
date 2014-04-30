@@ -29,9 +29,15 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// </summary>
         public MsFeatureTreeClusterer()
         {
-            Tolerances    = new FeatureTolerances();
-            ScanTolerance = CONST_SCAN_TOLERANCE;
+            Tolerances          = new FeatureTolerances();
+            ScanTolerance       = CONST_SCAN_TOLERANCE;
+            FilteringOptions    = new LcmsFeatureFilteringOptions();
         }
+
+        /// <summary>
+        /// Gets or sets the filtering options
+        /// </summary>
+        public LcmsFeatureFilteringOptions FilteringOptions { get; set; }
 
         /// <summary>
         /// Gets or sets the tolerances
@@ -148,10 +154,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns></returns>
         public List<TParentFeature> Cluster(List<TChildFeature> rawMsFeatures)
         {            
-            Comparison<TChildFeature> mzSort        = (x, y) => x.Mz.CompareTo(y.Mz);                               
-            Comparison<TParentFeature> monoSort      = (x, y) => x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
-            Func<TChildFeature, TChildFeature, double> mzDiff   = (x, y) => Feature.ComputeMassPPMDifference(x.Mz, y.Mz);            
-            Func<TParentFeature, TParentFeature, double> monoDiff = (x, y) => Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
+            Comparison<TChildFeature> mzSort                        = (x, y) => x.Mz.CompareTo(y.Mz);                               
+            Comparison<TParentFeature> monoSort                     = (x, y) => x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
+            Func<TChildFeature, TChildFeature, double> mzDiff       = (x, y) => Feature.ComputeMassPPMDifference(x.Mz, y.Mz);            
+            Func<TParentFeature, TParentFeature, double> monoDiff   = (x, y) => Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
 
             var minScan = Convert.ToDouble(rawMsFeatures.Min(x => x.Scan));
             var maxScan = Convert.ToDouble(rawMsFeatures.Max(x => x.Scan));
@@ -159,6 +165,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             {
                 msFeature.RetentionTime = (Convert.ToDouble(msFeature.Scan) - minScan)/(maxScan - minScan);
             }
+
+            OnProgress("Filtering ambiguous features");
+            //rawMsFeatures = FilterMsFeatures(rawMsFeatures);
 
             OnProgress("Clustering child features into potential UMC candidates");
             // First cluster based on m/z finding the XIC's 
@@ -168,10 +177,16 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                                                         CompareMz,
                                                         Tolerances.Mass);
 
+            var N = features.Count();
             OnProgress(string.Format("Found {0} unique  child features from {1} total features", 
-                                            features.Count(),
+                                            N,
                                             rawMsFeatures.Count()));
-            
+
+
+            OnProgress("Filtering Features");
+            features = LcmsFeatureFilters.FilterFeatures(features.ToList(), FilteringOptions);
+            OnProgress(string.Format("Found {0} Filtered Features from {1} total features.", features.Count(), N));
+
             // Then we group into UMC's for clustering across charge states...
             if (features == null)
                 throw new InvalidDataException("No features were found from the input MS Feature list.");
@@ -181,8 +196,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             foreach (var feature in features)
             {
                 feature.MassMonoisotopic = (feature.Mz * feature.ChargeState) - (SubAtomicParticleLibrary.MASS_PROTON * feature.ChargeState);
-                feature.CalculateStatistics(ClusterCentroidRepresentation.Median);
-             
+                feature.CalculateStatistics(ClusterCentroidRepresentation.Median);             
             }
             
             // Here we should merge the XIC data...trying to find the best possible feature
@@ -190,8 +204,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             // that are separated by mass , scan , and charge 
             // so this method should interrogate each one of these....
             if (SpectraProvider != null)
-            {
-                
+            {                
                 OnProgress(string.Format("Building XIC's from child features"));
                 var generator = new XicCreator();
                 generator.Progress += generator_Progress;                
@@ -221,6 +234,57 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 x.ID = id++;                
             }
             return featureList;
+        }
+
+        private List<TChildFeature> FilterMsFeatures(List<TChildFeature> rawMsFeatures)
+        {
+            // sort by scan...
+            var allFeatures     = rawMsFeatures.OrderBy(x => x.Scan).ToList();
+
+
+            var newFeatures     = new List<TChildFeature>();
+            var features        = new List<TChildFeature>();
+            var totalFeatures   = rawMsFeatures.Count;
+            var currentScan     = 0;
+            
+            for (var i = 0; i < totalFeatures; i++)
+            {
+                var feature = allFeatures[i];
+                // Process the scans...
+                if (currentScan != feature.Scan)
+                {
+                    var mzFeatures = features.OrderBy(x => x.Mz).ToList();
+                    var mzMap = new Dictionary<double, List<TChildFeature>>();
+                    for (var j = 1; j < mzFeatures.Count; j++)
+                    {
+                        var featureJ    = mzFeatures[j];
+                        var featurePrev = mzFeatures[j - 1];
+
+                        // find the mass difference, here we are looking to see if there are unique  
+                        // m/z features or not, if not, then we need to process them.
+                        var ppm = Feature.ComputeMassPPMDifference(featureJ.Mz, featureJ.Mz);
+                        if (Math.Abs(ppm) > 1)
+                        {
+                            if (!mzMap.ContainsKey(featureJ.Mz))
+                            {
+                                mzMap.Add(featureJ.Mz, new List<TChildFeature>());
+                            }
+                            mzMap[featureJ.Mz].Add(featureJ);
+                            mzMap[featureJ.Mz].Add(featurePrev);                            
+                        }    
+                    }
+                    foreach (var key in mzMap.Keys)
+                    {
+                    }
+                    features.Clear();                    
+                }
+                else
+                {
+                    features.Add(feature);
+                }
+            }
+
+            return newFeatures;
         }
 
         void generator_Progress(object sender, ProgressNotifierArgs e)

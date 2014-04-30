@@ -5,7 +5,7 @@ namespace PNNLOmics.Algorithms.Alignment
     /// <summary>
     /// Encapsulates the pre and post alignment error for a given metric
     /// </summary>
-    public class AlignmentMeasurement<T>
+    public sealed class AlignmentMeasurement<T>
     {
         public AlignmentMeasurement()
         {
@@ -15,11 +15,11 @@ namespace PNNLOmics.Algorithms.Alignment
         /// <summary>
         /// Gets or sets the pre alignment value
         /// </summary>
-        public List<T> PreAlignment { get; set; }
+        public List<T> PreAlignment { get; private set; }
 
         /// <summary>
         /// Gets or sets the post alignment value
         /// </summary>
-        public List<T> PostAlignment { get; set; }
+        public List<T> PostAlignment { get; private set; }
     }
 }
