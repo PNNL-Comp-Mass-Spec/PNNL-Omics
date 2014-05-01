@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Data
@@ -105,10 +102,10 @@ namespace PNNLOmics.Data
 
         public override void Clear()
         {            
-            this.ScanNumber = 0;
-            this.LocalLowestMinimaHeight = 0;
-            this.MinimaOfHigherMassIndex = 0;
-            this.MinimaOfLowerMassIndex = 0;
+            ScanNumber = 0;
+            LocalLowestMinimaHeight = 0;
+            MinimaOfHigherMassIndex = 0;
+            MinimaOfLowerMassIndex = 0;
         }
 
         //TODO: Change List to Collection?
@@ -119,11 +116,11 @@ namespace PNNLOmics.Data
         /// <returns>list of peaks</returns>
         public static Collection<Peak> ToPeaks(List<ProcessedPeak> peaks)
         {
-            Collection<Peak> outputPeakList = new Collection<Peak>();
+            var outputPeakList = new Collection<Peak>();
 
-            foreach (ProcessedPeak inPeak in peaks)
+            foreach (var inPeak in peaks)
             {
-                Peak newPeak = new Peak();
+                var newPeak = new Peak();
                 newPeak.Height = inPeak.Height;
                 newPeak.LocalSignalToNoise = Convert.ToSingle(inPeak.SignalToBackground);
                 newPeak.Width = inPeak.Width;

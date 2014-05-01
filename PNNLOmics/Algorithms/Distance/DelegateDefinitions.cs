@@ -1,9 +1,7 @@
-﻿using System;
-using PNNLOmics.Data.Features;
+﻿using PNNLOmics.Data.Features;
 
-namespace PNNLOmics.Algorithms
-{
-
+namespace PNNLOmics.Algorithms.Distance
+{    
     /// <summary>
     /// Function for calculating the distance between two features.
     /// </summary>

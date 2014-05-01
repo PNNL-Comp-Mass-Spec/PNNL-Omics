@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using NUnit.Framework;
-
-using PNNLOmics.Data;
-using PNNLOmics.Algorithms;
-using PNNLOmics.Data.Features;
-using PNNLOmics.Algorithms.FeatureClustering;
-
-/*////////////////////////////////////////////////////////////////////////////////////////////////////////////
+﻿/*////////////////////////////////////////////////////////////////////////////////////////////////////////////
  * 
  * Name:    LCMSWarp Alignment Dataset Tests
  * File:    AlignmentDatasetTests.cs
@@ -20,7 +10,6 @@ using PNNLOmics.Algorithms.FeatureClustering;
  *          
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-using PNNLOmics.Algorithms.Alignment;
 namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
 {
 	//[TestFixture]

@@ -86,18 +86,18 @@ namespace PNNLOmics.Data.Features
 		{
 			base.Clear();
             //TODO: Was this removed?  Does this affect LCMS Feature Finder.
-			this.IndexInFile            = -1;
-			this.AbundanceMono          = 0;
-			this.AbundancePlus2         = 0;
-			this.IntensityOriginal      = 0;
-			this.IntensityOriginalTIA   = 0;
-			this.MassOffset             = 0;
-			this.ScanIMS                = 0;
-			this.Fit                    = float.NaN;
-			this.Fwhm                   = float.NaN;
-			this.SignalToNoiseRatio     = float.NaN;
-			this.MSPeakList             = new List<Peak>();
-            this.MSMSFragmentation      = null;
+			IndexInFile            = -1;
+			AbundanceMono          = 0;
+			AbundancePlus2         = 0;
+			IntensityOriginal      = 0;
+			IntensityOriginalTIA   = 0;
+			MassOffset             = 0;
+			ScanIMS                = 0;
+			Fit                    = float.NaN;
+			Fwhm                   = float.NaN;
+			SignalToNoiseRatio     = float.NaN;
+			MSPeakList             = new List<Peak>();
+            MSMSFragmentation      = null;
 		}
 		#endregion
 
@@ -107,7 +107,7 @@ namespace PNNLOmics.Data.Features
 		/// </summary>
 		public int CompareTo(MSFeature other)
 		{
-			return other.MassMonoisotopic.CompareTo(this.MassMonoisotopic);
+			return other.MassMonoisotopic.CompareTo(MassMonoisotopic);
 		}
 		#endregion		
 	}

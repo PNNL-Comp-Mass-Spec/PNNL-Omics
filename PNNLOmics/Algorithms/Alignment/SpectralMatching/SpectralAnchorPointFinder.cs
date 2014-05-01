@@ -214,15 +214,15 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             var xSpectraSummary = scanDataX.Values.Where(summary => summary.MsLevel == 2).ToList();
 
 
-            ySpectraSummary.Sort((x, y) => x.PrecursorMZ.CompareTo(y.PrecursorMZ));
-            xSpectraSummary.Sort((x, y) => x.PrecursorMZ.CompareTo(y.PrecursorMZ));
+            ySpectraSummary.Sort((x, y) => x.PrecursorMz.CompareTo(y.PrecursorMz));
+            xSpectraSummary.Sort((x, y) => x.PrecursorMz.CompareTo(y.PrecursorMz));
 
-            double netTolerance = options.NetTolerance;
-            double mzTolerance  = options.MzTolerance;
-            int j               = 0;
-            int i               = 0;
-            int yTotal          = ySpectraSummary.Count;
-            int xTotal          = xSpectraSummary.Count;
+            var netTolerance = options.NetTolerance;
+            var mzTolerance  = options.MzTolerance;
+            var j               = 0;
+            var i               = 0;
+            var yTotal          = ySpectraSummary.Count;
+            var xTotal          = xSpectraSummary.Count;
 
             var cache = new Dictionary<int, MSSpectra>();
 
@@ -230,15 +230,15 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 
             while (i < xTotal && j < yTotal)
             {
-                ScanSummary xsum    = xSpectraSummary[i];
-                int scanx           = xsum.Scan;
-                double precursorX   = xsum.PrecursorMZ;
+                var xsum    = xSpectraSummary[i];
+                var scanx           = xsum.Scan;
+                var precursorX   = xsum.PrecursorMz;
                 MSSpectra spectrumX = null;
 
-                while (j < yTotal && ySpectraSummary[j].PrecursorMZ < (precursorX - mzTolerance))
+                while (j < yTotal && ySpectraSummary[j].PrecursorMz < (precursorX - mzTolerance))
                 {
                     // Here we make sure we arent caching something 
-                    int scany = ySpectraSummary[j].Scan;
+                    var scany = ySpectraSummary[j].Scan;
                     if (cache.ContainsKey(scany))
                     {
                         cache.Remove(scany);
@@ -255,17 +255,17 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                 }
 
 
-                int k = 0;
+                var k = 0;
                 var points = new List<SpectralAnchorPoint>();
 
-                while ((j + k) < yTotal && Math.Abs(ySpectraSummary[j + k].PrecursorMZ - precursorX) < mzTolerance)
+                while ((j + k) < yTotal && Math.Abs(ySpectraSummary[j + k].PrecursorMz - precursorX) < mzTolerance)
                 {
                     var ysum = ySpectraSummary[j + k];
                     k++;
-                    int scany       = ysum.Scan;
-                    double netX     = Convert.ToDouble(scanx - minX) / Convert.ToDouble(maxX - minX);
-                    double netY     = Convert.ToDouble(scany - minY) / Convert.ToDouble(maxY - minY);
-                    double net      = Convert.ToDouble(netX - netY);
+                    var scany       = ysum.Scan;
+                    var netX     = Convert.ToDouble(scanx - minX) / Convert.ToDouble(maxX - minX);
+                    var netY     = Convert.ToDouble(scany - minY) / Convert.ToDouble(maxY - minY);
+                    var net      = Convert.ToDouble(netX - netY);
 
                     // Test whether the spectra are within decent range.
                     if (Math.Abs(net) < netTolerance)
@@ -287,7 +287,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 
                                 if (spectrumX != null)
                                 {
-                                    spectrumX.PrecursorMZ = xsum.PrecursorMZ;
+                                    spectrumX.PrecursorMZ = xsum.PrecursorMz;
                                 }
                                 else
                                 {
@@ -315,7 +315,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 
                                 if (spectrumY != null)
                                 {
-                                    spectrumY.PrecursorMZ = ysum.PrecursorMZ;
+                                    spectrumY.PrecursorMZ = ysum.PrecursorMz;
                                     cache.Add(scany, spectrumY);
                                 }
                                 else continue; // This spectra does not have enough peaks or did not pass our filters, throw it away!
@@ -340,7 +340,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                         {
                             Net = netX,
                             Mass = 0,
-                            Mz = xsum.PrecursorMZ,
+                            Mz = xsum.PrecursorMz,
                             Scan = scanx,
                             Spectrum = spectrumX
                         };
@@ -349,7 +349,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                         {
                             Net = netY,
                             Mass = 0,
-                            Mz = ysum.PrecursorMZ,
+                            Mz = ysum.PrecursorMz,
                             Scan = scany,
                             Spectrum = spectrumY
                         };

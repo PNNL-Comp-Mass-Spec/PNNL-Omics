@@ -51,7 +51,7 @@ namespace PNNLOmics.Algorithms.Regression
         {
             m_minX = double.MaxValue;
             m_maxX = double.MinValue;
-            foreach (RegressionPoint point in points)
+            foreach (var point in points)
             {
                 if (point.X < m_minX)
                 {
@@ -64,9 +64,9 @@ namespace PNNLOmics.Algorithms.Regression
                 m_pts.Add(point);
             }
 
-            for (int i = 0; i <= m_numKnots; i++)
+            for (var i = 0; i <= m_numKnots; i++)
             {
-                double val = (i * (m_maxX - m_minX)) / (m_numKnots + 1) + m_minX;
+                var val = (i * (m_maxX - m_minX)) / (m_numKnots + 1) + m_minX;
                 m_intervalStart.Add(val);
             }
         }
@@ -95,16 +95,16 @@ namespace PNNLOmics.Algorithms.Regression
 
             PreprocessCopyData(points);
 
-            int numPts = m_pts.Count;
+            var numPts = m_pts.Count;
 
             var a = new DenseMatrix(numPts, m_numKnots);
             var b = new DenseMatrix(numPts, 1);
 
-            double intervalWidth = (m_maxX - m_minX) / (m_numKnots + 1);
+            var intervalWidth = (m_maxX - m_minX) / (m_numKnots + 1);
 
-            for (int pointNum = 0; pointNum < numPts; pointNum++)
+            for (var pointNum = 0; pointNum < numPts; pointNum++)
             {
-                RegressionPoint point = m_pts[pointNum];
+                var point = m_pts[pointNum];
                 a[pointNum, 0] = 1.0;
                 a[pointNum, 1] = point.X;
 
@@ -119,7 +119,7 @@ namespace PNNLOmics.Algorithms.Regression
                     kMinus1 = kMinus1 / intervalWidth;
                 }
 
-                for (int k = 1; k <= m_numKnots - 2; k++)
+                for (var k = 1; k <= m_numKnots - 2; k++)
                 {
                     double kminus1 = 0;
 
@@ -153,7 +153,7 @@ namespace PNNLOmics.Algorithms.Regression
 
             var c = (DenseMatrix)invATransAaTrans.Multiply(b);
 
-            for (int colNum = 0; colNum < m_numKnots; colNum++)
+            for (var colNum = 0; colNum < m_numKnots; colNum++)
             {
                 m_coeffs[colNum] = c[colNum, 0];
             }
@@ -183,9 +183,9 @@ namespace PNNLOmics.Algorithms.Regression
                 x = m_maxX;
             }
 
-            double intervalWidth = (m_maxX - m_minX) / (m_numKnots + 1);
+            var intervalWidth = (m_maxX - m_minX) / (m_numKnots + 1);
 
-            double val = m_coeffs[0] + m_coeffs[1] * x;
+            var val = m_coeffs[0] + m_coeffs[1] * x;
 
             double kMinus1 = 0;
             if (x > m_intervalStart[m_numKnots - 1])
@@ -198,7 +198,7 @@ namespace PNNLOmics.Algorithms.Regression
                 kMinus1 = kMinus1 / intervalWidth;
             }
 
-            for (int k = 1; k <= m_numKnots - 2; k++)
+            for (var k = 1; k <= m_numKnots - 2; k++)
             {
                 double kminus1 = 0;
                 if (x > m_intervalStart[k])

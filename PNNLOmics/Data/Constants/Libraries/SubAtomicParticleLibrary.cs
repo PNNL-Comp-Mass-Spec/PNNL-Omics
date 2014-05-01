@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 /// <example>
 /// http://physics.nist.gov/cuu/Constants/index.html  NIST CODATA 2006  
@@ -38,19 +37,19 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap = new Dictionary<string, SubAtomicParticle>();
             m_enumToSymbolMap = new Dictionary<SubAtomicParticleName, string>();
 
-            SubAtomicParticle electron = new SubAtomicParticle();
+            var electron = new SubAtomicParticle();
             electron.Name = "Electron";
             electron.MassMonoIsotopic = MASS_ELECTRON;//units of u a.k.a.Da.  NIST CODATA 2006 
             electron.Symbol = "e";
             electron.ParticleType = SubAtomicParticleName.Electron;
 
-            SubAtomicParticle neutron = new SubAtomicParticle();
+            var neutron = new SubAtomicParticle();
             neutron.Name = "Neutron";
             neutron.MassMonoIsotopic = MASS_NUETRON;//units of u a.k.a.Da.  NIST CODATA 2006
             neutron.Symbol = "n";
             neutron.ParticleType = SubAtomicParticleName.Neutron;
 
-            SubAtomicParticle proton = new SubAtomicParticle();
+            var proton = new SubAtomicParticle();
             proton.Name = "Proton";
             proton.MassMonoIsotopic = MASS_PROTON;//units of u a.k.a.Da.  NIST CODATA 2006
             proton.Symbol = "p";

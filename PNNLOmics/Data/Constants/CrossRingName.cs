@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PNNLOmics.Data.Constants
+﻿namespace PNNLOmics.Data.Constants
 {
     //TODO: SCOTT - CR - update XML comment for enumeration.
     /// <summary>

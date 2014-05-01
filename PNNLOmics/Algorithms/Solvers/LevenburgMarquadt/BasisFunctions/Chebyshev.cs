@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
+
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
     /// <summary>
@@ -16,7 +17,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
             m_min = double.MaxValue;
             m_max = double.MinValue;
             
-            foreach (double d in x)
+            foreach (var d in x)
             {
                 m_max = Math.Max(m_max, d);
                 m_min = Math.Min(m_min, d);
@@ -33,19 +34,19 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
         public override void FunctionDelegate(double[] c, double[] x, ref double functionResult, object obj)
         {
 
-            double tx      = (x[0] - m_min) / (m_max - m_min);
+            var tx      = (x[0] - m_min) / (m_max - m_min);
             tx             -= 1.0; // This scales the value between -1 and 1
             
-            double t0   = c[0];
-            double t1   = c[1] * tx;
-            double sum  = t0 + t1;
-            double prev = t1;            
+            var t0   = c[0];
+            var t1   = c[1] * tx;
+            var sum  = t0 + t1;
+            var prev = t1;            
             double n    = 2;
-            double acos = Math.Acos(tx);
+            var acos = Math.Acos(tx);
 
-            for (int i = 2; i < c.Length; i++)
+            for (var i = 2; i < c.Length; i++)
             {
-                double value = (2 * Math.Cos(n * acos) * c[i]) - Math.Cos( (n - 1) * acos);
+                var value = (2 * Math.Cos(n * acos) * c[i]) - Math.Cos( (n - 1) * acos);
                 prev = value;
                 sum += value;
                 n++;

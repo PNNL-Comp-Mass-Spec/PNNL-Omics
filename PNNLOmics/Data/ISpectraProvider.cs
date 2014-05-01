@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using PNNLOmics.Data;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PNNLOmics.Data
 {    

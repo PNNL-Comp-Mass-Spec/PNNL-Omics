@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Features;
-using PNNLOmics.Data;
-using PNNLOmics.Extensions;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
-
+using PNNLOmics.Data;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureMetrics
 {
@@ -18,29 +15,28 @@ namespace PNNLOmics.Algorithms.FeatureMetrics
         public void FitChromatograms(Chromatogram profile,
                                      BasisFunctionBase basisFunction)
         {                        
-            LevenburgMarquadtSolver solver = new LevenburgMarquadtSolver();
+            var solver = new LevenburgMarquadtSolver();
             solver.BasisFunction = basisFunction.FunctionDelegate;
 
-            double[] coeffs = basisFunction.Coefficients;
-            SolverReport report = solver.Solve(profile.Points, ref coeffs);
+            var coeffs = basisFunction.Coefficients;
+            solver.Solve(profile.Points, ref coeffs);
 
-            double minScan      = profile.Points.Min(x => x.X);
-            double maxScan      = profile.Points.Max(x => x.X);
+            var minScan      = profile.Points.Min(x => x.X);
+            var maxScan      = profile.Points.Max(x => x.X);
 
-            double scanRange    = Math.Abs(maxScan - minScan);
-            double deltaScan    = scanRange / (scanRange * 4);
-            double scan         = minScan;
+            var scanRange    = Math.Abs(maxScan - minScan);
+            var deltaScan    = scanRange / (scanRange * 4);
+            var scan         = minScan;
 
-            List<XYData> fitPoints = new List<XYData>();
+            var fitPoints = new List<XYData>();
             while (scan <= maxScan)
             {
-                double y = basisFunction.Evaluate(coeffs, scan);                
+                var y = basisFunction.Evaluate(coeffs, scan);                
                 fitPoints.Add(new XYData(scan, y));
                 scan += deltaScan;
             }
             profile.FitCoefficients = coeffs;
-            profile.FitPoints       = fitPoints;
-            profile.FitReport       = report;            
+            profile.FitPoints       = fitPoints;                 
         }
         /// <summary>
         /// 
@@ -50,9 +46,9 @@ namespace PNNLOmics.Algorithms.FeatureMetrics
         public void FitChromatograms(UMCLight feature,
                                     BasisFunctionBase basisFunction)
         {
-            foreach (int charge in feature.ChargeStateChromatograms.Keys)
+            foreach (var charge in feature.ChargeStateChromatograms.Keys)
             {
-                Chromatogram gram = feature.ChargeStateChromatograms[charge];                
+                var gram = feature.ChargeStateChromatograms[charge];                
                 FitChromatograms(gram, basisFunction);                
             }
         }
@@ -77,33 +73,35 @@ namespace PNNLOmics.Algorithms.FeatureMetrics
                                                  Chromatogram profileB,
                                                  BasisFunctionBase basisFunction,
                                                  ref List<XYData>  intensityProfile)
-        {            
-            double minScan = profileA.FitPoints.Min(x => x.X);
-            double maxScan = profileA.FitPoints.Max(x => x.X);
+        {
+            if (intensityProfile == null)
+                throw new ArgumentNullException("intensityProfile");
+
+            var minScan = profileA.FitPoints.Min(x => x.X);
+            var maxScan = profileA.FitPoints.Max(x => x.X);
 
             minScan = Math.Min(minScan, profileB.FitPoints.Min(x => x.X));
             maxScan = Math.Max(maxScan, profileB.FitPoints.Max(x => x.X));
             
-            double deltaScan    = Math.Abs(maxScan - minScan) / 100;
-            double scan         = minScan;
+            var deltaScan    = Math.Abs(maxScan - minScan) / 100;
+            var scan         = minScan;
 
-            List<XYData> pairs = new List<XYData>();
+            var pairs = new List<XYData>();
 
             while (scan <= maxScan)
             {
-                double x = basisFunction.Evaluate(profileA.FitCoefficients, scan);
-                double y = basisFunction.Evaluate(profileB.FitCoefficients, scan);
+                var x = basisFunction.Evaluate(profileA.FitCoefficients, scan);
+                var y = basisFunction.Evaluate(profileB.FitCoefficients, scan);
 
                 pairs.Add(new XYData(x, y));
                 scan += deltaScan;
             }
 
-            BasisFunctionBase linearRegression  = BasisFunctionFactory.BasisFunctionSelector(Solvers.LevenburgMarquadt.BasisFunctions.BasisFunctionsEnum.Linear);
-            LevenburgMarquadtSolver solver      = new LevenburgMarquadtSolver();
-            solver.BasisFunction                = linearRegression.FunctionDelegate;  
+            var linearRegression  = BasisFunctionFactory.BasisFunctionSelector(Solvers.LevenburgMarquadt.BasisFunctions.BasisFunctionsEnum.Linear);
+            var solver      = new LevenburgMarquadtSolver {BasisFunction = linearRegression.FunctionDelegate};
 
-            double [] coeffs                    = linearRegression.Coefficients;
-            SolverReport report                 = solver.Solve(pairs, ref coeffs);
+            var coeffs                    = linearRegression.Coefficients;
+            var report                 = solver.Solve(pairs, ref coeffs);
 
             return report.RSquared;
         }        

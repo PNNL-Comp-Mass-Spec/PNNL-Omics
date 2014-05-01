@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace PNNLOmics.Data
+﻿namespace PNNLOmics.Data
 {
     public class Ion: Peak
     {        

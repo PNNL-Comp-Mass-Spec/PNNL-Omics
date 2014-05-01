@@ -3,7 +3,7 @@
     /// <summary>
     /// Object used for the LCMS Warp regressions, has a Net (or MZ), Mass error and Net Error
     /// </summary>
-    public class RegressionPoint
+    public sealed class RegressionPoint
     {
         /// <summary>
         /// AutoProperty for the Net (or MZ) of a calibratin match

@@ -1,205 +1,240 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
-using PNNLOmics.Algorithms.Regression;
-using PNNLOmics.Data.Features;
 using PNNLOmics.Algorithms.Alignment;
+using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Data;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
 {
-	[TestFixture]
-	public class DriftTimeAlignmentTest
-	{
-		[Test]
-		public void TestDriftTimeAlignment()
-		{
-			List<UMC> observedUMCList = null;
-			List<UMC> targetUMCList = null;
+    [TestFixture]
+    public class DriftTimeAlignmentTest
+    {
+        [Test]
+        public void TestDriftTimeAlignment()
+        {
+            List<UMCLight> observedUmcList = null;
+            List<UMCLight> targetUmcList = null;
 
-			CreateObservedAndTargetUMCLists(ref observedUMCList, ref targetUMCList);
+            CreateObservedAndTargetUmcLists(ref observedUmcList, ref targetUmcList);
 
-			DriftTimeAlignment<UMC, UMC>.AlignObservedEnumerable(observedUMCList, observedUMCList, targetUMCList, 20, 0.03);
+            DriftTimeAlignment<UMCLight, UMCLight>.AlignObservedEnumerable(observedUmcList, observedUmcList,
+                targetUmcList, 20, 0.03);
 
-			Assert.AreEqual(Math.Round(observedUMCList[0].DriftTimeAligned, 2), 17.10);
-			Assert.AreEqual(Math.Round(observedUMCList[1].DriftTimeAligned, 2), 28.67);
-			Assert.AreEqual(Math.Round(observedUMCList[2].DriftTimeAligned, 2), 19.31);
-			Assert.AreEqual(Math.Round(observedUMCList[3].DriftTimeAligned, 2), 18.80);
-			Assert.AreEqual(Math.Round(observedUMCList[4].DriftTimeAligned, 2), 20.43);
-			Assert.AreEqual(Math.Round(observedUMCList[5].DriftTimeAligned, 2), 21.56);
-			Assert.AreEqual(Math.Round(observedUMCList[6].DriftTimeAligned, 2), 22.67);
-			Assert.AreEqual(Math.Round(observedUMCList[7].DriftTimeAligned, 2), 23.41);
-			Assert.AreEqual(Math.Round(observedUMCList[8].DriftTimeAligned, 2), 18.10);
-			Assert.AreEqual(Math.Round(observedUMCList[9].DriftTimeAligned, 2), 24.86);
-		}
+            Assert.AreEqual(Math.Round(observedUmcList[0].DriftTimeAligned, 2), 17.10);
+            Assert.AreEqual(Math.Round(observedUmcList[1].DriftTimeAligned, 2), 28.67);
+            Assert.AreEqual(Math.Round(observedUmcList[2].DriftTimeAligned, 2), 19.31);
+            Assert.AreEqual(Math.Round(observedUmcList[3].DriftTimeAligned, 2), 18.80);
+            Assert.AreEqual(Math.Round(observedUmcList[4].DriftTimeAligned, 2), 20.43);
+            Assert.AreEqual(Math.Round(observedUmcList[5].DriftTimeAligned, 2), 21.56);
+            Assert.AreEqual(Math.Round(observedUmcList[6].DriftTimeAligned, 2), 22.67);
+            Assert.AreEqual(Math.Round(observedUmcList[7].DriftTimeAligned, 2), 23.41);
+            Assert.AreEqual(Math.Round(observedUmcList[8].DriftTimeAligned, 2), 18.10);
+            Assert.AreEqual(Math.Round(observedUmcList[9].DriftTimeAligned, 2), 24.86);
+        }
 
-		[Test]
-		public void TestLinearEquationCalculation()
-		{
-			List<UMC> observedUMCList = null;
-			List<UMC> targetUMCList = null;
+        [Test]
+        public void TestLinearEquationCalculation()
+        {
+            List<UMCLight> observedUmcList = null;
+            List<UMCLight> targetUmcList = null;
 
-			CreateObservedAndTargetUMCLists(ref observedUMCList, ref targetUMCList);
+            CreateObservedAndTargetUmcLists(ref observedUmcList, ref targetUmcList);
 
-			List<XYData> xyDataList = new List<XYData>();
+            var xyDataList =
+                observedUmcList.Select((t, i) => new XYData(t.DriftTime, targetUmcList[i].DriftTime)).ToList();
 
-			for (int i = 0; i < observedUMCList.Count; i++)
-			{
-				XYData xyData = new XYData(observedUMCList[i].DriftTime, targetUMCList[i].DriftTime);
-				xyDataList.Add(xyData);
-			}
+            var linearEquation = LinearRegression.CalculateLinearEquation(xyDataList);
+            Assert.AreEqual(Math.Round(linearEquation.Slope, 4), 0.7142);
+            Assert.AreEqual(Math.Round(linearEquation.Intercept, 4), 1.1324);
+        }
 
-			LinearEquation linearEquation = LinearRegression.CalculateLinearEquation(xyDataList);
-			Assert.AreEqual(Math.Round(linearEquation.Slope, 4), 0.7142);
-			Assert.AreEqual(Math.Round(linearEquation.Intercept, 4), 1.1324);
-		}
+        private void CreateObservedAndTargetUmcLists(ref List<UMCLight> observedUmcList,
+            ref List<UMCLight> targetUmcList)
+        {
+            if (observedUmcList == null) throw new ArgumentNullException("observedUmcList");
+            observedUmcList = new List<UMCLight>();
+            targetUmcList = new List<UMCLight>();
 
-		private void CreateObservedAndTargetUMCLists(ref List<UMC> observedUMCList, ref List<UMC> targetUMCList)
-		{
-			observedUMCList = new List<UMC>();
-			targetUMCList = new List<UMC>();
+            var observedFeature1 = new UMCLight
+            {
+                MassMonoisotopic = 771.47578,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 22.35554f
+            };
+            observedUmcList.Add(observedFeature1);
 
-			UMC observedFeature1 = new UMC();
-			observedFeature1.MassMonoisotopic = 771.47578;
-			observedFeature1.NET = 0.5;
-			observedFeature1.ChargeState = 2;
-			observedFeature1.DriftTime = 22.35554f;
-			observedUMCList.Add(observedFeature1);
+            var targetFeature1 = new UMCLight
+            {
+                MassMonoisotopic = 771.47313,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 16.99548f
+            };
+            targetUmcList.Add(targetFeature1);
 
-			UMC targetFeature1 = new UMC();
-			targetFeature1.MassMonoisotopic = 771.47313;
-			targetFeature1.NET = 0.5;
-			targetFeature1.ChargeState = 2;
-			targetFeature1.DriftTime = 16.99548f;
-			targetUMCList.Add(targetFeature1);
+            var observedFeature2 = new UMCLight();
+            observedFeature2.MassMonoisotopic = 783.40238;
+            observedFeature2.Net = 0.5;
+            observedFeature2.ChargeState = 1;
+            observedFeature2.DriftTime = 38.56024f;
+            observedUmcList.Add(observedFeature2);
 
-			UMC observedFeature2 = new UMC();
-			observedFeature2.MassMonoisotopic = 783.40238;
-			observedFeature2.NET = 0.5;
-			observedFeature2.ChargeState = 1;
-			observedFeature2.DriftTime = 38.56024f;
-			observedUMCList.Add(observedFeature2);
+            var targetFeature2 = new UMCLight
+            {
+                MassMonoisotopic = 783.40651,
+                Net = 0.5,
+                ChargeState = 1,
+                DriftTime = 28.64959f
+            };
+            targetUmcList.Add(targetFeature2);
 
-			UMC targetFeature2 = new UMC();
-			targetFeature2.MassMonoisotopic = 783.40651;
-			targetFeature2.NET = 0.5;
-			targetFeature2.ChargeState = 1;
-			targetFeature2.DriftTime = 28.64959f;
-			targetUMCList.Add(targetFeature2);
+            var observedFeature3 = new UMCLight
+            {
+                MassMonoisotopic = 1045.5403,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 25.4562f
+            };
+            observedUmcList.Add(observedFeature3);
 
-			UMC observedFeature3 = new UMC();
-			observedFeature3.MassMonoisotopic = 1045.5403;
-			observedFeature3.NET = 0.5;
-			observedFeature3.ChargeState = 2;
-			observedFeature3.DriftTime = 25.4562f;
-			observedUMCList.Add(observedFeature3);
+            var targetFeature3 = new UMCLight
+            {
+                MassMonoisotopic = 1045.53546,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 19.34219f
+            };
+            targetUmcList.Add(targetFeature3);
 
-			UMC targetFeature3 = new UMC();
-			targetFeature3.MassMonoisotopic = 1045.53546;
-			targetFeature3.NET = 0.5;
-			targetFeature3.ChargeState = 2;
-			targetFeature3.DriftTime = 19.34219f;
-			targetUMCList.Add(targetFeature3);
+            var observedFeature4 = new UMCLight
+            {
+                MassMonoisotopic = 1059.56535,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 24.7409f
+            };
+            observedUmcList.Add(observedFeature4);
 
-			UMC observedFeature4 = new UMC();
-			observedFeature4.MassMonoisotopic = 1059.56535;
-			observedFeature4.NET = 0.5;
-			observedFeature4.ChargeState = 2;
-			observedFeature4.DriftTime = 24.7409f;
-			observedUMCList.Add(observedFeature4);
+            var targetFeature4 = new UMCLight
+            {
+                MassMonoisotopic = 1059.56132,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 18.79057f
+            };
+            targetUmcList.Add(targetFeature4);
 
-			UMC targetFeature4 = new UMC();
-			targetFeature4.MassMonoisotopic = 1059.56132;
-			targetFeature4.NET = 0.5;
-			targetFeature4.ChargeState = 2;
-			targetFeature4.DriftTime = 18.79057f;
-			targetUMCList.Add(targetFeature4);
+            var observedFeature5 = new UMCLight
+            {
+                MassMonoisotopic = 1227.72843,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 27.01977f
+            };
+            observedUmcList.Add(observedFeature5);
 
-			UMC observedFeature5 = new UMC();
-			observedFeature5.MassMonoisotopic = 1227.72843;
-			observedFeature5.NET = 0.5;
-			observedFeature5.ChargeState = 2;
-			observedFeature5.DriftTime = 27.01977f;
-			observedUMCList.Add(observedFeature5);
+            var targetFeature5 = new UMCLight
+            {
+                MassMonoisotopic = 1227.72107,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 20.46228f
+            };
+            targetUmcList.Add(targetFeature5);
 
-			UMC targetFeature5 = new UMC();
-			targetFeature5.MassMonoisotopic = 1227.72107;
-			targetFeature5.NET = 0.5;
-			targetFeature5.ChargeState = 2;
-			targetFeature5.DriftTime = 20.46228f;
-			targetUMCList.Add(targetFeature5);
+            var observedFeature6 = new UMCLight
+            {
+                MassMonoisotopic = 1346.72985,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 28.60684f
+            };
+            observedUmcList.Add(observedFeature6);
 
-			UMC observedFeature6 = new UMC();
-			observedFeature6.MassMonoisotopic = 1346.72985;
-			observedFeature6.NET = 0.5;
-			observedFeature6.ChargeState = 2;
-			observedFeature6.DriftTime = 28.60684f;
-			observedUMCList.Add(observedFeature6);
+            var targetFeature6 = new UMCLight
+            {
+                MassMonoisotopic = 1346.72875,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 21.55198f
+            };
+            targetUmcList.Add(targetFeature6);
 
-			UMC targetFeature6 = new UMC();
-			targetFeature6.MassMonoisotopic = 1346.72875;
-			targetFeature6.NET = 0.5;
-			targetFeature6.ChargeState = 2;
-			targetFeature6.DriftTime = 21.55198f;
-			targetUMCList.Add(targetFeature6);
+            var observedFeature7 = new UMCLight
+            {
+                MassMonoisotopic = 1453.89352,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 30.15363f
+            };
+            observedUmcList.Add(observedFeature7);
 
-			UMC observedFeature7 = new UMC();
-			observedFeature7.MassMonoisotopic = 1453.89352;
-			observedFeature7.NET = 0.5;
-			observedFeature7.ChargeState = 2;
-			observedFeature7.DriftTime = 30.15363f;
-			observedUMCList.Add(observedFeature7);
+            var targetFeature7 = new UMCLight
+            {
+                MassMonoisotopic = 1453.89305,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 22.72478f
+            };
+            targetUmcList.Add(targetFeature7);
 
-			UMC targetFeature7 = new UMC();
-			targetFeature7.MassMonoisotopic = 1453.89305;
-			targetFeature7.NET = 0.5;
-			targetFeature7.ChargeState = 2;
-			targetFeature7.DriftTime = 22.72478f;
-			targetUMCList.Add(targetFeature7);
+            var observedFeature8 = new UMCLight
+            {
+                MassMonoisotopic = 1524.94014,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 31.19778f
+            };
+            observedUmcList.Add(observedFeature8);
 
-			UMC observedFeature8 = new UMC();
-			observedFeature8.MassMonoisotopic = 1524.94014;
-			observedFeature8.NET = 0.5;
-			observedFeature8.ChargeState = 2;
-			observedFeature8.DriftTime = 31.19778f;
-			observedUMCList.Add(observedFeature8);
+            var targetFeature8 = new UMCLight
+            {
+                MassMonoisotopic = 1524.92889,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 23.4855f
+            };
+            targetUmcList.Add(targetFeature8);
 
-			UMC targetFeature8 = new UMC();
-			targetFeature8.MassMonoisotopic = 1524.92889;
-			targetFeature8.NET = 0.5;
-			targetFeature8.ChargeState = 2;
-			targetFeature8.DriftTime = 23.4855f;
-			targetUMCList.Add(targetFeature8);
+            var observedFeature9 = new UMCLight
+            {
+                MassMonoisotopic = 1621.98666,
+                Net = 0.5,
+                ChargeState = 3,
+                DriftTime = 23.75201f
+            };
+            observedUmcList.Add(observedFeature9);
 
-			UMC observedFeature9 = new UMC();
-			observedFeature9.MassMonoisotopic = 1621.98666;
-			observedFeature9.NET = 0.5;
-			observedFeature9.ChargeState = 3;
-			observedFeature9.DriftTime = 23.75201f;
-			observedUMCList.Add(observedFeature9);
+            var targetFeature9 = new UMCLight
+            {
+                MassMonoisotopic = 1621.98151,
+                Net = 0.5,
+                ChargeState = 3,
+                DriftTime = 18.13624f
+            };
+            targetUmcList.Add(targetFeature9);
 
-			UMC targetFeature9 = new UMC();
-			targetFeature9.MassMonoisotopic = 1621.98151;
-			targetFeature9.NET = 0.5;
-			targetFeature9.ChargeState = 3;
-			targetFeature9.DriftTime = 18.13624f;
-			targetUMCList.Add(targetFeature9);
+            var observedFeature10 = new UMCLight
+            {
+                MassMonoisotopic = 1757.92318,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 33.22705f
+            };
+            observedUmcList.Add(observedFeature10);
 
-			UMC observedFeature10 = new UMC();
-			observedFeature10.MassMonoisotopic = 1757.92318;
-			observedFeature10.NET = 0.5;
-			observedFeature10.ChargeState = 2;
-			observedFeature10.DriftTime = 33.22705f;
-			observedUMCList.Add(observedFeature10);
-
-			UMC targetFeature10 = new UMC();
-			targetFeature10.MassMonoisotopic = 1757.91498;
-			targetFeature10.NET = 0.5;
-			targetFeature10.ChargeState = 2;
-			targetFeature10.DriftTime = 24.77506f;
-			targetUMCList.Add(targetFeature10);
-		}
-	}
+            var targetFeature10 = new UMCLight
+            {
+                MassMonoisotopic = 1757.91498,
+                Net = 0.5,
+                ChargeState = 2,
+                DriftTime = 24.77506f
+            };
+            targetUmcList.Add(targetFeature10);
+        }
+    }
 }

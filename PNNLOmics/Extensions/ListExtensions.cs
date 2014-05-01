@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using MathNet.Numerics.LinearAlgebra.Generic.Solvers.Status;
-using PNNLOmics.Data.Features;
 using PNNLOmics.Data;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Extensions
 {
@@ -18,10 +16,10 @@ namespace PNNLOmics.Extensions
         /// <returns></returns>
         public static int ExtendedScanRange(this List<MSFeatureLight> features, double percentage)
         {
-            int max = features.Max(feature => feature.Scan);
-            int min = features.Min(feature => feature.Scan);
+            var max = features.Max(feature => feature.Scan);
+            var min = features.Min(feature => feature.Scan);
 
-            int delta = Math.Abs(max - min);
+            var delta = Math.Abs(max - min);
 
             return Convert.ToInt32(Convert.ToDouble(delta) * percentage);
         }
@@ -49,7 +47,7 @@ namespace PNNLOmics.Extensions
                 return x.Mz.CompareTo(y.Mz);
             }
             );
-            int count = features.Count / 2;
+            var count = features.Count / 2;
             return features[count].Mz;
         }
     }
@@ -65,7 +63,7 @@ namespace PNNLOmics.Extensions
         public static Dictionary<int, List<MSFeatureLight>> CreateChargeMap(this UMCLight feature)
         {
             var chargeMap = new Dictionary<int, List<MSFeatureLight>>();
-            foreach (MSFeatureLight msFeature in feature.MSFeatures)
+            foreach (var msFeature in feature.MSFeatures)
             {
                 if (!chargeMap.ContainsKey(msFeature.ChargeState))
                 {
@@ -94,13 +92,13 @@ namespace PNNLOmics.Extensions
         /// <returns></returns>
         public static XYData FindByMZ(this List<XYData> data, double mz)
         {
-            int i = 0;
-            for(int j = 0; j < data.Count; j++)
+            var i = 0;
+            for(var j = 0; j < data.Count; j++)
             {
                 if (data[j].X > mz)
                 {
-                    double diffI = Math.Abs(data[i].X - mz);
-                    double diffJ = Math.Abs(data[j].X - mz);
+                    var diffI = Math.Abs(data[i].X - mz);
+                    var diffJ = Math.Abs(data[j].X - mz);
 
                     if (diffI < diffJ)
                         return data[i];

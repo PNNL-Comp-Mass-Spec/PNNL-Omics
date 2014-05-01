@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralComparisons
@@ -34,18 +31,18 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
         /// <returns>Normalized Dot Product</returns>
         public double CompareSpectra(MSSpectra xSpectrum, MSSpectra ySpectrum)
         {
-            List<XYData> a = xSpectrum.Peaks;
-            List<XYData> b = ySpectrum.Peaks;
+            var a = xSpectrum.Peaks;
+            var b = ySpectrum.Peaks;
 
             double magX = 0;
             double magY = 0;
                                    
             // Then compute the magnitudes of the spectra
             double sum  = 0;
-            for (int i = 0; i < xSpectrum.Peaks.Count; i++)
+            for (var i = 0; i < xSpectrum.Peaks.Count; i++)
             {
-                double x = a[i].Y;
-                double y = b[i].Y;
+                var x = a[i].Y;
+                var y = b[i].Y;
 
                 sum += Math.Sqrt(x * y);
 
@@ -53,7 +50,7 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
                 magX += x; // *x;
             }
             
-            double mag = Math.Sqrt(magX * magY);
+            var mag = Math.Sqrt(magX * magY);
             return sum / mag;
         }
         #endregion

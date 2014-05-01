@@ -2,12 +2,10 @@
 /// <datecreated>01-07-2011</datecreated>
 /// <summary>Perform clustering of UMC features across datasets into UMC Clusters using average linkage.</summary>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Features;
 using PNNLOmics.Data;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -19,9 +17,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		/// <summary>
         /// Default Constructor.  This sets the parameters and tolerances to their default values.
         /// </summary>
-        public UMCAverageLinkageClusterer():
-            base()
-        {
+        public UMCAverageLinkageClusterer()
+		{
             ShouldTestClustersWithinTolerance = true;
             Parameters      = new FeatureClusterParameters<T>();
         }
@@ -46,13 +43,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 							   select element;
 
 			// Then do the linking           
-			foreach (PairwiseDistance<T> distance in newDistances)
+			foreach (var distance in newDistances)
 			{
-				T featureX = distance.FeatureX;
-				T featureY = distance.FeatureY;
+				var featureX = distance.FeatureX;
+				var featureY = distance.FeatureY;
 
-				U clusterX = featureX.ParentFeature as U;
-                U clusterY = featureY.ParentFeature as U;
+				var clusterX = featureX.ParentFeature;
+                var clusterY = featureY.ParentFeature;
 
 				// Determine if they are already clustered into the same cluster                                 
 				if (clusterX == clusterY && clusterX != null)
@@ -60,13 +57,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 					continue;
 				}
 
-				bool areClustersWithinDistance = AreClustersWithinTolerance(clusterX, clusterY);
+				var areClustersWithinDistance = AreClustersWithinTolerance(clusterX, clusterY);
 
 				// Only cluster if the distance between the clusters is acceptable                
 				if (areClustersWithinDistance)
 				{
 					// Remove the references for all the clusters in the group and merge them into the other cluster.                    
-					foreach (T umcX in clusterX.Features)
+					foreach (var umcX in clusterX.Features)
 					{
 						umcX.SetParentFeature(clusterY);
 						clusterY.AddChildFeature(umcX);
@@ -77,10 +74,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				}
 			}
 
-			U[] array           = new U[clusters.Values.Count];
+			var array           = new U[clusters.Values.Count];
 			clusters.Values.CopyTo(array, 0);
 
-			List<U> newClusters = new List<U>();
+			var newClusters = new List<U>();
 			newClusters.AddRange(array);
 
 			return newClusters;

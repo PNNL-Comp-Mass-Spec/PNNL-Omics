@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using PNNLOmics;
-
-namespace PNNLOmics.Data
+﻿namespace PNNLOmics.Data
 {
     /// <summary>
     /// Class that holds information about a protein.

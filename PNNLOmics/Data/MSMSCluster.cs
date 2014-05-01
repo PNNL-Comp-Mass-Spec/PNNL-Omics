@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using PNNLOmics.Data;
+﻿using System.Collections.Generic;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Data
@@ -9,11 +6,13 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Cluster of MS/MS spectra using matches through features.
     /// </summary>
-    public class MSMSCluster : BaseData
+    public sealed class MsmsCluster : BaseData
     {
-        public MSMSCluster()
+        public MsmsCluster()
         {
-            Clear();
+            Features = new List<MSFeatureLight>();
+            MeanScore = double.NaN;
+            ID = -1;
         }
         /// <summary>
         /// Gets or sets the list of available features.
@@ -21,7 +20,7 @@ namespace PNNLOmics.Data
         public List<MSFeatureLight> Features
         {
             get;
-            set;
+            private set;
         }
         /// <summary>
         /// Gets or sets the list of spectra associated with the 
@@ -39,7 +38,7 @@ namespace PNNLOmics.Data
         {
             Features  = new List<MSFeatureLight>();
             MeanScore = double.NaN;
-            ID = -1;
+            ID        = -1;
         }
     }
 }

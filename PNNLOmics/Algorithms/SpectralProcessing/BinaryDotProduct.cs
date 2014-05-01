@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Algorithms.SpectralComparisons;
 using PNNLOmics.Data;
 
@@ -26,12 +23,12 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
         public double CompareSpectra(MSSpectra spectraX, MSSpectra spectraY)
         {
             ISpectralNormalizer normalizer = new BinarySpectraNormalizer();
-            MSSpectra x = normalizer.Normalize(spectraX);
-            MSSpectra y = normalizer.Normalize(spectraY);
+            var x = normalizer.Normalize(spectraX);
+            var y = normalizer.Normalize(spectraY);
             
-            double NM    = Convert.ToDouble(spectraX.Peaks.Count + spectraY.Peaks.Count);
+            var NM    = Convert.ToDouble(spectraX.Peaks.Count + spectraY.Peaks.Count);
             double sum   = 0;
-            for (int i = 0; i < spectraX.Peaks.Count; i++)
+            for (var i = 0; i < spectraX.Peaks.Count; i++)
             {
                 sum += x.Peaks[i].Y * y.Peaks[i].Y;
             }

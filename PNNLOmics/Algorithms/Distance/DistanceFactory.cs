@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Features;
-using PNNLOmics.Algorithms;
+﻿using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Distance
 {
@@ -15,12 +10,12 @@ namespace PNNLOmics.Algorithms.Distance
             switch (metric)
             {                
                 case DistanceMetric.Euclidean:                    
-                    EuclideanDistanceMetric<T> metricFunction = new EuclideanDistanceMetric<T>();
-                    function = new DistanceFunction<T>(metricFunction.EuclideanDistance);
+                    var metricFunction = new EuclideanDistanceMetric<T>();
+                    function = metricFunction.EuclideanDistance;
                     break;
                 case DistanceMetric.WeightedEuclidean:
-                    WeightedEuclideanDistance<T> weighted = new WeightedEuclideanDistance<T>();
-                    function = new DistanceFunction<T>(weighted.EuclideanDistance);
+                    var weighted = new WeightedEuclideanDistance<T>();
+                    function = weighted.EuclideanDistance;
                     break;
                 default:
                     break;

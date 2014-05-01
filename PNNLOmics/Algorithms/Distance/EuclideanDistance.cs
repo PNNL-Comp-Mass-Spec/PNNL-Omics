@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Distance
@@ -16,10 +15,10 @@ namespace PNNLOmics.Algorithms.Distance
         /// <returns>Distance calculated as </returns>
         public double EuclideanDistance(T x, T y)
         {
-            double massDifference = Feature.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned);
-            double netDifference = x.RetentionTime - y.RetentionTime;
-            double driftDifference = x.DriftTime - y.DriftTime;
-            double sum = (massDifference * massDifference) +
+            var massDifference = FeatureLight.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned);
+            var netDifference = x.RetentionTime - y.RetentionTime;
+            var driftDifference = x.DriftTime - y.DriftTime;
+            var sum = (massDifference * massDifference) +
                                      (netDifference * netDifference) +
                                      (driftDifference * driftDifference);
 
@@ -33,10 +32,10 @@ namespace PNNLOmics.Algorithms.Distance
         /// <returns>Distance calculated as </returns>
         public double EuclideanDistanceDalton(T x, T y)
         {
-            double massDifference   = x.MassMonoisotopicAligned - y.MassMonoisotopicAligned;
-            double netDifference    = x.RetentionTime - y.RetentionTime;
-            double driftDifference  = x.DriftTime - y.DriftTime;
-            double sum              = (massDifference * massDifference) +
+            var massDifference   = x.MassMonoisotopicAligned - y.MassMonoisotopicAligned;
+            var netDifference    = x.RetentionTime - y.RetentionTime;
+            var driftDifference  = x.DriftTime - y.DriftTime;
+            var sum              = (massDifference * massDifference) +
                                         (netDifference * netDifference) +
                                         (driftDifference * driftDifference);
 
@@ -48,13 +47,16 @@ namespace PNNLOmics.Algorithms.Distance
         /// </summary>
         /// <param name="x">Feature x.</param>
         /// <param name="y">Feature y.</param>
+        /// <param name="massWeight"></param>
+        /// <param name="netWeight"></param>
+        /// <param name="driftWeight"></param>
         /// <returns>Distance calculated as </returns>
         public double EuclideanDistance(T x, T y, double massWeight, double netWeight, double driftWeight)
         {
-            double massDifference = Feature.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned);
-            double netDifference = x.RetentionTime - y.RetentionTime;
-            double driftDifference = x.DriftTime - y.DriftTime;
-            double sum = (massDifference * massDifference) * massWeight +
+            var massDifference = FeatureLight.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned);
+            var netDifference = x.RetentionTime - y.RetentionTime;
+            var driftDifference = x.DriftTime - y.DriftTime;
+            var sum = (massDifference * massDifference) * massWeight +
                                      (netDifference * netDifference) * netDifference +
                                      (driftDifference * driftDifference) * driftWeight;
 
@@ -67,7 +69,7 @@ namespace PNNLOmics.Algorithms.Distance
         /// <returns></returns>
         public static double Distance(List<double> differences)
         {
-            List<double> squares = new List<double>();
+            var squares = new List<double>();
             differences.ForEach(x => squares.Add(x * x));
             return Math.Sqrt(squares.Sum());
         }

@@ -11,7 +11,7 @@ namespace PNNLOmics.Algorithms.Regression
 	{
 		public static LinearEquation CalculateLinearEquation(IEnumerable<XYData> xyDataList)
 		{
-			LinearEquation linearEquation = new LinearEquation();
+			var linearEquation = new LinearEquation();
 
 			double sumX = 0;
 			double sumY = 0;
@@ -19,10 +19,10 @@ namespace PNNLOmics.Algorithms.Regression
 			double sumXSquared = 0;
 			double numPoints = xyDataList.Count();
 
-			foreach (XYData xyData in xyDataList)
+			foreach (var xyData in xyDataList)
 			{
-				double xValue = xyData.X;
-				double yValue = xyData.Y;
+				var xValue = xyData.X;
+				var yValue = xyData.Y;
 
 				sumX += xValue;
 				sumY += yValue;
@@ -30,8 +30,8 @@ namespace PNNLOmics.Algorithms.Regression
 				sumXSquared += (xValue * xValue);
 			}
 
-			double slope = ((numPoints * sumXTimesY) - (sumX * sumY)) / ((numPoints * sumXSquared) - (sumX * sumX));
-			double intercept = ((sumY * sumXSquared) - (sumX * sumXTimesY)) / ((numPoints * sumXSquared) - (sumX * sumX));
+			var slope = ((numPoints * sumXTimesY) - (sumX * sumY)) / ((numPoints * sumXSquared) - (sumX * sumX));
+			var intercept = ((sumY * sumXSquared) - (sumX * sumXTimesY)) / ((numPoints * sumXSquared) - (sumX * sumX));
 
 			linearEquation.Intercept = intercept;
 			linearEquation.Slope = slope;

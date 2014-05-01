@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MathNet.Numerics.LinearAlgebra;
-using PNNLOmics.Data;
-using PNNLOmics.Data.Features;
-using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data;
+﻿using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
 {
@@ -19,11 +15,11 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
         /// <returns></returns>
         public MSSpectra Normalize(MSSpectra spectrum)
         {
-            MSSpectra filteredSpectrum = new MSSpectra();
+            var filteredSpectrum = new MSSpectra();
 
-            foreach (XYData peak in spectrum.Peaks)
+            foreach (var peak in spectrum.Peaks)
             {
-                XYData data = new XYData(peak.X, 1);
+                var data = new XYData(peak.X, 1);
                 filteredSpectrum.Peaks.Add(data);
             }
 

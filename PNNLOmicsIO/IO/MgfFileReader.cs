@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data;
 using System.IO;
+using PNNLOmics.Data;
 
 namespace PNNLOmicsIO.IO
 {
@@ -19,16 +17,16 @@ namespace PNNLOmicsIO.IO
         /// <param name="msmsFeatures"></param>
         public List<MSSpectra> Read(string path)
         {
-            string[] lines  = File.ReadAllLines(path);
-            int mode        = 0;
+            var lines  = File.ReadAllLines(path);
+            var mode        = 0;
 
-            List<MSSpectra> spectra   = new List<MSSpectra>();
+            var spectra   = new List<MSSpectra>();
             MSSpectra currentSpectrum = null;
-            string [] delimeter       = new string[] {" "};
+            var delimeter       = new[] {" "};
 
-            for(int i = 0; i < lines.Length; i++)
+            for(var i = 0; i < lines.Length; i++)
             {
-                string line = lines[i].ToUpper();
+                var line = lines[i].ToUpper();
                 if (line.Contains("BEGIN IONS"))
                 {
                     mode    = 0;
@@ -51,7 +49,7 @@ namespace PNNLOmicsIO.IO
 
                 if (mode == 1)
                 {
-                    string[] data = line.Split(delimeter,
+                    var data = line.Split(delimeter,
                                                 StringSplitOptions.RemoveEmptyEntries);
 
                     if (data.Length < 2)
@@ -59,9 +57,9 @@ namespace PNNLOmicsIO.IO
 
                     try
                     {
-                        double x = Convert.ToDouble(data[0]);
-                        double y = Convert.ToDouble(data[1]);
-                        XYData datum = new XYData(x, y);
+                        var x = Convert.ToDouble(data[0]);
+                        var y = Convert.ToDouble(data[1]);
+                        var datum = new XYData(x, y);
                         currentSpectrum.Peaks.Add(datum);
                     }
                     catch

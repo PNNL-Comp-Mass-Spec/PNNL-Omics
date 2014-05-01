@@ -20,7 +20,7 @@
         }
         public static double Tricube(double x)
         {
-            double tmp = 1 - x * x * x;
+            var tmp = 1 - x * x * x;
             return tmp * tmp * tmp;
         }
     }

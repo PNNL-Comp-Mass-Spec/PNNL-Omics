@@ -30,11 +30,11 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                 var umcX = featureX.ParentFeature;
                 var umcY = featureY.ParentFeature;
 
-                netError.PreAlignment.Add(umcX.NET  - umcY.NET);
-                netError.PostAlignment.Add(umcX.NET - umcY.NETAligned);
+                netError.PreAlignment.Add(umcX.Net  - umcY.Net);
+                netError.PostAlignment.Add(umcX.Net - umcY.NetAligned);
 
-                massError.PreAlignment.Add(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopic, umcY.MassMonoisotopic));
-                massError.PostAlignment.Add(Feature.ComputeMassPPMDifference(umcX.MassMonoisotopic, umcY.MassMonoisotopicAligned));
+                massError.PreAlignment.Add(FeatureLight.ComputeMassPPMDifference(umcX.MassMonoisotopic, umcY.MassMonoisotopic));
+                massError.PostAlignment.Add(FeatureLight.ComputeMassPPMDifference(umcX.MassMonoisotopic, umcY.MassMonoisotopicAligned));
             }
 
             return errors;

@@ -12,6 +12,7 @@ namespace PNNLOmics.Data.Features
         #region AutoProperties
         /// <summary>
 		/// The list of MSPeaks that make up the MSFeature.  This would be the isotopic distribution.
+        /// </summary>
         public List<Peak> MSPeakList { get; set; }        
 		/// <summary>
 		/// The UMC associated with this MS Feature.
@@ -21,10 +22,6 @@ namespace PNNLOmics.Data.Features
         /// Gets or sets the mass to charge ratio value.
         /// </summary>
         public double Mz { get; set; }
-        /// <summary>
-        /// Gets or sets the scan of the feature.
-        /// </summary>
-        public int Scan {get;set;}
         /// <summary>
         /// Gets or sets the average monoisotopic mass. 
         /// </summary>
@@ -72,7 +69,7 @@ namespace PNNLOmics.Data.Features
 		/// </summary>
 		public int CompareTo(MSFeatureLight other)
 		{
-			return other.MassMonoisotopic.CompareTo(this.MassMonoisotopic);
+			return other.MassMonoisotopic.CompareTo(MassMonoisotopic);
 		}
 		#endregion
 
@@ -108,12 +105,12 @@ namespace PNNLOmics.Data.Features
 
         public override int GetHashCode()
         {
-            int hash = 17;
+            var hash = 17;
             hash = hash * 23 + ID.GetHashCode();
-            hash = hash * 23 + this.GroupID.GetHashCode();
-            hash = hash * 23 + this.MassMonoisotopicMostAbundant.GetHashCode();
-            hash = hash * 23 + this.MassMonoisotopic.GetHashCode();
-            hash = hash * 23 + this.RetentionTime.GetHashCode();
+            hash = hash * 23 + GroupID.GetHashCode();
+            hash = hash * 23 + MassMonoisotopicMostAbundant.GetHashCode();
+            hash = hash * 23 + MassMonoisotopic.GetHashCode();
+            hash = hash * 23 + RetentionTime.GetHashCode();
 
             return hash;
         }

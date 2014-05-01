@@ -13,7 +13,6 @@
  *			09-23-2010 - BLL -	Renamed to Feature Tolerances.
  *								Added a default constructor.
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-using System;
 
 namespace PNNLOmics.Algorithms
 {

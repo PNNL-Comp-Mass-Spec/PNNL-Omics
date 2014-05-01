@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using PNNLOmics.Data.Constants;
 
 namespace PNNLOmics.Data.FormulaBuilder
 {
@@ -21,15 +20,15 @@ namespace PNNLOmics.Data.FormulaBuilder
 		/// <returns></returns>
 		public Dictionary<string, int> FormulaToDictionary(string tempFormula)
 		{
-			Dictionary<string, int> chemicalFormula = new Dictionary<string, int>();
-			Regex re = new Regex(@"([A-Z][a-z]*)(\d*)");
+			var chemicalFormula = new Dictionary<string, int>();
+			var re = new Regex(@"([A-Z][a-z]*)(\d*)");
 
-			MatchCollection mc = re.Matches(tempFormula);
+			var mc = re.Matches(tempFormula);
 			foreach (Match item in mc)
 			{
-				bool numAtomsAreIndicated = (!item.Groups[2].Value.Equals(string.Empty));
-				int numAtoms = 0;
-				string elementSymbol = String.Empty;
+				var numAtomsAreIndicated = (!item.Groups[2].Value.Equals(string.Empty));
+				var numAtoms = 0;
+				var elementSymbol = String.Empty;
 
 				elementSymbol = item.Groups[1].Value;
 				if (numAtomsAreIndicated)
@@ -57,8 +56,8 @@ namespace PNNLOmics.Data.FormulaBuilder
 		public void AddFormulaToPreviousFormula(string formulaValuesToAdd, ref Dictionary<string, int> previousDict)
 		{
 
-			Dictionary<string, int> temp = FormulaToDictionary(formulaValuesToAdd);
-			foreach (string t in temp.Keys)
+			var temp = FormulaToDictionary(formulaValuesToAdd);
+			foreach (var t in temp.Keys)
 			{
 				if (!previousDict.ContainsKey(t))
 				{
@@ -79,8 +78,8 @@ namespace PNNLOmics.Data.FormulaBuilder
 		/// <param name="previousDict">The dictionary to be changed</param>
 		public void RemoveFormulaFromPreviousFormula(string formulaValuesToRemove, ref Dictionary<string, int> previousDict)
 		{
-			Dictionary<string, int> temp = FormulaToDictionary(formulaValuesToRemove);
-			foreach (string t in temp.Keys)
+			var temp = FormulaToDictionary(formulaValuesToRemove);
+			foreach (var t in temp.Keys)
 			{
 				if (!previousDict.ContainsKey(t))
 				{
@@ -102,9 +101,9 @@ namespace PNNLOmics.Data.FormulaBuilder
 
 		public double FormulaToMonoisotopicMass(Dictionary<string, int> formula)
 		{
-			double massMonoIsotopic = 0.0;
+			var massMonoIsotopic = 0.0;
 
-			foreach (string f in formula.Keys)
+			foreach (var f in formula.Keys)
 			{
 				massMonoIsotopic += Constants.Constants.Elements[f].MassMonoIsotopic * formula[f];
 			}

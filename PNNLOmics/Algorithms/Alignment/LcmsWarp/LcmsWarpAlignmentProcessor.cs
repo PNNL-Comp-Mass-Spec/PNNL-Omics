@@ -149,7 +149,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     {
                         ID = umcIndices[i],
                         MassMonoisotopicAligned = umcCalibratedMasses[i],
-                        NETAligned = umcAlignedNets[i],
+                        NetAligned = umcAlignedNets[i],
                         DriftTime = umcDriftTimes[i]
                     };
 
@@ -177,7 +177,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     {
                         ID = umcIndices[i],
                         MassMonoisotopicAligned = umcCalibratedMasses[i],
-                        NETAligned = umcAlignedNets[i],
+                        NetAligned = umcAlignedNets[i],
                         ScanAligned = umcAlignedScans[i],
                         DriftTime = umcDriftTimes[i]
                     };
@@ -216,7 +216,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 {
                     MassMonoisotopic = features[index].MassMonoisotopic,
                     MassMonoisotopicAligned = features[index].MassMonoisotopicAligned,
-                    NET = Convert.ToDouble(features[index].Scan),
+                    Net = Convert.ToDouble(features[index].Scan),
                     Mz = features[index].Mz,
                     Abundance = features[index].Abundance,
                     ID = features[index].ID,
@@ -276,7 +276,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 var data = umcData[index];                
                 feature.MassMonoisotopic = data.MassMonoisotopic;
                 feature.MassMonoisotopicAligned = data.MassMonoisotopicAligned;
-                feature.NET = data.NET;
+                feature.Net = data.Net;
                 feature.Mz = data.Mz;
                 feature.Abundance = data.Abundance;
                 feature.DriftTime = data.DriftTime;
@@ -326,7 +326,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 {
                     MassMonoisotopic = data.MassMonoisotopic,
                     MassMonoisotopicAligned = data.MassMonoisotopicAligned,
-                    NET = data.NET,
+                    Net = data.Net,
                     Mz = data.Mz,
                     Abundance = data.Abundance,
                     DriftTime = data.DriftTime,
@@ -366,11 +366,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             var mtFeatures = new List<UMCLight> { Capacity = numMassTags };
             mtFeatures.AddRange(features.Select(item => new UMCLight
             {
-                NETAligned = item.NETAligned, 
+                NetAligned = item.NetAligned, 
                 MassMonoisotopic = item.MassMonoisotopic, 
                 MassMonoisotopicAligned = item.MassMonoisotopicAligned, 
                 Mz = item.MassMonoisotopic/item.ChargeState + (1.00782*(item.ChargeState - 1)), 
-                NET = item.NET, 
+                Net = item.Net, 
                 DriftTime = item.DriftTime, 
                 ID = item.ID,
             }));

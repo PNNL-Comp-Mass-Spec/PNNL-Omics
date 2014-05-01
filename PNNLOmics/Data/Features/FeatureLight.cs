@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace PNNLOmics.Data.Features
 {
@@ -23,17 +22,18 @@ namespace PNNLOmics.Data.Features
         {
             Clear();
 
-            this.Abundance                  = feature.Abundance;
-            this.ChargeState                = feature.ChargeState;
-            this.DriftTime                  = feature.DriftTime;
-            this.ID                         = feature.ID;
-            this.MassMonoisotopic           = feature.MassMonoisotopic;
-            this.MassMonoisotopicAligned    = feature.MassMonoisotopicAligned;
-            this.RetentionTime              = feature.RetentionTime;
-            this.Score                      = feature.Score;
-            this.NET                        = feature.NET;
-            this.AmbiguityScore             = double.MaxValue;
+            Abundance                  = feature.Abundance;
+            ChargeState                = feature.ChargeState;
+            DriftTime                  = feature.DriftTime;
+            ID                         = feature.ID;
+            MassMonoisotopic           = feature.MassMonoisotopic;
+            MassMonoisotopicAligned    = feature.MassMonoisotopicAligned;
+            RetentionTime              = feature.RetentionTime;
+            Score                      = feature.Score;
+            Net                        = feature.Net;
+            AmbiguityScore             = double.MaxValue;
         }
+        public int Index { get; set; }
         public int IdentifiedSpectraCount { get; set; }
         /// <summary>
         /// Gets or sets the number of MSMS spectra 
@@ -70,12 +70,16 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets or sets the normalized retention time for this feature.
         /// </summary>
-        public double NET { get; set; }
-        public double NETAligned { get; set; }
+        public double Net { get; set; }
+        public double NetAligned { get; set; }
         /// <summary>
         /// Gets or sets the drift time of a feature.
         /// </summary>
-		public double	DriftTime			{ get; set; }		
+        public double DriftTime { get; set; }
+        /// <summary>
+        /// Gets or sets the drift time of a feature.
+        /// </summary>
+        public double DriftTimeAligned { get; set; }		
         /// <summary>
         /// Gets or sets the charge state of a feature.
         /// </summary>
@@ -97,15 +101,15 @@ namespace PNNLOmics.Data.Features
         /// </summary>
 		public override void Clear()
 		{            
-			this.Abundance          = 0;
-			this.ChargeState        = 0;
-			this.DriftTime          = 0;
-			this.ID                 = -1;
-			this.MassMonoisotopic   = 0;
-            this.MassMonoisotopicAligned = 0;
-            this.NET                = 0;
-            this.NETAligned         = 0;
-            this.RetentionTime      = 0;
+			Abundance          = 0;
+			ChargeState        = 0;
+			DriftTime          = 0;
+			ID                 = -1;
+			MassMonoisotopic   = 0;
+            MassMonoisotopicAligned = 0;
+            Net                = 0;
+            NetAligned         = 0;
+            RetentionTime      = 0;
 		}
 		/// <summary>
 		/// Compares the aligned monoisotopic mass of two Features
@@ -122,6 +126,29 @@ namespace PNNLOmics.Data.Features
         {
             return x.MassMonoisotopicAligned.CompareTo(y.MassMonoisotopicAligned);
         };
+        #region Public Utility Functions
+        /// <summary>
+        /// Computes the mass difference in parts per million (ppm) for two given masses.
+        /// </summary>
+        /// <param name="massX">Mass of feature X.</param>
+        /// <param name="massY">Mass of feature Y.</param>
+        /// <returns>Mass difference in parts per million (ppm).</returns>
+        public static double ComputeMassPPMDifference(double massX, double massY)
+        {			
+            return (massX - massY) * 1e6 / massX;
+        }
+
+	    /// <summary>
+	    /// Computes the mass difference in parts per million (ppm) for two given masses.
+	    /// </summary>
+	    /// <param name="massX">Mass of feature X.</param>
+	    /// <param name="ppm"></param>
+	    /// <returns>Mass difference in parts per million (ppm).</returns>
+	    public static double ComputeDaDifferenceFromPPM(double massX, double ppm)
+        {
+            return massX - (ppm * 1e-6 * massX);            
+        }
+        #endregion
         
 		#region Overriden Base Methods
 		/// <summary>
@@ -130,10 +157,10 @@ namespace PNNLOmics.Data.Features
 		/// <returns></returns>
 		public override string ToString()
 		{
-			return "Feature Light ID = " + ID.ToString() +
-					" Mono Mass = " + MassMonoisotopic.ToString() +
-					" Retention Time = " + RetentionTime.ToString() +
-					" Drift Time = " + DriftTime.ToString();
+			return "Feature Light ID = " + ID +
+					" Mono Mass = " + MassMonoisotopic +
+					" Retention Time = " + RetentionTime +
+					" Drift Time = " + DriftTime;
 		}
 		/// <summary>
 		/// Compares two objects' values.
@@ -145,11 +172,11 @@ namespace PNNLOmics.Data.Features
 			if (obj == null)
 				return false;
 
-			FeatureLight other = obj as FeatureLight;
+			var other = obj as FeatureLight;
 			if (other == null)
 				return false;
 
-			if (!this.ID.Equals(other.ID))
+			if (!ID.Equals(other.ID))
 			{
 				return false;
 			}
@@ -157,19 +184,19 @@ namespace PNNLOmics.Data.Features
 			{
 				return false;
 			}
-			if (!this.ChargeState.Equals(other.ChargeState))
+			if (!ChargeState.Equals(other.ChargeState))
 			{
 				return false;
 			}
-			if (!this.DriftTime.Equals(other.DriftTime))
+			if (!DriftTime.Equals(other.DriftTime))
 			{
 				return false;
 			}
-			if (!this.MassMonoisotopic.Equals(other.MassMonoisotopic))
+			if (!MassMonoisotopic.Equals(other.MassMonoisotopic))
 			{
 				return false;
 			}
-			if (!this.RetentionTime.Equals(other.RetentionTime))
+			if (!RetentionTime.Equals(other.RetentionTime))
 			{
 				return false;
 			}			
@@ -181,7 +208,7 @@ namespace PNNLOmics.Data.Features
 		/// <returns>Hash code based on stored data.</returns>
 		public override int GetHashCode()
 		{
-			int hashCode =
+			var hashCode =
 				Abundance.GetHashCode() ^
 				ChargeState.GetHashCode() ^
 				DriftTime.GetHashCode() ^

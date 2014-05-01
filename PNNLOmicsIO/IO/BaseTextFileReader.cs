@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 namespace PNNLOmicsIO.IO
 {
@@ -51,14 +51,14 @@ namespace PNNLOmicsIO.IO
         /// <returns></returns>
 		public IEnumerable<T> ReadFile(TextReader textReader)
 		{
-			Dictionary<string, int> columnMapping = CreateColumnMapping(textReader);
+			var columnMapping = CreateColumnMapping(textReader);
 
 			if (columnMapping.Count == 0)
 			{
 				throw new ApplicationException("Given file does not contain any valid column headers.");
 			}
 
-			IEnumerable<T> enumerable = SaveFileToEnumerable(textReader, columnMapping);
+			var enumerable = SaveFileToEnumerable(textReader, columnMapping);
 			return enumerable;
 		}
 

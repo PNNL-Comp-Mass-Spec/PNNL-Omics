@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Features;
 using PNNLOmics.Data;
-using System.Collections;
-using PNNLOmics.Algorithms.Distance;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -56,8 +53,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns>List of features clustered together.</returns>
         public override List<U> LinkFeatures(List<PairwiseDistance<T>> potentialDistances, Dictionary<int, U> clusters)
         {
-            List<U> newClusters                 = new List<U>();
-            List<PairwiseDistance<T>> distances = new List<PairwiseDistance<T>>();
+            var newClusters                 = new List<U>();
+            var distances = new List<PairwiseDistance<T>>();
 
             // There is an edge case with this setup that a singleton outside of the range 
             // of other features made it into the batch of edges, but there is no corresponding edge 
@@ -65,10 +62,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             // then we ask for within the range, pare down that hash to a set of features that 
             // have no corresponding edge.  These guys would ultimately be singletons we want 
             // to capture...
-            HashSet<T> clusterMap = new HashSet<T>();
-            foreach (U cluster in clusters.Values)
+            var clusterMap = new HashSet<T>();
+            foreach (var cluster in clusters.Values)
             {
-                foreach (T feature in cluster.Features)
+                foreach (var feature in cluster.Features)
                 {
                     if (!clusterMap.Contains(feature))
                     {
@@ -78,7 +75,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             }
 
 
-            foreach (PairwiseDistance<T> distance in potentialDistances)
+            foreach (var distance in potentialDistances)
             {
                 if (AreClustersWithinTolerance(distance.FeatureX, distance.FeatureY))
                 {
@@ -95,24 +92,24 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             }
 
             // Once we have removed any cluster
-            foreach (T feature in clusterMap)
+            foreach (var feature in clusterMap)
             {
-                U cluster = new U();
+                var cluster = new U();
                 feature.SetParentFeature(cluster);
                 cluster.AddChildFeature(feature);
                 newClusters.Add(cluster);
             }
 
-            List<PairwiseDistance<T>> newDistances = (from element in potentialDistances
+            var newDistances = (from element in potentialDistances
                                                         orderby element.Distance
                                                         select element).ToList();
             
-            Queue<Edge<T>> queue  = new Queue<Edge<T>>();
-            FeatureGraph<T> graph = new FeatureGraph<T>();
+            var queue  = new Queue<Edge<T>>();
+            var graph = new FeatureGraph<T>();
 
             // Sort out the distances so we dont have to recalculate distances.
-            int id = 0;
-            List<Edge<T>> edges = new List<Edge<T>>();            
+            var id = 0;
+            var edges = new List<Edge<T>>();            
             newDistances.ForEach(x => edges.Add(new Edge<T>(id++, 
                                                             x.Distance,
                                                             x.FeatureX,
@@ -121,7 +118,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             edges.ForEach(x => queue.Enqueue(x));
 
             // This makes sure we have 
-            HashSet<int> seenEdge   = new HashSet<int>();
+            var seenEdge   = new HashSet<int>();
 
 
             // Now we start at the MST building
@@ -132,29 +129,29 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             }
             while(queue.Count > 0)
             {
-                Edge<T> startEdge               = queue.Dequeue();
+                var startEdge               = queue.Dequeue();
 
                 // If we have already seen the edge, ignore it...
                 if (seenEdge.Contains(startEdge.ID))
                     continue;
 
-                MinimumSpanningTree<T> mstGroup = ConstructSubTree(graph,
+                var mstGroup = ConstructSubTree(graph,
                                                                    seenEdge,
                                                                    startEdge);
 
-                MstLrTree<Edge<T>> clusterTree = new MstLrTree<Edge<T>>();
+                var clusterTree = new MstLrTree<Edge<T>>();
 
                 // Get the mst value .
                 double sum  = 0;
                 double mean = 0;
-                foreach (Edge<T> dist in mstGroup.LinearRelationship)
+                foreach (var dist in mstGroup.LinearRelationship)
                 {
                     seenEdge.Add(dist.ID);
                     sum += dist.Length;
 
                     clusterTree.Insert(dist);
 
-                    double ppmDist = Feature.ComputeMassPPMDifference(dist.VertexB.MassMonoisotopicAligned,
+                    var ppmDist = FeatureLight.ComputeMassPPMDifference(dist.VertexB.MassMonoisotopicAligned,
                                                                       dist.VertexA.MassMonoisotopicAligned);
 
                     if (DumpLinearRelationship)
@@ -172,90 +169,24 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     }
                 }
 
-                double N = Convert.ToDouble(mstGroup.LinearRelationship.Count);
+                var N = Convert.ToDouble(mstGroup.LinearRelationship.Count);
 
                 // Calculate the standard deviation.
                 mean = sum / N;
                 sum  = 0;
-                foreach (Edge<T> dist in mstGroup.LinearRelationship)
+                foreach (var dist in mstGroup.LinearRelationship)
                 {
-                    double diff = dist.Length - mean;
+                    var diff = dist.Length - mean;
                     sum += (diff * diff);
                 }
 
-                double stdev  = Math.Sqrt(sum / N);
-                double cutoff = NSigma; // *stdev; // stdev* NSigma;
+                var stdev  = Math.Sqrt(sum / N);
+                var cutoff = NSigma; // *stdev; // stdev* NSigma;
 
-                List<U> mstClusters = CreateClusters(mstGroup, cutoff);
+                var mstClusters = CreateClusters(mstGroup, cutoff);
                 newClusters.AddRange(mstClusters);                
             }   
-            //List<MinimumSpanningTree<T>> trees = new List<MinimumSpanningTree<T>>();
-
-            
-            //    // Get the mst value .
-            //double sum  = 0;
-            //double mean = 0;
-            //double N    = 0;
-
-            //while (queue.Count > 0)
-            //{
-            //    Edge<T> startEdge = queue.Dequeue();
-
-            //    // If we have already seen the edge, ignore it...
-            //    if (seenEdge.Contains(startEdge.ID))
-            //        continue;
-
-            //    MinimumSpanningTree<T> mstGroup = ConstructSubTree(graph,
-            //                                                       seenEdge,
-            //                                                       startEdge);
-
-            //    MstLrTree<Edge<T>> clusterTree = new MstLrTree<Edge<T>>();
-
-            //    foreach (Edge<T> dist in mstGroup.LinearRelationship)
-            //    {
-            //        seenEdge.Add(dist.ID);
-            //        sum += dist.Length;
-            //        N++;
-            //    }
-            //    trees.Add(mstGroup);
-            //}
-            
-            //// Calculate the standard deviation.
-            //mean = sum / N;
-            //sum = 0;
-
-            //foreach (MinimumSpanningTree<T> mstGroup in trees)
-            //{
-            //    foreach (Edge<T> dist in mstGroup.LinearRelationship)
-            //    {
-            //        double diff = dist.Length - mean;
-            //        sum += (diff * diff);
-
-            //        if (DumpLinearRelationship)
-            //        {
-            //            double ppmDist = Feature.ComputeMassPPMDifference(dist.VertexB.MassMonoisotopicAligned,
-            //                                                            dist.VertexA.MassMonoisotopicAligned);
-            //            Console.WriteLine("{0},,{1},{2},{3},{4},{5},{6},{7},{8}", dist,
-            //                                                                dist.VertexA.RetentionTime,
-            //                                                                dist.VertexA.MassMonoisotopicAligned,
-            //                                                                dist.VertexA.DriftTime,
-            //                                                                dist.VertexB.RetentionTime,
-            //                                                                dist.VertexB.MassMonoisotopicAligned,
-            //                                                                dist.VertexB.DriftTime,
-            //                                                                ppmDist,
-            //                                                                Math.Abs(dist.VertexA.RetentionTime - dist.VertexB.RetentionTime));
-            //        }
-            //    }
-            //}
-
-            //double stdev = Math.Sqrt(sum / N);
-            //double cutoff = stdev * NSigma;
-
-            //foreach(MinimumSpanningTree<T> mstGroup in trees)
-            //{                                               
-            //    List<U> mstClusters = CreateClusters(mstGroup, cutoff);
-            //    newClusters.AddRange(mstClusters);
-            //}           
+                     
             return newClusters;
         }
         /// <summary>
@@ -267,29 +198,28 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns>List of clusters</returns>
         private List<U> CreateClusters(MinimumSpanningTree<T> mst, double cutoff)
         {            
-            List<U> clusters        = new List<U>();     
+            var clusters        = new List<U>();     
             if (mst.LinearRelationship.Count < 1)
                 return clusters;
-            
-            Edge<T> previous          = mst.LinearRelationship[0];
-            U currentCluster          = new U();
-            HashSet<T> hashedFeatures = new HashSet<T>(); // Tracks the current feature
+
+            var currentCluster          = new U();
+            var hashedFeatures = new HashSet<T>(); // Tracks the current feature
 
             // These are the features that dont ever get included into a cluster...
             // This can only happen if the MST building picked a bunch of low-life features that 
             // dont ever construct a graph...
-            List<T> lowLifeFeatures = new List<T>();
+            var lowLifeFeatures = new List<T>();
 
-            for (int i = 0; i < mst.LinearRelationship.Count; i++)
+            for (var i = 0; i < mst.LinearRelationship.Count; i++)
             {
                 // note this isnt O(n^2), this is just the search for a sub cluster
                 //                 
-                Edge<T> currentEdge = mst.LinearRelationship[i];
-                T vertexA = currentEdge.VertexA;
-                T vertexB = currentEdge.VertexB;
+                var currentEdge = mst.LinearRelationship[i];
+                var vertexA = currentEdge.VertexA;
+                var vertexB = currentEdge.VertexB;
                 
-                bool seenA = hashedFeatures.Contains(vertexA);
-                bool seenB = hashedFeatures.Contains(vertexB);
+                var seenA = hashedFeatures.Contains(vertexA);
+                var seenB = hashedFeatures.Contains(vertexB);
 
                 if (currentEdge.Length < cutoff)
                 {
@@ -341,11 +271,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 clusters.Add(currentCluster);
             }
 
-            foreach (T lowLife in lowLifeFeatures)
+            foreach (var lowLife in lowLifeFeatures)
             {
                 if (!hashedFeatures.Contains(lowLife))
                 {
-                    U cluster = new U();
+                    var cluster = new U();
                     cluster.AddChildFeature(lowLife);
                     clusters.Add(cluster);
                 }
@@ -358,7 +288,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// constructs a sub-tree 
         /// </summary>
         /// <param name="graph"></param>
-        /// <param name="distanceMap"></param>
+        /// <param name="visitedEdges"></param>
         /// <param name="startEdge"></param>
         /// <returns></returns>
         private MinimumSpanningTree<T> ConstructSubTree(FeatureGraph<T> graph,  
@@ -366,10 +296,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                                                         Edge<T>         startEdge)
         {
             // Manages the tree being constructed.
-            MinimumSpanningTree<T> tree = new MinimumSpanningTree<T>();    
+            var tree = new MinimumSpanningTree<T>();    
                     
             // Manages the list of candidate edges
-            UniqueEdgeList<T> tempEdges = new UniqueEdgeList<T>();
+            var tempEdges = new UniqueEdgeList<T>();
              
             // Seed of the breadth first search (BFS)
             tempEdges.AddEdge(startEdge);            
@@ -381,13 +311,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 tempEdges.Sort();
                                
                 Edge<T> shortestEdge = null;
-                List<Edge<T>> edgesToRemove = new List<Edge<T>>();
+                var edgesToRemove = new List<Edge<T>>();
 
                 // Find the shortest edge...
-                foreach (Edge<T> edge in tempEdges.Edges)
+                foreach (var edge in tempEdges.Edges)
                 {
-                    bool edgeSeen   = tree.HasEdgeBeenSeen(edge);
-                    bool vertexSeen = tree.HasEdgeVerticesBeenSeen(edge);
+                    var edgeSeen   = tree.HasEdgeBeenSeen(edge);
+                    var vertexSeen = tree.HasEdgeVerticesBeenSeen(edge);
 
                     // Make sure that we havent seen this edge.
                     if (edgeSeen)
@@ -422,7 +352,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 // Removes the shortest edge from the graph...                
                 graph.RemoveEdge(shortestEdge);
 
-                UniqueEdgeList<T> adjacentEdges = graph.GetAdjacentEdgesFromEdgeVertices(shortestEdge);
+                var adjacentEdges = graph.GetAdjacentEdgesFromEdgeVertices(shortestEdge);
                 //adjacentEdges.Sort();
 
                 tempEdges.AddEdges(adjacentEdges.Edges);                              

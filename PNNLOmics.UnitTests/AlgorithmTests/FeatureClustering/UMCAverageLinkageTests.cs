@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using PNNLOmics.Data.Features;
 using System.IO;
+using System.Linq;
+using NUnit.Framework;
 using PNNLOmics.Algorithms.Distance;
 using PNNLOmics.Algorithms.FeatureClustering;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 {
@@ -17,16 +16,16 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
         private List<UMCLight> GetClusterData(string path)
         {
-            List<string> data = File.ReadLines(path).ToList();
+            var data = File.ReadLines(path).ToList();
             // Remove the header
             data.RemoveAt(0);
 
-            List<UMCLight> features = new List<UMCLight>();
-            foreach(string line in data)
+            var features = new List<UMCLight>();
+            foreach(var line in data)
             {
-                List<string> lineData = line.Split(new string [] {"\t"}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var lineData = line.Split(new[] {"\t"}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                UMCLight feature                 = new UMCLight();
+                var feature                 = new UMCLight();
                 feature.ClusterID                = Convert.ToInt32(lineData[0]);                
                 feature.GroupID                  = Convert.ToInt32(lineData[1]);
                 feature.ID                       = Convert.ToInt32(lineData[2]);
@@ -50,17 +49,17 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void TestAverageLinkage(string path)
         {
             Console.WriteLine("Average Linkage Test: " + path);
-            List<UMCLight> features = GetClusterData(path);
+            var features = GetClusterData(path);
 
             Assert.IsNotEmpty(features);
 
-            UMCClusterLight cluster = new UMCClusterLight();
+            var cluster = new UMCClusterLight();
             cluster.ID = features[0].ID;
             features.ForEach(x => cluster.AddChildFeature(x));
 
-            Dictionary<int, UMCCluster> maps = new Dictionary<int, UMCCluster>();
+            var maps = new Dictionary<int, UMCClusterLight>();
 
-            UMCAverageLinkageClusterer<UMCLight, UMCClusterLight> average = new UMCAverageLinkageClusterer<UMCLight, UMCClusterLight>();
+            var average = new UMCAverageLinkageClusterer<UMCLight, UMCClusterLight>();
             average.Parameters = new FeatureClusterParameters<UMCLight>();
             average.Parameters.CentroidRepresentation = ClusterCentroidRepresentation.Median;
             average.Parameters.Tolerances = new Algorithms.FeatureTolerances();
@@ -68,20 +67,20 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             average.Parameters.Tolerances.Mass          = 6;
             average.Parameters.Tolerances.DriftTime     = .3;
 
-            WeightedEuclideanDistance<UMCLight> distance = new WeightedEuclideanDistance<UMCLight>();
+            var distance = new WeightedEuclideanDistance<UMCLight>();
             average.Parameters.DistanceFunction = distance.EuclideanDistance;
-            EuclideanDistanceMetric<UMCLight> euclid = new EuclideanDistanceMetric<UMCLight>();
+            var euclid = new EuclideanDistanceMetric<UMCLight>();
             average.Parameters.DistanceFunction = euclid.EuclideanDistance;
-            List<UMCClusterLight> clusters      = average.Cluster(features);
+            var clusters      = average.Cluster(features);
 
             Console.WriteLine("Clusters = {0}", clusters.Count);
-            int id = 1;
-            foreach (UMCClusterLight testCluster in clusters)
+            var id = 1;
+            foreach (var testCluster in clusters)
             {
                 testCluster.CalculateStatistics(ClusterCentroidRepresentation.Mean);
-                List<double> distances = new List<double>();
+                var distances = new List<double>();
                 testCluster.ID = id++;
-                foreach (UMCLight feature in testCluster.Features)
+                foreach (var feature in testCluster.Features)
                 {
                     Console.WriteLine("{0},{1},{2},{3}",
                                                                 feature.RetentionTime,
@@ -89,7 +88,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                                                                 feature.DriftTime,
                                                                 testCluster.ID);
 
-                    double newDistance = distance.EuclideanDistance(feature, testCluster as FeatureLight);
+                    var newDistance = distance.EuclideanDistance(feature, testCluster);
                     distances.Add(newDistance);
                 }
                 //Console.WriteLine();
@@ -116,29 +115,29 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void TestWeightedAverageLinkage(string path)
         {
             Console.WriteLine("Test: " + path);
-            List<UMCLight> features = GetClusterData(path);
+            var features = GetClusterData(path);
 
             Assert.IsNotEmpty(features);
 
-            UMCClusterLight cluster = new UMCClusterLight();
+            var cluster = new UMCClusterLight();
             cluster.ID = features[0].ID;
             features.ForEach(x => cluster.AddChildFeature(x));
 
-            Dictionary<int, UMCCluster> maps = new Dictionary<int, UMCCluster>();
+            var maps = new Dictionary<int, UMCClusterLight>();
 
-            UMCAverageLinkageClusterer<UMCLight, UMCClusterLight> average = new UMCAverageLinkageClusterer<UMCLight, UMCClusterLight>();
+            var average = new UMCAverageLinkageClusterer<UMCLight, UMCClusterLight>();
             average.Parameters                          = new FeatureClusterParameters<UMCLight>();
             average.Parameters.CentroidRepresentation   = ClusterCentroidRepresentation.Mean;
             average.Parameters.Tolerances               = new Algorithms.FeatureTolerances();
             
-            WeightedEuclideanDistance<UMCLight> distance = new WeightedEuclideanDistance<UMCLight>();            
+            var distance = new WeightedEuclideanDistance<UMCLight>();            
             average.Parameters.DistanceFunction = distance.EuclideanDistance;
-            List<UMCClusterLight> clusters      = average.Cluster(features);
+            var clusters      = average.Cluster(features);
 
             Console.WriteLine("dataset\tfeature\tmass\tnet\tdrift");
-            foreach (UMCClusterLight newCluster in clusters)
+            foreach (var newCluster in clusters)
             {
-                foreach (UMCLight feature in newCluster.Features)
+                foreach (var feature in newCluster.Features)
                 {
                     Console.WriteLine("{0},{1},{2},{3},{4}",feature.GroupID, 
                                                             feature.ID,

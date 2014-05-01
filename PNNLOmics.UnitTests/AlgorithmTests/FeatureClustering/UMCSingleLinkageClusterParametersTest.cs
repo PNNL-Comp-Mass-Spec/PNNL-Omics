@@ -25,10 +25,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         [Description("Sends a null list of UMC's to the clustering algorithm.")]
         public void ClearMethodTest()
         {
-            FeatureClusterParameters<UMCLight> parameters   = new FeatureClusterParameters<UMCLight>();
+            var parameters   = new FeatureClusterParameters<UMCLight>();
             parameters.CentroidRepresentation               = ClusterCentroidRepresentation.Mean;
             parameters.DistanceFunction                     = null;
-            bool useCharges                                 = parameters.OnlyClusterSameChargeStates;
+            var useCharges                                 = parameters.OnlyClusterSameChargeStates;
             parameters.OnlyClusterSameChargeStates          = parameters.OnlyClusterSameChargeStates == false;
             parameters.Tolerances                           = null;
             parameters.Clear();

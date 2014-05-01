@@ -21,11 +21,11 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 
             functionResult = 0;
 
-            double pi = 3.14159265358979;//Math.PI;
+            var pi = 3.14159265358979;//Math.PI;
 
-            double width = c[0];
-            double height = c[1];
-            double xOffset = c[2];
+            var width = c[0];
+            var height = c[1];
+            var xOffset = c[2];
 
             //=a*EXP(-(X^2)/(2*sigma^2))
             functionResult = height * 1 / pi * 0.5 * width / (Math.Pow(x[0] - xOffset, 2) + 0.5 * Math.Pow(width, 2));

@@ -99,6 +99,13 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             return data;
         }
 
+        private void OnProgress(string message)
+        {
+            if (Progress != null)
+            {
+                Progress(this, new ProgressNotifierArgs(message));
+            }
+        }
         /// <summary>
         /// Uses a list of UMCLights as a baseline for aligning a second list of UMCLights to it, using
         /// the passed in options for processor options
@@ -116,10 +123,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 Options = options
             };
 
+            OnProgress("Filtering based on abundance");            
             var filteredFeatures = FilterFeaturesByAbundance(baseline, options) as List<UMCLight>;
 
+            OnProgress("Setting reference features based on abundance");
             alignmentProcessor.SetReferenceDatasetFeatures(filteredFeatures);
 
+
+            OnProgress("Aligning features");
             var data = AlignFeatures(alignmentProcessor, alignee, options);
 
             var minScan = int.MaxValue;
@@ -140,9 +151,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         private LcmsWarpAlignmentData AlignFeatures(LcmsWarpAlignmentProcessor processor, List<UMCLight> features, LcmsWarpAlignmentOptions options)
         {
             var alignmentFunctions = new List<LcmsWarpAlignmentFunction>();
-            var netErrorHistograms = new List<double[,]>();
-            var massErrorHistograms = new List<double[,]>();
-            var driftErrorHistograms = new List<double[,]>();
+            //var netErrorHistograms = new List<double[,]>();
+            //var massErrorHistograms = new List<double[,]>();
+            //var driftErrorHistograms = new List<double[,]>();
             var heatScores = new List<double[,]>();
             var xIntervals = new List<double[]>();
             var yIntervals = new List<double[]>();
@@ -189,8 +200,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 if (!isInMap) continue;
 
                 map[featureId].MassMonoisotopicAligned = feature.MassMonoisotopicAligned;
-                map[featureId].NETAligned = feature.NETAligned;
-                map[featureId].RetentionTime = feature.NETAligned;
+                map[featureId].NetAligned = feature.NetAligned;
+                map[featureId].RetentionTime = feature.NetAligned;
                 map[featureId].ScanAligned = feature.ScanAligned;
             }
             minScanBaseline = Math.Min(minScanBaseline, tempMinScan);
@@ -207,10 +218,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             yIntervals.Add(yInterval);
             heatScores.Add(heatScore);
 
-            // Get the histograms
-            double[,] massErrorHistogram;
-            double[,] netErrorHistogram;
-            double[,] driftErrorHistogram;
+            //// Get the histograms
+            //double[,] massErrorHistogram;
+            //double[,] netErrorHistogram;
+            //double[,] driftErrorHistogram;
 
             //processor.GetErrorHistograms(options.MassBinSize, options.NetBinSize, options.DriftTimeBinSize,
             //    out massErrorHistogram, out netErrorHistogram, out driftErrorHistogram);

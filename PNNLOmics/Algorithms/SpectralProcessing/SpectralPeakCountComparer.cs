@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralComparisons
 {
     public class SpectralPeakCountComparer: ISpectralComparer
     {
-        /// <summary>
-        /// Constructor that keeps the top forty percent of ions in a spectra by default.
-        /// </summary>
-        public SpectralPeakCountComparer()
-        {
-        
-        }        
-
         #region ISpectralComparer Members
         /// <summary>
         /// Computes the dot product of two spectra.
@@ -25,19 +14,19 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
         /// <returns>Normalized Dot Product</returns>
         public double CompareSpectra(MSSpectra xSpectrum, MSSpectra ySpectrum)
         {
-            List<XYData> a = xSpectrum.Peaks;
-            List<XYData> b = ySpectrum.Peaks;
+            var a = xSpectrum.Peaks;
+            var b = ySpectrum.Peaks;
                                                
             // Then compute the magnitudes of the spectra
             double sum  = 0;
-            int xc = 0;
-            int yc = 0;
+            var xc = 0;
+            var yc = 0;
 
 
-            for (int i = 0; i < xSpectrum.Peaks.Count; i++)
+            for (var i = 0; i < xSpectrum.Peaks.Count; i++)
             {
-                double x = a[i].Y;
-                double y = b[i].Y;
+                var x = a[i].Y;
+                var y = b[i].Y;
 
                 if (x > 0)
                 {

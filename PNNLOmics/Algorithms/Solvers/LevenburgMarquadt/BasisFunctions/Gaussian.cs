@@ -21,9 +21,9 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 
             functionResult = 0;
 
-            double sigma = c[0];
-            double height = c[1];
-            double xOffset = c[2];
+            var sigma = c[0];
+            var height = c[1];
+            var xOffset = c[2];
 
             //=a*EXP(-(X^2)/(2*sigma^2))
             functionResult = height * Math.Exp(-(Math.Pow((x[0] - xOffset), 2)) / (2.0 * sigma * sigma));

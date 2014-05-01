@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using PNNLOmics.Data.Features;
 using System.IO;
+using System.Linq;
+using NUnit.Framework;
 using PNNLOmics.Algorithms.Distance;
 using PNNLOmics.Algorithms.FeatureClustering;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 {
@@ -22,16 +21,16 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         /// <returns></returns>
         private List<UMCLight> GetClusterData(string path)
         {
-            List<string> data = File.ReadLines(path).ToList();
+            var data = File.ReadLines(path).ToList();
             // Remove the header
             data.RemoveAt(0);
 
-            List<UMCLight> features = new List<UMCLight>();
-            foreach(string line in data)
+            var features = new List<UMCLight>();
+            foreach(var line in data)
             {
-                List<string> lineData = line.Split(new string [] {"\t"}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var lineData = line.Split(new[] {"\t"}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                UMCLight feature                 = new UMCLight();
+                var feature                 = new UMCLight();
                 feature.ClusterID                = Convert.ToInt32(lineData[0]);                
                 feature.GroupID                  = Convert.ToInt32(lineData[1]);
                 feature.ID                       = Convert.ToInt32(lineData[2]);
@@ -54,20 +53,20 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void TestDatasets(string path)
         {
             Console.WriteLine("Test: " + path);
-            List<UMCLight> features = GetClusterData(path);
+            var features = GetClusterData(path);
 
             Assert.IsNotEmpty(features);
 
-            UMCClusterLight cluster = new UMCClusterLight();
+            var cluster = new UMCClusterLight();
             cluster.ID              = features[0].ID;
             features.ForEach(x => cluster.AddChildFeature(x));
 
-            Dictionary<int, UMCCluster> maps = new Dictionary<int, UMCCluster>();
+            var maps = new Dictionary<int, UMCClusterLight>();
             
 
             // Map the features
-            Dictionary<int, List<UMCLight>> mapFeatures = new Dictionary<int, List<UMCLight>>();
-            foreach (UMCLight feature in features)
+            var mapFeatures = new Dictionary<int, List<UMCLight>>();
+            foreach (var feature in features)
             {
                 if (!mapFeatures.ContainsKey(feature.GroupID))
                 {
@@ -90,7 +89,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Console.WriteLine("{0}\t{1}\t{2}\t", cluster.ID, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
             Console.WriteLine();
 
-            EuclideanDistanceMetric<FeatureLight> distance = new EuclideanDistanceMetric<FeatureLight>();
+            var distance = new EuclideanDistanceMetric<FeatureLight>();
 
             //features.ForEach(x => Console.WriteLine(distance.EuclideanDistance(x, cluster)));
         }
@@ -105,11 +104,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void TestTwoClusters(string path)
         {
             Console.WriteLine("Test: " + path);
-            List<UMCLight> features = GetClusterData(path);
+            var features = GetClusterData(path);
             
             Assert.IsNotEmpty(features);
 
-            UMCClusterLight cluster = new UMCClusterLight();
+            var cluster = new UMCClusterLight();
             cluster.ID              = features[0].ID;
             features.ForEach(x => cluster.AddChildFeature(x));
 
@@ -119,7 +118,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Console.WriteLine("{0}\t{1}\t{2}\t", cluster.ID, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
             Console.WriteLine();
 
-            EuclideanDistanceMetric<FeatureLight> distance = new EuclideanDistanceMetric<FeatureLight>();
+            var distance = new EuclideanDistanceMetric<FeatureLight>();
             
             features.ForEach(x => Console.WriteLine(distance.EuclideanDistance(x, cluster)));
         }
@@ -138,11 +137,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void TestReprocessing(string path)
         {
             Console.WriteLine("Test: " + path);
-            List<UMCLight> features = GetClusterData(path);
+            var features = GetClusterData(path);
 
             Assert.IsNotEmpty(features);
 
-            UMCClusterLight cluster = new UMCClusterLight();
+            var cluster = new UMCClusterLight();
             cluster.ID = features[0].ID;
             features.ForEach(x => cluster.AddChildFeature(x));
 
@@ -153,7 +152,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             IClusterReprocessor<UMCLight, UMCClusterLight> reprocessor = new MedianSplitReprocessor<UMCLight, UMCClusterLight>();
 
-            reprocessor.ProcessClusters(new List<UMCClusterLight>() { cluster });
+            reprocessor.ProcessClusters(new List<UMCClusterLight> { cluster });
         }
 
 
@@ -164,26 +163,26 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         public void TestPairwise(string path)
         {
             Console.WriteLine("Test: " + path);
-            List<UMCLight> features = GetClusterData(path);
+            var features = GetClusterData(path);
 
             Assert.IsNotEmpty(features);
 
-            UMCClusterLight cluster = new UMCClusterLight();
+            var cluster = new UMCClusterLight();
             cluster.ID = features[0].ID;
             features.ForEach(x => cluster.AddChildFeature(x));
 
             
-            EuclideanDistanceMetric<FeatureLight> distance = new EuclideanDistanceMetric<FeatureLight>();
+            var distance = new EuclideanDistanceMetric<FeatureLight>();
 
-            for (int i = 0; i < features.Count; i++)
+            for (var i = 0; i < features.Count; i++)
             {
-                UMCLight  featureX = features[i];
-                for (int j = 0; j < features.Count; j++)
+                var  featureX = features[i];
+                for (var j = 0; j < features.Count; j++)
                 {
 
                     if (i != j)
                     {
-                        UMCLight featureY = features[j];
+                        var featureY = features[j];
                        // Console.WriteLine(distance.EuclideanDistance(featureX, featureY));
                     }
                 }                

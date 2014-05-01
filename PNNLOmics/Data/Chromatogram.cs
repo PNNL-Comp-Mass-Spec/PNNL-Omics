@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Data
 {
@@ -11,23 +7,9 @@ namespace PNNLOmics.Data
     /// </summary>
     public class Chromatogram
     {
-        public Chromatogram()
+        protected Chromatogram()
         {
             Points = new List<XYData>();
-        }
-        /// <summary>
-        /// Builds a chromatogram based on the supplied data.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="mz"></param>
-        /// <param name="chargeState"></param>
-        public Chromatogram(List<XYData> data, double mz, int chargeState)
-        {
-            Points      = data;
-            StartScan   = Convert.ToInt32(data.Min(x => x.X));
-            EndScan     = Convert.ToInt32(data.Max(x => x.X));
-            Mz          = mz;
-            ChargeState = chargeState;
         }
 
         public int ChargeState
@@ -56,7 +38,7 @@ namespace PNNLOmics.Data
         public List<XYData> Points
         {
             get;
-            set;
+            private set;
         }
         /// <summary>
         /// Gets or sets the points that were fit to a chromatogram
@@ -65,23 +47,7 @@ namespace PNNLOmics.Data
         {
             get;
             set;
-        }
-        /// <summary>
-        /// Gets or sets the fit values for a chromatogram.
-        /// </summary>
-        public SolverReport FitReport
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Gets or sets the area bound by the Xic
-        /// </summary>
-        public double Area
-        {
-            get;
-            set;
-        }
+        }        
         /// <summary>
         /// Gets or sets the coefficients that describes the fit profile.
         /// </summary>
@@ -90,5 +56,7 @@ namespace PNNLOmics.Data
             get;
             set;
         }
+
+        public double Area { get; set; }
     }
 }

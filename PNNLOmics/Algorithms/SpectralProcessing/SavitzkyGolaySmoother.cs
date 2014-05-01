@@ -58,12 +58,12 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
         /// <returns></returns>
         private List<XYData> SmoothArray(List<XYData> inputValues)
          {
-             double[] yValues = inputValues.Select(x => x.Y).ToArray();
+             var yValues = inputValues.Select(x => x.Y).ToArray();
 
-             double[] smoothedData = SmoothArray(yValues);
+             var smoothedData = SmoothArray(yValues);
 
 
-             for (int i = 0; i < smoothedData.Count(); i++)
+             for (var i = 0; i < smoothedData.Count(); i++)
              {
                  inputValues[i].Y = smoothedData[i];
              }
@@ -85,49 +85,49 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
             if (PointsForSmoothing % 2 == 0)
                 throw new ArgumentOutOfRangeException("savGolayPoints must be an odd number 3 or higher");
 
-            int m = (PointsForSmoothing - 1) / 2;
-            int colCount = inputValues.Count;
-            double[] yvalues = inputValues.Select(point => point.Y).ToArray();
+            var m = (PointsForSmoothing - 1) / 2;
+            var colCount = inputValues.Count;
+            var yvalues = inputValues.Select(point => point.Y).ToArray();
 
             if (_smoothingFilters == null)
             {
                 _smoothingFilters = CalculateSmoothingFilters(PolynomialOrder, PointsForSmoothing);
             }
 
-            Matrix<double> conjTransposeMatrix = _smoothingFilters.ConjugateTranspose();
+            var conjTransposeMatrix = _smoothingFilters.ConjugateTranspose();
 
             Vector<double> conjTransposeColumn;
             double multiplicationResult;
-            for (int i = 0; i <= m; i++)
+            for (var i = 0; i <= m; i++)
             {
                 conjTransposeColumn = conjTransposeMatrix.Column(i);
 
                 multiplicationResult = 0;
-                for (int z = 0; z < PointsForSmoothing; z++)
+                for (var z = 0; z < PointsForSmoothing; z++)
                 {
                     multiplicationResult += (conjTransposeColumn[z] * yvalues[z]);
                 }
                 inputValues[i].Y = multiplicationResult;
             }
 
-            Vector<double> conjTransposeColumnResult = conjTransposeMatrix.Column(m);
+            var conjTransposeColumnResult = conjTransposeMatrix.Column(m);
 
-            for (int i = m + 1; i < colCount - m - 1; i++)
+            for (var i = m + 1; i < colCount - m - 1; i++)
             {
                 multiplicationResult = 0;
-                for (int z = 0; z < PointsForSmoothing; z++)
+                for (var z = 0; z < PointsForSmoothing; z++)
                 {
                     multiplicationResult += (conjTransposeColumnResult[z] * yvalues[i - m + z]);
                 }
                 inputValues[i].Y = multiplicationResult;
             }
 
-            for (int i = 0; i <= m; i++)
+            for (var i = 0; i <= m; i++)
             {
                 conjTransposeColumn = conjTransposeMatrix.Column(m + i);
 
                 multiplicationResult = 0;
-                for (int z = 0; z < PointsForSmoothing; z++)
+                for (var z = 0; z < PointsForSmoothing; z++)
                 {
                     multiplicationResult += (conjTransposeColumn[z] * yvalues[colCount - PointsForSmoothing + z]);
                 }
@@ -136,7 +136,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
 
             if (!AllowNegativeValues)
             {
-                foreach (XYData t in inputValues)
+                foreach (var t in inputValues)
                 {
                     if (t.Y < 0) t.Y = 0;
                 }
@@ -158,9 +158,9 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
             if (PointsForSmoothing % 2 == 0)
                 throw new ArgumentOutOfRangeException("savGolayPoints must be an odd number 3 or higher");
 
-            int m = (PointsForSmoothing - 1) / 2;
-            int colCount = inputValues.Length;
-            double[] returnYValues = new double[colCount];
+            var m = (PointsForSmoothing - 1) / 2;
+            var colCount = inputValues.Length;
+            var returnYValues = new double[colCount];
 
             if (_smoothingFilters == null)
             {
@@ -169,12 +169,12 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
 
             var conjTransposeMatrix = _smoothingFilters.ConjugateTranspose();
 
-            for (int i = 0; i <= m; i++)
+            for (var i = 0; i <= m; i++)
             {
                 var conjTransposeColumn = conjTransposeMatrix.Column(i);
 
                 double multiplicationResult = 0;
-                for (int z = 0; z < PointsForSmoothing; z++)
+                for (var z = 0; z < PointsForSmoothing; z++)
                 {
                     multiplicationResult += (conjTransposeColumn[z] * inputValues[z]);
                 }
@@ -184,22 +184,22 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
 
             var conjTransposeColumnResult = conjTransposeMatrix.Column(m);
 
-            for (int i = m + 1; i < colCount - m - 1; i++)
+            for (var i = m + 1; i < colCount - m - 1; i++)
             {
                 double multiplicationResult = 0;
-                for (int z = 0; z < PointsForSmoothing; z++)
+                for (var z = 0; z < PointsForSmoothing; z++)
                 {
                     multiplicationResult += (conjTransposeColumnResult[z] * inputValues[i - m + z]);
                 }
                 returnYValues[i] = multiplicationResult;
             }
 
-            for (int i = 0; i <= m; i++)
+            for (var i = 0; i <= m; i++)
             {
                 var conjTransposeColumn = conjTransposeMatrix.Column(m + i);
 
                 double multiplicationResult = 0;
-                for (int z = 0; z < PointsForSmoothing; z++)
+                for (var z = 0; z < PointsForSmoothing; z++)
                 {
                     multiplicationResult += (conjTransposeColumn[z] * inputValues[colCount - PointsForSmoothing + z]);
                 }
@@ -208,7 +208,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
 
             if (!AllowNegativeValues)
             {
-                for (int i = 0; i < returnYValues.Length; i++)
+                for (var i = 0; i < returnYValues.Length; i++)
                 {
                     if (returnYValues[i] < 0) returnYValues[i] = 0;
                 }
@@ -221,12 +221,12 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
 
         private DenseMatrix CalculateSmoothingFilters(int polynomialOrder, int filterLength)
         {
-            int m = (filterLength - 1) / 2;
+            var m = (filterLength - 1) / 2;
             var denseMatrix = new DenseMatrix(filterLength, polynomialOrder + 1);
 
-            for (int i = -m; i <= m; i++)
+            for (var i = -m; i <= m; i++)
             {
-                for (int j = 0; j <= polynomialOrder; j++)
+                for (var j = 0; j <= polynomialOrder; j++)
                 {
                     denseMatrix[i + m, j] = Math.Pow(i, j);
                 }

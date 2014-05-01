@@ -26,7 +26,7 @@ namespace PNNLOmics.Data.MassTags
             this()
         {
             Name                    = database.Name;
-            List<MassTagLight> tags = database.MassTags.Where(x => x.ObservationCount >= requiredObservations).ToList();
+            var tags = database.MassTags.Where(x => x.ObservationCount >= requiredObservations).ToList();
             AddMassTagsAndProteins(tags, database.Proteins);
         }
 
@@ -81,7 +81,7 @@ namespace PNNLOmics.Data.MassTags
         private void DetermineIfContainsDriftTime(List<MassTagLight> masstags)
         {
             DoesContainDriftTime = false;
-            MassTagLight featureTest = masstags.Find(delegate(MassTagLight x)
+            var featureTest = masstags.Find(delegate(MassTagLight x)
             {
                 return x.DriftTime > 0;
             });
@@ -103,9 +103,9 @@ namespace PNNLOmics.Data.MassTags
             
             MassTags.AddRange(massTags);
 
-            Dictionary<int, MassTagLight> massTagMap = new Dictionary<int, MassTagLight>();
+            var massTagMap = new Dictionary<int, MassTagLight>();
 
-            foreach (MassTagLight tag in massTags)
+            foreach (var tag in massTags)
             {
                 if (massTagMap.ContainsKey(tag.ID) == false)
                 {
@@ -114,21 +114,21 @@ namespace PNNLOmics.Data.MassTags
             }
             
             ProteinsToMassTags                  = new Dictionary<int, List<MassTagLight>>();
-            Dictionary<int, Protein> proteinMap = new Dictionary<int, Protein>();
+            var proteinMap = new Dictionary<int, Protein>();
 
             AllProteins = new List<Protein>();
 
 
-            foreach (int key in massTagToProteinMap.Keys)
+            foreach (var key in massTagToProteinMap.Keys)
             {
-                List<Protein> proteins  = massTagToProteinMap[key];
+                var proteins  = massTagToProteinMap[key];
 
                 if (massTagMap.ContainsKey(key) == false)
                     continue;
 
-                MassTagLight tag        = massTagMap[key];
+                var tag        = massTagMap[key];
 
-                foreach (Protein p in proteins)
+                foreach (var p in proteins)
                 {
                     if (!proteinMap.ContainsKey(p.RefID))
                     {

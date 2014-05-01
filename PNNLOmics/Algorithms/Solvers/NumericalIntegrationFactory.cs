@@ -1,7 +1,4 @@
-﻿using System;
-using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
-
-namespace PNNLOmics.Algorithms.Solvers
+﻿namespace PNNLOmics.Algorithms.Solvers
 {
     /// <summary>
     /// Factory for creating numerical integration objects.

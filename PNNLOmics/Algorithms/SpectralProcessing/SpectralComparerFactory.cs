@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Algorithms.SpectralComparisons;
+﻿using PNNLOmics.Algorithms.SpectralComparisons;
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
 {

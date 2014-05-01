@@ -1,6 +1,4 @@
-﻿using PNNLOmics.Algorithms.Alignment.SpectralMatches;
-
-namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
+﻿namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {
 
     /// <summary>

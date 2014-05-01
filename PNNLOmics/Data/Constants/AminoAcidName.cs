@@ -1,7 +1,4 @@
-﻿using System;
-using PNNLOmics.Data.Constants.Libraries;
-
-namespace PNNLOmics.Data.Constants
+﻿namespace PNNLOmics.Data.Constants
 {
 
 	/// <summary>

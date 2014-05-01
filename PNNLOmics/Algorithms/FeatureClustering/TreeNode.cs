@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -44,7 +41,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="value"></param>
         public virtual void Insert(T value)
         {
-            TreeNode<T> node = new TreeNode<T>(value);
+            var node = new TreeNode<T>(value);
             if (Root == null)
                 Root = node;
             else
@@ -97,7 +94,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     {
         protected override void Insert(TreeNode<T> parent, TreeNode<T> node)
         {                        
-            int compareValue             = node.Value.CompareTo(parent.Value);
+            var compareValue             = node.Value.CompareTo(parent.Value);
 
             // Greater Than the Parent - replace parent...
             if (compareValue > 0)

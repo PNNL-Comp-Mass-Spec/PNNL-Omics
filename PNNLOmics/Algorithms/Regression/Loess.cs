@@ -63,8 +63,8 @@ namespace PNNLOmics.Algorithms.Regression
         {
             
 
-            int ileft  = bandwidthInterval[0];
-            int iright = bandwidthInterval[1];
+            var ileft  = bandwidthInterval[0];
+            var iright = bandwidthInterval[1];
 
             // Compute the point of the bandwidth interval that is
             // farthest from x
@@ -87,11 +87,11 @@ namespace PNNLOmics.Algorithms.Regression
             // (section "Weighted least squares")
             double sumWeights   = 0;
             double sumX         = 0, sumXSquared = 0, sumY = 0, sumXy = 0;
-            double denom        = Math.Abs(1.0 / (m_xModel[edge] - x));
-            for (int k = ileft; k <= iright; ++k)
+            var denom        = Math.Abs(1.0 / (m_xModel[edge] - x));
+            for (var k = ileft; k <= iright; ++k)
             {
-                double xk = m_xModel[k];
-                double yk = m_yModel[k];
+                var xk = m_xModel[k];
+                var yk = m_yModel[k];
 
                 double dist;
                 if (k < i)
@@ -103,8 +103,8 @@ namespace PNNLOmics.Algorithms.Regression
                     dist = (xk - x);
                 }
 
-                double w     = m_fitFunction(dist * denom) * robustnessWeights[k];
-                double xkw   = xk * w;
+                var w     = m_fitFunction(dist * denom) * robustnessWeights[k];
+                var xkw   = xk * w;
 
                 sumWeights  += w;
                 sumX        += xkw;
@@ -113,10 +113,10 @@ namespace PNNLOmics.Algorithms.Regression
                 sumXy       += yk * xkw;
             }
 
-            double meanX        = sumX / sumWeights;
-            double meanY        = sumY / sumWeights;
-            double meanXy       = sumXy / sumWeights;
-            double meanXSquared = sumXSquared / sumWeights;
+            var meanX        = sumX / sumWeights;
+            var meanY        = sumY / sumWeights;
+            var meanXy       = sumXy / sumWeights;
+            var meanXSquared = sumXSquared / sumWeights;
 
             double beta;
             if (meanXSquared == meanX * meanX)
@@ -128,7 +128,7 @@ namespace PNNLOmics.Algorithms.Regression
                 beta = (meanXy - meanX * meanY) / (meanXSquared - meanX * meanX);
             }
 
-            double alpha = meanY - beta * meanX;
+            var alpha = meanY - beta * meanX;
             res          = beta * x + alpha;
             residuals    = Math.Abs(m_yModel[i] - res);            
         }
@@ -146,7 +146,7 @@ namespace PNNLOmics.Algorithms.Regression
                 throw new Exception("The models do not match in size. They must be the same dimension");
 
             // Find index within the model...for the locally weighted regression
-            int index = FindIndex(xValue, m_xModel);
+            var index = FindIndex(xValue, m_xModel);
             double res;
             double residuals;            
             
@@ -154,7 +154,7 @@ namespace PNNLOmics.Algorithms.Regression
             m_bandwidthInterval = new[] { 0, m_bandwidthInPoints - 1 };
 
             // From the left 
-            int points = m_bandwidthInPoints / 2;
+            var points = m_bandwidthInPoints / 2;
 
             // We are at the left edge.
             if (index - points  < 0)
@@ -217,10 +217,10 @@ namespace PNNLOmics.Algorithms.Regression
             CheckStrictlyIncreasing(m_xModel);
 
             if (m_modelSize == 1)
-                return new List<double>() { m_yModel[0] };
+                return new List<double> { m_yModel[0] };
             
             if (m_modelSize == 2)
-                return new List<double>() { m_yModel[0], m_yModel[1] };
+                return new List<double> { m_yModel[0], m_yModel[1] };
             
 
             m_bandwidthInPoints = (int)(bandwidth * m_modelSize);
@@ -241,18 +241,18 @@ namespace PNNLOmics.Algorithms.Regression
             // Do an initial fit and 'robustnessIters' robustness iterations.
             // This is equivalent to doing 'robustnessIters+1' robustness iterations
             // starting with all robustness weights set to 1.
-            for (int i = 0; i < m_robustnessWeights.Length; i++) 
+            for (var i = 0; i < m_robustnessWeights.Length; i++) 
                     m_robustnessWeights[i] = 1;
 
-            for (int iter = 0; iter <= robustnessIters; ++iter)
+            for (var iter = 0; iter <= robustnessIters; ++iter)
             {
-                m_bandwidthInterval = new int[] { 0, m_bandwidthInPoints - 1 };
+                m_bandwidthInterval = new[] { 0, m_bandwidthInPoints - 1 };
 
                 // At each x, compute a local weighted linear regression
-                for (int i = 0; i < m_modelSize; ++i)
+                for (var i = 0; i < m_modelSize; ++i)
                 {
-                    double res       = m_res[i];
-                    double residuals = m_res[i];
+                    var res       = m_res[i];
+                    var residuals = m_res[i];
 
                     // Find out the interval of source points on which
                     // a regression is to be made.
@@ -279,17 +279,17 @@ namespace PNNLOmics.Algorithms.Regression
                 // An arraycopy and a sort are completely tractable here, 
                 // because the preceding loop is a lot more expensive
                 System.Array.Copy(m_residuals, m_sortedResiduals, m_modelSize);
-                Array.Sort<double>(m_sortedResiduals);
-                double medianResidual = m_sortedResiduals[m_modelSize / 2];
+                Array.Sort(m_sortedResiduals);
+                var medianResidual = m_sortedResiduals[m_modelSize / 2];
 
                 if (medianResidual == 0)
                 {
                     break;
                 }
 
-                for (int i = 0; i < m_modelSize; ++i)
+                for (var i = 0; i < m_modelSize; ++i)
                 {
-                    double arg = m_residuals[i] / (6 * medianResidual);
+                    var arg = m_residuals[i] / (6 * medianResidual);
                     m_robustnessWeights[i] = (arg >= 1) ? 0 : Math.Pow(1 - arg * arg, 2);
                 }
             }
@@ -305,14 +305,14 @@ namespace PNNLOmics.Algorithms.Regression
         /// <returns></returns>
         private int FindIndex(double x, IList<double> model)
         {
-            int i           = 0;
-            double tempDiff = double.MaxValue;
-            int j           = 0;
+            var i           = 0;
+            var tempDiff = double.MaxValue;
+            var j           = 0;
 
             // throw new NotImplementedException();
             for(i = 0; i < model.Count - 1; i++)
             {
-                double diff = Math.Abs(x - model[i]);
+                var diff = Math.Abs(x - model[i]);
 
                 if (tempDiff > diff)
                 {
@@ -338,8 +338,8 @@ namespace PNNLOmics.Algorithms.Regression
          */
         private void updateBandwidthInterval(IList<double> xval, int i, int[] bandwidthInterval)
         {
-            int left  = bandwidthInterval[0];
-            int right = bandwidthInterval[1];
+            var left  = bandwidthInterval[0];
+            var right = bandwidthInterval[1];
             // The right edge should be adjusted if the next point to the right
             // is closer to xval[i] than the leftmost point of the current interval
             if (right < xval.Count - 1 && xval[right + 1] - xval[i] < xval[i] - xval[left])
@@ -388,7 +388,7 @@ namespace PNNLOmics.Algorithms.Regression
          */
         private double tricube(double x)
         {
-            double tmp = 1 - x * x * x;
+            var tmp = 1 - x * x * x;
             return tmp * tmp * tmp;
         }
 
@@ -402,12 +402,12 @@ namespace PNNLOmics.Algorithms.Regression
          */
         private void CheckAllFiniteReal(IList<double> values, bool isAbscissae)
         {
-            for (int i = 0; i < values.Count; i++)
+            for (var i = 0; i < values.Count; i++)
             {
-                double x = values[i];
+                var x = values[i];
                 if (Double.IsInfinity(x) || Double.IsNaN(x))
                 {
-                    string pattern = isAbscissae ?
+                    var pattern = isAbscissae ?
                             "all abscissae must be finite real numbers, but {0}-th is {1}" :
                             "all ordinatae must be finite real numbers, but {0}-th is {1}";
                     throw new ApplicationException(string.Format(pattern, i, x));
@@ -425,7 +425,7 @@ namespace PNNLOmics.Algorithms.Regression
          */
         private void CheckStrictlyIncreasing(IList<double> xval)
         {
-            for (int i = 0; i < xval.Count; ++i)
+            for (var i = 0; i < xval.Count; ++i)
             {
                 //if (i >= 1 && xval[i - 1] >= xval[i])
                 if (i >= 1 && xval[i - 1] > xval[i])

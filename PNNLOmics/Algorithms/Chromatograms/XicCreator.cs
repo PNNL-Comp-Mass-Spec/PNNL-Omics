@@ -1,10 +1,10 @@
-﻿using PNNLOmics.Algorithms.SpectralProcessing;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using PNNLOmics.Algorithms.SpectralProcessing;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PNNLOmics.Algorithms.Chromatograms
 {
@@ -80,10 +80,9 @@ namespace PNNLOmics.Algorithms.Chromatograms
             var m           = allFeatures.Count;
             allFeatures     = allFeatures.OrderBy(x => x.StartScan).ToList();
 
-            // This map tracks all possible features to keep
-            var featureMap  = new Dictionary<int, XicFeature>();
-            int j           = 0;  // this is our feature index
-            int msFeatureId = 0;
+            // This map tracks all possible features to keep            
+            var j           = 0;  // this is our feature index
+            var msFeatureId = 0;
             
             // This list stores a temporary amount of parent MS features
             // so that we can link MS/MS spectra to MS Features
@@ -97,7 +96,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
 
             // Iterate over all the scans...
-            for (int s = minScan; s < maxScan && s < N; s++)
+            for (var s = minScan; s < maxScan && s < N; s++)
             {
                 // Find any features that need data from this scan, s 
                 while (j < m)
@@ -120,15 +119,15 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     continue;
 
                 // Here We link the MSMS Spectra to the UMC Features
-                var summary           = new ScanSummary();
-                List<XYData> spectrum = provider.GetRawSpectra(s, 0, 1, out summary);                
+                ScanSummary summary;
+                var spectrum = provider.GetRawSpectra(s, 0, 1, out summary);                
                                 
                 if (summary.MsLevel > 1)
                 {
                     // If it is an MS 2 spectra... then let's link it to the parent MS
                     // Feature
                     var matching = parentMsList.FindAll(
-                        x => Math.Abs(x.Mz - summary.PrecursorMZ) <= FragmentationSizeWindow
+                        x => Math.Abs(x.Mz - summary.PrecursorMz) <= FragmentationSizeWindow
                         );
                     
                     foreach (var match in matching)
@@ -142,7 +141,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                             CollisionType   = summary.CollisionType,
                             Scan            = s,
                             MSLevel         = summary.MsLevel,
-                            PrecursorMZ     = summary.PrecursorMZ,
+                            PrecursorMZ     = summary.PrecursorMz,
                             TotalIonCurrent = summary.TotalIonCurrent
                         };
                         
@@ -169,7 +168,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                 
                 // now we iterate through all features that need data from this scan
                 //foreach (var xic in xicFeatures.Values)
-                int k = 0;
+                var k = 0;
                 foreach (var xic in xicFeatures)
                 {                    
                     var lower  = xic.LowMz;
@@ -253,7 +252,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     // Find the biggest peak...
                     var maxScanIndex  = 0;
                     long maxAbundance = 0;
-                    for (int i = 0; i < msFeatures.Count; i++)
+                    for (var i = 0; i < msFeatures.Count; i++)
                     {
                         msFeatures[i].Abundance = Convert.ToInt64(points[i].Y);
 
@@ -321,8 +320,8 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     var min = double.MaxValue;
                     var max = double.MinValue;
 
-                    int scanStart = int.MaxValue;
-                    int scanEnd = 0;
+                    var scanStart = int.MaxValue;
+                    var scanEnd = 0;
 
                     foreach (var chargeFeature in x[charge])
                     {
@@ -341,11 +340,10 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     // Clear the ms feature list...because later we will populate it
                     feature.MSFeatures.Clear();
 
-                    var xicFeature = new XicFeature()
+                    var xicFeature = new XicFeature
                     {
-                        Area        = 0,
-                        HighMz      = Feature.ComputeDaDifferenceFromPPM(mz, -massError),
-                        LowMz       = Feature.ComputeDaDifferenceFromPPM(mz, massError),
+                        HighMz = FeatureLight.ComputeDaDifferenceFromPPM(mz, -massError),
+                        LowMz = FeatureLight.ComputeDaDifferenceFromPPM(mz, massError),
                         Mz          = mz,
                         Feature     = feature,
                         Id          = id++,
@@ -432,8 +430,8 @@ namespace PNNLOmics.Algorithms.Chromatograms
         {
 
             var newFeatures = new List<MSFeatureLight>();
-            var lower  = Feature.ComputeDaDifferenceFromPPM(mz, massError);
-            var higher = Feature.ComputeDaDifferenceFromPPM(mz, -massError);
+            var lower = FeatureLight.ComputeDaDifferenceFromPPM(mz, massError);
+            var higher = FeatureLight.ComputeDaDifferenceFromPPM(mz, -massError);
 
                         
 

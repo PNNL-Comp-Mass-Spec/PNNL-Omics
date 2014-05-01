@@ -4,7 +4,7 @@
  *  1-18-2011
  * 
  */
-using System;
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using PNNLOmics.Data;
@@ -44,18 +44,18 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <returns>Centroided peaks with noise removed</returns>
         public override Collection<Peak> DetectPeaks(Collection<XYData> collectionRawXYData)
         {
-            List<XYData> rawXYData = new List<XYData>(collectionRawXYData);
+            var rawXYData = new List<XYData>(collectionRawXYData);
 
             //TODO: Scott Create constructor that accepts parameters.
-            PeakCentroider newPeakCentroider = new PeakCentroider();
+            var newPeakCentroider = new PeakCentroider();
             newPeakCentroider.Parameters = CentroidParameters;
 
             // Find peaks in profile.
-            List<ProcessedPeak> centroidedPeakList = new List<ProcessedPeak>();
+            var centroidedPeakList = new List<ProcessedPeak>();
             centroidedPeakList = newPeakCentroider.DiscoverPeaks(rawXYData);
 
             //TODO: Scott Create constructor that accepts parameters.
-            PeakThresholder newPeakThresholder = new PeakThresholder();
+            var newPeakThresholder = new PeakThresholder();
             newPeakThresholder.Parameters = ThresholdParameters;
             
             // Separate signal from noise.
@@ -63,7 +63,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             thresholdedData = newPeakThresholder.ApplyThreshold(centroidedPeakList);
 
             // Find peaks.
-            Collection<Peak> outputPeakList = ProcessedPeak.ToPeaks(thresholdedData); 
+            var outputPeakList = ProcessedPeak.ToPeaks(thresholdedData); 
 
             return outputPeakList;
         }

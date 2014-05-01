@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using NUnit.Framework;
+using PNNLOmics.Algorithms.PeakDetection;
 using PNNLOmics.Algorithms.SpectralProcessing;
 using PNNLOmics.Data;
-using PNNLOmics.Algorithms.PeakDetection;
-using System.Collections.ObjectModel;
 using TestSpectra;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
@@ -27,10 +27,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             Assert.That(xvals != null);
             Assert.AreEqual(122032, xvals.Length);
 
-            List<XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+            var testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            PeakCentroider newPeakCentroider = new PeakCentroider();
-            List<ProcessedPeak> centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
+            var newPeakCentroider = new PeakCentroider();
+            var centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
 
             displayPeakData(centroidedPeakList);
 
@@ -52,18 +52,18 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             Assert.AreEqual(122032, xvals.Length);
             Console.WriteLine("Passed Load" + Environment.NewLine);
 
-            List<XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+            var testXYData = convertXYDataToOMICSXYData(xvals, yvals);
 
-            PeakCentroider newPeakCentroider = new PeakCentroider();
-            List<ProcessedPeak> centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
+            var newPeakCentroider = new PeakCentroider();
+            var centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
 
             Assert.AreEqual(15255, centroidedPeakList.Count);
             Console.WriteLine("Passed Peak Detection" + Environment.NewLine);
 
-            PeakThresholder newPeakThresholder = new PeakThresholder();
+            var newPeakThresholder = new PeakThresholder();
             //newPeakThresholder.Parameters.SignalToShoulderCuttoff = 3f;//3 sigma
             newPeakThresholder.Parameters.SignalToShoulderCuttoff = 4f;//4 sigma// this is very nice
-            List<ProcessedPeak> thresholdedData = newPeakThresholder.ApplyThreshold(centroidedPeakList);
+            var thresholdedData = newPeakThresholder.ApplyThreshold(centroidedPeakList);
 
             Console.WriteLine("Non-thresholded Candidate Peaks detected = " + centroidedPeakList.Count);
 
@@ -86,11 +86,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             Assert.That(xvals != null);
             Assert.AreEqual(122032, xvals.Length);
 
-            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
-            Collection<XYData> dataInput = new Collection<XYData>(testXYData);
+            var testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+            var dataInput = new Collection<XYData>(testXYData);
 
-            KronewitterPeakDetector newPeakDetector = new KronewitterPeakDetector();
-            Collection<Peak> finalPeakList = newPeakDetector.DetectPeaks(dataInput);
+            var newPeakDetector = new KronewitterPeakDetector();
+            var finalPeakList = newPeakDetector.DetectPeaks(dataInput);
 
             Console.WriteLine("We found " + finalPeakList.Count + " Peaks.");
             //Assert.AreEqual(finalPeakList.Count, 53);
@@ -107,15 +107,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             Assert.That(xvals != null);
             Assert.AreEqual(122032, xvals.Length);
 
-            List<PNNLOmics.Data.XYData> testXYData = convertXYDataToOMICSXYData(xvals, yvals);
-            List<XYData> dataInput = new List<XYData>(testXYData);
+            var testXYData = convertXYDataToOMICSXYData(xvals, yvals);
+            var dataInput = new List<XYData>(testXYData);
 
-            int numberOfSmootherPoints = 9;
-            int polynomialOrder = 2;
-            bool allowNegativeValues = true;//faster
-            SavitzkyGolaySmoother smoother = new SavitzkyGolaySmoother(numberOfSmootherPoints, polynomialOrder, allowNegativeValues);
+            var numberOfSmootherPoints = 9;
+            var polynomialOrder = 2;
+            var allowNegativeValues = true;//faster
+            var smoother = new SavitzkyGolaySmoother(numberOfSmootherPoints, polynomialOrder, allowNegativeValues);
           
-            List<XYData> smoothedValues = smoother.Smooth(dataInput);
+            var smoothedValues = smoother.Smooth(dataInput);
 
             Console.WriteLine("We found " + smoothedValues.Count + " Peaks.");
             Assert.AreEqual(122032, smoothedValues.Count);
@@ -135,7 +135,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
         private void displayPeakData(List<ProcessedPeak> centroidedPeakList)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("m/z" + '\t' + "Height" + '\t' + "Width");
             foreach (var item in centroidedPeakList)
             {
@@ -152,10 +152,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
         private List<XYData> convertXYDataToOMICSXYData(float[] xvals, float[] yvals)
         {
-            List<XYData> xydataList = new List<XYData>();
-            for (int i = 0; i < xvals.Length; i++)
+            var xydataList = new List<XYData>();
+            for (var i = 0; i < xvals.Length; i++)
             {
-                XYData xydatapoint = new XYData(xvals[i], yvals[i]);
+                var xydatapoint = new XYData(xvals[i], yvals[i]);
                 xydataList.Add(xydatapoint);
             }
             return xydataList;
@@ -168,13 +168,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
 
             loadTestScanData(ref tempXVals, ref tempYVals);
 
-            xvals = tempXVals.Select<double, float>(i => (float)i).ToArray();
-            yvals = tempYVals.Select<double, float>(i => (float)i).ToArray();
+            xvals = tempXVals.Select(i => (float)i).ToArray();
+            yvals = tempYVals.Select(i => (float)i).ToArray();
         }
 
         private void loadTestScanData(ref double[] xvals, ref double[] yvals)
         {
-            HardCodedSpectraDouble newSpectra = new HardCodedSpectraDouble();
+            var newSpectra = new HardCodedSpectraDouble();
             newSpectra.GenerateSpectraDouble();
             Console.WriteLine(newSpectra.XValues.Length);
             xvals = newSpectra.XValues;

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System;
 using PNNLOmics.Data;
-using PNNLOmics.Extensions;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
@@ -53,8 +51,8 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
         /// <returns></returns>
         public SolverReport Solve(List<XYData> data, ref double[] coeffs)
         {
-            List<double> x = data.ConvertAll<double>(u => u.X);
-            List<double> y = data.ConvertAll<double>(u => u.X);
+            var x = data.ConvertAll(u => u.X);
+            var y = data.ConvertAll(u => u.X);
 
             return Solve(x, y, ref coeffs);
         }
@@ -68,17 +66,17 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
         public SolverReport Solve(List<double> x, List<double> y, ref double[] coeffs)
         {
             double epsf     = 0;
-            int maxits      = 400; 
-            int info        = 0;
+            var maxits      = 400; 
+            var info        = 0;
 
             alglib.lsfitstate   state;
             alglib.lsfitreport  report;
 
-            int         N   = x.Count;
-            double[,]   xMatrix   = new double[N, 1];
+            var         N   = x.Count;
+            var   xMatrix   = new double[N, 1];
 
-            int         i = 0;
-            foreach (double d in x)
+            var         i = 0;
+            foreach (var d in x)
             {
                 xMatrix[i++, 0] = d;
             }
@@ -117,10 +115,10 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
             //        *  7    stopping conditions are too stringent,
             //                further improvement is impossible
 
-            bool converged = (info >= 1 && info < 5);
+            var converged = (info >= 1 && info < 5);
 
             // This is the flag in the ALGLIB library that says things were good for this kind of fit.
-            SolverReport solverReport = new SolverReport(report, converged);
+            var solverReport = new SolverReport(report, converged);
 
             return solverReport;
         }

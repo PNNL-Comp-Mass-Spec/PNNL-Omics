@@ -1,7 +1,6 @@
 ﻿using System;
-using PNNLOmics.Algorithms.Distance;
-using MathNet.Numerics.LinearAlgebra.Double;
 using NUnit.Framework;
+using PNNLOmics.Algorithms.Distance;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
@@ -10,14 +9,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 	/// Test class for methods located in MahalanobisDistanceCalculator that contains various methods for calculating the mahalanobis distance.
 	/// </summary>
 	[TestFixture]
-    public class WeightedDistanceCalculatorTests
+    public sealed class WeightedDistanceCalculatorTests
 	{
 
         private UMCClusterLight CreateCluster(double mass, double net, double drift)
         {
-            UMCClusterLight cluster  = new UMCClusterLight();
+            var cluster  = new UMCClusterLight();
             cluster.MassMonoisotopic = mass;
-            cluster.NET              = net;
+            cluster.Net              = net;
             cluster.RetentionTime    = net;
             cluster.DriftTime        = drift;
             return cluster;
@@ -26,23 +25,23 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 		[Test]
 		public void TestDistances()
 		{
-            WeightedEuclideanDistance<UMCClusterLight> dist = new WeightedEuclideanDistance<UMCClusterLight>();
+            var dist = new WeightedEuclideanDistance<UMCClusterLight>();
             
 
-            UMCClusterLight clusterA = CreateCluster(500, .2, 27);
-            UMCClusterLight clusterB = CreateCluster(500, .2, 27);
+            var clusterA = CreateCluster(500, .2, 27);
+            var clusterB = CreateCluster(500, .2, 27);
 
-            int N                = 50;
-            double stepMass      = .5;
-            double stepNET       = .001;
-            double stepDrift     = .01;
+            var N                = 50;
+            var stepMass      = .5;
+            var stepNET       = .001;
+            var stepDrift     = .01;
             
 
             Console.WriteLine("Walk in drift time");            
-            for (int i = 0; i < N; i++)
+            for (var i = 0; i < N; i++)
             {
                 clusterB.DriftTime += stepDrift; 
-                double distance    = dist.EuclideanDistance(clusterA, clusterB);
+                var distance    = dist.EuclideanDistance(clusterA, clusterB);
                 Console.WriteLine("{0}, {1}, {3}, {2}", clusterB.DriftTime, clusterB.DriftTime, distance, clusterB.DriftTime - clusterA.DriftTime);
             }
 
@@ -50,10 +49,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
             Console.WriteLine("Walk in net ");
             clusterB.DriftTime = 27;
 
-            for (int i = 0; i < N; i++)
+            for (var i = 0; i < N; i++)
             {
                 clusterB.RetentionTime += stepNET;
-                double distance = dist.EuclideanDistance(clusterA, clusterB);
+                var distance = dist.EuclideanDistance(clusterA, clusterB);
                 Console.WriteLine("{0}, {1}, {3}, {2}", clusterB.RetentionTime, clusterB.RetentionTime, distance, clusterB.RetentionTime - clusterA.RetentionTime);                
             }
 
@@ -61,16 +60,16 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
             Console.WriteLine();
             Console.WriteLine("Walk in mass ");
             clusterB.RetentionTime = .2;
-            for (int i = 0; i < N; i++)
+            for (var i = 0; i < N; i++)
             {
 
-                double d = Feature.ComputeDaDifferenceFromPPM(clusterA.MassMonoisotopic, stepMass * i);
+                var d = FeatureLight.ComputeDaDifferenceFromPPM(clusterA.MassMonoisotopic, stepMass * i);
                 clusterB.MassMonoisotopic = d;
-                double distance = dist.EuclideanDistance(clusterA, clusterB);
+                var distance = dist.EuclideanDistance(clusterA, clusterB);
                 Console.WriteLine("{0}, {1}, {3}, {2}", clusterB.MassMonoisotopic, 
                                                         clusterB.MassMonoisotopic, 
                                                         distance, 
-                                                        Feature.ComputeMassPPMDifference(clusterA.MassMonoisotopic, clusterB.MassMonoisotopic));
+                                                        FeatureLight.ComputeMassPPMDifference(clusterA.MassMonoisotopic, clusterB.MassMonoisotopic));
             }     
 		}	
 	}

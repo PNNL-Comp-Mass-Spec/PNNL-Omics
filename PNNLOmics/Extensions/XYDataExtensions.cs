@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Extensions
@@ -15,8 +13,8 @@ namespace PNNLOmics.Extensions
         /// <returns></returns>
         public static List<XYData> ToXYData(this List<XYZData> data)
         {
-            List<XYData> results = new List<XYData>();
-            foreach (XYZData point in data)
+            var results = new List<XYData>();
+            foreach (var point in data)
             {
                 results.Add(new XYData(point.X, point.Y));
             }
@@ -30,13 +28,13 @@ namespace PNNLOmics.Extensions
         /// <returns></returns>
         public static Dictionary<int, long> CreateScanMap(this List<XYData> profile)
         {
-            Dictionary<int, long> profileScanMap = new Dictionary<int, long>();
+            var profileScanMap = new Dictionary<int, long>();
 
             // Converts the point structure into a map.
-            foreach (XYData point in profile)
+            foreach (var point in profile)
             {
-                int scan        = Convert.ToInt32(point.X);
-                long intensity  = Convert.ToInt64(point.Y);
+                var scan        = Convert.ToInt32(point.X);
+                var intensity  = Convert.ToInt64(point.Y);
 
                 // Takes the max intensity for duplicate scans...
                 if (profileScanMap.ContainsKey(scan))

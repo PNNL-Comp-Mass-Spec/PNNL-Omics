@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System;
-namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
+﻿namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
     /// <summary>
     /// Basis function for the LM Algorithm using Polynomials

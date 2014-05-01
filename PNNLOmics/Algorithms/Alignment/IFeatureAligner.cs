@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using PNNLOmics.Data;
+﻿using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Alignment
 {

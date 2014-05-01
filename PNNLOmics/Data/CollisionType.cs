@@ -1,17 +1,15 @@
-﻿using System;
-
-namespace PNNLOmics.Data
+﻿namespace PNNLOmics.Data
 {
     /// <summary>
     /// Type of MS/MS fragmentation techniques.
     /// </summary>
     public enum CollisionType
     {
-        CID = 0,
-        ECD,
-        ETD,
-        HCD,
-        HID,        
+        Cid = 0,
+        Ecd,
+        Etd,
+        Hcd,
+        Hid,        
         None,
         Other        
     }

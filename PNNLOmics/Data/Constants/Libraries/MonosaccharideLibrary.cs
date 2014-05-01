@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PNNLOmics.Data.Constants;
+﻿using System.Collections.Generic;
 
 /// <example>
 /// dictionary implementation
@@ -39,7 +37,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             //each integer stands for the number of atoms in the compound -->X.NewElements(C H N O S P)
             //deoxyhexose.NewElements(C H N O S P)
 
-            Compound deoxyhexose = new Compound();
+            var deoxyhexose = new Compound();
             deoxyhexose.NewElements(6, 10, 0, 4, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             deoxyhexose.Name = "Deoxyhexose";
             deoxyhexose.Symbol = "DxyHex";
@@ -47,7 +45,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             deoxyhexose.ChemicalFormula = "C6H10O4";
             deoxyhexose.MassMonoIsotopic = Compound.GetMonoisotopicMass(deoxyhexose);
 
-            Compound hexose = new Compound();
+            var hexose = new Compound();
             hexose.NewElements(6, 10, 0, 5, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             hexose.Name = "Hexose";
             hexose.Symbol = "Hex";
@@ -55,7 +53,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             hexose.ChemicalFormula = "C6H10O5";
             hexose.MassMonoIsotopic = Compound.GetMonoisotopicMass(hexose);
 
-            Compound hexA = new Compound();
+            var hexA = new Compound();
             hexA.NewElements(6, 8, 0, 6, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             hexA.Name = "Hexuronic Acid";
             hexA.Symbol = "HexA";
@@ -64,7 +62,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             hexA.MassMonoIsotopic = Compound.GetMonoisotopicMass(hexA);
 
             //2-Keto-3-Deoxy-D-Glycero-D-Galacto-Nononic-Acid
-            Compound KDNDeaminatedNeuraminicAcid = new Compound();
+            var KDNDeaminatedNeuraminicAcid = new Compound();
             KDNDeaminatedNeuraminicAcid.NewElements(9, 14, 0, 8, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             KDNDeaminatedNeuraminicAcid.Name = "(KDN) 2-Keto-3-Deoxy-D-Glycero-D-Galacto-Nononic-Acid";
             KDNDeaminatedNeuraminicAcid.Symbol = "KDN";
@@ -72,7 +70,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             KDNDeaminatedNeuraminicAcid.ChemicalFormula = "C9H14O8";
             KDNDeaminatedNeuraminicAcid.MassMonoIsotopic = Compound.GetMonoisotopicMass(KDNDeaminatedNeuraminicAcid);
 
-            Compound NAcetylhexosamine = new Compound();
+            var NAcetylhexosamine = new Compound();
             NAcetylhexosamine.NewElements(8, 13, 1, 5, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             NAcetylhexosamine.Name = "N-acetylhexosamine";
             NAcetylhexosamine.Symbol = "HexNAc";
@@ -80,7 +78,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             NAcetylhexosamine.ChemicalFormula = "C8H13NO5";
             NAcetylhexosamine.MassMonoIsotopic = Compound.GetMonoisotopicMass(NAcetylhexosamine);
 
-            Compound neuraminicAcid = new Compound();
+            var neuraminicAcid = new Compound();
             neuraminicAcid.NewElements(11, 17, 1, 8, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             neuraminicAcid.Name = "Neuraminic Acid";
             neuraminicAcid.Symbol = "NeuAc";
@@ -88,7 +86,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             neuraminicAcid.ChemicalFormula = "C11H17NO8";
             neuraminicAcid.MassMonoIsotopic = Compound.GetMonoisotopicMass(neuraminicAcid);
 
-            Compound NGlycolylNeuraminicAcid = new Compound();
+            var NGlycolylNeuraminicAcid = new Compound();
             NGlycolylNeuraminicAcid.NewElements(11, 17, 1, 9, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             NGlycolylNeuraminicAcid.Name = "N-glycolylneuraminic Acid";
             NGlycolylNeuraminicAcid.Symbol = "NeuGc";
@@ -96,7 +94,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             NGlycolylNeuraminicAcid.ChemicalFormula = "C11H17NO9";
             NGlycolylNeuraminicAcid.MassMonoIsotopic = Compound.GetMonoisotopicMass(NGlycolylNeuraminicAcid);
 
-            Compound pentose = new Compound();
+            var pentose = new Compound();
             pentose.NewElements(5, 8, 0, 4, 0, 0);//-->X.NewElements(C H N O S P) number of atoms
             pentose.Name = "Pentose";
             pentose.Symbol = "Pent";

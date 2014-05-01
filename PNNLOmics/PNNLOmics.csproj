@@ -335,7 +335,7 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\MsSpectraExtensions.cs" />
     <Compile Include="Extensions\XYDataExtensions.cs" />
-    <Compile Include="Algorithms\DelegateDefinitions.cs" />
+    <Compile Include="Algorithms\Distance\DelegateDefinitions.cs" />
     <Compile Include="Algorithms\FeatureClustering\FeatureClusterParameters.cs" />
     <Compile Include="Algorithms\FeatureTolerances.cs" />
     <Compile Include="Algorithms\FeatureClustering\IClusterer.cs" />
@@ -348,14 +348,11 @@
     <Compile Include="Algorithms\FeatureMatcher\FeatureMatcher.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Utilities\ExpectationMaximization.cs" />
     <Compile Include="Algorithms\FeatureMatcher\Utilities\MatrixUtilities.cs" />
-    <Compile Include="AMTTagDatabase.cs" />
     <Compile Include="Data\Features\FeatureMatch.cs" />
     <Compile Include="Data\Features\UMC.cs" />
     <Compile Include="Data\Features\MSFeature.cs" />
-    <Compile Include="IonType.cs" />
-    <Compile Include="Molecule.cs" />
-    <Compile Include="MRMTransition.cs" />
-    <Compile Include="Organism.cs" />
+    <Compile Include="Data\IonType.cs" />
+    <Compile Include="Data\Molecule.cs" />
     <Compile Include="PeptideIon.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Data\MassTags\MassTag.cs" />

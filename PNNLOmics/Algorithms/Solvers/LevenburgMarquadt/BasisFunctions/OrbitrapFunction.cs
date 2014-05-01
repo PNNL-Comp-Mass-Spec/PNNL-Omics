@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
@@ -19,16 +16,16 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
             //Y=ax^2 + bx + c
             functionResult = 0;
 
-            double pi = 3.14159265358979;//Math.PI;
+            var pi = 3.14159265358979;//Math.PI;
 
-            double hanningI = c[0];
-            double hanningK = c[1];
+            var hanningI = c[0];
+            var hanningK = c[1];
             //double syncPct = c[2];
            
             //double lorentzianW = c[0];
             //double lorentzianI = c[1];
 
-            double xOffset = c[2];
+            var xOffset = c[2];
 
 
             //double syncPct = 0.5;

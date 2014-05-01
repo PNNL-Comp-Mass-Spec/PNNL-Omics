@@ -35,10 +35,10 @@ namespace PNNLOmics.Algorithms.Alignment.SequenceMatching
         public IEnumerable<Peptide> AssignNET(IEnumerable<Peptide> peptides)
         {
             var enumerable = peptides as Peptide[] ?? peptides.ToArray();
-            int max = enumerable.Max(x => x.Scan);
-            int min = enumerable.Min(x => x.Scan);
+            var max = enumerable.Max(x => x.Scan);
+            var min = enumerable.Min(x => x.Scan);
 
-            List<Peptide> newPeptides = enumerable.ToList();
+            var newPeptides = enumerable.ToList();
             newPeptides.ForEach(x => x.NET = Convert.ToDouble(x.Scan - min) / Convert.ToDouble(max - min));
             return newPeptides;
         }
@@ -58,7 +58,7 @@ namespace PNNLOmics.Algorithms.Alignment.SequenceMatching
             var mapA = PeptideUtility.MapWithBestSequence(peptidesA);
             var mapB = PeptideUtility.MapWithBestSequence(peptidesB);
                                 
-            foreach(string sequence in mapB.Keys)
+            foreach(var sequence in mapB.Keys)
             {
                 if (mapA.ContainsKey(sequence))
                 {
@@ -68,8 +68,8 @@ namespace PNNLOmics.Algorithms.Alignment.SequenceMatching
                         AnchorPointY = {Peptide = mapB[sequence]}
                     };
 
-                    double net                  = point.AnchorPointX.Net - point.AnchorPointY.Net;
-                    double mz                   = point.AnchorPointX.Mz  - point.AnchorPointY.Mz;
+                    var net                  = point.AnchorPointX.Net - point.AnchorPointY.Net;
+                    var mz                   = point.AnchorPointX.Mz  - point.AnchorPointY.Mz;
 
                     if (Math.Abs(net) < options.NetTolerance && Math.Abs(mz) < options.MzTolerance)
                     {

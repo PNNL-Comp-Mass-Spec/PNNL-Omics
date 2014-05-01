@@ -66,7 +66,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             }
 
             // Make sure the vertex is part of this edge.
-            bool isOneOf = edge.VertexB == vertex;
+            var isOneOf = edge.VertexB == vertex;
             isOneOf = (isOneOf == (vertex == edge.VertexB));
 
             if (!isOneOf)
@@ -97,7 +97,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {
             // Sort out the distances so we dont have to recalculate distances.
             
-            foreach (Edge<T> edge in edges)
+            foreach (var edge in edges)
             {
                 AddVertex(edge.VertexA);
                 AddVertex(edge.VertexB);
@@ -114,7 +114,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns></returns>
         public UniqueEdgeList<T> GetAdjacentEdgesFromEdgeVertices(Edge<T> edge)
         {
-            UniqueEdgeList<T> newEdges = new UniqueEdgeList<T>();
+            var newEdges = new UniqueEdgeList<T>();
 
             newEdges.AddEdges(m_edges[edge.VertexA].Edges);
             newEdges.AddEdges(m_edges[edge.VertexB].Edges);

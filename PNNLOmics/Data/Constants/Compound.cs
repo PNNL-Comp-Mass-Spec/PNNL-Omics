@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PNNLOmics.Data.Constants.Libraries;
-
-namespace PNNLOmics.Data.Constants
+﻿namespace PNNLOmics.Data.Constants
 {
     /// <summary>
     /// This is an abstract Class designed to cover the most basic parameters of compound objects.
@@ -62,7 +58,7 @@ namespace PNNLOmics.Data.Constants
         public static double GetMonoisotopicMass(Compound GeneralCompound)
         {
 
-            double exactMass =
+            var exactMass =
                 GeneralCompound.NumCarbon * Constants.Elements[ElementName.Carbon].MassMonoIsotopic +
                 GeneralCompound.NumHydrogen * Constants.Elements[ElementName.Hydrogen].MassMonoIsotopic +
                 GeneralCompound.NumNitrogen * Constants.Elements[ElementName.Nitrogen].MassMonoIsotopic +

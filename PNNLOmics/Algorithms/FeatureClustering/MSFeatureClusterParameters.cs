@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Features;
+﻿using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -18,8 +14,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MSFeatureClusterParameters():
-            base()
+        public MSFeatureClusterParameters()
         {
             Clear();
         }

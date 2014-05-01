@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using PNNLOmics.Data.Constants;
 using PNNLOmics.Utilities;
 
 /// <example>
@@ -40,11 +39,11 @@ namespace PNNLOmics.Data.Constants.Libraries
         /// </summary>
         private void LoadXML(string constantsFileName, out List<string> elementSymbolList, out List<Element> elementList)
         {
-            XmlReader readerXML = XmlReader.Create(constantsFileName);
+            var readerXML = XmlReader.Create(constantsFileName);
 
-            int numberOfIsotopes = 0;
-            int atomicity = 0;
-            int isotopeNumber = 0;
+            var numberOfIsotopes = 0;
+            var atomicity = 0;
+            var isotopeNumber = 0;
             double massAverage = 0;
             double massAverageUncertainty = 0;
             double isotopeMass = 0;
@@ -59,13 +58,13 @@ namespace PNNLOmics.Data.Constants.Libraries
                 {
                     if (readerXML.Name == "NumElements")
                     {
-                        int numElements = readerXML.ReadElementContentAsInt();// Parse(Xreader.GetAttribute("Symbol"));
+                        var numElements = readerXML.ReadElementContentAsInt();// Parse(Xreader.GetAttribute("Symbol"));
                     }
 
                     if (readerXML.Name == "Element")
                     {
-                        Element newElement = new Element();
-                        Dictionary<string, Isotope> newIsotopeDictionary = new Dictionary<string, Isotope>();
+                        var newElement = new Element();
+                        var newIsotopeDictionary = new Dictionary<string, Isotope>();
 
                         readerXML.ReadToFollowing("Symbol");
                         newElement.Symbol = readerXML.ReadElementContentAsString();
@@ -86,7 +85,7 @@ namespace PNNLOmics.Data.Constants.Libraries
                         massAverageUncertainty = readerXML.ReadElementContentAsDouble();
 
                         //for each isotope
-                        for (int i = 0; i < numberOfIsotopes; i++)
+                        for (var i = 0; i < numberOfIsotopes; i++)
                         {
                             readerXML.ReadToFollowing("Isotope");
 
@@ -106,9 +105,9 @@ namespace PNNLOmics.Data.Constants.Libraries
                             readerXML.ReadToFollowing("Probability");
                             isotopeProbability = readerXML.ReadElementContentAsDouble();
 
-                            Isotope NewIsotope = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
+                            var NewIsotope = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
 
-                            newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope);
+                            newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber, NewIsotope);
                             //newIsotopeDictionary.Add(newElement.Symbol + i.ToString(), NewIsotope);//used for interating through
                         }
 
@@ -135,10 +134,10 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap = new Dictionary<string, Element>();
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
-            ResolveUNCPath.MappedDriveResolver uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
-            string asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtil.AssemblyDirectory);
+            var uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
+            var asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtil.AssemblyDirectory);
 
-            FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
+            var constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
 			//FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(PathUtil.AssemblyDirectory, OMICS_ELEMENT_DATA_FILE));
 
 			if (!constantsFileInfo.Exists)
@@ -146,17 +145,17 @@ namespace PNNLOmics.Data.Constants.Libraries
 				throw new FileNotFoundException("The " + OMICS_ELEMENT_DATA_FILE + " file cannot be found at " + constantsFileInfo.FullName);
             }
 
-            List<string> elementSymbolList = new List<string>();
-            List<Element> elementList = new List<Element>();
+            var elementSymbolList = new List<string>();
+            var elementList = new List<Element>();
 
 			LoadXML(constantsFileInfo.FullName, out elementSymbolList, out elementList);
 
-            for (int i = 0; i < elementSymbolList.Count; i++)
+            for (var i = 0; i < elementSymbolList.Count; i++)
             {
                 m_symbolToCompoundMap.Add(elementSymbolList[i], elementList[i]);
             }
 
-            int counter = 0;
+            var counter = 0;
             foreach (ElementName enumElement in Enum.GetValues(typeof(ElementName)))
             {
                 m_enumToSymbolMap.Add(enumElement, elementList[counter].Symbol);

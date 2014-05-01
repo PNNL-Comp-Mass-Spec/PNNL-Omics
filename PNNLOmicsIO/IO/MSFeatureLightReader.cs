@@ -34,14 +34,14 @@ namespace PNNLOmicsIO.IO
 		protected override Dictionary<string, int> CreateColumnMapping(TextReader textReader)
 		{            
 
-			Dictionary<string, int> columnMap   = new Dictionary<string, int>();
-			string[] columnTitles               = textReader.ReadLine().Split(',', '\n');
-			int numOfColumns                    = columnTitles.Length;
+			var columnMap   = new Dictionary<string, int>();
+			var columnTitles               = textReader.ReadLine().Split(',', '\n');
+			var numOfColumns                    = columnTitles.Length;
            
 
-			for (int i = 0; i < numOfColumns; i++)
+			for (var i = 0; i < numOfColumns; i++)
 			{
-                string title    = columnTitles[i].Trim();
+                var title    = columnTitles[i].Trim();
                 title           = title.ToLower();
                 
 				switch (columnTitles[i].Trim())
@@ -99,17 +99,17 @@ namespace PNNLOmicsIO.IO
         /// <returns></returns>
         protected override IEnumerable<MSFeatureLight> SaveFileToEnumerable(TextReader textReader, Dictionary<string, int> columnMapping)
 		{
-            List<MSFeatureLight> features = new List<MSFeatureLight>();			
-			int                currentId    = 0;			
-			string             line         = "";			
+            var features = new List<MSFeatureLight>();			
+			var                currentId    = 0;			
+			var             line         = "";			
 
             // Detect if the data comes from an IMS platform.
-            bool hasDriftTimeData   = columnMapping.ContainsKey(FRAME_NUMBER); 
+            var hasDriftTimeData   = columnMapping.ContainsKey(FRAME_NUMBER); 
 			
 			while ((line = textReader.ReadLine()) != null)
 			{
-				string[] columns        = line.Split(',');
-                MSFeatureLight feature  = new MSFeatureLight();
+				var columns        = line.Split(',');
+                var feature  = new MSFeatureLight();
 				feature.ID              = currentId;
 
                 // In case this file does not have drift time, we need to make sure we clean up the
@@ -133,8 +133,8 @@ namespace PNNLOmicsIO.IO
                     double abundance     = 0;
                     long   longAbundance = 0;
 
-                    string data     = columns[columnMapping[ABUNDANCE]];
-                    bool worked     = long.TryParse(data, out longAbundance);
+                    var data     = columns[columnMapping[ABUNDANCE]];
+                    var worked     = long.TryParse(data, out longAbundance);
                     if (worked)
                     {
                         feature.Abundance = longAbundance;

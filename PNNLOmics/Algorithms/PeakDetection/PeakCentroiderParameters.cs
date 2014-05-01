@@ -46,7 +46,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         public PeakCentroiderParameters(PeakFitType fitType)
         {
             Clear();
-            this.FWHMPeakFitType = fitType;
+            FWHMPeakFitType = fitType;
         }
 
         /// <summary>
@@ -54,11 +54,11 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// </summary>
         public void Clear()
         {
-            this.IsXYDataCentroided = false;
-            this.NumberOfPoints = 3;//how many point to fit the parabola to
-            this.DefaultShoulderNoiseValue = 1;//if the local minimum goes to 0 on both sides of the peak, return this value so signal/noise = signal
-            this.FWHMPeakFitType = PeakFitType.Lorentzian;//take log first
-            this.DefaultFWHMForCentroidedData = 0.6;
+            IsXYDataCentroided = false;
+            NumberOfPoints = 3;//how many point to fit the parabola to
+            DefaultShoulderNoiseValue = 1;//if the local minimum goes to 0 on both sides of the peak, return this value so signal/noise = signal
+            FWHMPeakFitType = PeakFitType.Lorentzian;//take log first
+            DefaultFWHMForCentroidedData = 0.6;
         }
     }
 

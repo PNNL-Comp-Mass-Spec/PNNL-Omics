@@ -1,12 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using PNNLOmics.Algorithms.Chromatograms;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Constants.Libraries;
 using PNNLOmics.Data.Features;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using PNNLOmics.Extensions;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -95,7 +94,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 var hasGap       = false;
                 var lastFeature  = msFeatures[currentIndex];
                 var lastIndex    = currentIndex + 1;
-                var gapFeatures  = new List<TChild>() { lastFeature };
+                var gapFeatures  = new List<TChild> { lastFeature };
                 while (!hasGap && lastIndex < N)
                 {
 
@@ -156,8 +155,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {            
             Comparison<TChildFeature> mzSort                        = (x, y) => x.Mz.CompareTo(y.Mz);                               
             Comparison<TParentFeature> monoSort                     = (x, y) => x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
-            Func<TChildFeature, TChildFeature, double> mzDiff       = (x, y) => Feature.ComputeMassPPMDifference(x.Mz, y.Mz);            
-            Func<TParentFeature, TParentFeature, double> monoDiff   = (x, y) => Feature.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
+            Func<TChildFeature, TChildFeature, double> mzDiff = (x, y) => FeatureLight.ComputeMassPPMDifference(x.Mz, y.Mz);
+            Func<TParentFeature, TParentFeature, double> monoDiff = (x, y) => FeatureLight.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
 
             var minScan = Convert.ToDouble(rawMsFeatures.Min(x => x.Scan));
             var maxScan = Convert.ToDouble(rawMsFeatures.Max(x => x.Scan));
@@ -262,7 +261,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
                         // find the mass difference, here we are looking to see if there are unique  
                         // m/z features or not, if not, then we need to process them.
-                        var ppm = Feature.ComputeMassPPMDifference(featureJ.Mz, featureJ.Mz);
+                        var ppm = FeatureLight.ComputeMassPPMDifference(featureJ.Mz, featureJ.Mz);
                         if (Math.Abs(ppm) > 1)
                         {
                             if (!mzMap.ContainsKey(featureJ.Mz))
@@ -300,7 +299,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         public int CompareMonoisotopic(TParentFeature featureX, TParentFeature featureY)
         {
             // If they are in mass range...
-            double mzDiff = Feature.ComputeMassPPMDifference(featureX.MassMonoisotopic, featureY.MassMonoisotopic);
+            var mzDiff = FeatureLight.ComputeMassPPMDifference(featureX.MassMonoisotopic, featureY.MassMonoisotopic);
             if (Math.Abs(mzDiff) < Tolerances.Mass && featureX.ChargeState != featureY.ChargeState)
             {
                 // otherwise make sure that our scan value is within range
@@ -314,14 +313,14 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Compares a feature to the list of feature
         /// </summary>
-        public int CompareMz(TChildFeature featureX, TChildFeature featureY)
+        private int CompareMz(TChildFeature featureX, TChildFeature featureY)
         {
             // If they are in mass range...
-            double mzDiff = Feature.ComputeMassPPMDifference(featureX.Mz, featureY.Mz);
+            var mzDiff = FeatureLight.ComputeMassPPMDifference(featureX.Mz, featureY.Mz);
             if (Math.Abs(mzDiff) < Tolerances.Mass )
             {
                 // otherwise make sure that our scan value is within range                
-                int scanDiff = featureX.Scan - featureY.Scan;
+                var scanDiff = featureX.Scan - featureY.Scan;
                 if (Math.Abs(scanDiff) > ScanTolerance)
                     return 1;
 

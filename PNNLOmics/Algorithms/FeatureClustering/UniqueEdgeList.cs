@@ -1,9 +1,6 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Data.Features;
-using System.Collections;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -65,7 +62,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         public void AddEdges(SortedSet<Edge<T>> edges)
         {
             //edges.ForEach(x => AddEdge(x));
-            foreach (Edge<T> edge in edges)
+            foreach (var edge in edges)
             {
                 AddEdge(edge);
             }
@@ -99,7 +96,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="edge"></param>
         public void RemoveEdges(SortedSet<Edge<T>> edges)
         {
-            foreach (Edge<T> edge in edges)
+            foreach (var edge in edges)
             {
                 //edges.ForEach(x => RemoveEdge(x));
                 RemoveEdge(edge);
@@ -126,7 +123,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
         public IEnumerator<Edge<T>> GetEnumerator()
         {
-            return this.Edges.GetEnumerator();
+            return Edges.GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {

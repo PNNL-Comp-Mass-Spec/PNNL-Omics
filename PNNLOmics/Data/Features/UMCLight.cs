@@ -44,8 +44,8 @@ namespace PNNLOmics.Data.Features
             MassMonoisotopic                   = feature.MassMonoisotopic;
             MassMonoisotopicAligned            = feature.MassMonoisotopicAligned;
             Mz                                 = feature.Mz;
-            NET                                = feature.NET;
-            NETAligned                         = feature.NETAligned;
+            Net                                = feature.Net;
+            NetAligned                         = feature.NetAligned;
             RetentionTime                      = feature.RetentionTime;
             SaturatedMemberCount               = feature.SaturatedMemberCount ;
             Scan                               = feature.Scan;
@@ -81,14 +81,6 @@ namespace PNNLOmics.Data.Features
         /// Gets or sets the last scan number the feature was seen in.
         /// </summary>
         public int ScanEnd
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Gets or sets the scan for the feature.
-        /// </summary>
-        public int Scan
         {
             get;
             set;
@@ -207,7 +199,7 @@ namespace PNNLOmics.Data.Features
 		/// <returns></returns>
 		public override string ToString()
 		{
-			return "UMCLight Group ID " + GroupID.ToString() + " " + base.ToString();
+			return "UMCLight Group ID " + GroupID + " " + base.ToString();
 		}
 		/// <summary>
 		/// Compares two objects' values to each other.
@@ -219,14 +211,14 @@ namespace PNNLOmics.Data.Features
 			if (obj == null)
 				return false;
 
-			UMCLight umc = obj as UMCLight;
+			var umc = obj as UMCLight;
 			if (umc == null)
 				return false;
 
 			if (ID != umc.ID)
 				return false;
 
-			bool isBaseEqual = base.Equals(umc);
+			var isBaseEqual = base.Equals(umc);
 			if (!isBaseEqual)
 				return false;
 			
@@ -247,8 +239,8 @@ namespace PNNLOmics.Data.Features
 		{
 			base.Clear();
 
-            this.ChargeStateChromatograms = new Dictionary<int, Chromatogram>();
-            this.IsotopeChromatograms     = new Dictionary<int, List<Chromatogram>>();
+            ChargeStateChromatograms = new Dictionary<int, Chromatogram>();
+            IsotopeChromatograms     = new Dictionary<int, List<Chromatogram>>();
 
             HPositive   = new Dictionary<int, double>();
             HNegative   = new Dictionary<int, double>();
@@ -282,22 +274,22 @@ namespace PNNLOmics.Data.Features
                 throw new Exception("No data in feature to compute statistics over.");
 
             // Lists for holding onto masses etc.
-            List<double> net        = new List<double>();
-            List<double> mass       = new List<double>();
-            List<double> driftTime  = new List<double>();
+            var net        = new List<double>();
+            var mass       = new List<double>();
+            var driftTime  = new List<double>();
 
             // Histogram of representative charge states
-            Dictionary<int, int> chargeStates = new Dictionary<int, int>();
+            var chargeStates = new Dictionary<int, int>();
 
             double  sumNet          = 0;
             double  sumMass         = 0;
             double  sumDrifttime    = 0;
             long    sumAbundance    = 0;
-            int     minScan         = int.MaxValue;
-            int     maxScan         = int.MinValue;
-            long    maxAbundance    = long.MinValue;
+            var     minScan         = int.MaxValue;
+            var     maxScan         = int.MinValue;
+            var    maxAbundance    = long.MinValue;
             double representativeMZ = 0;
-            foreach (MSFeatureLight feature in MSFeatures)
+            foreach (var feature in MSFeatures)
             {
                 if (feature == null)
                     throw new NullReferenceException("A MS feature was null when trying to calculate cluster statistics.");
@@ -325,16 +317,16 @@ namespace PNNLOmics.Data.Features
             AbundanceSum    = sumAbundance;
             ScanEnd         = maxScan;
             ScanStart       = minScan;
-            int numUMCs     = MSFeatures.Count;
-            int median      = 0;
+            var numUMCs     = MSFeatures.Count;
+            var median      = 0;
 
             // Calculate the centroid of the cluster.
             switch (centroid)
             {
                 case ClusterCentroidRepresentation.Mean:
-                    this.MassMonoisotopic   = (sumMass / numUMCs);
-                    this.RetentionTime      = (sumNet / numUMCs);
-                    this.DriftTime          = Convert.ToSingle(sumDrifttime / numUMCs);
+                    MassMonoisotopic   = (sumMass / numUMCs);
+                    RetentionTime      = (sumNet / numUMCs);
+                    DriftTime          = Convert.ToSingle(sumDrifttime / numUMCs);
                     break;
                 case ClusterCentroidRepresentation.Median:
                     net.Sort();
@@ -345,14 +337,14 @@ namespace PNNLOmics.Data.Features
                     if ((numUMCs % 2) == 0)
                     {
                         median                  = Convert.ToInt32(numUMCs / 2);
-                        this.RetentionTime      = (net[median] + net[median - 1]) / 2;
-                        this.DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
+                        RetentionTime      = (net[median] + net[median - 1]) / 2;
+                        DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
                     }
                     else
                     {
                         median                  = Convert.ToInt32((numUMCs) / 2);
-                        this.RetentionTime      = net[median];
-                        this.DriftTime          = Convert.ToSingle(driftTime[median]);
+                        RetentionTime      = net[median];
+                        DriftTime          = Convert.ToSingle(driftTime[median]);
                     }                                        
                     break;
                     
@@ -366,14 +358,14 @@ namespace PNNLOmics.Data.Features
                 MassMonoisotopic = .5 * (mass[numUMCs / 2 - 1] + mass[numUMCs / 2]);
             }
 
-            List<double> distances  = new List<double>();
+            var distances  = new List<double>();
             double distanceSum      = 0;
-            foreach (MSFeatureLight umc in MSFeatures)
+            foreach (var umc in MSFeatures)
             {
-                double netValue   = NET - umc.NET;
-                double massValue  = MassMonoisotopic - umc.MassMonoisotopicAligned;
-                double driftValue = DriftTime - umc.DriftTime;
-                double distance   = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
+                var netValue   = Net - umc.Net;
+                var massValue  = MassMonoisotopic - umc.MassMonoisotopicAligned;
+                var driftValue = DriftTime - umc.DriftTime;
+                var distance   = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
                 distances.Add(distance);
                 distanceSum += distance;
             }
@@ -385,7 +377,7 @@ namespace PNNLOmics.Data.Features
             }
             else
             {
-                int mid = distances.Count / 2;
+                var mid = distances.Count / 2;
 
                 distances.Sort();
                 Score       = Convert.ToSingle(distances[mid]);
@@ -426,12 +418,13 @@ namespace PNNLOmics.Data.Features
         public void AddChildFeature(UMCLight feature)
         {
             m_umcList.Add(feature);
-            feature.MSFeatures.ForEach(x => AddChildFeature(x));
+            feature.MSFeatures.ForEach(AddChildFeature);
         }
 
         List<UMCLight> IFeatureCluster<UMCLight>.Features
         {
             get { return m_umcList; }
-        }        
+        }
+
     }
 }

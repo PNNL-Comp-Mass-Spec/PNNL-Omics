@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
@@ -27,10 +26,10 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
                 return peaks;
             }
 
-            int N               = nonZeroPeaks.Count;                                   // make sure 
-            int Npercent        = Convert.ToInt32(Convert.ToDouble(N) * threshold);     // Find the percent of peaks
+            var N               = nonZeroPeaks.Count;                                   // make sure 
+            var Npercent        = Convert.ToInt32(Convert.ToDouble(N) * threshold);     // Find the percent of peaks
             Npercent            = Math.Max(0, Math.Min(N - 1, Npercent));               // then make sure it fits in the bounds
-            double peakHeight   = nonZeroPeaks[Npercent].Y;
+            var peakHeight   = nonZeroPeaks[Npercent].Y;
 
 
             var filteredPeaks   = (from peak in nonZeroPeaks

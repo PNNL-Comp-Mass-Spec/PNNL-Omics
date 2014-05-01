@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
+﻿namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
     /// <summary>
     /// Basis function for adding a fit to a linear function.

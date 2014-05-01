@@ -69,7 +69,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 default:
                     m_central.CalculateRegressionFunction(ref matches);
                     m_central.RemoveRegressionOutliers();
-                    List<RegressionPoint> centralPoints = m_central.Points;
+                    var centralPoints = m_central.Points;
                     m_lsqFailed = !m_cubicSpline.CalculateLsqRegressionCoefficients(centralPoints);                    
                     break;
             }

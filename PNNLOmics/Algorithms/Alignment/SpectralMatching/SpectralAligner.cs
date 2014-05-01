@@ -85,7 +85,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             OnProgress("Transforming sub-features");
             foreach (var feature in alignee)
             {
-                feature.NETAligned = aligner.AlignNet(feature.NET);
+                feature.NetAligned = aligner.AlignNet(feature.Net);
             }
 
             return spectralAnchorPointMatches;
@@ -116,8 +116,8 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             OnProgress("Transforming sub-features");
             foreach (var feature in alignee)
             {
-                feature.NETAligned              = aligner.AlignNet(feature.NET);
-                feature.RetentionTime           = feature.NETAligned;
+                feature.NetAligned              = aligner.AlignNet(feature.Net);
+                feature.RetentionTime           = feature.NetAligned;
                 feature.MassMonoisotopicAligned    = aligner.AlignMass(feature.MassMonoisotopic);
             }
 

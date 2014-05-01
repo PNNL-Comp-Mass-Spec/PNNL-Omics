@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace PNNLOmics.Data.Features
 {
@@ -23,7 +22,7 @@ namespace PNNLOmics.Data.Features
         /// <param name="cluster"></param>
         public UMCClusterLight(UMCLight umc)
         {            
-            List<UMCLight> umcs  = new List<UMCLight>();            
+            var umcs  = new List<UMCLight>();            
             
             UMCList				= umcs;
             umc.UMCCluster		= this;             
@@ -31,7 +30,7 @@ namespace PNNLOmics.Data.Features
             ChargeState			= umc.ChargeState;
             DriftTime			= umc.DriftTime;
             ID					= umc.ID;
-            RetentionTime       = umc.NETAligned;
+            RetentionTime       = umc.NetAligned;
             MassMonoisotopic    = umc.MassMonoisotopicAligned;                        
             MsMsCount           = umc.MsMsCount;
             AddChildFeature(umc);            
@@ -42,7 +41,7 @@ namespace PNNLOmics.Data.Features
         /// <param name="cluster"></param>
         public UMCClusterLight(UMCClusterLight cluster)
         {            
-            List<UMCLight> umcs     = new List<UMCLight>();
+            var umcs     = new List<UMCLight>();
             umcs.AddRange(cluster.UMCList);
             UMCList				    = umcs;            
             Abundance			    = cluster.Abundance;
@@ -114,21 +113,21 @@ namespace PNNLOmics.Data.Features
 				throw new Exception("No data to compute statistics over.");
 
 			// Lists for holding onto masses etc.
-			List<double> net = new List<double>();
-			List<double> mass = new List<double>();
-			List<double> driftTime = new List<double>();
+			var net = new List<double>();
+			var mass = new List<double>();
+			var driftTime = new List<double>();
 
 			// Histogram of representative charge states
-			Dictionary<int, int> chargeStates = new Dictionary<int, int>();
+			var chargeStates = new Dictionary<int, int>();
 
 			double sumNet = 0;
 			double sumMass = 0;
 			double sumDrifttime = 0;
 
-            Dictionary<int, int> datasetMembers = new Dictionary<int,int>();
+            var datasetMembers = new Dictionary<int,int>();
             MemberCount = UMCList.Count;
 
-			foreach (UMCLight umc in UMCList)
+			foreach (var umc in UMCList)
 			{
 
 				if (umc == null)
@@ -161,16 +160,16 @@ namespace PNNLOmics.Data.Features
             
             DatasetMemberCount = datasetMembers.Keys.Count;
 
-			int numUMCs = UMCList.Count;
-			int median = 0;
+			var numUMCs = UMCList.Count;
+			var median = 0;
 
 			// Calculate the centroid of the cluster.
 			switch (centroid)
 			{
 				case ClusterCentroidRepresentation.Mean:
-					this.MassMonoisotopic   = (sumMass / numUMCs);
-					this.RetentionTime      = (sumNet / numUMCs);
-					this.DriftTime          = Convert.ToSingle(sumDrifttime / numUMCs);
+					MassMonoisotopic   = (sumMass / numUMCs);
+					RetentionTime      = (sumNet / numUMCs);
+					DriftTime          = Convert.ToSingle(sumDrifttime / numUMCs);
 					break;
 				case ClusterCentroidRepresentation.Median:
 					net.Sort();
@@ -181,37 +180,37 @@ namespace PNNLOmics.Data.Features
 					if ((numUMCs % 2) == 0)
 					{
 						median                  = Convert.ToInt32(numUMCs / 2);
-						this.MassMonoisotopic   = (mass[median] + mass[median - 1]) / 2;
-						this.RetentionTime      = (net[median] + net[median - 1]) / 2;
-						this.DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
+						MassMonoisotopic   = (mass[median] + mass[median - 1]) / 2;
+						RetentionTime      = (net[median] + net[median - 1]) / 2;
+						DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
 					}
 					else
 					{
 						median                  = Convert.ToInt32((numUMCs) / 2);
-						this.MassMonoisotopic   = mass[median];
-						this.RetentionTime      = net[median];
-						this.DriftTime          = Convert.ToSingle(driftTime[median]);
+						MassMonoisotopic   = mass[median];
+						RetentionTime      = net[median];
+						DriftTime          = Convert.ToSingle(driftTime[median]);
 					}
 					break;
 			}
 
 
-            List<double> distances = new List<double>();
+            var distances = new List<double>();
             double distanceSum     = 0;
 
             double massDeviationSum = 0;
             double netDeviationSum  = 0;
 
-            foreach (UMCLight umc in UMCList)
+            foreach (var umc in UMCList)
             {
-                double netValue   = RetentionTime       - umc.RetentionTime;
-                double massValue  = MassMonoisotopic    - umc.MassMonoisotopicAligned;
-                double driftValue = DriftTime           - Convert.ToSingle(umc.DriftTime);
+                var netValue   = RetentionTime       - umc.RetentionTime;
+                var massValue  = MassMonoisotopic    - umc.MassMonoisotopicAligned;
+                var driftValue = DriftTime           - Convert.ToSingle(umc.DriftTime);
 
                 massDeviationSum += (massValue*massValue);
                 netDeviationSum += (netValue * netValue);
 
-                double distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));               
+                var distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));               
                 distances.Add(distance);
                 distanceSum += distance;
             }
@@ -225,32 +224,32 @@ namespace PNNLOmics.Data.Features
             }
             else
             {
-                int mid = distances.Count / 2;
+                var mid = distances.Count / 2;
 
                 distances.Sort();
                 Tightness = Convert.ToSingle(distances[mid]);
             }
 			// Calculate representative charge state as the mode.
-			int maxCharge = int.MinValue;
-			foreach (int charge in chargeStates.Keys)
+			var maxCharge = int.MinValue;
+			foreach (var charge in chargeStates.Keys)
 			{
 				if (maxCharge == int.MinValue || chargeStates[charge] > chargeStates[maxCharge])
 				{
 					maxCharge = charge;
 				}
 			}
-			this.ChargeState = maxCharge;
+			ChargeState = maxCharge;
 		}
 
 		#region Overriden Base Methods
 		public override string ToString()
 		{
-			int size = 0;
+			var size = 0;
 			if (UMCList != null)
 			{
 				size = UMCList.Count;
 			}
-			return "UMC Cluster (size = " + size.ToString() + ") " + base.ToString();
+			return "UMC Cluster (size = " + size + ") " + base.ToString();
 		}
 		/// <summary>
 		/// Compares two objects' values to each other.
@@ -262,11 +261,11 @@ namespace PNNLOmics.Data.Features
 			if (obj == null)
 				return false;
 
-			UMCClusterLight cluster = obj as UMCClusterLight;
+			var cluster = obj as UMCClusterLight;
 			if (cluster == null)
 				return false;
 
-			bool isBaseEqual = base.Equals(cluster);
+			var isBaseEqual = base.Equals(cluster);
 			if (!isBaseEqual)
 				return false;
 
@@ -278,9 +277,9 @@ namespace PNNLOmics.Data.Features
 			if (UMCList.Count != cluster.UMCList.Count)
 				return false;
 
-			foreach (UMCLight umc in UMCList)
+			foreach (var umc in UMCList)
 			{
-				int index = cluster.UMCList.FindIndex(delegate(UMCLight x) { return x.Equals(umc); });
+				var index = cluster.UMCList.FindIndex(delegate(UMCLight x) { return x.Equals(umc); });
 				if (index < 0)
 					return false;
 			}

@@ -1,6 +1,6 @@
-﻿using PNNLOmics.Algorithms.Regression;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
@@ -74,7 +74,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 
             matches =
                 anchorPoints.Where(
-                    x => Feature.ComputeMassPPMDifference(x.AnchorPointX.Mz, x.AnchorPointY.Mz) < 20 && 
+                    x => FeatureLight.ComputeMassPPMDifference(x.AnchorPointX.Mz, x.AnchorPointY.Mz) < 20 && 
                         x.AnchorPointX.Spectrum.ParentFeature.ChargeState == x.AnchorPointY.Spectrum.ParentFeature.ChargeState
                             ).ToList();
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
@@ -31,23 +28,23 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns></returns>
         public List<U> Cluster(List<T> rawMSFeatures)
         {
-            ClusterCentroidRepresentation centroidType  = ClusterCentroidRepresentation.Mean;
+            var centroidType  = ClusterCentroidRepresentation.Mean;
             List<U> features                            = null;
             
-            Dictionary<int, int> featureIDToClusterID = new Dictionary<int, int>();
-            foreach (T feature in rawMSFeatures)
+            var featureIDToClusterID = new Dictionary<int, int>();
+            foreach (var feature in rawMSFeatures)
             {
                 //feature.ID = -1;
                 featureIDToClusterID.Add(feature.ID, -1);
             }
 
-            double maxDistance  = Parameters.MaxDistance;            
-            int currentIndex    = 0;
-            int N               = rawMSFeatures.Count;
-            int numUmcsSoFar    = 0;
+            var maxDistance  = Parameters.MaxDistance;            
+            var currentIndex    = 0;
+            var N               = rawMSFeatures.Count;
+            var numUmcsSoFar    = 0;
 
-            Dictionary<int, List<T>> idFeatureMap = new Dictionary<int, List<T>>();
-            List<T> msFeatures                    = new List<T>();
+            var idFeatureMap = new Dictionary<int, List<T>>();
+            var msFeatures                    = new List<T>();
             msFeatures.AddRange(rawMSFeatures);
             msFeatures.Sort(delegate(T x, T y)
             {
@@ -56,8 +53,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
             while (currentIndex < N)
             {
-                T currentFeature                = msFeatures[currentIndex];
-                int currentFeatureClusterID     = featureIDToClusterID[currentFeature.ID];
+                var currentFeature                = msFeatures[currentIndex];
+                var currentFeatureClusterID     = featureIDToClusterID[currentFeature.ID];
 
                 if (currentFeatureClusterID == -1)
                 {
@@ -68,23 +65,23 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     featureIDToClusterID[currentFeature.ID] = numUmcsSoFar++;
                 }
 
-                int matchIndex = currentIndex + 1;
+                var matchIndex = currentIndex + 1;
                 if (matchIndex == N)
                     break;
 
-                double massTolerance = currentFeature.MassMonoisotopicAligned * Parameters.Tolerances.Mass / 1000000;
-                double maxMass       = currentFeature.MassMonoisotopicAligned + massTolerance;
+                var massTolerance = currentFeature.MassMonoisotopicAligned * Parameters.Tolerances.Mass / 1000000;
+                var maxMass       = currentFeature.MassMonoisotopicAligned + massTolerance;
 
-                T matchPeak = msFeatures[matchIndex];
+                var matchPeak = msFeatures[matchIndex];
                 while (matchPeak.MassMonoisotopicAligned < maxMass)
                 {
-                    int matchClusterID =  featureIDToClusterID[matchPeak.ID];
+                    var matchClusterID =  featureIDToClusterID[matchPeak.ID];
                     
                     //this is asking if they are already clustered together.
                     if (matchClusterID != currentFeatureClusterID)
                     {
                         // This checks the distance
-                        bool withinRange = Parameters.RangeFunction(currentFeature, matchPeak);
+                        var withinRange = Parameters.RangeFunction(currentFeature, matchPeak);
                         if (withinRange)
                         {
                             // Has the match peak been matched yet?
@@ -97,9 +94,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             else
                             {
                                 // Otherwise, we merge the old guy.
-                                List<T> tempFeatures = idFeatureMap[matchClusterID];
-                                int oldID = matchClusterID;
-                                foreach (T tempFeature in tempFeatures)
+                                var tempFeatures = idFeatureMap[matchClusterID];
+                                var oldID = matchClusterID;
+                                foreach (var tempFeature in tempFeatures)
                                 {
                                     featureIDToClusterID[tempFeature.ID] = currentFeatureClusterID;                                    
                                 }
@@ -122,11 +119,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             }
 
             features = new List<U>();
-            foreach (int key in idFeatureMap.Keys)
+            foreach (var key in idFeatureMap.Keys)
             {
-                List<T> tempFeatures = idFeatureMap[key];
-                U umc                = new U();
-                foreach (T tempFeature in tempFeatures)
+                var tempFeatures = idFeatureMap[key];
+                var umc                = new U();
+                foreach (var tempFeature in tempFeatures)
                 {
                     tempFeature.SetParentFeature(umc);
                     umc.AddChildFeature(tempFeature);
@@ -135,8 +132,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 features.Add(umc);
             }
             
-            int id = 0;
-            foreach (U feature in features)
+            var id = 0;
+            foreach (var feature in features)
             {
                 feature.ID = id++;
             }

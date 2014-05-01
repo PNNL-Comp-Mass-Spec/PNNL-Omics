@@ -1,5 +1,4 @@
-﻿using System;
-using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
+﻿using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {

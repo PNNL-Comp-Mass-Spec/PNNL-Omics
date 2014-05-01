@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using PNNLOmics.Data.Features;
+﻿using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Data.MassTags
 {
     public class MassTagLight: FeatureLight
     {
-        private int     m_conformationObservationCount;
-        private int     m_qualityScore;
         //TODO: [gord] agree on this... 
-        private Molecule m_molecule;
         private int m_conformationID;
         private double m_NETAverage;
         private double m_NETPredicted;
@@ -21,7 +13,6 @@ namespace PNNLOmics.Data.MassTags
         private double m_discriminantMax;
         private double m_driftTimePredicted;
         private double m_priorProbability;
-        private int    m_observationCount;
 
         public int CleavageState
         {
@@ -105,29 +96,12 @@ namespace PNNLOmics.Data.MassTags
             get { return m_priorProbability; }
             set { m_priorProbability = value; }
         }
-        public int ObservationCount
-        {
-            get { return m_observationCount; }
-            set { m_observationCount = value; }
-        }
-		public int ConformationObservationCount
-		{
-			get { return m_conformationObservationCount; }
-			set { m_conformationObservationCount = value; }
-		}
-        public int QualityScore
-        {
-            get { return m_qualityScore; }
-            set { m_qualityScore = value; }
-        }
-        public Molecule Molecule
-        {
-            get { return m_molecule; }
-            set { m_molecule = value; }
-        }
-        public override void Clear()
-        {
-            base.Clear();            
-        }
+
+        public int ObservationCount { get; set; }
+
+        public int ConformationObservationCount { get; set; }
+        public int QualityScore { get; set; }
+        public Molecule Molecule { get; set; }
+        
     }
 }

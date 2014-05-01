@@ -8,13 +8,10 @@
  * Revisions:
  *          5-19-2010 - BLL - Created class for single linkage clustering parameters.
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-using System;
-using System.Collections.Generic;
 
-using PNNLOmics.Data;
-using PNNLOmics.Algorithms;
-using PNNLOmics.Data.Features;
+using System;
 using PNNLOmics.Algorithms.Distance;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -98,12 +95,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        protected bool WithinRange(T x, T y)
+        private bool WithinRange(T x, T y)
         {
 			// later is more related to determining a scalar value instead.
-			double massDiff         = Math.Abs(Feature.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned));
-			double netDiff          = Math.Abs(x.RetentionTime - y.RetentionTime);
-			double driftDiff        = Math.Abs(x.DriftTime - y.DriftTime);
+            var massDiff = Math.Abs(FeatureLight.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned));
+			var netDiff          = Math.Abs(x.RetentionTime - y.RetentionTime);
+			var driftDiff        = Math.Abs(x.DriftTime - y.DriftTime);
 
 			// Make sure we fall within the distance range before computing...
             return (massDiff <= Tolerances.Mass && netDiff <= Tolerances.RetentionTime && driftDiff <= Tolerances.DriftTime);            

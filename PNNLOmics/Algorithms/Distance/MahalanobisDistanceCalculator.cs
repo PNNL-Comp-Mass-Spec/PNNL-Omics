@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra.Double;
-using MathNet.Numerics.LinearAlgebra.Generic;
 
 namespace PNNLOmics.Algorithms.Distance
 {
@@ -19,15 +18,15 @@ namespace PNNLOmics.Algorithms.Distance
 		/// <returns>An array that contains an arithmetic mean for each column of the given matrix.</returns>
 		public static double[] CalculateArithmeticMean(DenseMatrix matrix)
 		{
-			int numRows = matrix.RowCount;
-			int numColumns = matrix.ColumnCount;
+			var numRows = matrix.RowCount;
+			var numColumns = matrix.ColumnCount;
 
-			double[] meanArray = new double[numColumns];
+			var meanArray = new double[numColumns];
 
-			for (int column = 0; column < numColumns; column++)
+			for (var column = 0; column < numColumns; column++)
 			{
-				List<double> currentData = new List<double>();
-				for (int row = 0; row < numRows; row++)
+				var currentData = new List<double>();
+				for (var row = 0; row < numRows; row++)
 				{
 					currentData.Add(matrix[row, column]);
 				}
@@ -44,11 +43,11 @@ namespace PNNLOmics.Algorithms.Distance
 		/// <returns>The centered matrix.</returns>
 		public static DenseMatrix CenterMatrixOnArithmeticMean(DenseMatrix matrix, double[] arithmeticMeans)
 		{
-			DenseMatrix centeredMatrix = new DenseMatrix(matrix.RowCount, arithmeticMeans.Length);
+			var centeredMatrix = new DenseMatrix(matrix.RowCount, arithmeticMeans.Length);
 
-			for (int i = 0; i < matrix.RowCount; i++)
+			for (var i = 0; i < matrix.RowCount; i++)
 			{
-				for (int j = 0; j < arithmeticMeans.Length; j++)
+				for (var j = 0; j < arithmeticMeans.Length; j++)
 				{
 					centeredMatrix[i, j] = matrix[i, j] - arithmeticMeans[j];
 				}
@@ -64,9 +63,9 @@ namespace PNNLOmics.Algorithms.Distance
 		/// <returns>The covariance matrix.</returns>
 		public static DenseMatrix CreateCovarianceMatrix(DenseMatrix matrix, double[] arithmeticMeans)
 		{
-			DenseMatrix centeredMatrix = CenterMatrixOnArithmeticMean(matrix, arithmeticMeans);
+			var centeredMatrix = CenterMatrixOnArithmeticMean(matrix, arithmeticMeans);
 
-			DenseMatrix covarianceMatrix = (DenseMatrix)centeredMatrix.Transpose() * centeredMatrix * (1.0 / matrix.RowCount);
+			var covarianceMatrix = (DenseMatrix)centeredMatrix.Transpose() * centeredMatrix * (1.0 / matrix.RowCount);
 
 			return covarianceMatrix;
 
@@ -83,16 +82,16 @@ namespace PNNLOmics.Algorithms.Distance
 		{
 			double numRowsA = matrixA.RowCount;
 			double numRowsB = matrixB.RowCount;
-			double totalNumRows = numRowsA + numRowsB;
+			var totalNumRows = numRowsA + numRowsB;
 
-			double weightedFactorA = numRowsA / totalNumRows;
-			double weightedFactorB = numRowsB / totalNumRows;
+			var weightedFactorA = numRowsA / totalNumRows;
+			var weightedFactorB = numRowsB / totalNumRows;
 
-			DenseMatrix pooledCovarianceMatrix = new DenseMatrix(covarianceMatrixA.RowCount, covarianceMatrixB.ColumnCount);
+			var pooledCovarianceMatrix = new DenseMatrix(covarianceMatrixA.RowCount, covarianceMatrixB.ColumnCount);
 
-			for (int x = 0; x < covarianceMatrixA.RowCount; x++)
+			for (var x = 0; x < covarianceMatrixA.RowCount; x++)
 			{
-				for (int y = 0; y < covarianceMatrixB.ColumnCount; y++)
+				for (var y = 0; y < covarianceMatrixB.ColumnCount; y++)
 				{
 					pooledCovarianceMatrix[x, y] = (covarianceMatrixA[x, y] * weightedFactorA) + (covarianceMatrixB[x, y] * weightedFactorB);
 				}
@@ -114,9 +113,9 @@ namespace PNNLOmics.Algorithms.Distance
 				throw new Exception("The 2 arrays passed in to CreateMeanDifferenceMatrix must be the same length.");
 			}
 
-			DenseMatrix meanDifferenceMatrix = new DenseMatrix(meanA.Length, 1);
+			var meanDifferenceMatrix = new DenseMatrix(meanA.Length, 1);
 
-			for (int x = 0; x < meanA.Length; x++)
+			for (var x = 0; x < meanA.Length; x++)
             {
 				meanDifferenceMatrix[x, 0] = meanA[x] - meanB[x];
             }
@@ -131,21 +130,21 @@ namespace PNNLOmics.Algorithms.Distance
 		/// <returns>The mahalnobis distance.</returns>
 		public static double CalculateMahalanobisDistance(DenseMatrix matrixA, DenseMatrix matrixB)
 		{
-			double[] meanA = CalculateArithmeticMean(matrixA);
-			double[] meanB = CalculateArithmeticMean(matrixB);
+			var meanA = CalculateArithmeticMean(matrixA);
+			var meanB = CalculateArithmeticMean(matrixB);
 
-			DenseMatrix covarianceMatrixA = CreateCovarianceMatrix(matrixA, meanA);
-			DenseMatrix covarianceMatrixB = CreateCovarianceMatrix(matrixB, meanB);
+			var covarianceMatrixA = CreateCovarianceMatrix(matrixA, meanA);
+			var covarianceMatrixB = CreateCovarianceMatrix(matrixB, meanB);
 
-			DenseMatrix pooledCovarianceMatrix = CreatePooledCovarianceMatrix(covarianceMatrixA, covarianceMatrixB, matrixA, matrixB);
-			DenseMatrix inversePooledCovarianceMatrix = (DenseMatrix)pooledCovarianceMatrix.Inverse();
+			var pooledCovarianceMatrix = CreatePooledCovarianceMatrix(covarianceMatrixA, covarianceMatrixB, matrixA, matrixB);
+			var inversePooledCovarianceMatrix = (DenseMatrix)pooledCovarianceMatrix.Inverse();
 
-			DenseMatrix meanDifferenceMatrix = CreateMeanDifferenceMatrix(meanA, meanB);
-			DenseMatrix transposedMeanDifferenceMatrix = (DenseMatrix)meanDifferenceMatrix.Transpose();
+			var meanDifferenceMatrix = CreateMeanDifferenceMatrix(meanA, meanB);
+			var transposedMeanDifferenceMatrix = (DenseMatrix)meanDifferenceMatrix.Transpose();
 
-			Matrix<double> finalMatrix = transposedMeanDifferenceMatrix.Multiply(inversePooledCovarianceMatrix).Multiply(meanDifferenceMatrix);
+			var finalMatrix = transposedMeanDifferenceMatrix.Multiply(inversePooledCovarianceMatrix).Multiply(meanDifferenceMatrix);
 
-			double mahalanobisDistance = Math.Sqrt(finalMatrix[0, 0]);
+			var mahalanobisDistance = Math.Sqrt(finalMatrix[0, 0]);
 
 			return mahalanobisDistance;
 		}

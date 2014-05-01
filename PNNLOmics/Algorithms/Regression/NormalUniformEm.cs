@@ -83,9 +83,9 @@ namespace PNNLOmics.Algorithms.Regression
                 return;
             }
 
-            double minVal = double.MaxValue;
-            double maxVal = double.MinValue;
-            foreach (double val in listVals)
+            var minVal = double.MaxValue;
+            var maxVal = double.MinValue;
+            foreach (var val in listVals)
             {
                 minVal = Math.Min(val, minVal);
                 maxVal = Math.Min(val, maxVal);
@@ -97,24 +97,24 @@ namespace PNNLOmics.Algorithms.Regression
                 m_normFraction = 0;
                 return;
             }
-            double u = 1 / (maxVal - minVal);
+            var u = 1 / (maxVal - minVal);
 
-            int numPts = listVals.Count;
+            var numPts = listVals.Count;
 
             m_unifProb.Clear();
             m_unifProb.Capacity = numPts;
 
-            for (int iteration = 0; iteration < m_numIterations; iteration++)
+            for (var iteration = 0; iteration < m_numIterations; iteration++)
             {
                 double meanNext = 0;
                 double varNext = 0;
                 double normFractionNext = 0;
-                for (int pointNum = 0; pointNum < numPts; pointNum++)
+                for (var pointNum = 0; pointNum < numPts; pointNum++)
                 {
-                    double val = listVals[pointNum];
-                    double diff = val - m_mean;
-                    double normProb = Math.Exp(-(0.5 * diff * diff) / m_var) / (Math.Sqrt(2 * Math.PI) * Math.Sqrt(m_var));
-                    double postNormProb = (normProb * m_normFraction) / (normProb * m_normFraction + (1 - m_normFraction) * u);
+                    var val = listVals[pointNum];
+                    var diff = val - m_mean;
+                    var normProb = Math.Exp(-(0.5 * diff * diff) / m_var) / (Math.Sqrt(2 * Math.PI) * Math.Sqrt(m_var));
+                    var postNormProb = (normProb * m_normFraction) / (normProb * m_normFraction + (1 - m_normFraction) * u);
                     m_unifProb.Add(postNormProb);
 
                     normFractionNext += postNormProb;

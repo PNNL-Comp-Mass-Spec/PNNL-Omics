@@ -1,17 +1,4 @@
-﻿/*////////////////////////////////////////////////////////////////////////////////////////////////////////////
- * 
- * Name:    Pairwise UMC Distance
- * File:    PairwiseUMCDistance.cs
- * Author:  Brian LaMarche 
- * Purpose: Links two UMC objects to each other by a specified distance.
- * Date:    05-19-2010
- * Revisions:
- *          05-19-2010 - BLL - Created class for clustering.
- *          08-02-2010 - BLL - Moved to PNNLOMICS.Data as a public class.
- ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Data
@@ -19,10 +6,9 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Holds the distance between two features and indices.
     /// </summary>
-    public class PairwiseDistance<T> : IComparer<PairwiseDistance<T>>
+    public sealed class PairwiseDistance<T> : IComparer<PairwiseDistance<T>>
         where T : FeatureLight, new()
     {
-
         /// <summary>
         /// Default constructor.
         /// </summary>

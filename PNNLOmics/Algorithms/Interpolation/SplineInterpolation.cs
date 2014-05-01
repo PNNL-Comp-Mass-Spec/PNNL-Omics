@@ -13,7 +13,7 @@ namespace PNNLOmics.OmicsMath
         public void Spline(ref List<double> x, ref List<double> y, double yp1, double ypn)
         {
             m_tempSpline.Clear();
-            int n = x.Count;
+            var n = x.Count;
             int i, k;
             double qn;
             double un;
@@ -33,8 +33,8 @@ namespace PNNLOmics.OmicsMath
             //Generate second derivatives at internal points using recursive spline equations
             for (i = 1; i <= n - 2; i++)
             {
-                double sig = (x[i] - x[i - 1]) / (x[i + 1] - x[i - 1]);
-                double p = sig * m_y2[i - 1] + 2.0;
+                var sig = (x[i] - x[i - 1]) / (x[i + 1] - x[i - 1]);
+                var p = sig * m_y2[i - 1] + 2.0;
                 m_y2[i] = (sig - 1.0) / p;
                 m_tempSpline.Add((y[i + 1] - y[i]) / (x[i + 1] - x[i]) - (y[i] - y[i - 1]) / (x[i] - x[i - 1]));
                 m_tempSpline[i] = (6.0 * m_tempSpline[i] / (x[i + 1] - x[i - 1]) - sig * m_tempSpline[i - 1]) / p;
@@ -57,14 +57,14 @@ namespace PNNLOmics.OmicsMath
 
         public double Splint(ref List<double> xa, ref List<double> ya, double x)
         {
-            int n = xa.Count;
-            int klo = 0;
-            int khi = n - 1;
+            var n = xa.Count;
+            var klo = 0;
+            var khi = n - 1;
 
             //Binary search for khi and klo
             while (khi - klo > 1)
             {
-                int k = (khi + klo) >> 1;
+                var k = (khi + klo) >> 1;
                 if (xa[k] > x)
                 {
                     khi = k;
@@ -74,16 +74,16 @@ namespace PNNLOmics.OmicsMath
                     klo = k;
                 }
             }
-            double h = xa[khi] - xa[klo];
+            var h = xa[khi] - xa[klo];
             if (System.Math.Abs(h) < double.Epsilon)
             {
                 return -1;
             }
-            double a = (xa[khi] - x) / h;
-            double b = (x - xa[klo]) / h;
+            var a = (xa[khi] - x) / h;
+            var b = (x - xa[klo]) / h;
 
             //cubic interpolation at x
-            double y = a * ya[klo] + b * ya[khi] + ((a * a * a - a) * m_y2[klo] + (b * b * b - b) * m_y2[khi]) * (h * h) / 6.0;
+            var y = a * ya[klo] + b * ya[khi] + ((a * a * a - a) * m_y2[klo] + (b * b * b - b) * m_y2[khi]) * (h * h) / 6.0;
             return y;
         }
     }

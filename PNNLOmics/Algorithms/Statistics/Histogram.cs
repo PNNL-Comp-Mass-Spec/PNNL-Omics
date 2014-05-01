@@ -10,7 +10,7 @@ namespace PNNLOmics.Algorithms.Statistics
         {
             bins.Clear();
             frequency.Clear();
-            int numPts = inputValues.Count;
+            var numPts = inputValues.Count;
 
             // Tried to pass an empty list to the histogram creator
             if (numPts == 0)
@@ -18,10 +18,10 @@ namespace PNNLOmics.Algorithms.Statistics
                 return;
             }
 
-            double minVal = inputValues[0];
-            double maxVal = inputValues[0];
+            var minVal = inputValues[0];
+            var maxVal = inputValues[0];
 
-            foreach (double val in inputValues)
+            foreach (var val in inputValues)
             {
                 if (val < minVal)
                 {
@@ -43,15 +43,15 @@ namespace PNNLOmics.Algorithms.Statistics
 
             var numBins = (int)Math.Floor((maxVal - minVal) / valStep);
 
-            double binVal = minVal;
-            for (int i = 0; i < numBins; i++)
+            var binVal = minVal;
+            for (var i = 0; i < numBins; i++)
             {
                 bins.Add(binVal);
                 frequency.Add(0);
                 binVal += valStep;
             }
 
-            for (int i = 0; i < numPts; i++)
+            for (var i = 0; i < numPts; i++)
             {
                 var binIndex = (int)Math.Floor((inputValues[i] - minVal) / valStep);
                 if (binIndex >= numBins)

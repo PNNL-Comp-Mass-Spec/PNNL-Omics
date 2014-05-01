@@ -20,10 +20,10 @@ namespace PNNLOmics.Algorithms.Alignment.SequenceMatching
                             Dictionary<int, Peptide>        peptideMapY,
                             SpectralOptions                 options)
         {
-            foreach (SpectralAnchorPointMatch match in matches)
+            foreach (var match in matches)
             {
-                int scanX    = match.AnchorPointX.Scan;
-                int scanY    = match.AnchorPointY.Scan;
+                var scanX    = match.AnchorPointX.Scan;
+                var scanY    = match.AnchorPointY.Scan;
                 // Assume the spectrum was not identified first...then prove a false match later
                 var isMatch = AnchorPointMatchType.PeptideFailed;
 
@@ -38,8 +38,8 @@ namespace PNNLOmics.Algorithms.Alignment.SequenceMatching
                     continue;
                 }
 
-                Peptide peptidex = peptideMapX[scanX];
-                Peptide peptidey = peptideMapY[scanY];
+                var peptidex = peptideMapX[scanX];
+                var peptidey = peptideMapY[scanY];
                 if (peptidex == null || peptidey == null)
                 {
                     match.IsValidMatch = isMatch;

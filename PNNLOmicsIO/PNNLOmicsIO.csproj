@@ -33,28 +33,6 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\BaseTextFileReader.cs" />
-    <Compile Include="IO\CommandLineUtil.cs" />
     <Compile Include="IO\MsgfTabDelimitedReader.cs" />
     <Compile Include="IO\IMsMsSpectraReader.cs" />
     <Compile Include="IO\MgfFileReader.cs" />
@@ -75,8 +52,6 @@
     <Compile Include="IO\IMsMsSpectraWriter.cs" />
     <Compile Include="IO\IPeptideFileReader.cs" />
     <Compile Include="IO\ITextFileReader.cs" />
-    <Compile Include="IO\MassTagFileReader.cs" />
-    <Compile Include="IO\MassTagTextFileImporter.cs" />
     <Compile Include="IO\MgfFileWriter.cs" />
     <Compile Include="IO\MSFeatureFileReader.cs" />
     <Compile Include="IO\MSFeatureLightReader.cs" />
@@ -85,8 +60,6 @@
     <Compile Include="IO\PeptideReaderFactory.cs" />
     <Compile Include="IO\ScansFileReader.cs" />
     <Compile Include="IO\SkylineTransitionFileReader.cs" />
-    <Compile Include="IO\UMCFileReader.cs" />
-    <Compile Include="IO\UMCImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -95,9 +68,7 @@
       <Name>PNNLOmics</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

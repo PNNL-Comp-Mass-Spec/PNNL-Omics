@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Data;
 
 namespace PNNLOmicsIO.IO
@@ -11,13 +9,13 @@ namespace PNNLOmicsIO.IO
 
         protected override Dictionary<string, int> CreateColumnMapping(System.IO.TextReader textReader)
         {
-            Dictionary<String, int> columnMap = new Dictionary<String, int>(StringComparer.CurrentCultureIgnoreCase);            
-            String[] columnTitles = textReader.ReadLine().Split('\t', '\n');
-            int numOfColumns = columnTitles.Length;
+            var columnMap = new Dictionary<String, int>(StringComparer.CurrentCultureIgnoreCase);            
+            var columnTitles = textReader.ReadLine().Split('\t', '\n');
+            var numOfColumns = columnTitles.Length;
 
-            for (int i = 0; i < numOfColumns; i++)
+            for (var i = 0; i < numOfColumns; i++)
             {
-                string column = columnTitles[i].ToLower().Trim();
+                var column = columnTitles[i].ToLower().Trim();
                 switch (column)
                 {
                     case "scannum":
@@ -62,13 +60,13 @@ namespace PNNLOmicsIO.IO
 
         protected override IEnumerable<Peptide> SaveFileToEnumerable(System.IO.TextReader textReader, Dictionary<string, int> columnMapping)
         {
-            List<Peptide> peptides = new List<Peptide>();
-            string line = "";
+            var peptides = new List<Peptide>();
+            var line = "";
             while ((line = textReader.ReadLine()) != null)
             {
-                string[] columns = line.Split('\t', '\n');
+                var columns = line.Split('\t', '\n');
 
-                Peptide peptide = new Peptide();
+                var peptide = new Peptide();
                 if (columnMapping.ContainsKey("Peptide.Scan"))
                 {
                     peptide.Scan = Convert.ToInt32(columns[columnMapping["Peptide.Scan"]]);
@@ -79,7 +77,7 @@ namespace PNNLOmicsIO.IO
                 }
                 if (columnMapping.ContainsKey("Peptide.Protein"))
                 {
-                    Protein protein = new Protein();
+                    var protein = new Protein();
                     protein.ProteinDescription = columns[columnMapping["Peptide.Protein"]];
                     peptide.ProteinList.Add(protein);
                 }

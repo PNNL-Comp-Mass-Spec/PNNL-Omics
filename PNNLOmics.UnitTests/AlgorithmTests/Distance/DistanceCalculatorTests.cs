@@ -1,7 +1,7 @@
 ﻿using System;
-using PNNLOmics.Algorithms.Distance;
 using MathNet.Numerics.LinearAlgebra.Double;
 using NUnit.Framework;
+using PNNLOmics.Algorithms.Distance;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 {
@@ -28,14 +28,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 			double[,] arrayA = { { 2, 2 }, { 2, 5 }, { 6, 5 }, { 7, 3 }, { 4, 7 }, { 6, 4 }, { 5, 3 }, { 4, 6 }, { 2, 5 }, { 1, 3 } };
 			double[,] arrayB = { { 6, 5 }, { 7, 4 }, { 8, 7 }, { 5, 6 }, { 5, 4 } };
 
-			m_matrixA = new DenseMatrix(arrayA);
-			m_matrixB = new DenseMatrix(arrayB);
+			m_matrixA = DenseMatrix.OfArray(arrayA);
+			m_matrixB = DenseMatrix.OfArray(arrayB);
 
 			double[,] covarianceArrayA = { { 3.89, 0.13 }, { 0.13, 2.21 } };
 			double[,] covarianceArrayB = { { 1.36, 0.56 }, { 0.56, 1.36 } };
 
-			m_covarianceMatrixA = new DenseMatrix(covarianceArrayA);
-			m_covarianceMatrixB = new DenseMatrix(covarianceArrayB);
+            
+			m_covarianceMatrixA = DenseMatrix.OfArray(covarianceArrayA);
+			m_covarianceMatrixB = DenseMatrix.OfArray(covarianceArrayB);
 
 			m_meanArrayA = new[] { 3.9, 4.3 };
 			m_meanArrayB = new[] { 6.2, 5.2 };
@@ -44,8 +45,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 		[Test]
 		public void TestCalculateArithmeticMean()
 		{
-			double[] meanA = MahalanobisDistanceCalculator.CalculateArithmeticMean(m_matrixA);
-			double[] meanB = MahalanobisDistanceCalculator.CalculateArithmeticMean(m_matrixB);
+			var meanA = MahalanobisDistanceCalculator.CalculateArithmeticMean(m_matrixA);
+			var meanB = MahalanobisDistanceCalculator.CalculateArithmeticMean(m_matrixB);
 
 			Assert.AreEqual(3.9, meanA[0], DELTA);
 			Assert.AreEqual(4.3, meanA[1], DELTA);
@@ -56,26 +57,26 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 		[Test]
 		public void TestCenterMatrixOnArithmeticMean()
 		{
-			DenseMatrix centeredMatrixA = MahalanobisDistanceCalculator.CenterMatrixOnArithmeticMean(m_matrixA, m_meanArrayA);
-			DenseMatrix centeredMatrixB = MahalanobisDistanceCalculator.CenterMatrixOnArithmeticMean(m_matrixB, m_meanArrayB);
+			var centeredMatrixA = MahalanobisDistanceCalculator.CenterMatrixOnArithmeticMean(m_matrixA, m_meanArrayA);
+			var centeredMatrixB = MahalanobisDistanceCalculator.CenterMatrixOnArithmeticMean(m_matrixB, m_meanArrayB);
 
 			double[,] testArrayA = { { -1.9, -2.3 }, { -1.9, 0.7 }, { 2.1, 0.7 }, { 3.1, -1.3 }, { 0.1, 2.7 }, { 2.1, -0.3 }, { 1.1, -1.3 }, { 0.1, 1.7 }, { -1.9, 0.7 }, { -2.9, -1.3 } };
 			double[,] testArrayB = { { -0.2, -0.2 }, { 0.8, -1.2 }, { 1.8, 1.8 }, { -1.2, 0.8 }, { -1.2, -1.2 } };
 
-			DenseMatrix testMatrixA = new DenseMatrix(testArrayA);
-			DenseMatrix testMatrixB = new DenseMatrix(testArrayB);
+			var testMatrixA = DenseMatrix.OfArray(testArrayA);
+			var testMatrixB = DenseMatrix.OfArray(testArrayB);
 
-			for (int i = 0; i < centeredMatrixA.RowCount; i++)
+			for (var i = 0; i < centeredMatrixA.RowCount; i++)
 			{
-				for (int j = 0; j < centeredMatrixA.ColumnCount; j++)
+				for (var j = 0; j < centeredMatrixA.ColumnCount; j++)
 				{
 					Assert.AreEqual(testMatrixA[i, j], centeredMatrixA[i, j], DELTA);
 				}
 			}
 
-			for (int i = 0; i < centeredMatrixB.RowCount; i++)
+			for (var i = 0; i < centeredMatrixB.RowCount; i++)
 			{
-				for (int j = 0; j < centeredMatrixB.ColumnCount; j++)
+				for (var j = 0; j < centeredMatrixB.ColumnCount; j++)
 				{
 					Assert.AreEqual(testMatrixB[i, j], centeredMatrixB[i, j], DELTA);
 				}
@@ -85,15 +86,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 		[Test]
 		public void TestCreateCovarianceMatrix()
 		{
-			DenseMatrix covarianceMatrixA = MahalanobisDistanceCalculator.CreateCovarianceMatrix(m_matrixA, m_meanArrayA);
-			DenseMatrix covarianceMatrixB = MahalanobisDistanceCalculator.CreateCovarianceMatrix(m_matrixB, m_meanArrayB);
+			var covarianceMatrixA = MahalanobisDistanceCalculator.CreateCovarianceMatrix(m_matrixA, m_meanArrayA);
+			var covarianceMatrixB = MahalanobisDistanceCalculator.CreateCovarianceMatrix(m_matrixB, m_meanArrayB);
 
-			DenseMatrix testMatrixA = m_covarianceMatrixA;
-			DenseMatrix testMatrixB = m_covarianceMatrixB;
+			var testMatrixA = m_covarianceMatrixA;
+			var testMatrixB = m_covarianceMatrixB;
 
-			for (int i = 0; i < covarianceMatrixA.RowCount; i++)
+			for (var i = 0; i < covarianceMatrixA.RowCount; i++)
 			{
-				for (int j = 0; j < covarianceMatrixA.ColumnCount; j++)
+				for (var j = 0; j < covarianceMatrixA.ColumnCount; j++)
 				{
 					Assert.AreEqual(testMatrixA[i, j], covarianceMatrixA[i, j], DELTA);
 					Assert.AreEqual(testMatrixB[i, j], covarianceMatrixB[i, j], DELTA);
@@ -104,14 +105,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 		[Test]
 		public void TestCreatePooledCovarianceMatrix()
 		{
-			DenseMatrix pooledCovarianceMatrix = MahalanobisDistanceCalculator.CreatePooledCovarianceMatrix(m_covarianceMatrixA, m_covarianceMatrixB, m_matrixA, m_matrixB);
+			var pooledCovarianceMatrix = MahalanobisDistanceCalculator.CreatePooledCovarianceMatrix(m_covarianceMatrixA, m_covarianceMatrixB, m_matrixA, m_matrixB);
 
 			double[,] testArray = { { 3.04667, 0.27333 }, { 0.27333, 1.92667 } };
-			DenseMatrix testMatrix = new DenseMatrix(testArray);
+			var testMatrix = DenseMatrix.OfArray(testArray);
 
-			for (int i = 0; i < pooledCovarianceMatrix.RowCount; i++)
+			for (var i = 0; i < pooledCovarianceMatrix.RowCount; i++)
 			{
-				for (int j = 0; j < pooledCovarianceMatrix.ColumnCount; j++)
+				for (var j = 0; j < pooledCovarianceMatrix.ColumnCount; j++)
 				{
 					Assert.AreEqual(testMatrix[i, j], Math.Round(pooledCovarianceMatrix[i, j], 5), DELTA);
 				}
@@ -121,14 +122,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 		[Test]
 		public void TestCreateMeanDifferenceMatrix()
 		{
-			DenseMatrix meanDifferenceMatrix = MahalanobisDistanceCalculator.CreateMeanDifferenceMatrix(m_meanArrayA, m_meanArrayB);
+			var meanDifferenceMatrix = MahalanobisDistanceCalculator.CreateMeanDifferenceMatrix(m_meanArrayA, m_meanArrayB);
 
 			double[,] testArray = { { -2.3 }, { -0.9 } };
-			DenseMatrix testMatrix = new DenseMatrix(testArray);
+			var testMatrix = DenseMatrix.OfArray(testArray);
 
-			for (int i = 0; i < meanDifferenceMatrix.RowCount; i++)
+			for (var i = 0; i < meanDifferenceMatrix.RowCount; i++)
 			{
-				for (int j = 0; j < meanDifferenceMatrix.ColumnCount; j++)
+				for (var j = 0; j < meanDifferenceMatrix.ColumnCount; j++)
 				{
 					Assert.AreEqual(testMatrix[i, j], meanDifferenceMatrix[i, j], DELTA);
 				}
@@ -138,7 +139,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 		[Test]
 		public void CalculateMahalanobisDistance()
 		{
-			double mahalanobisDistance = MahalanobisDistanceCalculator.CalculateMahalanobisDistance(m_matrixA, m_matrixB);
+			var mahalanobisDistance = MahalanobisDistanceCalculator.CalculateMahalanobisDistance(m_matrixA, m_matrixB);
 			Assert.AreEqual(1.4104178399830798, mahalanobisDistance);
 		}
 	}

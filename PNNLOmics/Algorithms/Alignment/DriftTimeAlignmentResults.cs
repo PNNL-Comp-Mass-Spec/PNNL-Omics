@@ -6,16 +6,16 @@ namespace PNNLOmics.Algorithms.Alignment
     /// <summary>
     /// Holds matches from drift time alignments.
     /// </summary>
-    public class DriftTimeAlignmentResults<T, TU>
-		where T : Feature, new()
-		where TU : Feature, new()
+    public class DriftTimeAlignmentResults<TTarget, TObserved>
+		where TTarget   : FeatureLight, new()
+        where TObserved : FeatureLight, new()
     {
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="matches"></param>
         /// <param name="alignmentFunction"></param>
-        public DriftTimeAlignmentResults(List<FeatureMatch<T, TU>> matches, LinearEquation alignmentFunction)
+        public DriftTimeAlignmentResults(List<FeatureMatch<TTarget, TObserved>> matches, LinearEquation alignmentFunction)
         {
             Matches             = matches;
             AlignmentFunction   = alignmentFunction;
@@ -25,7 +25,7 @@ namespace PNNLOmics.Algorithms.Alignment
         /// <summary>
         /// Gets the matches made by the drift time alignment algorithm.
         /// </summary>
-        public List<FeatureMatch<T, TU>> Matches
+        public List<FeatureMatch<TTarget, TObserved>> Matches
         {
             get;
             private set;

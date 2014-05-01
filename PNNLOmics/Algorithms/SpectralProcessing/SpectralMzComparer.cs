@@ -27,20 +27,20 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
         /// <returns></returns>
         public double CompareSpectra(MSSpectra xSpectrum, MSSpectra ySpectrum)
         {
-            List<XYData> x = xSpectrum.Peaks;
-            List<XYData> y = ySpectrum.Peaks;
+            var x = xSpectrum.Peaks;
+            var y = ySpectrum.Peaks;
             
-            int i       = 0;
-            int j       = 0;
-            double eps  = .0000001;
-            int Nx      = x.Count;
-            int Ny      = y.Count;
+            var i       = 0;
+            var j       = 0;
+            var eps  = .0000001;
+            var Nx      = x.Count;
+            var Ny      = y.Count;
 
-            Dictionary<int, int> distanceMap = new Dictionary<int,int>();
+            var distanceMap = new Dictionary<int,int>();
 
             while(i < Nx)
             {
-                double massX    = x[i].X;
+                var massX    = x[i].X;
                 double massMax  = 0;
                 double massMin  = 0;
 
@@ -62,24 +62,21 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
                     massMin = massX - x[i - 1].X - eps;
                 }
 
-                double mzTol     = Math.Min(Math.Min(MassTolerance, massMax), massMin);
-                double bestDelta = mzTol; 
-                int bestMatch    = -1;
+                var mzTol     = Math.Min(Math.Min(MassTolerance, massMax), massMin);
+                var bestDelta = mzTol; 
+                var bestMatch    = -1;
 
                 while (j < Ny)
                 {
-                    double massY        = y[j].X;
-                    double deltaMass    = massX - massY;
-                    double absDelta     = Math.Abs(deltaMass);
+                    var massY        = y[j].X;
+                    var deltaMass    = massX - massY;
+                    var absDelta     = Math.Abs(deltaMass);
 
                     if (absDelta >= bestDelta && deltaMass < 0)
                     {
                         break;
                     }
-                    else
-                    {
-                        bestMatch = j;
-                    }
+                    bestMatch = j;
                     j = j + 1;
                 }   
 
@@ -91,9 +88,9 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
             }
 
             // Score
-            int nx      = x.Count;
-            int ny      = y.Count;
-            int matches = distanceMap.Keys.Count;
+            var nx      = x.Count;
+            var ny      = y.Count;
+            var matches = distanceMap.Keys.Count;
 
             return Convert.ToDouble(matches) / Convert.ToDouble(Math.Max(nx, ny));            
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Algorithms.SpectralComparisons;
-using PNNLOmics.Data;
+﻿using PNNLOmics.Algorithms.SpectralComparisons;
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
 {
@@ -11,20 +6,18 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
     {
         public double CompareSpectra(Data.MSSpectra spectraX, Data.MSSpectra spectraY)
         {
-            List<XYData> a = spectraX.Peaks;
-            List<XYData> b = spectraY.Peaks;
+            var a = spectraX.Peaks;
+            var b = spectraY.Peaks;
 
-            double magX = 0;
-            double magY = 0;
 
             // Then compute the magnitudes of the spectra
             double sum = 0;
             double sumOne = 0;
             double sumTwo = 0;
-            for (int i = 0; i < spectraX.Peaks.Count; i++)
+            for (var i = 0; i < spectraX.Peaks.Count; i++)
             {
-                double x = a[i].Y;
-                double y = b[i].Y;
+                var x = a[i].Y;
+                var y = b[i].Y;
 
                 sum += x*y;
                 sumOne += (x*x);

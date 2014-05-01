@@ -1,9 +1,9 @@
-﻿using PNNLOmics.Algorithms.Alignment.SequenceMatching;
+﻿using System.Collections.Generic;
+using System.Linq;
+using PNNLOmics.Algorithms.Alignment.SequenceMatching;
 using PNNLOmics.Algorithms.Alignment.SpectralMatches;
 using PNNLOmics.Data;
 using PNNLOmics.Utilities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {

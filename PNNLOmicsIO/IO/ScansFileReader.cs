@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using PNNLOmics.Data;
-using System;
 
 namespace PNNLOmicsIO.IO
 {
@@ -25,12 +25,12 @@ namespace PNNLOmicsIO.IO
         /// <returns></returns>
 		protected override Dictionary<string, int> CreateColumnMapping(TextReader textReader)
 		{
-			Dictionary<string, int> columnMap   = new Dictionary<string, int>();
-			string[] columnTitles               = textReader.ReadLine().Split('\t', '\n');
-			int numOfColumns                    = columnTitles.Length;                       
-			for (int i = 0; i < numOfColumns; i++)
+			var columnMap   = new Dictionary<string, int>();
+			var columnTitles               = textReader.ReadLine().Split('\t', '\n');
+			var numOfColumns                    = columnTitles.Length;                       
+			for (var i = 0; i < numOfColumns; i++)
 			{
-                string title    = columnTitles[i].Trim();
+                var title    = columnTitles[i].Trim();
                 title           = title.ToLower();
 				switch (columnTitles[i].Trim())
 				{                      				
@@ -67,15 +67,15 @@ namespace PNNLOmicsIO.IO
 
         protected override IEnumerable<ScanSummary> SaveFileToEnumerable(System.IO.TextReader textReader, Dictionary<string, int> columnMapping)
         {
-            List<ScanSummary> scans = new List<ScanSummary>();
-            int     currentId       = 0;
-            string  line            = "";
+            var scans = new List<ScanSummary>();
+            var     currentId       = 0;
+            var  line            = "";
 
 
             while ((line = textReader.ReadLine()) != null)
             {
-                string[] columns    = line.Split(new string[] { Delimeter }, 0, StringSplitOptions.RemoveEmptyEntries);
-                ScanSummary scan = new ScanSummary();
+                var columns    = line.Split(new[] { Delimeter }, 0, StringSplitOptions.RemoveEmptyEntries);
+                var scan = new ScanSummary();
 
                 if (columnMapping.ContainsKey(SCAN_NUMBER))     scan.Scan               = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
                 if (columnMapping.ContainsKey(SCAN_TIME))       scan.Time               = double.Parse(columns[columnMapping[SCAN_TIME]]);

@@ -8,9 +8,8 @@
  * Revisions:
  *          5-19-2010 - BLL - Created interface.
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-using System;
-using System.Collections.Generic;
 
+using System.Collections.Generic;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering

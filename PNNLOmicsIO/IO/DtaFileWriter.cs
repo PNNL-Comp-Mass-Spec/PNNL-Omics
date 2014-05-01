@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Text;
 using PNNLOmics.Data;
 
 namespace PNNLOmicsIO.IO
@@ -16,7 +15,7 @@ namespace PNNLOmicsIO.IO
         /// <param name="msmsFeatures"></param>
         public void Write(string path, IEnumerable<MSSpectra> msmsFeatures)
         {
-            string baseName = Path.GetFileNameWithoutExtension(path);
+            var baseName = Path.GetFileNameWithoutExtension(path);
             using (TextWriter writer = File.CreateText(path))
             {
                 Write(writer, baseName, msmsFeatures);
@@ -30,7 +29,7 @@ namespace PNNLOmicsIO.IO
         /// <param name="msmsFeatures"></param>
         public void Append(string path, IEnumerable<MSSpectra> msmsFeatures)
         {
-            string baseName = Path.GetFileNameWithoutExtension(path);
+            var baseName = Path.GetFileNameWithoutExtension(path);
             using (TextWriter writer = File.AppendText(path))
             {
                 Write(writer, baseName, msmsFeatures);
@@ -39,9 +38,9 @@ namespace PNNLOmicsIO.IO
 
         private void Write(TextWriter writer, string baseName, IEnumerable<MSSpectra> msmsFeatures)
         {
-            foreach (MSSpectra feature in msmsFeatures)
+            foreach (var feature in msmsFeatures)
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendFormat("=================================== \"{0}.{2}.{1}.{2}.dta\" ==================================",
                                             baseName,
                                             feature.Scan,
@@ -49,7 +48,7 @@ namespace PNNLOmicsIO.IO
                 sb.Append(Environment.NewLine);
                 sb.AppendFormat("{0} {1} scan={2} cs={1}", feature.PrecursorMZ, feature.PrecursorChargeState, feature.Scan);
                 sb.Append(Environment.NewLine);
-                foreach (XYData peak in feature.Peaks)
+                foreach (var peak in feature.Peaks)
                 {
                     sb.Append(Math.Round(peak.X, 5));
                     sb.Append(" ");

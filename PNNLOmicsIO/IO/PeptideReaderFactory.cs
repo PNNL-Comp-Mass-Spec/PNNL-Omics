@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace PNNLOmicsIO.IO
+﻿namespace PNNLOmicsIO.IO
 {
     public class PeptideReaderFactory
     {
@@ -12,7 +7,7 @@ namespace PNNLOmicsIO.IO
             if (path == null)
                 return null;
 
-            SequenceFileType type =  GetFileType(path);
+            var type =  GetFileType(path);
 
             if (type == SequenceFileType.None)
                 return null; 
@@ -43,8 +38,8 @@ namespace PNNLOmicsIO.IO
 
         private static SequenceFileType GetFileType(string peptidePath)
         {
-            SequenceFileType type = SequenceFileType.None;
-            string lowerPath      = peptidePath.ToLower();
+            var type = SequenceFileType.None;
+            var lowerPath      = peptidePath.ToLower();
            
             if (lowerPath.EndsWith("msgfdb_fht.txt"))
             {

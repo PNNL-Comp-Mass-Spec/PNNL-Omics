@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PNNLOmics.Data.Constants
+﻿namespace PNNLOmics.Data.Constants
 {
     /// <summary>
     /// Elements, updated spellings 10-8-10

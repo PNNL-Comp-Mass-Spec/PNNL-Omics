@@ -34,14 +34,14 @@ namespace PNNLOmicsIO.IO
 		protected override Dictionary<string, int> CreateColumnMapping(TextReader textReader)
 		{            
 
-			Dictionary<string, int> columnMap   = new Dictionary<string, int>();
-			string[] columnTitles               = textReader.ReadLine().Split('\t', '\n');
-			int numOfColumns                    = columnTitles.Length;
+			var columnMap   = new Dictionary<string, int>();
+			var columnTitles               = textReader.ReadLine().Split('\t', '\n');
+			var numOfColumns                    = columnTitles.Length;
            
 
-			for (int i = 0; i < numOfColumns; i++)
+			for (var i = 0; i < numOfColumns; i++)
 			{
-                string title    = columnTitles[i].Trim();
+                var title    = columnTitles[i].Trim();
                 title           = title.ToLower();
                 
 				switch (columnTitles[i].Trim())
@@ -99,17 +99,17 @@ namespace PNNLOmicsIO.IO
         /// <returns></returns>
 		protected override IEnumerable<MSFeature> SaveFileToEnumerable(TextReader textReader, Dictionary<string, int> columnMapping)
 		{
-			List<MSFeature>    features     = new List<MSFeature>();			
-			int                currentId    = 0;			
-			string             line         = "";			
+			var    features     = new List<MSFeature>();			
+			var                currentId    = 0;			
+			var             line         = "";			
 
             // Detect if the data comes from an IMS platform.
-            bool hasDriftTimeData   = columnMapping.ContainsKey(FRAME_NUMBER); 
+            var hasDriftTimeData   = columnMapping.ContainsKey(FRAME_NUMBER); 
 			
 			while ((line = textReader.ReadLine()) != null)
 			{
-				string[] columns    = line.Split(new string [] {Delimeter}, 0, StringSplitOptions.RemoveEmptyEntries);												
-				MSFeature feature   = new MSFeature();
+				var columns    = line.Split(new[] {Delimeter}, 0, StringSplitOptions.RemoveEmptyEntries);												
+				var feature   = new MSFeature();
 				feature.ID          = currentId;
 
 

@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-using System;
-using PNNLOmics.Utilities;
-using MathNet.Numerics;
+﻿using System;
 using MathNet.Numerics.LinearAlgebra;
-using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 using PNNLOmics.Algorithms.FeatureMatcher.Data;
+using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 
 namespace PNNLOmics.Data.Features
 {
-    public class FeatureMatch<T, U> : BaseData
-        where T : Feature, new()
-        where U : Feature, new()
+    public class FeatureMatch<TObserved, TTarget> : BaseData
+        where TObserved : FeatureLight, new()
+        where TTarget : FeatureLight, new()
     {
         #region Members
         private bool m_useDriftTime;
@@ -26,8 +23,8 @@ namespace PNNLOmics.Data.Features
         private Matrix m_differenceVector;
         private Matrix m_reducedDifferenceVector;
 
-        private T m_observedFeature;
-        private U m_targetFeature;
+        private TObserved m_observedFeature;
+        private TTarget m_targetFeature;
         #endregion
 
         #region Properties
@@ -106,14 +103,14 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets the observed feature, i.e. the feature seen in the analysis.
         /// </summary>
-        public T ObservedFeature
+        public TObserved ObservedFeature
         {
             get { return m_observedFeature; }
         }
         /// <summary>
         /// Gets the target feature, i.e. the feature that was matched to.
         /// </summary>
-        public U TargetFeature
+        public TTarget TargetFeature
         {
             get { return m_targetFeature; }
         }
@@ -134,7 +131,7 @@ namespace PNNLOmics.Data.Features
         /// <param name="targetFeature">Feature to match to.  Typically an AMTTag.</param>
         /// <param name="useDriftTime">Whether to use the drift time in distance vectors.</param>
         /// <param name="shiftedMatch">Whether the match is the result of a fixed shift.</param>
-        public FeatureMatch(T observedFeature, U targetFeature, bool useDriftTime, bool shiftedMatch)
+        public FeatureMatch(TObserved observedFeature, TTarget targetFeature, bool useDriftTime, bool shiftedMatch)
         {
             AddFeatures(observedFeature, targetFeature, useDriftTime, shiftedMatch);
         }
@@ -144,21 +141,21 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Comparison function for sorting by feature ID.
         /// </summary>
-        public static Comparison<FeatureMatch<T, U>> FeatureComparison = delegate(FeatureMatch<T, U> featureMatch1, FeatureMatch<T, U> featureMatch2)
+        public static Comparison<FeatureMatch<TObserved, TTarget>> FeatureComparison = delegate(FeatureMatch<TObserved, TTarget> featureMatch1, FeatureMatch<TObserved, TTarget> featureMatch2)
         {
             return featureMatch1.m_observedFeature.ID.CompareTo(featureMatch2.ObservedFeature.ID);
         };
         /// <summary>
         /// Comparison function for sorting by STAC score.
         /// </summary>
-        public static Comparison<FeatureMatch<T, U>> STACComparison = delegate(FeatureMatch<T, U> featureMatch1, FeatureMatch<T, U> featureMatch2)
+        public static Comparison<FeatureMatch<TObserved, TTarget>> STACComparison = delegate(FeatureMatch<TObserved, TTarget> featureMatch1, FeatureMatch<TObserved, TTarget> featureMatch2)
         {
             return featureMatch1.m_stacScore.CompareTo(featureMatch2.STACScore);
         };
 		/// <summary>
 		/// Comparison function for sorting by STAC score descending.
 		/// </summary>
-		public static Comparison<FeatureMatch<T, U>> STACComparisonDescending = delegate(FeatureMatch<T, U> featureMatch1, FeatureMatch<T, U> featureMatch2)
+		public static Comparison<FeatureMatch<TObserved, TTarget>> STACComparisonDescending = delegate(FeatureMatch<TObserved, TTarget> featureMatch1, FeatureMatch<TObserved, TTarget> featureMatch2)
 		{
 			return featureMatch2.m_stacScore.CompareTo(featureMatch1.STACScore);
 		};
@@ -187,8 +184,8 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public override void Clear()
         {
-            m_observedFeature = new T();
-            m_targetFeature = new U();
+            m_observedFeature = new TObserved();
+            m_targetFeature = new TTarget();
             m_delSLiC = 0;
             m_slicScore = 0;
             m_stacScore = 0;
@@ -206,7 +203,7 @@ namespace PNNLOmics.Data.Features
         /// <param name="targetFeature">Feature to match to.  Typically an AMTTag.</param>
         /// <param name="useDriftTime">Whether to use the drift time in distance vectors.</param>
         /// <param name="shiftedMatch">Whether the match is the result of a fixed shift.</param>
-        public void AddFeatures(T observedFeature, U targetFeature, bool useDriftTime, bool shiftedMatch)
+        public void AddFeatures(TObserved observedFeature, TTarget targetFeature, bool useDriftTime, bool shiftedMatch)
         {
             Clear();
             m_observedFeature = observedFeature;
@@ -223,19 +220,19 @@ namespace PNNLOmics.Data.Features
         /// <returns></returns>
         public bool InRegion(FeatureMatcherTolerances tolerances, bool useElllipsoid)
         {
-            if (m_targetFeature == new U())
+            if (m_targetFeature == new TTarget())
             {
                 throw new InvalidOperationException("Match must be populated before using functions involving the match.");
             }
-            Matrix toleranceMatrix = tolerances.AsVector(true);
+            var toleranceMatrix = tolerances.AsVector(true);
             if (m_reducedDifferenceVector != new Matrix(2, 1, 0.0))
             {
-                int dimensions = m_reducedDifferenceVector.RowCount;
+                var dimensions = m_reducedDifferenceVector.RowCount;
 
                 if (useElllipsoid)
                 {
                     double distance = 0;
-                    for (int i = 0; i < dimensions; i++)
+                    for (var i = 0; i < dimensions; i++)
                     {
                         distance += m_reducedDifferenceVector[i, 0] * m_reducedDifferenceVector[i, 0] / toleranceMatrix[i, 0] / toleranceMatrix[i, 0];
                     }
@@ -243,8 +240,8 @@ namespace PNNLOmics.Data.Features
                 }
                 else
                 {
-                    bool truthValue = true;
-                    for (int i = 0; i < dimensions; i++)
+                    var truthValue = true;
+                    for (var i = 0; i < dimensions; i++)
                     {
                         truthValue = (truthValue && Math.Abs(m_reducedDifferenceVector[i, 0]) <= toleranceMatrix[i, 0]);
                     }
@@ -256,18 +253,12 @@ namespace PNNLOmics.Data.Features
                 if (useElllipsoid)
                 {
                     double distance = 0;
-                    double massDiff = m_observedFeature.MassMonoisotopicAligned - m_targetFeature.MassMonoisotopicAligned;
-                    double netDiff = m_observedFeature.NETAligned - m_targetFeature.NETAligned;
+                    var massDiff = m_observedFeature.MassMonoisotopicAligned - m_targetFeature.MassMonoisotopicAligned;
+                    var netDiff = m_observedFeature.NetAligned - m_targetFeature.NetAligned;
                     distance += massDiff * massDiff / toleranceMatrix[0, 0] / toleranceMatrix[0, 0];
                     distance += netDiff * netDiff / toleranceMatrix[1, 0] / toleranceMatrix[1, 0];
                     // TODO: Add drift time difference.
                     m_withinRefinedRegion = (distance <= 1);
-                }
-                else
-                {
-                    //bool truthValue = true;
-                    //truthValue = (truthValue && Math.Abs(m_reducedDifferenceVector[i, 0]) <= toleranceMatrix[i, 0]);
-                    //m_withinRefinedRegion = truthValue;
                 }
             }
             return m_withinRefinedRegion;
@@ -275,8 +266,8 @@ namespace PNNLOmics.Data.Features
 
         public void SetDifferenceMatrices()
         {
-            m_reducedDifferenceVector = MatrixUtilities.Differences<T, U>(m_observedFeature, m_targetFeature, m_useDriftTime);
-            m_differenceVector = MatrixUtilities.Differences<T, U>(m_observedFeature, m_targetFeature, m_useDriftTime, true);
+            m_reducedDifferenceVector = MatrixUtilities.Differences(m_observedFeature, m_targetFeature, m_useDriftTime);
+            m_differenceVector = MatrixUtilities.Differences(m_observedFeature, m_targetFeature, m_useDriftTime);
             SetFlags(m_useDriftTime);
         }
         #endregion

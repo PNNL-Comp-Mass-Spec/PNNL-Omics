@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MathNet.Numerics.LinearAlgebra;
-
-namespace PNNLOmics.Algorithms.FeatureMatcher.Data
+﻿namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {
     public class SLiCInformation
     {

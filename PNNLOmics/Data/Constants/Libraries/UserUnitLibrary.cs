@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
@@ -19,61 +16,61 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap = new Dictionary<string, UserUnit>();
             m_enumToSymbolMap = new Dictionary<UserUnitName, string>();
 
-            UserUnit user01 = new UserUnit();
+            var user01 = new UserUnit();
             user01.Name = "User01";
             user01.MassMonoIsotopic = 0;
             user01.Symbol = "U01";
             user01.UserUnitType = UserUnitName.User01;
 
-            UserUnit user02 = new UserUnit();
+            var user02 = new UserUnit();
             user02.Name = "User02";
             user02.MassMonoIsotopic = 0;
             user02.Symbol = "U02";
             user02.UserUnitType = UserUnitName.User02;
 
-            UserUnit user03 = new UserUnit();
+            var user03 = new UserUnit();
             user03.Name = "User03";
             user03.MassMonoIsotopic = 0;
             user03.Symbol = "U03";
             user03.UserUnitType = UserUnitName.User03;
 
-            UserUnit user04 = new UserUnit();
+            var user04 = new UserUnit();
             user04.Name = "User04";
             user04.MassMonoIsotopic = 0;
             user04.Symbol = "U04";
             user04.UserUnitType = UserUnitName.User04;
 
-            UserUnit user05 = new UserUnit();
+            var user05 = new UserUnit();
             user05.Name = "User05";
             user05.MassMonoIsotopic = 0;
             user05.Symbol = "U05";
             user05.UserUnitType = UserUnitName.User05;
 
-            UserUnit user06 = new UserUnit();
+            var user06 = new UserUnit();
             user06.Name = "User06";
             user06.MassMonoIsotopic = 0;
             user06.Symbol = "U06";
             user06.UserUnitType = UserUnitName.User06;
 
-            UserUnit user07 = new UserUnit();
+            var user07 = new UserUnit();
             user07.Name = "User07";
             user07.MassMonoIsotopic = 0;
             user07.Symbol = "U07";
             user07.UserUnitType = UserUnitName.User07;
 
-            UserUnit user08 = new UserUnit();
+            var user08 = new UserUnit();
             user08.Name = "User08";
             user08.MassMonoIsotopic = 0;
             user08.Symbol = "U08";
             user08.UserUnitType = UserUnitName.User08;
 
-            UserUnit user09 = new UserUnit();
+            var user09 = new UserUnit();
             user09.Name = "User09";
             user09.MassMonoIsotopic = 0;
             user09.Symbol = "U09";
             user09.UserUnitType = UserUnitName.User09;
 
-            UserUnit user10 = new UserUnit();
+            var user10 = new UserUnit();
             user10.Name = "User10";
             user10.MassMonoIsotopic = 0;
             user10.Symbol = "U10";
@@ -110,13 +107,13 @@ namespace PNNLOmics.Data.Constants.Libraries
         /// <returns></returns>
         public void SetLibrary(UserUnit user1)
         {
-            UserUnitLibrary library = new UserUnitLibrary();
+            var library = new UserUnitLibrary();
             library.m_symbolToCompoundMap.Add(user1.Symbol, user1);     
     
             library.m_enumToSymbolMap.Add(user1.UserUnitType, user1.Symbol);
 
-            this.m_enumToSymbolMap = library.m_enumToSymbolMap;
-            this.m_symbolToCompoundMap = library.m_symbolToCompoundMap;
+            m_enumToSymbolMap = library.m_enumToSymbolMap;
+            m_symbolToCompoundMap = library.m_symbolToCompoundMap;
             Constants.SetUserUnitLibrary(library);
         }
 
@@ -128,15 +125,15 @@ namespace PNNLOmics.Data.Constants.Libraries
         /// <returns></returns>
         public void SetLibrary(UserUnit user1, UserUnit user2)
         {
-            UserUnitLibrary library = new UserUnitLibrary();
+            var library = new UserUnitLibrary();
             library.m_symbolToCompoundMap.Add(user1.Symbol, user1);
             library.m_symbolToCompoundMap.Add(user2.Symbol, user2);
 
             library.m_enumToSymbolMap.Add(user1.UserUnitType, user1.Symbol);
             library.m_enumToSymbolMap.Add(user2.UserUnitType, user2.Symbol);
 
-            this.m_enumToSymbolMap = library.m_enumToSymbolMap;
-            this.m_symbolToCompoundMap = library.m_symbolToCompoundMap;
+            m_enumToSymbolMap = library.m_enumToSymbolMap;
+            m_symbolToCompoundMap = library.m_symbolToCompoundMap;
             Constants.SetUserUnitLibrary(library);
         }
 
@@ -148,7 +145,7 @@ namespace PNNLOmics.Data.Constants.Libraries
         /// <returns></returns>
         public void SetLibrary(UserUnit user1, UserUnit user2, UserUnit user3)
         {
-            UserUnitLibrary library = new UserUnitLibrary();
+            var library = new UserUnitLibrary();
 
             library.m_symbolToCompoundMap = new Dictionary<string, UserUnit>();
             library.m_symbolToCompoundMap.Add(user1.Symbol, user1);
@@ -160,8 +157,8 @@ namespace PNNLOmics.Data.Constants.Libraries
             library.m_enumToSymbolMap.Add(user2.UserUnitType, user2.Symbol);
             library.m_enumToSymbolMap.Add(user3.UserUnitType, user3.Symbol);
 
-            this.m_enumToSymbolMap = library.m_enumToSymbolMap;
-            this.m_symbolToCompoundMap = library.m_symbolToCompoundMap;
+            m_enumToSymbolMap = library.m_enumToSymbolMap;
+            m_symbolToCompoundMap = library.m_symbolToCompoundMap;
             Constants.SetUserUnitLibrary(library);
         }
     }

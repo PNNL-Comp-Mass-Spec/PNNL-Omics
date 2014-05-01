@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace PNNLOmics.Algorithms.SpectralProcessing
+﻿namespace PNNLOmics.Algorithms.SpectralProcessing
 {
     public enum SpectraFilters
     {

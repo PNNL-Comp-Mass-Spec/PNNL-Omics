@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralComparisons
@@ -42,20 +40,20 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
         /// <returns>Normalized Dot Product</returns>
         public double CompareSpectra(MSSpectra xSpectrum, MSSpectra ySpectrum)
         {
-            List<XYData> x = xSpectrum.Peaks;
-            List<XYData> y = ySpectrum.Peaks;
+            var x = xSpectrum.Peaks;
+            var y = ySpectrum.Peaks;
 
             double magX = 0;
             double magY = 0;
-            int N       = x.Count;
+            var N       = x.Count;
 
             // Compute magnitudes of x y spectra
-            List<double> xIons = new List<double>(N);
-            List<double> yIons = new List<double>(N);
-            int xTotalNonZero  = 0;
-            int yTotalNonZero  = 0;
+            var xIons = new List<double>(N);
+            var yIons = new List<double>(N);
+            var xTotalNonZero  = 0;
+            var yTotalNonZero  = 0;
 
-            for (int i = 0; i < x.Count; i++)
+            for (var i = 0; i < x.Count; i++)
             {
                 if (x[i].Y > 0)
                 {
@@ -70,28 +68,28 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
                 yIons.Add(y[i].Y);
             }
             // Find the top ions to keep.
-            List<double> xTopIons = new List<double>(N);
-            List<double> yTopIons = new List<double>(N);
+            var xTopIons = new List<double>(N);
+            var yTopIons = new List<double>(N);
             xTopIons.AddRange(xIons);
             yTopIons.AddRange(yIons);
 
             xTopIons.Sort();
             yTopIons.Sort();
             
-            int xTop = Math.Max(0, xTopIons.Count - System.Convert.ToInt32(System.Convert.ToDouble(xTotalNonZero) * TopPercent));
-            int yTop = Math.Max(0, yTopIons.Count - System.Convert.ToInt32(System.Convert.ToDouble(yTotalNonZero) * TopPercent));
+            var xTop = Math.Max(0, xTopIons.Count - System.Convert.ToInt32(System.Convert.ToDouble(xTotalNonZero) * TopPercent));
+            var yTop = Math.Max(0, yTopIons.Count - System.Convert.ToInt32(System.Convert.ToDouble(yTotalNonZero) * TopPercent));
             
             xTop = Math.Min(xTopIons.Count - 1, xTop);
             yTop = Math.Min(yTopIons.Count - 1, yTop);
 
-            double xThreshold = xTopIons[xTop];
-            double yThreshold = yTopIons[yTop];
+            var xThreshold = xTopIons[xTop];
+            var yThreshold = yTopIons[yTop];
 
             // Then compute the magnitudes of the spectra
-            for (int i = 0; i < x.Count; i++)
+            for (var i = 0; i < x.Count; i++)
             {
-                double xIon = xIons[i];
-                double yIon = yIons[i];
+                var xIon = xIons[i];
+                var yIon = yIons[i];
 
                 if (xIon < xThreshold)
                     xIon = 0;
@@ -108,10 +106,10 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
 
             // Normalize each component and calculate the dot product.
             double sum = 0;
-            for (int i = 0; i < x.Count; i++)
+            for (var i = 0; i < x.Count; i++)
             {
-                double xIon = xIons[i];
-                double yIon = yIons[i];
+                var xIon = xIons[i];
+                var yIon = yIons[i];
 
                 if (xIon < xThreshold)
                     xIon = 0;

@@ -6,6 +6,7 @@
  *  REVIEW STOPPED HERE, need to look at inner loop of while for detect peaks.
  * 
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// </summary>
         public PeakCentroider()
         {
-            this.Parameters = new PeakCentroiderParameters();
+            Parameters = new PeakCentroiderParameters();
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// </summary>
         public PeakCentroider(PeakCentroiderParameters parameters)
         {
-            this.Parameters = parameters;
+            Parameters = parameters;
         }
 
         /// <summary>
@@ -50,18 +51,18 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <param name="parameters">parameters needed for the fit</param>
         public List<ProcessedPeak> DiscoverPeaks(List<XYData> rawXYData)
         {
-            List<ProcessedPeak> resultsListCentroid = new List<ProcessedPeak>();
+            var resultsListCentroid = new List<ProcessedPeak>();
 
             if (rawXYData == null || rawXYData.Count == 0) return resultsListCentroid;
 
-            int numPoints = rawXYData.Count;
+            var numPoints = rawXYData.Count;
 
             if (Parameters.IsXYDataCentroided)
             {               
-                float width = Convert.ToSingle(Parameters.DefaultFWHMForCentroidedData);
-                foreach(XYData rawData in rawXYData)
+                var width = Convert.ToSingle(Parameters.DefaultFWHMForCentroidedData);
+                foreach(var rawData in rawXYData)
                 {
-                    ProcessedPeak newPreCentroidedPeak = new ProcessedPeak();
+                    var newPreCentroidedPeak = new ProcessedPeak();
                     newPreCentroidedPeak.XValue = rawData.X;
                     newPreCentroidedPeak.Height = rawData.Y;
                     newPreCentroidedPeak.Width  = width;
@@ -71,18 +72,18 @@ namespace PNNLOmics.Algorithms.PeakDetection
             else
             {
                 // Holds the apex of a fitted parabola.  
-                List<XYData> peakTopParabolaPoints = new List<XYData>();
+                var peakTopParabolaPoints = new List<XYData>();
                 
                 //TODO: Assert that the number of points is 3, 5, 7? Throw exception if not odd and greater than 3.               
-                for (int i = 0; i < Parameters.NumberOfPoints; i++)//number of points must be 3,5,7
+                for (var i = 0; i < Parameters.NumberOfPoints; i++)//number of points must be 3,5,7
                 {
-                    XYData newPoint = new XYData(0, 0);
+                    var newPoint = new XYData(0, 0);
                     peakTopParabolaPoints.Add(newPoint);
                 }
                 
 
-                XYData centroidedPeak = new XYData(0, 0);
-                for (int i = 1; i < numPoints - 1; i++)//numPoints-1 because of possible overrun error 4 lines down i+=1
+                var centroidedPeak = new XYData(0, 0);
+                for (var i = 1; i < numPoints - 1; i++)//numPoints-1 because of possible overrun error 4 lines down i+=1
                 {
                     // This loop will look for local differential maxima
                     //TODO: Refactor?
@@ -94,14 +95,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
                         if (rawXYData[i].Y < rawXYData[i - 1].Y)  // Is it Decreasing?
                         {
                             //peak top data point is at location i-1
-                            ProcessedPeak newcentroidPeak = new ProcessedPeak();
+                            var newcentroidPeak = new ProcessedPeak();
 
                             //1.  find local noise (or shoulder noise) by finding the average fo the local minima on each side of the peak
                             //XYData storeMinimaDataIndex = new XYData();//will contain the index of the locations where the surrounding local mnima are
-                            int shoulderNoiseToLeftIndex = 0;
-                            int shoulderNoiseToRightIndex = 0;
+                            var shoulderNoiseToLeftIndex = 0;
+                            var shoulderNoiseToRightIndex = 0;
 
-                            PeakCentroider peakTopCalculation = new PeakCentroider();
+                            var peakTopCalculation = new PeakCentroider();
                             newcentroidPeak.LocalLowestMinimaHeight = peakTopCalculation.FindShoulderNoise(ref rawXYData, i - 1, Parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
                             newcentroidPeak.MinimaOfLowerMassIndex = shoulderNoiseToLeftIndex;
                             newcentroidPeak.MinimaOfHigherMassIndex = shoulderNoiseToRightIndex;
@@ -120,9 +121,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             //2.   centroid peaks via fitting a parabola
                             //TODO: decide if sending indexes is better becaus the modulariy of the parabola finder will be broken
                             //store points to go to the parabola fitter
-                            for (int j = 0; j < Parameters.NumberOfPoints; j += 1)
+                            for (var j = 0; j < Parameters.NumberOfPoints; j += 1)
                             {
-                                int index = i - 1 - (int)((float)Parameters.NumberOfPoints / (float)2 - (float)0.5) + j;//since number of points is 3,5,7 it will divide nicely
+                                var index = i - 1 - (int)(Parameters.NumberOfPoints / (float)2 - (float)0.5) + j;//since number of points is 3,5,7 it will divide nicely
                                 peakTopParabolaPoints[j] = rawXYData[index];
                             }
 
@@ -141,7 +142,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             //if(double.IsPositiveInfinity(newcentroidPeak.XValue) || double.IsNegativeInfinity(newcentroidPeak.XValue) )
 
                             //3.  find FWHM
-                            int centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
+                            var centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
 
                             newcentroidPeak.Width = Convert.ToSingle(peakTopCalculation.FindFWHM(rawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, Parameters.FWHMPeakFitType));
 
@@ -177,13 +178,13 @@ namespace PNNLOmics.Algorithms.PeakDetection
             double apexMass;
             double apexIntensity;
 
-            int numberOfPoints = peakTopList.Count;
+            var numberOfPoints = peakTopList.Count;
 
             //print "run Parabola"
 
             double InitialX;  //used to offset the parabola to zero
             InitialX = peakTopList[0].X;
-            for (int i = 0; i < numberOfPoints; i++)
+            for (var i = 0; i < numberOfPoints; i++)
             {
                 peakTopList[i].X = Convert.ToSingle(peakTopList[i].X - InitialX);
             }
@@ -204,42 +205,42 @@ namespace PNNLOmics.Algorithms.PeakDetection
             //peakTopList[1].Y=5;
             //peakTopList[2].Y = 4;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 T1 += peakTopList[i].X * peakTopList[i].X * peakTopList[i].Y;
             }
 
             T1 = 2 * T1;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 T2 += peakTopList[i].X * peakTopList[i].Y;
             }
 
             T2 = 2 * T2;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 T3 += peakTopList[i].Y;
             }
 
             T3 = 2 * T3;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 X1 += peakTopList[i].X * peakTopList[i].X * peakTopList[i].X * peakTopList[i].X;
             }
 
             X1 = 2 * X1;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 X2 += peakTopList[i].X * peakTopList[i].X * peakTopList[i].X;
             }
 
             X2 = 2 * X2;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 X3 += peakTopList[i].X * peakTopList[i].X;
             }
@@ -249,7 +250,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             Y1 = X2;
             Y2 = X3;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 Y3 += peakTopList[i].X;
             }
@@ -295,12 +296,12 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
 
             //TODO for printing we need to reset the parabola back to the correct m/z
-            for (int i = 0; i < numberOfPoints; i++)
+            for (var i = 0; i < numberOfPoints; i++)
             {
                 peakTopList[i].X = (float)(peakTopList[i].X + InitialX);
             }
 
-            XYData centroidXYDataResults = new XYData(0, 0);
+            var centroidXYDataResults = new XYData(0, 0);
             centroidXYDataResults.X = (float)apexMass;
             centroidXYDataResults.Y = (float)apexIntensity;
 
@@ -335,7 +336,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             double apexMass;
             double apexIntensity;
 
-            int numberOfPoints = peakSideList.Count;
+            var numberOfPoints = peakSideList.Count;
 
             //switch x with Y
 
@@ -352,7 +353,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             //print "run Parabola"
             double InitialX;  //used to offset the parabola to zero
             InitialX = peakSideList[0].X;
-            for (int i = 0; i < numberOfPoints; i++)
+            for (var i = 0; i < numberOfPoints; i++)
             {
                 peakSideList[i].X = (float)(peakSideList[i].X - InitialX);
             }
@@ -373,42 +374,42 @@ namespace PNNLOmics.Algorithms.PeakDetection
             //peakTopList[1].Y=5;
             //peakTopList[2].Y = 4;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 T1 += peakSideList[i].X * peakSideList[i].X * peakSideList[i].Y;
             }
 
             T1 = 2 * T1;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 T2 += peakSideList[i].X * peakSideList[i].Y;
             }
 
             T2 = 2 * T2;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 T3 += peakSideList[i].Y;
             }
 
             T3 = 2 * T3;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 X1 += peakSideList[i].X * peakSideList[i].X * peakSideList[i].X * peakSideList[i].X;
             }
 
             X1 = 2 * X1;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 X2 += peakSideList[i].X * peakSideList[i].X * peakSideList[i].X;
             }
 
             X2 = 2 * X2;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 X3 += peakSideList[i].X * peakSideList[i].X;
             }
@@ -418,7 +419,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             Y1 = X2;
             Y2 = X3;
 
-            for (int i = 0; i < numberOfPoints; i += 1)
+            for (var i = 0; i < numberOfPoints; i += 1)
             {
                 Y3 += peakSideList[i].X;
             }
@@ -496,7 +497,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         {
             double minIntensityLeft = 0;
             double minIntensityRight = 0;
-            int length = rawData.Count;
+            var length = rawData.Count;
 
             if (rawData[centerIndex].Y == 0)//no peak condition
             {
@@ -509,8 +510,8 @@ namespace PNNLOmics.Algorithms.PeakDetection
             }
 
             // Find the first local minimum as we go down the m/z range.
-            bool found = false;
-            for (int i = centerIndex; i > 0; i--)
+            var found = false;
+            for (var i = centerIndex; i > 0; i--)
             {
                if (rawData[i + 1].Y >= rawData[i].Y && rawData[i - 1].Y >= rawData[i].Y) // Local minima here \/  //typically data must decrease then increase.  adding >= to part 2 allows for decrease and then flat which is what happens at zero
                 {
@@ -529,7 +530,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
             //// Find the first local minimum as we go up the m/z range.
             found = false;//reset and continue
-            for (int i = centerIndex; i < length - 1; i++)
+            for (var i = centerIndex; i < length - 1; i++)
             {
                 if (rawData[i + 1].Y >= rawData[i].Y && rawData[i - 1].Y >= rawData[i].Y) // Local minima here \/  //typically data must decrease then increase.  adding >= to part 2 allows for decrease and then flat which is what happens at zero
                 {
@@ -593,8 +594,8 @@ namespace PNNLOmics.Algorithms.PeakDetection
             //this bounds the number of points we can used to determine FWHM
             //int MinimaLeftIndex = (int)storeMinimaData.X;//index lower in mass
             //int MinimaRightIndex = (int)storeMinimaData.Y;//index higher in mass
-            int MinimaLeftIndex = shoulderNoiseToLeftIndex;//index lower in mass
-            int MinimaRightIndex = shoulderNoiseToRightIndex;//index higher in mass
+            var MinimaLeftIndex = shoulderNoiseToLeftIndex;//index lower in mass
+            var MinimaRightIndex = shoulderNoiseToRightIndex;//index higher in mass
 
             double deltaXRight;//distance of half-width-at-half-maximum to the right
             double deltaXLeft;//distance of half-width-at-half-maximum to the left
@@ -607,9 +608,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
             //double Y2OnePointsAhead;
             //use centroided data for deltaX and halfMaximum calculations
-            double Y0CenterHeight = centroidPeak.Y;
-            double Y0HalfHeight = Y0CenterHeight / 2.0;
-            double X0CenterMass = centroidPeak.X;
+            var Y0CenterHeight = centroidPeak.Y;
+            var Y0HalfHeight = Y0CenterHeight / 2.0;
+            var X0CenterMass = centroidPeak.X;
 
             //initialize heavily used variables
             double FWHM;//returned answer
@@ -617,9 +618,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
             double B = 0;//ParabolaABC
             double C = 0;//ParabolaABC
 
-            FullWidthHalfMaximumPeakOptions detectedMethodLeft = FullWidthHalfMaximumPeakOptions.Unassigned;
-            FullWidthHalfMaximumPeakOptions detectedMethodRight = FullWidthHalfMaximumPeakOptions.Unassigned;
-            int numPoints = rawData.Count();
+            var detectedMethodLeft = FullWidthHalfMaximumPeakOptions.Unassigned;
+            var detectedMethodRight = FullWidthHalfMaximumPeakOptions.Unassigned;
+            var numPoints = rawData.Count();
 
             //if there is no data
             if (Y0CenterHeight == 0.0)
@@ -639,7 +640,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             if (rawData[MinimaRightIndex].Y < Y0HalfHeight)//is our minima less than half maximum
             {
                 #region there are enough data points that we can find the postiion easily.
-                for (int i = MinimaRightIndex; i > centerIndex; i--)//TODO check this centerindex+1? to avoid 0
+                for (var i = MinimaRightIndex; i > centerIndex; i--)//TODO check this centerindex+1? to avoid 0
                 {
                     Y2OnePointAhead = rawData[i - 1].Y;//look one point ahead
                     if (Y2OnePointAhead > Y0HalfHeight)//is the Yfwhm in the range
@@ -648,17 +649,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
                         Y1CurrentPoint = rawData[i].Y;
                         X2OnePointAhead = rawData[i - 1].X;
                         //we are in range. i is below the half height and i-1 is above
-                        double interpolatedX = X1CurrentPoint - (X1CurrentPoint - X2OnePointAhead) * (Y0HalfHeight - Y1CurrentPoint) / (Y2OnePointAhead - Y1CurrentPoint);//TODO check this
+                        var interpolatedX = X1CurrentPoint - (X1CurrentPoint - X2OnePointAhead) * (Y0HalfHeight - Y1CurrentPoint) / (Y2OnePointAhead - Y1CurrentPoint);//TODO check this
                         deltaXRight = interpolatedX - X0CenterMass;
                         detectedMethodRight = FullWidthHalfMaximumPeakOptions.Interpolated;
                         break;
                     }
-                    else
-                    {
-                        X1CurrentPoint = 0;//break point
-                        //this is not needed because we will keep iterating till the answer is found
-                        //TODO is there a case for this else block or do we use the default deltaXright asigned above
-                    }
+                    X1CurrentPoint = 0;//break point
+                    //this is not needed because we will keep iterating till the answer is found
+                    //TODO is there a case for this else block or do we use the default deltaXright asigned above
                     //xcoordinateToRight = X0CenterMass + deltaXRight;//notice this is offset from the center mass not the centroid
                 }
                 #endregion
@@ -675,15 +673,15 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
                     #region load up ListXYdata with points from the center so we can fit a parabola
                     double transformedHalfHeight = 0;//this is needed incase the logarithm is taken
-                    List<XYData> peakRightSideList = new List<XYData>();
+                    var peakRightSideList = new List<XYData>();
 
                     switch (lowAbundanceFWHMFitType)//for parabola fit, don't take a log.  For lorentzian, take a log first
                     {
                         case PeakFitType.Parabola:
                             {
-                                for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
+                                for (var i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
+                                    var pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
                                     peakRightSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
@@ -691,10 +689,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             break;
                         case PeakFitType.Lorentzian:
                             {
-                                for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
+                                for (var i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    float logY = (float) (Math.Log10(rawData[i].Y));
-                                    XYData pointTransfer = new XYData(rawData[i].X, logY);
+                                    var logY = (float) (Math.Log10(rawData[i].Y));
+                                    var pointTransfer = new XYData(rawData[i].X, logY);
 
                                     if (rawData[i].Y > 0)//prevents infinity solution from log10
                                     {
@@ -706,9 +704,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             break;
                         default:
                             {
-                                for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
+                                for (var i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
+                                    var pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
                                     peakRightSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
@@ -719,11 +717,11 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     #endregion
 
                     //fit parabola to the data so we can extrapolate the missing FWHM 
-                    PeakCentroider peakTopCalculation = new PeakCentroider();
+                    var peakTopCalculation = new PeakCentroider();
                     peakTopCalculation.ParabolaABC(peakRightSideList, ref A, ref B, ref C);
 
                     //calculate right X value for half height
-                    double squareRootTest = B*B - 4*A*C + 4*A*transformedHalfHeight;//must be positive
+                    var squareRootTest = B*B - 4*A*C + 4*A*transformedHalfHeight;//must be positive
                     if (squareRootTest > 0)
                     {
                         deltaXRight = -((B/2 + Math.Sqrt(squareRootTest)/2)/A);
@@ -740,9 +738,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
                 else//there are not enough points to fit the parabola, extrapolate a line
                 {
                     //calculate slope and project a line
-                    double slope = (Y0CenterHeight - rawData[MinimaRightIndex].Y) / (X0CenterMass - rawData[MinimaRightIndex].X);
-                    double intecept = (Y0CenterHeight - slope * X0CenterMass);
-                    double regressedX = -((intecept - Y0HalfHeight) / slope);
+                    var slope = (Y0CenterHeight - rawData[MinimaRightIndex].Y) / (X0CenterMass - rawData[MinimaRightIndex].X);
+                    var intecept = (Y0CenterHeight - slope * X0CenterMass);
+                    var regressedX = -((intecept - Y0HalfHeight) / slope);
                     deltaXRight = regressedX - X0CenterMass;
                     detectedMethodRight = FullWidthHalfMaximumPeakOptions.LinearExtrapolation;
                 }
@@ -755,7 +753,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             if (rawData[MinimaLeftIndex].Y < Y0HalfHeight)//is our minima less than half maximum
             {
                 #region there are enough data points that we can find the postiion easily
-                for (int i = MinimaLeftIndex; i < centerIndex; i++)//TODO check this centerindex-1? to avoid 0
+                for (var i = MinimaLeftIndex; i < centerIndex; i++)//TODO check this centerindex-1? to avoid 0
                 {
                     Y2OnePointAhead = rawData[i + 1].Y;//look one point ahead
                     if (Y2OnePointAhead > Y0HalfHeight)//is the Yfwhm in the range
@@ -764,17 +762,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
                         Y1CurrentPoint = rawData[i].Y;
                         X2OnePointAhead = rawData[i + 1].X;
                         //we are in range. i is below the half height and i-1 is above
-                        double interpolatedX = X1CurrentPoint - (X1CurrentPoint - X2OnePointAhead) * (Y0HalfHeight - Y1CurrentPoint) / (Y2OnePointAhead - Y1CurrentPoint);//TODO check this
+                        var interpolatedX = X1CurrentPoint - (X1CurrentPoint - X2OnePointAhead) * (Y0HalfHeight - Y1CurrentPoint) / (Y2OnePointAhead - Y1CurrentPoint);//TODO check this
                         deltaXLeft = X0CenterMass - interpolatedX;
                         detectedMethodLeft = FullWidthHalfMaximumPeakOptions.Interpolated;
                         break;
                     }
-                    else
-                    {
-                        X1CurrentPoint = 0;//break point
-                        //this is not needed because we will keep iterating till the answer is found
-                        //TODO is there a case for this else block or do we use the default deltaXright asigned above
-                    }
+                    X1CurrentPoint = 0;//break point
+                    //this is not needed because we will keep iterating till the answer is found
+                    //TODO is there a case for this else block or do we use the default deltaXright asigned above
                 }
                 #endregion
             }
@@ -790,15 +785,15 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
                     #region load up ListXYdata with points from the center so we can fit a parabola
                     double transformedHalfHeight = 0;//this is needed incase the logarithm is taken
-                    List<XYData> peakLeftSideList = new List<XYData>();
+                    var peakLeftSideList = new List<XYData>();
 
                     switch (lowAbundanceFWHMFitType)//for parabola fit, don't take a log.  For lorentzian, take a log first
                     {
                         case PeakFitType.Parabola:
                             {
-                                for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
+                                for (var i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
+                                    var pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
                                     peakLeftSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
@@ -806,10 +801,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             break;
                         case PeakFitType.Lorentzian:
                             {
-                                for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
+                                for (var i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    float logY = (float)(Math.Log10(rawData[i].Y));
-                                    XYData pointTransfer = new XYData(rawData[i].X, logY);
+                                    var logY = (float)(Math.Log10(rawData[i].Y));
+                                    var pointTransfer = new XYData(rawData[i].X, logY);
 
                                     if (rawData[i].Y > 0)//prevents infinity solution from log10
                                     {
@@ -821,9 +816,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             break;
                         default:
                             {
-                                for (int i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
+                                for (var i = MinimaLeftIndex; i <= MinimaRightIndex; i++)
                                 {
-                                    XYData pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
+                                    var pointTransfer = new XYData(rawData[i].X, rawData[i].Y);
                                     peakLeftSideList.Add(pointTransfer);
                                 }
                                 transformedHalfHeight = Y0HalfHeight;
@@ -833,12 +828,12 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     #endregion
 
                     //fit parabola to the data so we can extrapolate the missing FWHM                  
-                    PeakCentroider peakTopCalculation = new PeakCentroider();
+                    var peakTopCalculation = new PeakCentroider();
                     peakTopCalculation.ParabolaABC(peakLeftSideList, ref A, ref B, ref C);
 
                     //calculate right X value for half height
                     //deltaXLeft = -((B / 2 + Math.Sqrt(B * B - 4 * A * C + 4 * A * transformedHalfHeight) / 2) / A);
-                    double squareRootTest = B * B - 4 * A * C + 4 * A * transformedHalfHeight;//must be positive
+                    var squareRootTest = B * B - 4 * A * C + 4 * A * transformedHalfHeight;//must be positive
                     if (squareRootTest > 0)
                     {
                         deltaXLeft = -((B / 2 + Math.Sqrt(squareRootTest) / 2) / A);
@@ -855,9 +850,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
                 else//there are not enough points to fit the parabola, extrapolate a line
                 {
                     //calculate slope and project a line
-                    double slope = (Y0CenterHeight - rawData[MinimaLeftIndex].Y) / (X0CenterMass - rawData[MinimaLeftIndex].X);
-                    double intecept = (Y0CenterHeight - slope * X0CenterMass);
-                    double regressedX = -((intecept - Y0HalfHeight) / slope);
+                    var slope = (Y0CenterHeight - rawData[MinimaLeftIndex].Y) / (X0CenterMass - rawData[MinimaLeftIndex].X);
+                    var intecept = (Y0CenterHeight - slope * X0CenterMass);
+                    var regressedX = -((intecept - Y0HalfHeight) / slope);
                     deltaXLeft = X0CenterMass - regressedX;
                     detectedMethodLeft = FullWidthHalfMaximumPeakOptions.LinearExtrapolation;
                 }

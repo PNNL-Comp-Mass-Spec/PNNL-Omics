@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Data
@@ -202,11 +201,11 @@ namespace PNNLOmics.Data
             if (obj == null)
                 return false;
 
-            MSSpectra other = obj as MSSpectra;
+            var other = obj as MSSpectra;
             if (other == null)
                 return false;
 
-            if (!this.GroupID.Equals(other.GroupID))
+            if (!GroupID.Equals(other.GroupID))
             {
                 return false;
             }
@@ -214,27 +213,27 @@ namespace PNNLOmics.Data
             {
                 return false;
             }
-            if (!this.PrecursorChargeState.Equals(other.PrecursorChargeState))
+            if (!PrecursorChargeState.Equals(other.PrecursorChargeState))
             {
                 return false;
             }
-            if (!this.PrecursorMZ.Equals(other.PrecursorMZ))
+            if (!PrecursorMZ.Equals(other.PrecursorMZ))
             {
                 return false;
             }
-            if (!this.RetentionTime.Equals(other.RetentionTime))
+            if (!RetentionTime.Equals(other.RetentionTime))
             {
                 return false;
             }
-            if (!this.Scan.Equals(other.Scan))
+            if (!Scan.Equals(other.Scan))
             {
                 return false;
             }
-            if (!this.TotalIonCurrent.Equals(other.TotalIonCurrent))
+            if (!TotalIonCurrent.Equals(other.TotalIonCurrent))
             {
                 return false;
             }
-            if (!this.CollisionType.Equals(other.CollisionType))
+            if (!CollisionType.Equals(other.CollisionType))
             {
                 return false;
             }
@@ -246,7 +245,7 @@ namespace PNNLOmics.Data
         /// <returns>Hash code based on stored data.</returns>
         public override int GetHashCode()
         {
-            int hashCode =
+            var hashCode =
                 PrecursorMZ.GetHashCode() ^
                 PrecursorChargeState.GetHashCode() ^
                 Scan.GetHashCode() ^
@@ -274,7 +273,7 @@ namespace PNNLOmics.Data
 
             if (ChildSpectra != null)
             {
-                foreach (MSSpectra spectra in ChildSpectra)
+                foreach (var spectra in ChildSpectra)
                 {
                     spectra.Dispose();
                 }

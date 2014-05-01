@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data.Features;
 using System.Collections;
+using System.Collections.Generic;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
@@ -32,7 +30,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <param name="edge"></param>
         public void AddEdge(Edge<T> edge)
         {
-            bool hasBeenSeen = HasEdgeBeenSeen(edge);
+            var hasBeenSeen = HasEdgeBeenSeen(edge);
             if (hasBeenSeen)
                 throw new Exception("The edge has already been seen.");
 
@@ -64,7 +62,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {
             // See if the vertices have been seen too...if they both have
             // then the valid flag should be true.
-            bool beenSeen = m_visitedVertices.ContainsKey(edge.VertexA);
+            var beenSeen = m_visitedVertices.ContainsKey(edge.VertexA);
             beenSeen = (beenSeen && m_visitedVertices.ContainsKey(edge.VertexB));
 
             return beenSeen;
@@ -80,7 +78,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
         public IEnumerator<Edge<T>> GetEnumerator()
         {
-            return this.LinearRelationship.GetEnumerator();
+            return LinearRelationship.GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {

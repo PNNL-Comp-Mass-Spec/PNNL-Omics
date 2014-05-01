@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using PNNLOmics.Data;
-using PNNLOmics.Data.Features;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using PNNLOmics.Data;
 using PNNLOmics.Data.Constants.Libraries;
+using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
 {
@@ -62,18 +62,18 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
             //          will be monotonically increasing with 1, 2, 3, 5, 6, 7, 9, 10, 11, 13
             //          This indicates the parent scan these features were fragmented from.
             // Third  - Once these spectra have been mapped, then we can do a quicker search
-            List<MSSpectra> spectra = new List<MSSpectra>();
+            var spectra = new List<MSSpectra>();
             spectra.AddRange(fragmentSpectra);           
             spectra.OrderBy(x => x.Scan);
                          
             // Map the scans
-            Dictionary<int, List<MSFeatureLight>> featureMap    = new Dictionary<int, List<MSFeatureLight>>();
-            Dictionary<int, List<MSSpectra>> spectraMap         = new Dictionary<int, List<MSSpectra>>();
-            Dictionary<int, int> mappedMSSpectra                = new Dictionary<int,int>();             
-            foreach(MSFeatureLight feature in features)
+            var featureMap    = new Dictionary<int, List<MSFeatureLight>>();
+            var spectraMap         = new Dictionary<int, List<MSSpectra>>();
+            var mappedMSSpectra                = new Dictionary<int,int>();             
+            foreach(var feature in features)
             {
-                int scan                = feature.Scan;
-                bool containsFeature    = featureMap.ContainsKey(scan);
+                var scan                = feature.Scan;
+                var containsFeature    = featureMap.ContainsKey(scan);
                 if (!containsFeature)
                 {
                     featureMap.Add(scan, new List<MSFeatureLight>());
@@ -81,17 +81,17 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                 featureMap[scan].Add(feature);
             }
             
-            int totalSpectra        = spectra.Count;
-            List<MSSpectra> scans   = new List<MSSpectra>();
-            int parentScan          = spectra[0].Scan - 1;
-            for(int i = 1; i < totalSpectra; i++)
+            var totalSpectra        = spectra.Count;
+            var scans   = new List<MSSpectra>();
+            var parentScan          = spectra[0].Scan - 1;
+            for(var i = 1; i < totalSpectra; i++)
             {
-                int prevScan    = spectra[i - 1].Scan;
-                int currentScan = spectra[i].Scan;
+                var prevScan    = spectra[i - 1].Scan;
+                var currentScan = spectra[i].Scan;
                 if (currentScan - prevScan > 1)
                 {
                     // Copy current data to the map.
-                    List<MSSpectra> tempSpectra = new List<MSSpectra>();
+                    var tempSpectra = new List<MSSpectra>();
                     tempSpectra.AddRange(scans);
                     spectraMap.Add(parentScan, tempSpectra);
 
@@ -103,25 +103,25 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
             }
 
             // then we search for links          
-            double ppmRange     = Tolerances.Mass;
-            double protonMass   = AdductMass;
+            var ppmRange     = Tolerances.Mass;
+            var protonMass   = AdductMass;
 
             // Go through each scan, and see if there is a corresponding 
             // MSMS scan range of spectra associated, some may not have it.
-            foreach(int scan in  featureMap.Keys)
+            foreach(var scan in  featureMap.Keys)
             {
-                bool containsMSMSFragments = spectraMap.ContainsKey(scan);
+                var containsMSMSFragments = spectraMap.ContainsKey(scan);
                 if (containsMSMSFragments)
                 {
                     // If MSMS exists there, then search all features in that mass spectra window for 
                     // close spectra.
-                    List<MSSpectra> suspectSpectra = spectraMap[scan];
-                    foreach (MSFeatureLight feature in featureMap[scan])
+                    var suspectSpectra = spectraMap[scan];
+                    foreach (var feature in featureMap[scan])
                     {
                         // Use the most abundant mass because it had a higher chance of being fragmented.
-                        double mass = feature.Mz;
+                        var mass = feature.Mz;
 
-                        List<MSSpectra> matching = suspectSpectra.FindAll(
+                        var matching = suspectSpectra.FindAll(
                                     delegate(MSSpectra x)
                                     {
                                         return Math.Abs(x.PrecursorMZ - mass) <= ppmRange;                            
@@ -129,10 +129,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                                     );                        
 
                         // Finally link!
-                        foreach (MSSpectra spectrum in matching)
+                        foreach (var spectrum in matching)
                         {
-                            int spectrumID      = spectrum.ID;
-                            bool hasBeenMapped  = mappedMSSpectra.ContainsKey(spectrumID);
+                            var spectrumID      = spectrum.ID;
+                            var hasBeenMapped  = mappedMSSpectra.ContainsKey(spectrumID);
                             if (!hasBeenMapped)
                             {
                                 mappedMSSpectra[spectrumID] = 0;

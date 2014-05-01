@@ -9,7 +9,6 @@
  *          5-19-2010 - BLL - Created clustering class and algorithm.
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using PNNLOmics.Data;
@@ -30,7 +29,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         public UMCSingleLinkageClusterer()
         {
             Parameters		= new FeatureClusterParameters<T>();
-			m_massComparer	= new Comparison<T>(FeatureLight.MassComparison);
+			m_massComparer	= FeatureLight.MassComparison;
         }
 
         #region Clustering Methods        
@@ -54,13 +53,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             // Then do the linking           
 			
             //foreach (PairwiseDistance<UMC> distance in distances)
-			foreach (PairwiseDistance<T> distance in newDistances)
+			foreach (var distance in newDistances)
             {
-                T featureX = distance.FeatureX;
-                T featureY = distance.FeatureY;
+                var featureX = distance.FeatureX;
+                var featureY = distance.FeatureY;
 
-                U clusterX = featureX.ParentFeature as U;
-                U clusterY = featureY.ParentFeature as U;
+                var clusterX = featureX.ParentFeature;
+                var clusterY = featureY.ParentFeature;
                  
                 // Determine if they are already clustered into the same cluster                                 
                 if (clusterX == clusterY && clusterX != null)
@@ -70,7 +69,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                                                                        
                 // Remove the references for all the clusters in the group 
                 // and merge them into the other cluster.                    
-                foreach (T umcX in clusterX.Features)
+                foreach (var umcX in clusterX.Features)
                 {
                     umcX.SetParentFeature(clusterY);
                     clusterY.AddChildFeature(umcX);
@@ -81,9 +80,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             }
 
             //return clusters;
-			U [] array			= new U[clusters.Values.Count];
+			var array			= new U[clusters.Values.Count];
 			clusters.Values.CopyTo(array, 0);
-			List<U> newClusters = new List<U>();
+			var newClusters = new List<U>();
 			newClusters.AddRange(array);
 
 			return newClusters;

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
 using PNNLOmics.Data;
@@ -27,26 +25,26 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             basisFunction.Scale(x);
             
             alglib.ndimensional_pfunc myDelegate = basisFunction.FunctionDelegate;
-            LevenburgMarquadtSolver solver = new LevenburgMarquadtSolver();                        
+            var solver = new LevenburgMarquadtSolver();                        
             solver.BasisFunction = myDelegate;
-            SolverReport worked = solver.Solve(x, y, ref coeffs);
+            var worked = solver.Solve(x, y, ref coeffs);
             
             Assert.IsTrue(worked.DidConverge);
 
             Console.WriteLine("{0}\t{1}\t{2}", "X", "YFit", "YRaw");
-            for (int i = 0; i < x.Count; i++)
+            for (var i = 0; i < x.Count; i++)
             {
 
                 // This is what we are fitting 
-                double xValue = x[i];
+                var xValue = x[i];
 
                 // This is what it should fit to
-                double yValue = y[i];
+                var yValue = y[i];
 
                 // This is the warped guy
                 double fitValue = 0;
                 //quadSolver2.FunctionDelegate(coeffs, new double[] { xValue }, ref fitValue, null);
-                myDelegate.Invoke(coeffs, new double[] { xValue }, ref fitValue, null);
+                myDelegate.Invoke(coeffs, new[] { xValue }, ref fitValue, null);
             }         
             Console.WriteLine(Environment.NewLine);
             return worked;
@@ -66,7 +64,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         #region Data for testing
         protected static List<PNNLOmics.Data.XYData> ManualLortentzianB()
         {
-            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            var manualData = new List<XYData>();
             manualData.Add(new XYData(-0.0219999999999345, 9.3977766913991E-16));
             manualData.Add(new XYData(-0.02150000000006, 2.39880902501257E-14));
             manualData.Add(new XYData(-0.0209999999999582, 5.36461868040639E-13));
@@ -124,7 +122,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
         protected static List<PNNLOmics.Data.XYData> ManualLortentzianA()
         {
-            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            var manualData = new List<XYData>();
             manualData.Add(new XYData(-1.5, 1.87241109519877));
             manualData.Add(new XYData(-1.4, 2.02831278366901));
             manualData.Add(new XYData(-1.3, 2.20436209268553));
@@ -183,7 +181,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
         protected static List<PNNLOmics.Data.XYData> ManualLortentzianC()
         {
-            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            var manualData = new List<XYData>();
             manualData.Add(new XYData(0.992385714285714, 39.1212121212121));
             manualData.Add(new XYData(0.993028571428571, 40.0629370629371));
             manualData.Add(new XYData(0.993671428571429, 40.1888111888112));
@@ -221,7 +219,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
         protected static List<PNNLOmics.Data.XYData> ManualGaussian()
         {
-            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            var manualData = new List<XYData>();
             manualData.Add(new XYData(-1.5, 0.000372665317207867));
             manualData.Add(new XYData(-1.4, 0.000992950430585108));
             manualData.Add(new XYData(-1.3, 0.00254193465161993));
@@ -280,7 +278,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
         protected static List<PNNLOmics.Data.XYData> ManualGaussianProblem()
         {
-            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            var manualData = new List<XYData>();
             manualData.Add(new XYData(1071, 3524039.91774892));
             manualData.Add(new XYData(1072, 3780550.24242424));
             manualData.Add(new XYData(1073, 3931531.09090909));
@@ -323,9 +321,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         }
         protected static List<PNNLOmics.Data.XYData> CalculateLine()
         {
-            List<PNNLOmics.Data.XYData> data = new List<XYData>();
+            var data = new List<XYData>();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 data.Add(new XYData(Convert.ToDouble(i), Convert.ToDouble(i * 5)));
             }
@@ -333,15 +331,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         }
         protected static List<PNNLOmics.Data.XYData> CalculatedParabola()
         {
-            List<PNNLOmics.Data.XYData> calculatedData = new List<XYData>();
+            var calculatedData = new List<XYData>();
 
-            List<double> x = new List<double>();
-            List<double> y = new List<double>();
-            for (int i = -10; i < 10; i++)
+            var x = new List<double>();
+            var y = new List<double>();
+            for (var i = -10; i < 10; i++)
             {
-                double val = Convert.ToDouble(i);
-                double xValue = val;
-                double yValue = -(val * val) + 100;
+                var val = Convert.ToDouble(i);
+                var xValue = val;
+                var yValue = -(val * val) + 100;
 
                 x.Add(xValue);
                 y.Add(yValue);
@@ -353,15 +351,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
         protected static List<PNNLOmics.Data.XYData> CalculatedCubic()
         {
-            List<PNNLOmics.Data.XYData> calculatedData = new List<XYData>();
+            var calculatedData = new List<XYData>();
 
-            List<double> x = new List<double>();
-            List<double> y = new List<double>();
-            for (int i = -10; i < 10; i++)
+            var x = new List<double>();
+            var y = new List<double>();
+            for (var i = -10; i < 10; i++)
             {
-                double val = Convert.ToDouble(i);
-                double xValue = val;
-                double yValue = -(val * val * val) + (5 * val * val) + (100 * val) + 25;
+                var val = Convert.ToDouble(i);
+                var xValue = val;
+                var yValue = -(val * val * val) + (5 * val * val) + (100 * val) + 25;
 
                 x.Add(xValue);
                 y.Add(yValue);
@@ -373,7 +371,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
         protected static List<PNNLOmics.Data.XYData> ManualOrbitrap2()
         {
-            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            var manualData = new List<XYData>();
             manualData.Add(new XYData(1234.388251, 1891.439726));
             manualData.Add(new XYData(1234.395524, 3418.562352));
             manualData.Add(new XYData(1234.402796, 1990.857499));
@@ -427,7 +425,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
         protected static List<PNNLOmics.Data.XYData> ManualHanning()
         {
-            List<PNNLOmics.Data.XYData> manualData = new List<XYData>();
+            var manualData = new List<XYData>();
             manualData.Add(new XYData(1234.358, 0.0227976600210893));
             manualData.Add(new XYData(1234.3581, 0.0229373596602475));
             manualData.Add(new XYData(1234.3582, 0.0230648449239964));

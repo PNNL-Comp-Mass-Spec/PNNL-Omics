@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PNNLOmicsIO.Utilities.Importers
 {
@@ -21,7 +19,7 @@ namespace PNNLOmicsIO.Utilities.Importers
         /// </summary>
         public virtual string Name
         {
-            get { return this.ToString(); }
+            get { return ToString(); }
             set { ;}
         }
 
@@ -47,17 +45,17 @@ namespace PNNLOmicsIO.Utilities.Importers
 
         protected string LookupData(List<string> row, string targetColumn, bool ignoreCase)
         {
-            int columnIndex = GetColumnIndexForHeader(targetColumn, ignoreCase);
+            var columnIndex = GetColumnIndexForHeader(targetColumn, ignoreCase);
             if (columnIndex == -1) return "null";
             return row[columnIndex];
         }
 
         protected bool ParseBoolField(string inputstring)
         {
-            bool result = false;
+            var result = false;
             if (bool.TryParse(inputstring, out result))
                 return result;
-            else return false;
+            return false;
         }
 
         protected short ParseShortField(string inputstring)
@@ -65,7 +63,7 @@ namespace PNNLOmicsIO.Utilities.Importers
             short result = 0;
             if (Int16.TryParse(inputstring, out result))
                 return result;
-            else return 0;
+            return 0;
         }
 
         protected double ParseDoubleField(string inputstring)
@@ -73,10 +71,7 @@ namespace PNNLOmicsIO.Utilities.Importers
             double result = 0;
             if (double.TryParse(inputstring, out result))
                 return result;
-            else
-            {
-                return double.NaN;
-            }
+            return double.NaN;
         }
 
         protected float ParseFloatField(string inputstring)
@@ -84,28 +79,21 @@ namespace PNNLOmicsIO.Utilities.Importers
             float result = 0;
             if (float.TryParse(inputstring, out result))
                 return result;
-            else return float.NaN;
-
+            return float.NaN;
         }
 
 
         protected int ParseIntField(string inputstring)
         {
-            int result = 0;
+            var result = 0;
             if (Int32.TryParse(inputstring, out result))
                 return result;
-            else
+            var secondAttempt = ParseDoubleField(inputstring);
+            if (secondAttempt != double.NaN)
             {
-                double secondAttempt = ParseDoubleField(inputstring);
-                if (secondAttempt != double.NaN)
-                {
-                    return Convert.ToInt32(secondAttempt);
-                }
-                else
-                {
-                    return -1;
-                }
+                return Convert.ToInt32(secondAttempt);
             }
+            return -1;
         }
 
         /// <summary>
@@ -116,10 +104,10 @@ namespace PNNLOmicsIO.Utilities.Importers
         protected List<string> ProcessLine(string inputLine)
         {
             char[] splitter = { m_delimiter };
-            List<string> parsedLine = new List<string>();
+            var parsedLine = new List<string>();
 
-            string[] arr = inputLine.Split(splitter);
-            foreach (string str in arr)
+            var arr = inputLine.Split(splitter);
+            foreach (var str in arr)
             {
                 parsedLine.Add(str);
             }
@@ -128,7 +116,7 @@ namespace PNNLOmicsIO.Utilities.Importers
 
         protected int GetColumnIndexForHeader(string target, bool ignoreCase)
         {
-            for (int i = 0; i < m_columnHeaders.Count; i++)
+            for (var i = 0; i < m_columnHeaders.Count; i++)
             {
                 string columnHeader;
 

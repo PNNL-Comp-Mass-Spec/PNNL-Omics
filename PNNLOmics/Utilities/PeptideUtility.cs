@@ -11,7 +11,7 @@ namespace PNNLOmics.Utilities
         /// </summary>
         public static bool PassesCutoff(Peptide peptide, double score, double fdr)
         {
-            bool passes = true;
+            var passes = true;
 
             if (peptide == null)
                 return false;
@@ -26,7 +26,7 @@ namespace PNNLOmics.Utilities
         /// </summary>
         public static string CleanString(string peptide)
         {
-            string[] peptides = peptide.Split('.');
+            var peptides = peptide.Split('.');
 
             if (peptides.Length > 2)
             {
@@ -37,12 +37,12 @@ namespace PNNLOmics.Utilities
 
         public static Dictionary<string, Peptide> MapWithBestSequence(IEnumerable<Peptide> peptides)
         {
-            Dictionary<string, List<Peptide>> map = MapSequence(peptides);
+            var map = MapSequence(peptides);
             return SortBestSequence(map);
         }
         public static Dictionary<int, Peptide> MapWithBestScan(IEnumerable<Peptide> peptides)
         {
-            Dictionary<int, List<Peptide>> map = MapScan(peptides);
+            var map = MapScan(peptides);
             return SortBestScan(map);
         }
 
@@ -51,9 +51,9 @@ namespace PNNLOmics.Utilities
         /// </summary>
         public static Dictionary<string, List<Peptide>> MapSequence(IEnumerable<Peptide> peptides)
         {
-            Dictionary<string, List<Peptide>> map = new Dictionary<string, List<Peptide>>();
+            var map = new Dictionary<string, List<Peptide>>();
 
-            foreach (Peptide p in peptides)
+            foreach (var p in peptides)
             {
 
                 if (!map.ContainsKey(p.Sequence))
@@ -71,9 +71,9 @@ namespace PNNLOmics.Utilities
         public static Dictionary<int, List<Peptide>> MapScan(IEnumerable<Peptide> peptides)
         {
 
-            Dictionary<int, List<Peptide>> map = new Dictionary<int, List<Peptide>>();
+            var map = new Dictionary<int, List<Peptide>>();
 
-            foreach (Peptide p in peptides)
+            foreach (var p in peptides)
             {
                 if (!map.ContainsKey(p.Scan))                
                     map.Add(p.Scan, new List<Peptide>());                
@@ -90,12 +90,12 @@ namespace PNNLOmics.Utilities
         public static Dictionary<int, Peptide> SortBestScan(Dictionary<int, List<Peptide>> peptides)
         {
 
-            Dictionary<int, Peptide> map = new Dictionary<int, Peptide>();
+            var map = new Dictionary<int, Peptide>();
 
-            foreach (int scan in peptides.Keys)
+            foreach (var scan in peptides.Keys)
             {
-                List<Peptide> items = peptides[scan];
-                Peptide p           = items.OrderBy(x => x.Score).FirstOrDefault();
+                var items = peptides[scan];
+                var p           = items.OrderBy(x => x.Score).FirstOrDefault();
                 map.Add(scan, p);                                
             }
 
@@ -110,12 +110,12 @@ namespace PNNLOmics.Utilities
         public static Dictionary<string, Peptide> SortBestSequence(Dictionary<string, List<Peptide>> peptides)
         {
 
-            Dictionary<string, Peptide> map = new Dictionary<string, Peptide>();
+            var map = new Dictionary<string, Peptide>();
 
-            foreach (string sequence in peptides.Keys)
+            foreach (var sequence in peptides.Keys)
             {
-                List<Peptide> items = peptides[sequence];
-                Peptide p           = items.OrderBy(x => x.Score).FirstOrDefault();
+                var items = peptides[sequence];
+                var p           = items.OrderBy(x => x.Score).FirstOrDefault();
                 map.Add(sequence, p);
             }
 

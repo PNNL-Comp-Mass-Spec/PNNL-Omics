@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PNNLOmics.Data;
+﻿using System.Collections.Generic;
 using PNNLOmics.Data.Features;
-using PNNLOmics.Algorithms.FeatureMatcher.Data;
-using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher
 {
@@ -14,8 +8,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class PeakMatcher<T, U>
-        where T : Feature, new ()
-        where U : Feature, new ()
+        where T : FeatureLight, new()
+        where U : FeatureLight, new ()
     {
         /// <summary>
         /// Matches a list of features to a list of mass tags.
@@ -27,62 +21,62 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                                                           List<U>               tags,
                                                           PeakMatcherOptions    options)
         {
-            List<FeatureMatch<T, U>> matches = new List<FeatureMatch<T, U>>();
+            var matches = new List<FeatureMatch<T, U>>();
 
             // Construct a large array of features so we can do searching in linear time.
-            List<Feature> allFeatures = new List<Feature>();
-            foreach (T copyFeature in features)
+            var allFeatures = new List<FeatureLight>();
+            foreach (var copyFeature in features)
             {
-                allFeatures.Add(copyFeature as Feature);
+                allFeatures.Add(copyFeature);
             }
-            foreach (U copyTag in tags)
+            foreach (var copyTag in tags)
             {
-                allFeatures.Add(copyTag as Feature);
+                allFeatures.Add(copyTag);
             }
 
             // Sort by mass, gives us the best search time.
-            allFeatures.Sort(new Comparison<Feature>(Feature.MassComparison));
+            allFeatures.Sort(FeatureLight.MassComparison);
             
-            double netTolerance     = options.Tolerances.RetentionTime;
-            double massTolerance    = options.Tolerances.Mass;
-            double driftTolerance   = options.Tolerances.DriftTime;
-            double shift            = options.DaltonShift;
+            var netTolerance     = options.Tolerances.RetentionTime;
+            var massTolerance    = options.Tolerances.Mass;
+            var driftTolerance   = options.Tolerances.DriftTime;
+            var shift            = options.DaltonShift;
 
-            int N               = allFeatures.Count;
-            int elementNumber   = 0;
+            var N               = allFeatures.Count;
+            var elementNumber   = 0;
  
             // This was a linear search, now O(N^2).  Need to improve.
 			while(elementNumber < N)
 			{
-                Feature feature = allFeatures[elementNumber];
-                U massTag            = feature as U;
+                var feature = allFeatures[elementNumber];
+                var massTag            = feature as U;
                 if (massTag == null)
                 {
 
-                    double lowerNET             = feature.NET - netTolerance;
-                    double higherNET            = feature.NET + netTolerance;
-                    double lowerDritfTime       = feature.DriftTime - driftTolerance;
-                    double higherDriftTime      = feature.DriftTime + driftTolerance;
-                    double currentMassTolerance = feature.MassMonoisotopicAligned * massTolerance / 1000000.0;
-                    double lowerMass            = feature.MassMonoisotopicAligned - currentMassTolerance;
-                    double higherMass           = feature.MassMonoisotopicAligned + currentMassTolerance;
-                    int matchIndex              = elementNumber - 1;
+                    var lowerNET             = feature.Net - netTolerance;
+                    var higherNET            = feature.Net + netTolerance;
+                    var lowerDritfTime       = feature.DriftTime - driftTolerance;
+                    var higherDriftTime      = feature.DriftTime + driftTolerance;
+                    var currentMassTolerance = feature.MassMonoisotopicAligned * massTolerance / 1000000.0;
+                    var lowerMass            = feature.MassMonoisotopicAligned - currentMassTolerance;
+                    var higherMass           = feature.MassMonoisotopicAligned + currentMassTolerance;
+                    var matchIndex              = elementNumber - 1;
                     while (matchIndex >= 0)
                     {
-                        Feature toMatchFeature = allFeatures[matchIndex];
+                        var toMatchFeature = allFeatures[matchIndex];
                         if (toMatchFeature.MassMonoisotopicAligned < lowerMass)
                         {
                             break;
                         }
 
-                        U tag = toMatchFeature as U;
+                        var tag = toMatchFeature as U;
                         if (tag != null)
                         {                           
-                            if (lowerNET <= tag.NET && tag.NET <= higherNET)
+                            if (lowerNET <= tag.Net && tag.Net <= higherNET)
                             {
                                 if (lowerDritfTime <= tag.DriftTime && tag.DriftTime <= higherDriftTime)
                                 {
-                                    FeatureMatch<T, U> match   = new FeatureMatch<T, U>(feature as T, tag as U, false, false);
+                                    var match   = new FeatureMatch<T, U>(feature as T, tag, false, false);
                                     matches.Add(match);
                                 }
                             }                            
@@ -93,20 +87,20 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                     matchIndex = elementNumber + 1;
                     while(matchIndex < N)                    
                     {
-                        Feature toMatchFeature = allFeatures[matchIndex];
+                        var toMatchFeature = allFeatures[matchIndex];
                         if (toMatchFeature.MassMonoisotopicAligned > higherMass)
                         {
                             break;
                         }
 
-                        U tag = toMatchFeature as U;
+                        var tag = toMatchFeature as U;
                         if (tag != null)
                         {
-                            if (lowerNET <= tag.NET && tag.NET <= higherNET)
+                            if (lowerNET <= tag.Net && tag.Net <= higherNET)
                             {
                                 if (lowerDritfTime <= tag.DriftTime && tag.DriftTime <= higherDriftTime)
                                 {
-                                    FeatureMatch<T, U> match = new FeatureMatch<T, U>(feature as T, tag as U, false, false);
+                                    var match = new FeatureMatch<T, U>(feature as T, tag, false, false);
                                     matches.Add(match);
                                 }
                             }

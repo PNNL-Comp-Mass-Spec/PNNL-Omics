@@ -1,6 +1,5 @@
-﻿using PNNLOmics.Data.Features;
-using System.Collections.Generic;
-using PNNLOmics.Data;
+﻿using System.Collections.Generic;
+
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
     /// <summary>
@@ -26,7 +25,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
         public virtual double Evaluate(double[] coefficients, double x)
         {
             double result = 0;
-            FunctionDelegate(coefficients, new double [] {x}, ref result, null);
+            FunctionDelegate(coefficients, new[] {x}, ref result, null);
             return result;
         }
         /// <summary>

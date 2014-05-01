@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using PNNLOmics.Data;
-using System.IO;
 
 namespace PNNLOmicsIO.IO
 {
@@ -19,7 +18,7 @@ namespace PNNLOmicsIO.IO
         /// <param name="msmsFeatures"></param>
         public void Write(string path, IEnumerable<MSSpectra> msmsFeatures)
         {
-            string baseName = Path.GetFileNameWithoutExtension(path);
+            var baseName = Path.GetFileNameWithoutExtension(path);
             using (TextWriter writer = File.CreateText(path))
             {
                 Write(writer, baseName, msmsFeatures);
@@ -33,7 +32,7 @@ namespace PNNLOmicsIO.IO
         /// <param name="msmsFeatures"></param>
         public void Append(string path, IEnumerable<MSSpectra> msmsFeatures)
         {
-            string baseName = Path.GetFileNameWithoutExtension(path);
+            var baseName = Path.GetFileNameWithoutExtension(path);
             using (TextWriter writer = File.AppendText(path))
             {
                 Write(writer, baseName, msmsFeatures);
@@ -42,9 +41,9 @@ namespace PNNLOmicsIO.IO
 
         private void Write(TextWriter writer, string baseName, IEnumerable<MSSpectra> msmsFeatures)
         {
-            foreach (MSSpectra feature in msmsFeatures)
+            foreach (var feature in msmsFeatures)
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
 
                 sb.Append("BEGIN IONS");
                 sb.Append(Environment.NewLine);
@@ -57,7 +56,7 @@ namespace PNNLOmicsIO.IO
                 sb.Append(string.Format("CHARGE={0}+", feature.PrecursorChargeState));
                 sb.Append(Environment.NewLine);
 
-                foreach (XYData peak in feature.Peaks)
+                foreach (var peak in feature.Peaks)
                 {
                     sb.Append(Math.Round(peak.X, 5));
                     sb.Append(" ");

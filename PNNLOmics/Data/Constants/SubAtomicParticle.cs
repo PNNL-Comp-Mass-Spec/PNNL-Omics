@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PNNLOmics.Data.Constants;
-
-namespace PNNLOmics.Data.Constants
+﻿namespace PNNLOmics.Data.Constants
 {
     /// <summary>
     /// Encapsulates...

@@ -1,7 +1,5 @@
 ﻿using System;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
-using System.Collections.Generic;
-using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Solvers
 {
@@ -25,19 +23,19 @@ namespace PNNLOmics.Algorithms.Solvers
             double sum = 0;
 
             // Calculate the width an spacing of each of the trapezoids.
-            double width = Math.Abs(stop - start);
-            double delta = width / Convert.ToDouble(numberOfSamples);
-            double x = start;
+            var width = Math.Abs(stop - start);
+            var delta = width / Convert.ToDouble(numberOfSamples);
+            var x = start;
 
             // Get the start of the function
             sum = basis.Evaluate(coefficients, x);
 
             // We already evaluated the first point, now for each element within
-            for (int i = 1; i < numberOfSamples; i++)
+            for (var i = 1; i < numberOfSamples; i++)
             {
                 x += delta;
 
-                double y = basis.Evaluate(coefficients, x);
+                var y = basis.Evaluate(coefficients, x);
                 sum += (y * 2);                
             }
 
@@ -45,7 +43,7 @@ namespace PNNLOmics.Algorithms.Solvers
             sum += basis.Evaluate(coefficients, stop);
 
             // Now we normalize the definite integral for the number of trapezoids that we constructed.
-            double weight = width / (2 * Convert.ToDouble(numberOfSamples));
+            var weight = width / (2 * Convert.ToDouble(numberOfSamples));
             sum *= weight;
 
             return sum;

@@ -1,8 +1,6 @@
 ﻿
 using NUnit.Framework;
-
 using PNNLOmics.Data.Features;
-
 
 //using PNNLOmics.Utilities.Importers;
 
@@ -32,8 +30,8 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         [TestCase(1700, 1700.1)]
         public void MassMassCalculations(double massX, double massY)
         {
-            double ppm = Feature.ComputeMassPPMDifference(massX, massY);
-            double massYdelta = Feature.ComputeDaDifferenceFromPPM(massX, ppm);
+            var ppm = FeatureLight.ComputeMassPPMDifference(massX, massY);
+            var massYdelta = FeatureLight.ComputeDaDifferenceFromPPM(massX, ppm);
             Assert.AreEqual(massY, massYdelta);
         }
         /// <summary>
@@ -64,9 +62,9 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         [TestCase(1900, 50, .000001)]
         [TestCase(2000, 50, .000001)]
         public void MassPPMCalculations(double massX, double ppm, double epsilon)
-        {            
-            double massYdelta = Feature.ComputeDaDifferenceFromPPM(massX, ppm);
-            double ppmDelta = Feature.ComputeMassPPMDifference(massX, massYdelta);
+        {
+            var massYdelta = FeatureLight.ComputeDaDifferenceFromPPM(massX, ppm);
+            var ppmDelta = FeatureLight.ComputeMassPPMDifference(massX, massYdelta);
             Assert.IsTrue( (ppm - ppmDelta) < epsilon);
         }       
     }

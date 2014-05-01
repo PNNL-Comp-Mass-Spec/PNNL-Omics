@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace PNNLOmics.Data.Constants
+﻿namespace PNNLOmics.Data.Constants
 {
     /// <summary>
     /// Encapsulates...
@@ -18,8 +13,8 @@ namespace PNNLOmics.Data.Constants
         /// <param name="symbol">short name to reference it by, such as Na for sodium</param>
         public UserUnit(string name, string symbol)
         {
-            this.Name = name;
-            this.Symbol = symbol;
+            Name = name;
+            Symbol = symbol;
         }
 
         /// <summary>
@@ -31,10 +26,10 @@ namespace PNNLOmics.Data.Constants
         /// <param name="userUnitName">enum userunitname (user01, user02, user03)</param>
         public UserUnit(string name, string symbol, double mass, UserUnitName userUnitName)
         {
-            this.Name = name;
-            this.Symbol = symbol;
-            this.MassMonoIsotopic = mass;
-            this.UserUnitType = userUnitName;
+            Name = name;
+            Symbol = symbol;
+            MassMonoIsotopic = mass;
+            UserUnitType = userUnitName;
         }
 
         /// <summary>

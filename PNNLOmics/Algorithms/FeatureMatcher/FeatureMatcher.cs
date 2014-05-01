@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MathNet.Numerics.LinearAlgebra;
-using PNNLOmics.Data;
-using PNNLOmics.Data.Features;
 using PNNLOmics.Algorithms.FeatureMatcher.Data;
+using PNNLOmics.Data.Features;
 using PNNLOmics.Utilities;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher
 {
-    public class FeatureMatcher<T, U>
-        where T : Feature, new()
-        where U : Feature, new()
+    public class FeatureMatcher<TObserved, TTarget>
+        where TObserved : FeatureLight, new()
+        where TTarget   : FeatureLight, new()
     {
         #region Members
         
         private FeatureMatcherParameters m_matchParameters;
 
-        private List<FeatureMatch<T, U>> m_matchList;
-        private List<FeatureMatch<T, U>> m_shiftedMatchList;
-        private List<T> m_observedFeatureList;
-        private List<U> m_targetFeatureList;
+        private List<FeatureMatch<TObserved, TTarget>> m_matchList;
+        private List<FeatureMatch<TObserved, TTarget>> m_shiftedMatchList;
+        private List<TObserved> m_observedFeatureList;
+        private List<TTarget> m_targetFeatureList;
 
         private double m_shiftFDR;
         private double m_shiftConservativeFDR;
@@ -46,14 +44,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <summary>
         /// Gets the list of feature matches.
         /// </summary>
-        public List<FeatureMatch<T, U>> MatchList
+        public List<FeatureMatch<TObserved, TTarget>> MatchList
         {
             get { return m_matchList; }
         }
         /// <summary>
         /// Gets the list of features matched with a shift.
         /// </summary>
-        public List<FeatureMatch<T, U>> ShiftedMatchList
+        public List<FeatureMatch<TObserved, TTarget>> ShiftedMatchList
         {
             get { return m_shiftedMatchList; }
         }
@@ -117,7 +115,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="observedFeatureList">List of features observed in an analysis.  Generally UMC or UMCCluster.</param>
         /// <param name="targetFeatureList">List of features to be matched to.  Generally AMTTags.</param>
         /// <param name="matchParameters">FeatureMatcherParameters object containing initial parameters and algorithm settings.</param>
-        public FeatureMatcher(List<T> observedFeatureList, List<U> targetFeatureList, FeatureMatcherParameters matchParameters)
+        public FeatureMatcher(List<TObserved> observedFeatureList, List<TTarget> targetFeatureList, FeatureMatcherParameters matchParameters)
         {
             Clear();
 
@@ -141,8 +139,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             m_stacParametersList = new List<STACInformation>();
             m_refinedTolerancesList = new List<FeatureMatcherTolerances>();
             m_slicParameters = new SLiCInformation();
-            m_matchList = new List<FeatureMatch<T, U>>();
-            m_shiftedMatchList = new List<FeatureMatch<T, U>>();
+            m_matchList = new List<FeatureMatch<TObserved, TTarget>>();
+            m_shiftedMatchList = new List<FeatureMatch<TObserved, TTarget>>();
         }
         
         /// <summary>
@@ -151,7 +149,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         private void SetChargeStateList()
         {
             m_matchParameters.ChargeStateList.Clear();
-            foreach (T observedFeature in m_observedFeatureList)
+            foreach (var observedFeature in m_observedFeatureList)
             {
                 if (!m_matchParameters.ChargeStateList.Contains(observedFeature.ChargeState))
                 {
@@ -167,60 +165,60 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <param name="tolerances">Tolerances to be used for matching.</param>
         /// <param name="shiftAmount">A fixed shift amount to use for populating the shifted match list.</param>
         /// <returns>A list of type FeatureMatch containing matches within the defined region.</returns>
-        public List<FeatureMatch<T, U>> FindMatches(List<T> shortObservedList, List<U> shortTargetList, FeatureMatcherTolerances tolerances, double shiftAmount)
+        public List<FeatureMatch<TObserved, TTarget>> FindMatches(List<TObserved> shortObservedList, List<TTarget> shortTargetList, FeatureMatcherTolerances tolerances, double shiftAmount)
         {
             // Create a list to hold the matches until they are returned.
-            List<FeatureMatch<T, U>> matchList = new List<FeatureMatch<T, U>>();
+            var matchList = new List<FeatureMatch<TObserved, TTarget>>();
 
             // Set indices to use when iterating over the lists.
-            int observedIndex = 0;
-            int targetIndex = 0;
-            int lowerBound = 0;
+            var observedIndex = 0;
+            var targetIndex = 0;
+            var lowerBound = 0;
 
 
             // Sort both lists by mass.
 			if (shortObservedList[0].MassMonoisotopicAligned != double.NaN && shortObservedList[0].MassMonoisotopicAligned > 0.0)
             {
-                shortObservedList.Sort(new Comparison<T>(Feature.MassAlignedComparison));
+                shortObservedList.Sort(FeatureLight.MassAlignedComparison);
             }
             else
             {
-                shortObservedList.Sort(new Comparison<T>(Feature.MassComparison));
+                shortObservedList.Sort(FeatureLight.MassComparison);
             }
 			if (shortTargetList[0].MassMonoisotopicAligned != double.NaN && shortTargetList[0].MassMonoisotopicAligned > 0.0)
 			{
-				shortTargetList.Sort(new Comparison<U>(Feature.MassAlignedComparison));
+                shortTargetList.Sort(FeatureLight.MassAlignedComparison);
 			}
 			else
 			{
-				shortTargetList.Sort(new Comparison<U>(Feature.MassComparison));
+                shortTargetList.Sort(FeatureLight.MassComparison);
 			}
 
             // Locally store the tolerances.
-            double massTolerancePPM = tolerances.MassTolerancePPM;
-            double netTolerance = tolerances.NETTolerance;
-            float driftTimeTolerance = tolerances.DriftTimeTolerance;
+            var massTolerancePPM = tolerances.MassTolerancePPM;
+            var netTolerance = tolerances.NETTolerance;
+            var driftTimeTolerance = tolerances.DriftTimeTolerance;
 
             // Iterate through the list of observed features.
             while( observedIndex < shortObservedList.Count )
             {
                 // Store the current observed feature locally.
-                T observedFeature = shortObservedList[observedIndex];
+                var observedFeature = shortObservedList[observedIndex];
                 // Flag variable that gets set to false when the observed mass is greater than the current mass tag by more than the tolerance.
-                bool continueLoop = true;
+                var continueLoop = true;
                 // Set the target feature iterator to the current lower bound.
                 targetIndex = lowerBound;
                 // Iterate through the list of target featrues or until the observed feature is too great.
                 while( targetIndex < shortTargetList.Count && continueLoop )
                 {
                     // Add any shift to the mass tag.
-                    U targetFeature = shortTargetList[targetIndex];
+                    var targetFeature = shortTargetList[targetIndex];
 
                     // Check to see that the features are within the mass tolearance of one another.
 					double massDifference = 0;
                     if (WithinMassTolerance(observedFeature, targetFeature, massTolerancePPM, shiftAmount, out massDifference))
                     {
-                        bool withinTolerances = WithinNETTolerance(observedFeature, targetFeature, netTolerance);
+                        var withinTolerances = WithinNETTolerance(observedFeature, targetFeature, netTolerance);
                         if (m_matchParameters.UseDriftTime)
                         {
                             withinTolerances = withinTolerances & withinDriftTimeTolerance(observedFeature, targetFeature, driftTimeTolerance);
@@ -229,7 +227,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                         // Create a temporary match between the two and check it against all tolerances before adding to the match list.
                         if (withinTolerances)
                         {
-                            FeatureMatch<T, U> match = new FeatureMatch<T, U>();
+                            var match = new FeatureMatch<TObserved, TTarget>();
                             match.AddFeatures(observedFeature, targetFeature, m_matchParameters.UseDriftTime, (shiftAmount > 0));
                             matchList.Add(match);
                         }
@@ -260,16 +258,16 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// </summary>
 		private List<STACFDR> SetSTACCutoffs()
         {
-			List<STACFDR> stacFDRList = new List<STACFDR>();
+			var stacFDRList = new List<STACFDR>();
 
-            for (double cutoff = 0.99; cutoff > 0.90; cutoff -= 0.01)
+            for (var cutoff = 0.99; cutoff > 0.90; cutoff -= 0.01)
             {
-                STACFDR tableLine = new STACFDR(Math.Round(cutoff, 2));
+                var tableLine = new STACFDR(Math.Round(cutoff, 2));
 				stacFDRList.Add(tableLine);
             }
-            for (double cutoff = 0.90; cutoff >= 0; cutoff -= 0.10)
+            for (var cutoff = 0.90; cutoff >= 0; cutoff -= 0.10)
             {
-                STACFDR tableLine = new STACFDR(Math.Round(cutoff, 2));
+                var tableLine = new STACFDR(Math.Round(cutoff, 2));
 				stacFDRList.Add(tableLine);
             }
 
@@ -278,40 +276,39 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
         /// <summary>
         /// Fills in the values for the STAC FDR table.
         /// </summary>
-        public List<STACFDR> PopulateSTACFDRTable(List<FeatureMatch<T,U>> matchList)
+        public List<STACFDR> PopulateStacfdrTable(List<FeatureMatch<TObserved,TTarget>> matchList)
         {
-            List<STACFDR> stacFDRList = SetSTACCutoffs();
-			matchList.Sort(FeatureMatch<T, U>.STACComparisonDescending);
+            var stacFDRList = SetSTACCutoffs();
+			matchList.Sort(FeatureMatch<TObserved, TTarget>.STACComparisonDescending);
 
 			// Iterate over all defined cutoff ranges
-			for (int cutoffIndex = 0; cutoffIndex < stacFDRList.Count; cutoffIndex++)
+			for (var cutoffIndex = 0; cutoffIndex < stacFDRList.Count; cutoffIndex++)
 			{
-				double falseDiscoveries = 0.0;
-				int conformationMatches = 0;
-				int amtMatches = 0;
-				double fdr = 0.0;
-				HashSet<int> uniqueIndexList = new HashSet<int>();
-				HashSet<int> uniqueIDList = new HashSet<int>();
+				var falseDiscoveries = 0.0;
+				var conformationMatches = 0;
+				var amtMatches = 0;
+				double fdr;
+				var uniqueIndexList = new HashSet<int>();
+				var uniqueIdList = new HashSet<int>();
 
 				// Find all matches for this particular cutoff
-				foreach (FeatureMatch<T, U> match in matchList)
+				foreach (var match in matchList)
 				{
-					double stac = match.STACScore;
+					var stac = match.STACScore;
 					if (stac >= stacFDRList[cutoffIndex].Cutoff)
 					{
-						if (!uniqueIndexList.Contains(match.TargetFeature.Index))
-						{
-							// Find out if this is a new, unique Mass Tag. If not, then it is just a new conformation.
-							if (!uniqueIDList.Contains(match.TargetFeature.ID))
-							{
-								uniqueIDList.Add(match.TargetFeature.ID);
-								amtMatches++;
-							}
+					    if (uniqueIndexList.Contains(match.TargetFeature.Index)) continue;
 
-							uniqueIndexList.Add(match.TargetFeature.Index);
-							falseDiscoveries += 1 - stac;
-							conformationMatches++;
-						}
+					    // Find out if this is a new, unique Mass Tag. If not, then it is just a new conformation.
+					    if (!uniqueIdList.Contains(match.TargetFeature.ID))
+					    {
+					        uniqueIdList.Add(match.TargetFeature.ID);
+					        amtMatches++;
+					    }
+
+                        uniqueIndexList.Add(match.TargetFeature.Index);
+					    falseDiscoveries += 1 - stac;
+					    conformationMatches++;
 					}
 					else
 					{
@@ -323,7 +320,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 				// After all matches have been found, report the FDR
 				if (conformationMatches > 0)
 				{
-					fdr = falseDiscoveries / (double)conformationMatches;
+					fdr = falseDiscoveries / conformationMatches;
 					stacFDRList[cutoffIndex].FillLine(fdr, conformationMatches, amtMatches, falseDiscoveries);
 				}
 				else
@@ -334,42 +331,25 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 
 			return stacFDRList;
         }
-        /// <summary>
-        /// Find the subset of a list which has the same charge state.
-        /// </summary>
-        /// <typeparam name="T">Any class derived from Feature.</typeparam>
-        /// <param name="featureList">Original list of features from which to extract the subset.</param>
-        /// <param name="startIndex">Index at which to start search.  Set to the value of the last such item.</param>
-        /// <param name="chargeState">The charge state to search for a subset of.</param>
-        /// <returns>A list of features with the given charge state.</returns>
-        private List<S> ExtractChargeStateList<S>(List<S> featureList, ref int startIndex, int chargeState) where S: Feature, new()
-        {         
-            return featureList.FindAll(delegate(S x) { return x.ChargeState == chargeState; });
-        }
+
         /// <summary>
         /// Sets the false discovery rate by creating a histogram of the mass errors and comparing the proportion above a threshhold to the area below.
         /// </summary>
-        private void SetMassErrorHistogramFDR()
+        private void SetMassErrorHistogramFdr()
         {
             // Populate the mass error list and create the histogram.
-            List<XYData> histogramList = new List<XYData>();
-            List<double> massErrorList = new List<double>();
-            foreach (FeatureMatch<T, U> match in m_matchList)
-            {
-                massErrorList.Add(match.DifferenceVector[1, 1]);
-            }
-            histogramList = MathUtilities.GetHistogramValues(massErrorList, m_matchParameters.HistogramBinWidth);
+            var massErrorList = m_matchList.Select(match => match.DifferenceVector[1, 1]).ToList();
+            var histogramList = MathUtilities.GetHistogramValues(massErrorList, m_matchParameters.HistogramBinWidth);
 
-            int peakIndex = 0;
-            double peakValue = 0.0;
-            double upperBound = 0.0;
-            double lowerBound = 0.0;
-            double threshold = 0.0;
-            double meanValue = 0.0;
+            var peakIndex = 0;
+            var peakValue = 0.0;
+            var upperBound = 0.0;
+            var lowerBound = 0.0;
+            var meanValue = 0.0;
             // Find the maximum and average values.
-            for( int i=0; i<histogramList.Count; i++ )
+            for( var i=0; i<histogramList.Count; i++ )
             {
-                XYData bin = histogramList[i];
+                var bin = histogramList[i];
                 if (bin.Y > peakValue)
                 {
                     peakValue = bin.Y;
@@ -379,30 +359,30 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             }
             meanValue /= histogramList.Count;
             // Set the threshold to a value between the peak and the average value.
-            threshold = meanValue + m_matchParameters.HistogramMultiplier * (peakValue - meanValue);
+            double threshold = meanValue + m_matchParameters.HistogramMultiplier * (peakValue - meanValue);
             // Find the upper bound.
-            for (int i = peakIndex; i < histogramList.Count; i++)
+            for (var i = peakIndex; i < histogramList.Count; i++)
             {
-                XYData bin = histogramList[i];
-                XYData lowerBin = histogramList[i - 1];
+                var bin = histogramList[i];
+                var lowerBin = histogramList[i - 1];
                 if (bin.Y < threshold && lowerBin.Y >= threshold)
                 {
                     upperBound = lowerBin.X + (lowerBin.Y - threshold) / (lowerBin.Y - bin.Y) * (bin.X - lowerBin.X);
                 }
             }
             // Find the lower bound.
-            for (int i = peakIndex; i >= 0; i--)
+            for (var i = peakIndex; i >= 0; i--)
             {
-                XYData bin = histogramList[i];
-                XYData upperBin = histogramList[i + 1];
+                var bin = histogramList[i];
+                var upperBin = histogramList[i + 1];
                 if (bin.Y < threshold && upperBin.Y >= threshold)
                 {
                     lowerBound = bin.X + (threshold-bin.Y) / (upperBin.Y-bin.Y) * (upperBin.X - bin.X);
                 }
             }
             // Count the number of matches within the bounds and calculate the FDR.
-            int countInBounds = 0;
-            foreach (double massDifference in massErrorList)
+            var countInBounds = 0;
+            foreach (var massDifference in massErrorList)
             {
                 if (massDifference >= lowerBound && massDifference <= upperBound)
                 {
@@ -411,22 +391,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             }
             m_errorHistogramFDR = countInBounds/((upperBound-lowerBound)*threshold);
         }
-        /// <summary>
-        /// TODO:  Fill this in...
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="U"></typeparam>
-        /// <param name="observedFeature"></param>
-        /// <param name="targetFeature"></param>
-        /// <param name="massTolerancePPM"></param>
-        /// <returns></returns>
-        private bool WithinMassTolerance(T observedFeature, U targetFeature, double massTolerancePPM, double shiftAmount, out double difference)            
+
+        private bool WithinMassTolerance(TObserved observedFeature, TTarget targetFeature, double massTolerancePpm, double shiftAmount, out double difference)            
         {
-            if (massTolerancePPM > 0)
+            if (massTolerancePpm > 0)
             {
-                double observedMass = 0; 
-                double targetMass = 0;
-				if (observedFeature.MassMonoisotopicAligned != double.NaN && observedFeature.MassMonoisotopicAligned > 0.0)
+                double observedMass; 
+                double targetMass;
+				if (!double.IsNaN(observedFeature.MassMonoisotopicAligned) && observedFeature.MassMonoisotopicAligned > 0.0)
                 {
 					observedMass = observedFeature.MassMonoisotopicAligned;
                 }
@@ -434,7 +406,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 {
                     observedMass = observedFeature.MassMonoisotopic;
                 }
-				if (targetFeature.MassMonoisotopicAligned != double.NaN && targetFeature.MassMonoisotopicAligned > 0.0)
+				if (!double.IsNaN(targetFeature.MassMonoisotopicAligned) && targetFeature.MassMonoisotopicAligned > 0.0)
                 {
 					targetMass = targetFeature.MassMonoisotopicAligned;
                 }
@@ -444,69 +416,45 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
                 }
 				
 				difference = (targetMass + shiftAmount - observedMass) / targetMass * 1E6;
-                return (Math.Abs(difference)< massTolerancePPM);
+                return (Math.Abs(difference)< massTolerancePpm);
             }
-            else
-            {
-				difference = double.MaxValue;
-                return false;
-            }
+            difference = double.MaxValue;
+            return false;
         }
-        /// <summary>
-        /// TODO:  Fill this in...
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="U"></typeparam>
-        /// <param name="observedFeature"></param>
-        /// <param name="targetFeature"></param>
-        /// <param name="netTolerance"></param>
-        /// <returns></returns>
-        private bool WithinNETTolerance(T observedFeature, U targetFeature, double netTolerance)            
+        private bool WithinNETTolerance(TObserved observedFeature, TTarget targetFeature, double netTolerance)
         {
             if (netTolerance > 0)
             {
-                double targetNET = 0;
-                double observedNET = 0;
-				if (targetFeature.NETAligned != double.NaN && targetFeature.NETAligned > 0.0)
+                double targetNet;
+                if (!double.IsNaN(targetFeature.NetAligned) && targetFeature.NetAligned > 0.0)
                 {
-					targetNET = targetFeature.NETAligned;
+					targetNet = targetFeature.NetAligned;
                 }
                 else
                 {
-                    targetNET = targetFeature.NET;
+                    targetNet = targetFeature.Net;
                 }
-                if (observedFeature.NETAligned != double.NaN && observedFeature.NETAligned > 0.0)
+                double observedNet;
+                if (!double.IsNaN(observedFeature.NetAligned) && observedFeature.NetAligned > 0.0)
                 {
-					observedNET = observedFeature.NETAligned;
+					observedNet = observedFeature.NetAligned;
                 }
                 else
                 {
-                    observedNET = observedFeature.NET;
+                    observedNet = observedFeature.Net;
                 }
-                double difference = Math.Abs(targetNET - observedNET);
+                var difference = Math.Abs(targetNet - observedNet);
                 return (difference < netTolerance);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
-        /// <summary>
-        /// TODO:  Another summary...
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="U"></typeparam>
-        /// <param name="observedFeature"></param>
-        /// <param name="targetFeature"></param>
-        /// <param name="driftTimeTolerance"></param>
-        /// <returns></returns>
-        private bool withinDriftTimeTolerance(T observedFeature, U targetFeature, float driftTimeTolerance)
+        private bool withinDriftTimeTolerance(TObserved observedFeature, TTarget targetFeature, float driftTimeTolerance)
         {
             if (driftTimeTolerance > 0)
             {
-				double targetDriftTime = 0;
-				double observedDriftTime = 0;
-				if (targetFeature.DriftTimeAligned != double.NaN && targetFeature.DriftTimeAligned > 0.0)
+				double targetDriftTime;
+				double observedDriftTime;
+				if (!double.IsNaN(targetFeature.DriftTimeAligned) && targetFeature.DriftTimeAligned > 0.0)
 				{
 					targetDriftTime = targetFeature.DriftTimeAligned;
 				}
@@ -514,7 +462,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 				{
 					targetDriftTime = targetFeature.DriftTime;
 				}
-				if (observedFeature.DriftTimeAligned != double.NaN && observedFeature.DriftTimeAligned > 0.0)
+				if (!double.IsNaN(observedFeature.DriftTimeAligned) && observedFeature.DriftTimeAligned > 0.0)
 				{
 					observedDriftTime = observedFeature.DriftTimeAligned;
 				}
@@ -523,14 +471,12 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 					observedDriftTime = observedFeature.DriftTime;
 				}
 
-                double difference = Math.Abs(targetDriftTime - observedDriftTime);
+                var difference = Math.Abs(targetDriftTime - observedDriftTime);
                 return (difference < driftTimeTolerance);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
+
         #endregion
 
         #region Public functions
@@ -542,41 +488,40 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             m_matchList.Clear();
             m_matchList = FindMatches(m_observedFeatureList, m_targetFeatureList, m_matchParameters.UserTolerances, 0);
 
-            bool lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
+            var lengthCheck = (m_matchList.Count >= MIN_MATCHES_FOR_NORMAL_ASSUMPTION);
             if (m_matchParameters.ShouldCalculateSTAC && lengthCheck)
             {
-				STACInformation stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
+				var stacInformation = new STACInformation(m_matchParameters.UseDriftTime);
                 
                 // Attach the event handlers 
-                stacInformation.MessageEvent += new MessageEventHandler(StacInformationMessageHandler);
-                stacInformation.ErrorEvent += new MessageEventHandler(StacInformationErrorHandler);
-                stacInformation.IterationEvent += new MessageEventHandler(StacInformationIterate);
-                stacInformation.DebugEvent += new MessageEventHandler(StacInformationDebugHandler);
+                stacInformation.MessageEvent += StacInformationMessageHandler;                
+                stacInformation.IterationEvent += StacInformationIterate;
+                stacInformation.DebugEvent += StacInformationDebugHandler;
 
 				ReportMessage("Performing STAC");
-				stacInformation.PerformSTAC(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
+				stacInformation.PerformStac(m_matchList, m_matchParameters.UserTolerances, m_matchParameters.UseDriftTime, m_matchParameters.UsePriors);
 
 				// Add the Refined Tolerances that STAC calculated
 				m_refinedTolerancesList.Add(stacInformation.RefinedTolerances);
 
 				STACParameterList.Add(stacInformation);
                 ReportMessage("Populating FDR table");
-                m_stacFDRList = PopulateSTACFDRTable(m_matchList);
+                m_stacFDRList = PopulateStacfdrTable(m_matchList);
             }
             if (m_matchParameters.ShouldCalculateHistogramFDR)
             {
                 ReportMessage("Setting Mass Error Histogram FDR");
-                SetMassErrorHistogramFDR();
+                SetMassErrorHistogramFdr();
             }
             if (m_matchParameters.ShouldCalculateShiftFDR)
             {
                 ReportMessage("Calculating Shift FDR");
-                int count = 0;
-                for (int j = 0; j < m_matchList.Count; j++)
+                var count = 0;
+                for (var j = 0; j < m_matchList.Count; j++)
                 {
                     m_matchList[j].InRegion(m_refinedTolerancesList[0], m_matchParameters.UseEllipsoid);
                 }
-                for (int j = 0; j < m_matchList.Count; j++)
+                for (var j = 0; j < m_matchList.Count; j++)
                 {
                     if (m_matchList[j].WithinRefinedRegion)
                         count++;

@@ -7,14 +7,6 @@ namespace PNNLOmics.Data
     /// </summary>
     public class DatasetSummary
     {
-
-        /// <summary>
-        /// Information about a given raw dataset.
-        /// </summary>
-        public DatasetSummary()
-        {
-        }
-
         /// <summary>
         /// Gets or sets the summary data associated with the meta-data.
         /// </summary>

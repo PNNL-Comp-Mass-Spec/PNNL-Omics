@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Extensions
@@ -15,10 +12,10 @@ namespace PNNLOmics.Extensions
         /// <returns></returns>
         public static Dictionary<int, List<MSSpectra>> Group(this IEnumerable<MSSpectra> spectra)
         {
-            Dictionary<int, List<MSSpectra>> map = new Dictionary<int, List<MSSpectra>>();
-            foreach (MSSpectra spectrum in spectra)
+            var map = new Dictionary<int, List<MSSpectra>>();
+            foreach (var spectrum in spectra)
             {
-                bool doesExists = map.ContainsKey(spectrum.GroupID);
+                var doesExists = map.ContainsKey(spectrum.GroupID);
                 if (!doesExists)
                 {
                     map.Add(spectrum.GroupID, new List<MSSpectra>());

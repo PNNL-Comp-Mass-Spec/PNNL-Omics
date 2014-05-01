@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PNNLOmics.Data.Features
+﻿namespace PNNLOmics.Data.Features
 {
     /// <summary>
     /// Enumerates the cluster centroid is calculated.

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PNNLOmics.Data.Constants;
+﻿using System.Collections.Generic;
 
 //TODO: SCOTT - CR - Update all dictionary example xml comments.
 /// <example>
@@ -37,35 +35,35 @@ namespace PNNLOmics.Data.Constants.Libraries
             //each integer stands for the number of atoms in the compound -->X.NewElements(C H N O S P)
             //aldehyde.NewElements(C H N O S P)
 
-            Compound aldehyde = new Compound();
+            var aldehyde = new Compound();
             aldehyde.NewElements(0, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             aldehyde.Name = "Aldehyde";
             aldehyde.Symbol = "Aldhyde";
             aldehyde.ChemicalFormula = "H2O";
             aldehyde.MassMonoIsotopic = Compound.GetMonoisotopicMass(aldehyde);
 
-            Compound alditol = new Compound();
+            var alditol = new Compound();
             alditol.NewElements(0, 4, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             alditol.Name = "Alditol";
             alditol.Symbol = "Aldtol";
             alditol.ChemicalFormula = "H4O";
             alditol.MassMonoIsotopic = Compound.GetMonoisotopicMass(alditol);
 
-            Compound ammonia = new Compound();
+            var ammonia = new Compound();
             ammonia.NewElements(0, 3, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             ammonia.Name = "Ammonia";
             ammonia.Symbol = "NH3   ";
             ammonia.ChemicalFormula = "NH3";
             ammonia.MassMonoIsotopic = Compound.GetMonoisotopicMass(ammonia);
 
-            Compound ammonium = new Compound();
+            var ammonium = new Compound();
             ammonium.NewElements(0, 4, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             ammonium.Name = "Ammonium";
             ammonium.Symbol = "NH4+  ";
             ammonium.ChemicalFormula = "NH4+";
             ammonium.MassMonoIsotopic = Compound.GetMonoisotopicMass(ammonium);
 
-            Compound KMinusH = new Compound();
+            var KMinusH = new Compound();
             KMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             KMinusH.NumPotassium = 1;
             KMinusH.Name = "KMinusH";
@@ -73,14 +71,14 @@ namespace PNNLOmics.Data.Constants.Libraries
             KMinusH.ChemicalFormula = "K-H";
             KMinusH.MassMonoIsotopic = Compound.GetMonoisotopicMass(KMinusH);
 
-            Compound methyl = new Compound();
+            var methyl = new Compound();
             methyl.NewElements(1, 3, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             methyl.Name = "Methyl";
             methyl.Symbol = "CH3   ";
             methyl.ChemicalFormula = "CH3";
             methyl.MassMonoIsotopic = Compound.GetMonoisotopicMass(methyl);
 
-            Compound NaMinusH = new Compound();
+            var NaMinusH = new Compound();
             NaMinusH.NewElements(0, -1, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             NaMinusH.NumSodium = 1;
             NaMinusH.Name = "NaMinusH";
@@ -88,35 +86,35 @@ namespace PNNLOmics.Data.Constants.Libraries
             NaMinusH.ChemicalFormula = "Na-H";
             NaMinusH.MassMonoIsotopic = Compound.GetMonoisotopicMass(NaMinusH);
 
-            Compound oAcetyl = new Compound();
+            var oAcetyl = new Compound();
             oAcetyl.NewElements(2, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             oAcetyl.Name = "O-acetyl";
             oAcetyl.Symbol = "OAc";
             oAcetyl.ChemicalFormula = "C2H2O";
             oAcetyl.MassMonoIsotopic = Compound.GetMonoisotopicMass(oAcetyl);
 
-            Compound sulfate = new Compound();
+            var sulfate = new Compound();
             sulfate.NewElements(0, 0, 0, 4, 2, 0);//-->X.NewElements(C H N O S P)
             sulfate.Name = "Sulfate";
             sulfate.Symbol = "SO4   ";
             sulfate.ChemicalFormula = "S04";
             sulfate.MassMonoIsotopic = Compound.GetMonoisotopicMass(sulfate);
 
-            Compound water = new Compound();
+            var water = new Compound();
             water.NewElements(0, 2, 0, 1, 0, 0);//-->X.NewElements(C H N O S P)
             water.Name = "Water";
             water.Symbol = "Water ";
             water.ChemicalFormula = "H2O";
             water.MassMonoIsotopic = Compound.GetMonoisotopicMass(water);
 
-            Compound aminoGlycan = new Compound();
+            var aminoGlycan = new Compound();
             aminoGlycan.NewElements(0, 3, 1, 0, 0, 0);//-->X.NewElements(C H N O S P)
             aminoGlycan.Name = "AminoGlycan";
             aminoGlycan.Symbol = "NH3Gly ";
             aminoGlycan.ChemicalFormula = "NH3";
             aminoGlycan.MassMonoIsotopic = Compound.GetMonoisotopicMass(aminoGlycan);
 
-            Compound fragment = new Compound();
+            var fragment = new Compound();
             fragment.NewElements(0, 0, 0, 0, 0, 0);//-->X.NewElements(C H N O S P)
             fragment.Name = "Fragment";
             fragment.Symbol = "Fragmt";

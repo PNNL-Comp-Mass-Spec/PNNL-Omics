@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt;
 using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
 
@@ -12,18 +10,18 @@ namespace PNNLOmics.Algorithms.Regression
         public FitReport Fit(IEnumerable<double> x, IEnumerable<double> y, BasisFunctionsEnum basisFunction, ref double[] coeffs)
         {
 
-            BasisFunctionBase functionSelector = BasisFunctionFactory.BasisFunctionSelector(basisFunction);
+            var functionSelector = BasisFunctionFactory.BasisFunctionSelector(basisFunction);
             
             //incase the coefficients input are the wrong dimension
-            int coeffCount = functionSelector.Coefficients.Count();
+            var coeffCount = functionSelector.Coefficients.Count();
             if(coeffs.Length!=coeffCount)
             {
                 coeffs = functionSelector.Coefficients;
             }
 
-            SolverReport worked = EvaluateFunction(x.ToList(), y.ToList(), functionSelector, ref coeffs);
+            var worked = EvaluateFunction(x.ToList(), y.ToList(), functionSelector, ref coeffs);
 
-            FitReportALGLIB results = new FitReportALGLIB(worked, worked.DidConverge);
+            var results = new FitReportALGLIB(worked, worked.DidConverge);
             return results;
         }
 
@@ -41,9 +39,9 @@ namespace PNNLOmics.Algorithms.Regression
             basisFunction.Scale(x);
 
             alglib.ndimensional_pfunc myDelegate = basisFunction.FunctionDelegate;
-            LevenburgMarquadtSolver solver = new LevenburgMarquadtSolver();
+            var solver = new LevenburgMarquadtSolver();
             solver.BasisFunction = myDelegate;
-            SolverReport worked = solver.Solve(x, y, ref coeffs);
+            var worked = solver.Solve(x, y, ref coeffs);
             
             //for (int i = 0; i < x.Count; i++)
             //{

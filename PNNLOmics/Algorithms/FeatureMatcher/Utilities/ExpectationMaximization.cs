@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System;
-using MathNet.Numerics;
+﻿using System;
+using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra;
-using PNNLOmics.Data;
-using PNNLOmics.Data.Features;
 using PNNLOmics.Utilities;
-using PNNLOmics.Algorithms.FeatureMatcher.Data;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 {
@@ -26,10 +22,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>Updated Matrix containing mean of normal distribution.</returns>
         public static Matrix UpdateNormalMeanVector(List<Matrix> dataList, List<double> alphaList)
         {
-            Matrix numerator = new Matrix(dataList[0].RowCount, 1, 0.0);
-            double denominator = 0.0;
+            var numerator = new Matrix(dataList[0].RowCount, 1, 0.0);
+            var denominator = 0.0;
 
-            for (int i = 0; i < dataList.Count; i++)
+            for (var i = 0; i < dataList.Count; i++)
             {
                 numerator += alphaList[i] * dataList[i];
                 denominator += alphaList[i];
@@ -47,10 +43,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>Updated Matrix containing mean of normal distribution.</returns>
         public static Matrix UpdateNormalMeanVector(List<Matrix> dataList, List<double> alphaList, List<double> priorList, bool secondNormal)
         {
-            Matrix numerator = new Matrix(dataList[0].RowCount, 1, 0.0);
-            double denominator = 0.0;
+            var numerator = new Matrix(dataList[0].RowCount, 1, 0.0);
+            var denominator = 0.0;
 
-            double multiplier = 1.0;
+            var multiplier = 1.0;
             double adder = 0;
 
             if (secondNormal)
@@ -59,9 +55,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 adder = 1.0;
             }
 
-            for (int i = 0; i < dataList.Count; i++)
+            for (var i = 0; i < dataList.Count; i++)
             {
-                double weight = alphaList[i] * (adder + multiplier * priorList[i]);
+                var weight = alphaList[i] * (adder + multiplier * priorList[i]);
                 numerator += weight * dataList[i];
                 denominator += weight;
             }
@@ -78,30 +74,30 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>Updated Matrix containing covariances of normal distribution.</returns>
         public static Matrix UpdateNormalCovarianceMatrix(List<Matrix> dataList, Matrix meanVector, List<double> alphaList, bool independent)
         {
-            Matrix numerator = new Matrix(meanVector.RowCount, meanVector.RowCount, 0.0);
-            double denominator = 0.0;
+            var numerator = new Matrix(meanVector.RowCount, meanVector.RowCount, 0.0);
+            var denominator = 0.0;
 
-            for (int i = 0; i < dataList.Count; i++)
+            for (var i = 0; i < dataList.Count; i++)
             {
-                Matrix dataT = dataList[i].Clone();
+                var dataT = dataList[i].Clone();
                 dataT.Transpose();
                 numerator += alphaList[i] * dataList[i] * dataT;
                 denominator += alphaList[i];
             }
 
-            Matrix covarianceMatrix = (1 / denominator) * numerator;
+            var covarianceMatrix = (1 / denominator) * numerator;
 
             if (independent)
             {
-                Matrix indCovarianceMatrix = new Matrix(covarianceMatrix.RowCount, covarianceMatrix.ColumnCount, 0.0);
-                for (int i = 0; i < covarianceMatrix.ColumnCount; i++)
+                var indCovarianceMatrix = new Matrix(covarianceMatrix.RowCount, covarianceMatrix.ColumnCount, 0.0);
+                for (var i = 0; i < covarianceMatrix.ColumnCount; i++)
                 {
                     indCovarianceMatrix[i, i] = covarianceMatrix[i, i];
                 }
                 covarianceMatrix = indCovarianceMatrix.Clone();
             }
 
-            for (int i = 0; i < meanVector.RowCount; i++)
+            for (var i = 0; i < meanVector.RowCount; i++)
             {
                 if (covarianceMatrix[i, i] < 0.001)
                 {
@@ -123,10 +119,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>Updated Matrix containing covariances of normal distribution.</returns>
         public static Matrix UpdateNormalCovarianceMatrix(List<Matrix> dataList, Matrix meanVector, List<double> alphaList, List<double> priorList, bool independent, bool secondNormal)
         {
-            Matrix numerator = new Matrix(meanVector.RowCount, meanVector.RowCount, 0.0);
-            double denominator = 0.0;
+            var numerator = new Matrix(meanVector.RowCount, meanVector.RowCount, 0.0);
+            var denominator = 0.0;
 
-            double multiplier = 1.0;
+            var multiplier = 1.0;
             double adder = 0;
 
             if (secondNormal)
@@ -135,28 +131,28 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 adder = 1.0;
             }
 
-            for (int i = 0; i < dataList.Count; i++)
+            for (var i = 0; i < dataList.Count; i++)
             {
-                Matrix dataT = dataList[i].Clone();
+                var dataT = dataList[i].Clone();
                 dataT.Transpose();
-                double weight = alphaList[i] * (adder + multiplier * priorList[i]);
+                var weight = alphaList[i] * (adder + multiplier * priorList[i]);
                 numerator += weight * dataList[i] * dataT;
                 denominator += weight;
             }
 
-            Matrix covarianceMatrix = (1 / denominator) * numerator;
+            var covarianceMatrix = (1 / denominator) * numerator;
 
             if (independent)
             {
-                Matrix indCovarianceMatrix = new Matrix(covarianceMatrix.RowCount, covarianceMatrix.ColumnCount, 0.0);
-                for (int i = 0; i < covarianceMatrix.ColumnCount; i++)
+                var indCovarianceMatrix = new Matrix(covarianceMatrix.RowCount, covarianceMatrix.ColumnCount, 0.0);
+                for (var i = 0; i < covarianceMatrix.ColumnCount; i++)
                 {
                     indCovarianceMatrix[i, i] = covarianceMatrix[i, i];
                 }
                 covarianceMatrix = indCovarianceMatrix.Clone();
             }
 
-            for (int i = 0; i < meanVector.RowCount; i++)
+            for (var i = 0; i < meanVector.RowCount; i++)
             {
                 if (covarianceMatrix[i, i] < 0.000001)
                 {
@@ -182,8 +178,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>A boolean flag indicating whether the EM algorithm achieved convergence.</returns>
         public static bool NormalUniformMixture(List<Matrix> dataList, ref Matrix meanVector, ref Matrix covarianceMatrix, Matrix uniformTolerances, ref double mixtureParameter, bool independent)
         {
-            int iteration = 0;
-            bool converges = false;
+            var iteration = 0;
+            var converges = false;
             // Check that the dimensions of the matrices agree.
             if (!(dataList[0].RowCount == meanVector.RowCount && dataList[0].ColumnCount == meanVector.ColumnCount && covarianceMatrix.RowCount == covarianceMatrix.ColumnCount
                    && covarianceMatrix.Rank() == covarianceMatrix.ColumnCount && covarianceMatrix.RowCount == meanVector.RowCount && uniformTolerances.RowCount == meanVector.RowCount))
@@ -191,18 +187,18 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 throw new InvalidOperationException("Dimensions of matrices do not agree in ExpectationMaximization.NormalUniformMixture function.");
             }
             // Calculate the uniform density based on the tolerances passed.
-            double uniformDensity = 1.0;
-            for (int i = 0; i < uniformTolerances.RowCount; i++)
+            var uniformDensity = 1.0;
+            for (var i = 0; i < uniformTolerances.RowCount; i++)
             {
                 uniformDensity /= (2 * uniformTolerances[i, 0]);
             }
             // Calculate the starting loglikelihood and initialize a variable for the loglikelihood at the next iteration.
-            double logLikelihood = NormalUniformLogLikelihood(dataList, meanVector, covarianceMatrix, uniformDensity, mixtureParameter);
-            double nextLogLikelihood = 0.0;
+            var logLikelihood = NormalUniformLogLikelihood(dataList, meanVector, covarianceMatrix, uniformDensity, mixtureParameter);
+            var nextLogLikelihood = 0.0;
             // Initialize the individual observation mixture estimates to the given mixture parameter and a list of priors to 1.
-            List<double> alphaList = new List<double>(dataList.Count);
-            List<double> priorList = new List<double>(dataList.Count);
-            for (int i = 0; i < dataList.Count; i++)
+            var alphaList = new List<double>(dataList.Count);
+            var priorList = new List<double>(dataList.Count);
+            for (var i = 0; i < dataList.Count; i++)
             {
                 alphaList.Add(mixtureParameter);
                 priorList.Add(1.0);
@@ -241,11 +237,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>The value of the loglikelihood evaluated at data.</returns>
         static public double NormalUniformLogLikelihood(Matrix data, Matrix meanVector, Matrix covarianceMatrix, double uniformDensity, double mixtureParameter, ref double stacScore)
         {
-            double normalDensity = MathUtilities.MultivariateNormalDensity(data, meanVector, covarianceMatrix);
+            var normalDensity = MathUtilities.MultivariateNormalDensity(data, meanVector, covarianceMatrix);
             if (normalDensity > 0)
             {
-				double posteriorReal = mixtureParameter * normalDensity;
-				double posteriorFalse = (1 - mixtureParameter) * uniformDensity;
+				var posteriorReal = mixtureParameter * normalDensity;
+				var posteriorFalse = (1 - mixtureParameter) * uniformDensity;
 
 				stacScore = (posteriorReal) / (posteriorReal + posteriorFalse);
 
@@ -264,9 +260,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>The value of the loglikelihood evaluated over dataList.</returns>
         static public double NormalUniformLogLikelihood(List<Matrix> dataList, Matrix meanVector, Matrix covarianceMatrix, double uniformDensity, double mixtureParameter)
         {
-            double loglikelihood = 0.0;
-			double stacScore = 0.0;
-            foreach (Matrix data in dataList)
+            var loglikelihood = 0.0;
+			var stacScore = 0.0;
+            foreach (var data in dataList)
             {
                 loglikelihood += NormalUniformLogLikelihood(data, meanVector, covarianceMatrix, uniformDensity, mixtureParameter, ref stacScore);
             }
@@ -284,10 +280,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>The updated mixture parameter.</returns>
         static public double UpdateNormalUniformMixtureParameter(List<Matrix> dataList, Matrix meanVector, Matrix covarianceMatrix, double mixtureParameter, double uniformDensity, ref List<double> alphaList)
         {
-            double nextMixtureParameter = 0.0;
-			double stacScore = 0.0;
+            var nextMixtureParameter = 0.0;
+			var stacScore = 0.0;
 
-            for (int i = 0; i < dataList.Count; i++)
+            for (var i = 0; i < dataList.Count; i++)
             {
                 alphaList[i] = Math.Exp(NormalUniformLogLikelihood(dataList[i], meanVector, covarianceMatrix, uniformDensity, mixtureParameter, ref stacScore));
                 nextMixtureParameter += alphaList[i];
@@ -312,13 +308,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>The value of the loglikelihood evaluated at data.</returns>
         static public double NormalNormalUniformLogLikelihood(Matrix data, double prior, Matrix meanVectorT, Matrix covarianceMatrixT, Matrix meanVectorF, Matrix covarianceMatrixF, double uniformDensity, double mixtureParameter, ref double stacScore)
         {
-            double normalDensityT = MathUtilities.MultivariateNormalDensity(data, meanVectorT, covarianceMatrixT);
-            double normalDensityF = MathUtilities.MultivariateNormalDensity(data, meanVectorF, covarianceMatrixF);
+            var normalDensityT = MathUtilities.MultivariateNormalDensity(data, meanVectorT, covarianceMatrixT);
+            var normalDensityF = MathUtilities.MultivariateNormalDensity(data, meanVectorF, covarianceMatrixF);
             if (normalDensityT > 0)
             {
-				double posteriorReal = mixtureParameter * prior * normalDensityT;
-				double posteriorIReal = mixtureParameter * (1 - prior) * normalDensityF;
-				double posteriorFalse = (1 - mixtureParameter) * uniformDensity;
+				var posteriorReal = mixtureParameter * prior * normalDensityT;
+				var posteriorIReal = mixtureParameter * (1 - prior) * normalDensityF;
+				var posteriorFalse = (1 - mixtureParameter) * uniformDensity;
 
 				stacScore = (posteriorReal) / (posteriorReal + posteriorIReal + posteriorFalse);
 
@@ -332,13 +328,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 		// TODO: XML Comments
 		static public double GetAlpha(Matrix data, double prior, Matrix meanVectorT, Matrix covarianceMatrixT, Matrix meanVectorF, Matrix covarianceMatrixF, double uniformDensity, double mixtureParameter)
 		{
-			double normalDensityT = MathUtilities.MultivariateNormalDensity(data, meanVectorT, covarianceMatrixT);
-			double normalDensityF = MathUtilities.MultivariateNormalDensity(data, meanVectorF, covarianceMatrixF);
+			var normalDensityT = MathUtilities.MultivariateNormalDensity(data, meanVectorT, covarianceMatrixT);
+			var normalDensityF = MathUtilities.MultivariateNormalDensity(data, meanVectorF, covarianceMatrixF);
 			if (normalDensityT > 0)
 			{
-				double posteriorReal = mixtureParameter * prior * normalDensityT;
-				double posteriorIReal = mixtureParameter * (1 - prior) * normalDensityF;
-				double posteriorFalse = (1 - mixtureParameter) * uniformDensity;
+				var posteriorReal = mixtureParameter * prior * normalDensityT;
+				var posteriorIReal = mixtureParameter * (1 - prior) * normalDensityF;
+				var posteriorFalse = (1 - mixtureParameter) * uniformDensity;
 
 				return (posteriorReal + posteriorIReal) / (posteriorReal + posteriorIReal + posteriorFalse);
 			}
@@ -358,9 +354,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>The value of the loglikelihood evaluated over data.</returns>
         static public double NormalNormalUniformLogLikelihood(List<Matrix> dataList, List<double> prior, Matrix meanVectorT, Matrix covarianceMatrixT, Matrix meanVectorF, Matrix covarianceMatrixF, double uniformDensity, double mixtureParameter)
         {
-            double logLikelihood = 0.0;
-			double stacScore = 0.0;
-            for (int i = 0; i < dataList.Count; i++)
+            var logLikelihood = 0.0;
+			var stacScore = 0.0;
+            for (var i = 0; i < dataList.Count; i++)
             {
 				logLikelihood += NormalNormalUniformLogLikelihood(dataList[i], prior[i], meanVectorT, covarianceMatrixT, meanVectorF, covarianceMatrixF, uniformDensity, mixtureParameter, ref stacScore);
             }
@@ -370,8 +366,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 		// TODO: XML Comments
 		static public List<double> GetAlphaList(List<Matrix> dataList, List<double> prior, Matrix meanVectorT, Matrix covarianceMatrixT, Matrix meanVectorF, Matrix covarianceMatrixF, double uniformDensity, double mixtureParameter)
 		{
-			List<double> alphaList = new List<double>(dataList.Count);
-			for (int i = 0; i < dataList.Count; i++)
+			var alphaList = new List<double>(dataList.Count);
+			for (var i = 0; i < dataList.Count; i++)
 			{
 				alphaList.Add(GetAlpha(dataList[i], prior[i], meanVectorT, covarianceMatrixT, meanVectorF, covarianceMatrixF, uniformDensity, mixtureParameter));
 			}
@@ -392,9 +388,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <returns>The updated mixture parameter.</returns>
         static public double UpdateNormalNormalUniformMixtureParameter(List<Matrix> dataList, List<double> priorList, Matrix meanVectorT, Matrix covarianceMatrixT, Matrix meanVectorF, Matrix covarianceMatrixF, double mixtureParameter, double uniformDensity, ref List<double> alphaList)
         {
-            double nextMixtureParameter = 0.0;
-            double numerator = 0.0;
-            for (int i = 0; i < dataList.Count; i++)
+            var nextMixtureParameter = 0.0;
+            var numerator = 0.0;
+            for (var i = 0; i < dataList.Count; i++)
             {
                 numerator = priorList[i] * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorT, covarianceMatrixT) + (1 - priorList[i]) * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorF, covarianceMatrixF);
                 alphaList[i] = (numerator * mixtureParameter) / (numerator * mixtureParameter + (1 - mixtureParameter) * uniformDensity);

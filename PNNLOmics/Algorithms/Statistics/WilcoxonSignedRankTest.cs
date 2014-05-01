@@ -28,21 +28,21 @@ namespace PNNLOmics.Algorithms.Statistics
         /// <returns>Level of significance (p-value)</returns>
         public HypothesisTestingData Test(List<double> dist1, List<double> dist2)
         {
-            double[] y = new double[dist2.Count];
-            double[] x = new double[dist1.Count];
-            int n = dist1.Count;
-            int m = dist2.Count;
+            var y = new double[dist2.Count];
+            var x = new double[dist1.Count];
+            var n = dist1.Count;
+            var m = dist2.Count;
 
             dist1.CopyTo(x);
             dist2.CopyTo(y);
 
-            double twoTail      = double.MaxValue;
-            double leftTail     = double.MaxValue;
-            double rightTail    = double.MaxValue;
+            var twoTail      = double.MaxValue;
+            var leftTail     = double.MaxValue;
+            var rightTail    = double.MaxValue;
 
             alglib.unequalvariancettest(x, n, y, m, out twoTail, out leftTail, out rightTail);
 
-            HypothesisTestingData t = new HypothesisTestingData(twoTail,
+            var t = new HypothesisTestingData(twoTail,
                                                                  leftTail,
                                                                  rightTail);
 
@@ -57,17 +57,17 @@ namespace PNNLOmics.Algorithms.Statistics
 
         public HypothesisTestingData Test(List<double> dist1, List<double> dist2)
         {
-            double[] one = new double[dist1.Count];
+            var one = new double[dist1.Count];
             dist1.CopyTo(one);
 
-            double[] two = new double[dist2.Count];
+            var two = new double[dist2.Count];
             dist1.CopyTo(two);
 
-            double pValue = double.MaxValue;
+            var pValue = double.MaxValue;
             // TwoSampleKolmogorovSmirnovTest tester = new TwoSampleKolmogorovSmirnovTest(one, two, TwoSampleKolmogorovSmirnovTestHypothesis.SamplesDistributionsAreUnequal);
             // pValue = testc.PValue;
 
-            HypothesisTestingData data = new HypothesisTestingData(pValue, pValue, pValue);
+            var data = new HypothesisTestingData(pValue, pValue, pValue);
             return data;
         }
 
@@ -81,17 +81,17 @@ namespace PNNLOmics.Algorithms.Statistics
 
         public HypothesisTestingData Test(List<double> dist1, List<double> dist2)
         {
-            double [] one = new double[dist1.Count];
+            var one = new double[dist1.Count];
             dist1.CopyTo(one);
 
-            double [] two = new double[dist2.Count];
+            var two = new double[dist2.Count];
             dist2.CopyTo(two);
 
-            double pValue = double.MaxValue;
+            var pValue = double.MaxValue;
             //TwoSampleWilcoxonSignedRankTest tester = new TwoSampleWilcoxonSignedRankTest(one, two, TwoSampleHypothesis.ValuesAreDifferent);
             //HypothesisTestingData data = new HypothesisTestingData(tester.PValue, tester.PValue, tester.PValue);
             
-            HypothesisTestingData data = new HypothesisTestingData(pValue, pValue, pValue);
+            var data = new HypothesisTestingData(pValue, pValue, pValue);
 
             return data;
         }

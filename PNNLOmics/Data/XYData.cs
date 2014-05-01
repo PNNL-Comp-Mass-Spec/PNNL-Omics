@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System;
-using MathNet.Numerics;
-using MathNet.Numerics.LinearAlgebra;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PNNLOmics.Data
 {
@@ -30,26 +28,26 @@ namespace PNNLOmics.Data
         }
         public static List<XYData> Bin(List<XYData> data, double binSize)
         {            
-            double lowMass       = data[0].X;
-            double highMass      = data[data.Count - 1].X;
+            var lowMass       = data[0].X;
+            var highMass      = data[data.Count - 1].X;
             return Bin(data, lowMass, highMass, binSize);
         }
 
         public  static List<XYData> Bin(List<XYData> data, double lowMass, double highMass, double binSize)
         {
-            List<XYData> newData = new List<XYData>();
-            int total            = Convert.ToInt32((highMass - lowMass)/binSize);
+            var newData = new List<XYData>();
+            var total            = Convert.ToInt32((highMass - lowMass)/binSize);
 
-            for (int i = 0; i < total; i++)
+            for (var i = 0; i < total; i++)
             {
-                XYData part = new XYData(lowMass + (Convert.ToDouble(i) * binSize), 0.0);
+                var part = new XYData(lowMass + (Convert.ToDouble(i) * binSize), 0.0);
                 newData.Add(part);
             }
 
-            for (int i = 0; i < data.Count; i++)
+            for (var i = 0; i < data.Count; i++)
             {
-                double intensity = data[i].Y;
-                int bin = Math.Min(total - 1, System.Convert.ToInt32((data[i].X - lowMass) / binSize));
+                var intensity = data[i].Y;
+                var bin = Math.Min(total - 1, System.Convert.ToInt32((data[i].X - lowMass) / binSize));
                 try
                 {
                     newData[bin].Y += intensity;
@@ -74,7 +72,7 @@ namespace PNNLOmics.Data
         {
             if (xArray.Length == xyList.Count || yArray.Length == xyList.Count)
             {
-                for (int i = 0; i < xyList.Count; i++)
+                for (var i = 0; i < xyList.Count; i++)
                 {
                     xArray[i] = xyList[i].X;
                     yArray[i] = xyList[i].Y;

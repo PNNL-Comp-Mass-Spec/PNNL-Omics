@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Data.Constants;
-
 
 namespace PNNLOmics.Data.FormulaBuilder
 {
@@ -17,17 +14,17 @@ namespace PNNLOmics.Data.FormulaBuilder
         /// <returns></returns>
         public override Dictionary<string, int> ConvertToMolecularFormula(string inputCode)
         {
-            Dictionary<string, int> chemicalFormula = new Dictionary<string, int>();
+            var chemicalFormula = new Dictionary<string, int>();
 
-            string[] monosacharideCount = inputCode.Split(',');
+            var monosacharideCount = inputCode.Split(',');
             
-            for (int monosaccharideCodePosition = 0; monosaccharideCodePosition < monosacharideCount.Length; monosaccharideCodePosition++)
+            for (var monosaccharideCodePosition = 0; monosaccharideCodePosition < monosacharideCount.Length; monosaccharideCodePosition++)
             {
-                string tempFormula = "";
-                int quantityOfMonosacharides = Convert.ToInt32(monosacharideCount[monosaccharideCodePosition]);
+                var tempFormula = "";
+                var quantityOfMonosacharides = Convert.ToInt32(monosacharideCount[monosaccharideCodePosition]);
                 if (monosaccharideCodePosition < 4)
                 {
-                    MonosaccharideName monosaccharide = SwitchMonosacchrideByPosition(monosaccharideCodePosition);
+                    var monosaccharide = SwitchMonosacchrideByPosition(monosaccharideCodePosition);
                     tempFormula = Constants.Constants.Monosaccharides[monosaccharide].ChemicalFormula;
                 }
                 else
@@ -44,10 +41,10 @@ namespace PNNLOmics.Data.FormulaBuilder
                     }
                 }
 
-                Dictionary<string, int> currFormula = FormulaToDictionary(tempFormula);
-                for (int j = 0; j < quantityOfMonosacharides; j++)
+                var currFormula = FormulaToDictionary(tempFormula);
+                for (var j = 0; j < quantityOfMonosacharides; j++)
                 {
-                    foreach (KeyValuePair<string, int> form in currFormula)
+                    foreach (var form in currFormula)
                     {
                         if (!chemicalFormula.ContainsKey(form.Key))
                         {
@@ -63,7 +60,7 @@ namespace PNNLOmics.Data.FormulaBuilder
             }
             if(chemicalFormula.ContainsKey("Na"))
             {
-                for(int Na=0;Na<chemicalFormula["Na"];Na++)
+                for(var Na=0;Na<chemicalFormula["Na"];Na++)
                 {
                      chemicalFormula["H"]--;
                 }
@@ -77,7 +74,7 @@ namespace PNNLOmics.Data.FormulaBuilder
 
         private static MonosaccharideName SwitchMonosacchrideByPosition(int codePosition)
         {
-            MonosaccharideName monosaccharide= new MonosaccharideName();
+            var monosaccharide= new MonosaccharideName();
             switch (codePosition)
             {
                 case(0):

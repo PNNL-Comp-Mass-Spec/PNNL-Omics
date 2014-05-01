@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PNNLOmics.Data.Constants;
 
 namespace PNNLOmics.Data.FormulaBuilder
 {
@@ -14,12 +13,12 @@ namespace PNNLOmics.Data.FormulaBuilder
 		/// <returns></returns>
 		public override Dictionary<string, int> ConvertToMolecularFormula(string inputSequence)
 		{
-			Dictionary<string, int> chemicalFormula = new Dictionary<string, int>();
-			foreach (char pep in inputSequence)
+			var chemicalFormula = new Dictionary<string, int>();
+			foreach (var pep in inputSequence)
 			{
-				string tempFormula = Constants.Constants.AminoAcids["" + pep].ChemicalFormula;
-				Dictionary<string, int> currFormula = FormulaToDictionary(tempFormula);
-				foreach (KeyValuePair<string, int> form in currFormula)
+				var tempFormula = Constants.Constants.AminoAcids["" + pep].ChemicalFormula;
+				var currFormula = FormulaToDictionary(tempFormula);
+				foreach (var form in currFormula)
 				{
 					if (!chemicalFormula.ContainsKey(form.Key))
 					{

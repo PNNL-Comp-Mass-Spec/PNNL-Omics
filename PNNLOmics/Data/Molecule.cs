@@ -1,55 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Data
 {
     public class Molecule: BaseData
     {
-        private string m_description;
 
+        public int GroupId { get; set; }
+        /// <summary>
+        /// Gets or sets the scan the molecule was identified in.
+        /// </summary>
+        public int Scan
+        {
+            get;
+            set;
+        } 
         public string Description
         {
-            get { return m_description; }
-            set { m_description = value; }
+            get;
+            set;
         }
-        private MassTag m_massTag;
-
-        public MassTag MassTag
+        public int ChargeState
         {
-            get { return m_massTag; }
-            set { m_massTag = value; }
+            get;
+            set;
         }
-        private string m_name;
-
+        public MassTagLight MassTag
+        {
+            get;
+            set;
+        }
         public string Name
         {
-            get { return m_name; }
-            set { m_name = value; }
+            get;
+            set;
         }
-        private int m_chemicalFormula;
-
-        public int ChemicalFormula
+        public string ChemicalFormula
         {
-            get { return m_chemicalFormula; }
-            set { m_chemicalFormula = value; }
+            get;
+            set;
         }
-
         public override void Clear()
         {
-            throw new NotImplementedException();
+            Spectrum  = null;
+            MassTag   = null;
         }
-
         /// <summary>
         /// Gets the moleculare Weight
         /// </summary>
-        public int MassMonoisotopic
+        public double MassMonoisotopic
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
+            get;
+            set;
+        }
+        public double Mz
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the spectrum that identified the molecule.
+        /// </summary>
+        public MSSpectra Spectrum
+        {
+            get;
+            set;
         }
     }
 }

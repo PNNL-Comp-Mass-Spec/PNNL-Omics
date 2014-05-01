@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Data;
 
@@ -23,23 +22,20 @@ namespace PNNLOmics.Utilities
         /// <returns>Double</returns>
         static public double MultivariateNormalDensity(Matrix xVector, Matrix meanVector, Matrix covarianceMatrix)
         {
-			double covarianceMatrixDeterminant = covarianceMatrix.Determinant();
+			var covarianceMatrixDeterminant = covarianceMatrix.Determinant();
 
 			if (covarianceMatrixDeterminant != 0)
 			{
-				int numberOfRows = covarianceMatrix.RowCount;
-				Matrix xMinusMean = xVector - meanVector;
-				Matrix xMinusMeanPrime = xMinusMean.Clone();
+				var numberOfRows = covarianceMatrix.RowCount;
+				var xMinusMean = xVector - meanVector;
+				var xMinusMeanPrime = xMinusMean.Clone();
 				xMinusMeanPrime.Transpose();
-				Matrix covarianceInverseMatrix = covarianceMatrix.Inverse();
-				Matrix exponent = xMinusMeanPrime * covarianceInverseMatrix * xMinusMean;
-				double denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrixDeterminant));
+				var covarianceInverseMatrix = covarianceMatrix.Inverse();
+				var exponent = xMinusMeanPrime * covarianceInverseMatrix * xMinusMean;
+				var denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrixDeterminant));
 				return Math.Exp(-0.5 * exponent[0, 0]) / denominator;
 			}
-			else
-			{
-				return 0.0;
-			}
+            return 0.0;
         }
         #endregion
 
@@ -55,19 +51,19 @@ namespace PNNLOmics.Utilities
             if (binWidth > 0 && values.Count > 0)
             {
                 values.Sort();
-                int nValues = values.Count;
-                double minValue = values[0];
-                double maxValue = values[nValues];
+                var nValues = values.Count;
+                var minValue = values[0];
+                var maxValue = values[nValues];
 
-                double range = maxValue - minValue;
-                uint bins = (uint)Math.Ceiling(range / binWidth);
-                double binRange = binWidth * bins;
+                var range = maxValue - minValue;
+                var bins = (uint)Math.Ceiling(range / binWidth);
+                var binRange = binWidth * bins;
 
-                List<XYData> histogramValues = new List<XYData>(0);
+                var histogramValues = new List<XYData>(0);
 
-                XYData currentBin = new XYData(0, 0);
+                var currentBin = new XYData(0, 0);
                 currentBin.X = Convert.ToSingle(Math.Round(minValue - (binRange - range) / 2, 2));
-                for (int i = 0; i < nValues; i++)
+                for (var i = 0; i < nValues; i++)
                 {
                     if (values[i] <= (currentBin.X + binWidth))
                     {
@@ -84,10 +80,7 @@ namespace PNNLOmics.Utilities
 
                 return histogramValues;
             }
-            else
-            {
-                throw new InvalidOperationException("Invalid parameters passed to function GetHistogramValues.");
-            }
+            throw new InvalidOperationException("Invalid parameters passed to function GetHistogramValues.");
         }
 
         /// <summary>
@@ -98,9 +91,9 @@ namespace PNNLOmics.Utilities
         /// <returns>List of XYData with X being midpoints of histogram bins and Y being relative frequency in the bin.</returns>
         static public List<XYData> GetRelativeFrequencyHistogramValues(List<double> values, double binWidth)
         {
-            List<XYData> histogramValues = GetHistogramValues(values, binWidth);
-            int nValues = values.Count;
-            for (int i = 0; i < histogramValues.Count; i++)
+            var histogramValues = GetHistogramValues(values, binWidth);
+            var nValues = values.Count;
+            for (var i = 0; i < histogramValues.Count; i++)
             {
                 histogramValues[i].Y /= nValues;
             }
@@ -121,7 +114,7 @@ namespace PNNLOmics.Utilities
             double minX = x[0], maxX = x[0];
             double minY = y[0], maxY = y[0];
 
-            for (int pointNumber = 0; pointNumber < numPoints; pointNumber++)
+            for (var pointNumber = 0; pointNumber < numPoints; pointNumber++)
             {
                 if (x[pointNumber] < minX)
                 {
@@ -149,16 +142,16 @@ namespace PNNLOmics.Utilities
             CalcMeanAndStd(y, out muY, out stdY);
             stdY = stdY / 3.0;
 
-            for (int iterNum = 0; iterNum < numIterations; iterNum++)
+            for (var iterNum = 0; iterNum < numIterations; iterNum++)
             {
                 // Calculate current probability assignments
-                for (int pointNum = 0; pointNum < numPoints; pointNum++)
+                for (var pointNum = 0; pointNum < numPoints; pointNum++)
                 {
-                    double xDiff = (x[pointNum] - muX) / stdX;
-                    double yDiff = (y[pointNum] - muY) / stdY;
+                    var xDiff = (x[pointNum] - muX) / stdX;
+                    var yDiff = (y[pointNum] - muY) / stdY;
                     pVals[0, pointNum] = p * Math.Exp(-0.5 * (xDiff * xDiff + yDiff * yDiff)) / (2 * Math.PI * stdX * stdY);
                     pVals[1, pointNum] = (1 - p) * u;
-                    double sum = pVals[0, pointNum] + pVals[1, pointNum];
+                    var sum = pVals[0, pointNum] + pVals[1, pointNum];
                     pVals[0, pointNum] = pVals[0, pointNum] / sum;
                     pVals[1, pointNum] = pVals[1, pointNum] / sum;
                 }
@@ -173,16 +166,16 @@ namespace PNNLOmics.Utilities
                 double pDenominator = 0;
                 double denominator = 0;
 
-                for (int pointNum = 0; pointNum < numPoints; pointNum++)
+                for (var pointNum = 0; pointNum < numPoints; pointNum++)
                 {
                     pNumerator = pNumerator + pVals[0, pointNum];
                     pDenominator = pDenominator + (pVals[0, pointNum] + pVals[1, pointNum]);
 
-                    double xDiff = (x[pointNum] - muX);
+                    var xDiff = (x[pointNum] - muX);
                     muXNumerator = muXNumerator + pVals[0, pointNum] * x[pointNum];
                     sigmaXNumerator = sigmaXNumerator + pVals[0, pointNum] * xDiff * xDiff;
 
-                    double yDiff = (y[pointNum] - muY);
+                    var yDiff = (y[pointNum] - muY);
                     muYNumerator = muYNumerator + pVals[0, pointNum] * y[pointNum];
                     sigmaYNumerator = sigmaYNumerator + pVals[0, pointNum] * yDiff * yDiff;
 
@@ -199,12 +192,12 @@ namespace PNNLOmics.Utilities
 
         public static void CalcMeanAndStd(List<double> values, out double mean, out double stdev)
         {
-            int numPoints = values.Count;
+            var numPoints = values.Count;
             double sumSquare = 0;
             double sum = 0;
-            for (int pointNum = 0; pointNum < numPoints; pointNum++)
+            for (var pointNum = 0; pointNum < numPoints; pointNum++)
             {
-                double val = values[pointNum];
+                var val = values[pointNum];
                 sum = sum + val;
                 sumSquare = sumSquare + (val * val);
             }

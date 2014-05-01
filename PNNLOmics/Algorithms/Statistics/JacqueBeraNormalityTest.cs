@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Algorithms.Statistics
 {
@@ -14,14 +11,14 @@ namespace PNNLOmics.Algorithms.Statistics
         /// <returns>Level of significance (p-value)</returns>
         public HypothesisTestingData Test(List<double> dist1)
         {
-            double[] x = new double[dist1.Count];
-            int n = dist1.Count;            
+            var x = new double[dist1.Count];
+            var n = dist1.Count;            
             dist1.CopyTo(x);
 
-            double pValue = double.MaxValue;
+            var pValue = double.MaxValue;
 
             alglib.jarqueberatest(x, n, out pValue);
-            HypothesisTestingData t = new HypothesisTestingData(pValue);
+            var t = new HypothesisTestingData(pValue);
 
             return t;
         }    
@@ -37,14 +34,14 @@ namespace PNNLOmics.Algorithms.Statistics
         /// <returns>Level of significance (p-value)</returns>
         public HypothesisTestingData Test(List<double> dist1)
         {
-            double[] x = new double[dist1.Count];
-            int n = dist1.Count;
+            var x = new double[dist1.Count];
+            var n = dist1.Count;
             dist1.CopyTo(x);
 
-            double pValue = double.MaxValue;
+            var pValue = double.MaxValue;
 
             //alglib.(x, n, out pValue);
-            HypothesisTestingData t = new HypothesisTestingData(pValue);
+            var t = new HypothesisTestingData(pValue);
 
             return t;
         }

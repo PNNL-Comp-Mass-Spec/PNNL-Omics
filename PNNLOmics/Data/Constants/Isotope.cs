@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PNNLOmics.Data.Constants
+﻿namespace PNNLOmics.Data.Constants
 {
     //TODO: SCOTT - CR - add XML comments
     public class Isotope
@@ -11,9 +8,9 @@ namespace PNNLOmics.Data.Constants
         /// </summary>
         public Isotope(int isotopeNumber, double mass, double naturalAbundance)
         {
-            this.IsotopeNumber = isotopeNumber;
-            this.Mass = mass;
-            this.NaturalAbundance = naturalAbundance;
+            IsotopeNumber = isotopeNumber;
+            Mass = mass;
+            NaturalAbundance = naturalAbundance;
         }
 
         //TODO: SCOTT - CR - add XML comments

@@ -1,7 +1,7 @@
-﻿using PNNLOmics.Algorithms.Alignment.SpectralMatches;
+﻿using System.Collections.Generic;
+using PNNLOmics.Algorithms.Alignment.SpectralMatches;
 using PNNLOmics.Algorithms.Alignment.SpectralMatching;
 using PNNLOmics.Data;
-using System.Collections.Generic;
 
 namespace PNNLOmics.Algorithms.Alignment
 {

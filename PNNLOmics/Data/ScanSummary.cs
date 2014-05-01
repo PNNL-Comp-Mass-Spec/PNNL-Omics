@@ -3,16 +3,8 @@
     /// <summary>
     /// Encapsulates MS Spectrum summary information (e.g. BPI, # of peaks, TIC)
     /// </summary>
-    public class ScanSummary
+    public sealed class ScanSummary
     {
-        /// <summary>
-        /// Gets or sets the header data.
-        /// </summary>
-        public string Header
-        {
-            get;
-            set;
-        }
         /// <summary>
         /// Gets or sets the base peak intensity
         /// </summary>
@@ -37,7 +29,7 @@
             get;
             set;
         }       
-        public double PrecursorMZ  
+        public double PrecursorMz  
         {   
             get;
             set;

@@ -121,7 +121,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>
         public void CalculateMinMax()
         {
-            int numPts = m_pts.Count();
+            var numPts = m_pts.Count();
 
             m_minX = double.MaxValue;
             m_maxX = double.MinValue;
@@ -129,9 +129,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_minY = double.MaxValue;
             m_maxY = double.MinValue;
 
-            for (int i = 0; i < numPts; i++)
+            for (var i = 0; i < numPts; i++)
             {
-                RegressionPoint point = m_pts[i];
+                var point = m_pts[i];
                 if (point.X < m_minX)
                 {
                     m_minX = point.X;
@@ -159,13 +159,13 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         {
             var points = new List<double>();
 
-            int numPoints = m_pts.Count();
-            double xInterval = (m_maxX - m_minX) / m_numXBins;
+            var numPoints = m_pts.Count();
+            var xInterval = (m_maxX - m_minX) / m_numXBins;
 
-            for (int ptNum = 0; ptNum < numPoints; ptNum++)
+            for (var ptNum = 0; ptNum < numPoints; ptNum++)
             {
-                RegressionPoint pt = m_pts[ptNum];
-                int sectionNum = Convert.ToInt32((pt.X - m_minX) / xInterval);
+                var pt = m_pts[ptNum];
+                var sectionNum = Convert.ToInt32((pt.X - m_minX) / xInterval);
                 if (sectionNum == m_numXBins)
                 {
                     sectionNum = m_numXBins - 1;
@@ -183,10 +183,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 m_stdY[intervalNum] = m_normUnifEm.StandDev;
                 if (Math.Abs(m_stdY[intervalNum]) > double.Epsilon)
                 {
-                    double tolerance = m_stdY[intervalNum] * m_tolerance;
+                    var tolerance = m_stdY[intervalNum] * m_tolerance;
                     m_sectionTolerance[intervalNum] = tolerance;
 
-                    double misMatchScore = (tolerance * tolerance) / (m_stdY[intervalNum] * m_stdY[intervalNum]);
+                    var misMatchScore = (tolerance * tolerance) / (m_stdY[intervalNum] * m_stdY[intervalNum]);
                     m_sectionMisMatchScore[intervalNum] = misMatchScore;
                 }
                 else
@@ -210,7 +210,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_stdY.Capacity = m_numXBins;
             m_stdY.Clear();
 
-            for (int interval = 0; interval < m_numXBins; interval++)
+            for (var interval = 0; interval < m_numXBins; interval++)
             {
                 m_stdY.Add(0);
                 m_count.Add(0);
@@ -244,11 +244,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_matchScores.Clear();
 
             // At the moment, assumes that the tolerance is in zscore units
-            for (int xSection = 0; xSection < m_numXBins; xSection++)
+            for (var xSection = 0; xSection < m_numXBins; xSection++)
             {
-                double sectionMismatchScore = m_sectionMisMatchScore[xSection] * m_count[xSection];
+                var sectionMismatchScore = m_sectionMisMatchScore[xSection] * m_count[xSection];
 
-                for (int sectionMatchNum = 0; sectionMatchNum < m_numSectionMatches; sectionMatchNum++)
+                for (var sectionMatchNum = 0; sectionMatchNum < m_numSectionMatches; sectionMatchNum++)
                 {
                     m_matchScores.Add(sectionMismatchScore);
                 }
@@ -266,16 +266,16 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             // First set the unmatched score.
             SetUnmatchedScoreMatrix();
 
-            double yIntervalSize = (m_maxY - m_minY) / m_numYBins;
-            double xIntervalSize = (m_maxX - m_minX) / m_numXBins;
+            var yIntervalSize = (m_maxY - m_minY) / m_numYBins;
+            var xIntervalSize = (m_maxX - m_minX) / m_numXBins;
 
             // For each point that is seen, add the supporting score to the appropriate section.
-            int numPts = m_pts.Count();
+            var numPts = m_pts.Count();
 
-            for (int pointNum = 0; pointNum < numPts; pointNum++)
+            for (var pointNum = 0; pointNum < numPts; pointNum++)
             {
-                RegressionPoint point = m_pts[pointNum];
-                int xSection = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
+                var point = m_pts[pointNum];
+                var xSection = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
                 if (xSection == m_numXBins)
                 {
                     xSection = m_numXBins - 1;
@@ -287,9 +287,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     continue;
                 }
 
-                double yTolerance = m_sectionTolerance[xSection];
+                var yTolerance = m_sectionTolerance[xSection];
 
-                int yInterval = Convert.ToInt32((0.0001 + (point.MassError - m_minY) / yIntervalSize));
+                var yInterval = Convert.ToInt32((0.0001 + (point.MassError - m_minY) / yIntervalSize));
 
                 if (yInterval == m_numYBins)
                 {
@@ -297,14 +297,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 }
 
                 // Matches to the section that the point would contribute to.
-                int minYStart = Convert.ToInt32(yInterval - yTolerance / yIntervalSize);
-                int maxYStart = Convert.ToInt32(yInterval + yTolerance / yIntervalSize);
+                var minYStart = Convert.ToInt32(yInterval - yTolerance / yIntervalSize);
+                var maxYStart = Convert.ToInt32(yInterval + yTolerance / yIntervalSize);
 
-                double sectionMismatchScore = m_sectionMisMatchScore[xSection];
+                var sectionMismatchScore = m_sectionMisMatchScore[xSection];
 
-                double xFraction = (point.X - m_minX) / xIntervalSize - xSection;
+                var xFraction = (point.X - m_minX) / xIntervalSize - xSection;
 
-                for (int yFrom = minYStart; yFrom <= maxYStart; yFrom++)
+                for (var yFrom = minYStart; yFrom <= maxYStart; yFrom++)
                 {
                     if (yFrom < 0)
                     {
@@ -314,7 +314,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     {
                         break;
                     }
-                    for (int yTo = yFrom - m_numJumps; yTo <= yFrom + m_numJumps; yTo++)
+                    for (var yTo = yFrom - m_numJumps; yTo <= yFrom + m_numJumps; yTo++)
                     {
                         if (yTo < 0)
                         {
@@ -326,8 +326,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                         }
 
                         //Assumes linear piecewise transform to calculate the estimated y
-                        double yEstimated = (yFrom + (yTo - yFrom) * xFraction) * yIntervalSize + m_minY;
-                        double yDelta = point.MassError - yEstimated;
+                        var yEstimated = (yFrom + (yTo - yFrom) * xFraction) * yIntervalSize + m_minY;
+                        var yDelta = point.MassError - yEstimated;
 
                         //Make sure the point is in the linear range to effect the score
                         if (Math.Abs(yDelta) > yTolerance)
@@ -335,10 +335,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                             continue;
                         }
 
-                        double matchScore = (yDelta * yDelta) / (m_stdY[xSection] * m_stdY[xSection]);
-                        int jump = yTo - yFrom + m_numJumps;
-                        int sectionIndex = xSection * m_numSectionMatches + yFrom * (2 * m_numJumps + 1) + jump;
-                        double currentMatchScore = m_matchScores[sectionIndex];
+                        var matchScore = (yDelta * yDelta) / (m_stdY[xSection] * m_stdY[xSection]);
+                        var jump = yTo - yFrom + m_numJumps;
+                        var sectionIndex = xSection * m_numSectionMatches + yFrom * (2 * m_numJumps + 1) + jump;
+                        var currentMatchScore = m_matchScores[sectionIndex];
                         m_matchScores[sectionIndex] = currentMatchScore - sectionMismatchScore + matchScore;
                     }
                 }
@@ -352,39 +352,39 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_alignmentScores.Capacity = m_numXBins + 1 * m_numYBins;
             m_bestPreviousIndex.Capacity = m_numXBins + 1 * m_numYBins;
 
-            for (int ySection = 0; ySection < m_numYBins; ySection++)
+            for (var ySection = 0; ySection < m_numYBins; ySection++)
             {
                 m_bestPreviousIndex.Add(-2);
                 m_alignmentScores.Add(0);
             }
 
-            for (int xSection = 1; xSection <= m_numXBins; xSection++)
+            for (var xSection = 1; xSection <= m_numXBins; xSection++)
             {
-                for (int ySection = 0; ySection < m_numYBins; ySection++)
+                for (var ySection = 0; ySection < m_numYBins; ySection++)
                 {
                     m_bestPreviousIndex.Add(-1);
                     m_alignmentScores.Add(double.MaxValue);
                 }
             }
 
-            for (int xSection = 1; xSection <= m_numXBins; xSection++)
+            for (var xSection = 1; xSection <= m_numXBins; xSection++)
             {
-                for (int ySection = 0; ySection < m_numYBins; ySection++)
+                for (var ySection = 0; ySection < m_numYBins; ySection++)
                 {
-                    int index = xSection * m_numYBins + ySection;
-                    double bestAlignmentScore = double.MaxValue;
+                    var index = xSection * m_numYBins + ySection;
+                    var bestAlignmentScore = double.MaxValue;
 
-                    for (int jump = m_numJumps; jump < 2 * m_numJumps + 1; jump++)
+                    for (var jump = m_numJumps; jump < 2 * m_numJumps + 1; jump++)
                     {
-                        int ySectionFrom = ySection - jump + m_numJumps;
+                        var ySectionFrom = ySection - jump + m_numJumps;
                         if (ySectionFrom < 0)
                         {
                             break;
                         }
-                        int previousAlignmentIndex = (xSection - 1) * m_numYBins + ySectionFrom;
-                        int previousMatchIndex = (xSection - 1) * m_numSectionMatches + ySectionFrom * (2 * m_numJumps + 1) + jump;
-                        double previousAlignmentScore = m_alignmentScores[previousAlignmentIndex];
-                        double previousMatchScore = m_matchScores[previousMatchIndex];
+                        var previousAlignmentIndex = (xSection - 1) * m_numYBins + ySectionFrom;
+                        var previousMatchIndex = (xSection - 1) * m_numSectionMatches + ySectionFrom * (2 * m_numJumps + 1) + jump;
+                        var previousAlignmentScore = m_alignmentScores[previousAlignmentIndex];
+                        var previousMatchScore = m_matchScores[previousMatchIndex];
                         if (previousAlignmentScore + previousMatchScore < bestAlignmentScore)
                         {
                             bestAlignmentScore = previousMatchScore + previousAlignmentScore;
@@ -393,21 +393,21 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                         }
                     }
 
-                    for (int jump = 0; jump < m_numJumps; jump++)
+                    for (var jump = 0; jump < m_numJumps; jump++)
                     {
-                        int ySectionFrom = ySection - jump + m_numJumps;
+                        var ySectionFrom = ySection - jump + m_numJumps;
                         if (ySectionFrom < 0)
                         {
                             break;
                         }
-                        int previousAlignmentIndex = (xSection - 1) * m_numYBins + ySectionFrom;
-                        int previousMatchIndex = (xSection - 1) * m_numSectionMatches + ySectionFrom * (2 * m_numJumps + 1) + jump;
+                        var previousAlignmentIndex = (xSection - 1) * m_numYBins + ySectionFrom;
+                        var previousMatchIndex = (xSection - 1) * m_numSectionMatches + ySectionFrom * (2 * m_numJumps + 1) + jump;
                         if ((previousAlignmentIndex > m_alignmentScores.Count-1) || (previousMatchIndex > m_matchScores.Count-1))
                         {
                             break;
                         }
-                        double previousAlignmentScore = m_alignmentScores[previousAlignmentIndex];
-                        double previousMatchScore = m_matchScores[previousMatchIndex];
+                        var previousAlignmentScore = m_alignmentScores[previousAlignmentIndex];
+                        var previousMatchScore = m_matchScores[previousMatchIndex];
                         if (previousAlignmentScore + previousMatchScore < bestAlignmentScore)
                         {
                             bestAlignmentScore = previousMatchScore + previousAlignmentScore;
@@ -423,19 +423,19 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         {
             m_alignmentFunction.Clear();
             //Start at the last section best score and trace backwards
-            double bestScore = double.MaxValue;
-            int bestPreviousIndex = 0;
-            int bestYShift = m_numYBins / 2;
-            int xSection = m_numXBins;
+            var bestScore = double.MaxValue;
+            var bestPreviousIndex = 0;
+            var bestYShift = m_numYBins / 2;
+            var xSection = m_numXBins;
 
             while (xSection >= 1)
             {
                 if (m_count[xSection - 1] >= m_minSectionPts)
                 {
-                    for (int ySection = 0; ySection < m_numYBins; ySection++)
+                    for (var ySection = 0; ySection < m_numYBins; ySection++)
                     {
-                        int index = xSection * m_numYBins + ySection;
-                        double ascore = m_alignmentScores[index];
+                        var index = xSection * m_numYBins + ySection;
+                        var ascore = m_alignmentScores[index];
                         if (ascore < bestScore)
                         {
                             bestScore = ascore;
@@ -448,14 +448,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 xSection--;
             }
 
-            for (int i = xSection; i <= m_numXBins; i++)
+            for (var i = xSection; i <= m_numXBins; i++)
             {
                 m_alignmentFunction.Add(i, bestYShift);
             }
             while (xSection > 0)
             {
                 xSection--;
-                int yShift = bestPreviousIndex % m_numYBins;
+                var yShift = bestPreviousIndex % m_numYBins;
                 m_alignmentFunction.Add(xSection, yShift);
                 bestPreviousIndex = m_bestPreviousIndex[bestPreviousIndex];
             }
@@ -469,7 +469,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public void CalculateRegressionFunction(ref List<RegressionPoint> calibMatches)
         {
             Clear();
-            foreach (RegressionPoint point in calibMatches)
+            foreach (var point in calibMatches)
             {
                 m_pts.Add(point);
             }
@@ -480,7 +480,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             // For if it's constant answer
             if (Math.Abs(m_minY - m_maxY) < double.Epsilon)
             {
-                for (int xSection = 0; xSection < m_numXBins; xSection++)
+                for (var xSection = 0; xSection < m_numXBins; xSection++)
                 {
                     m_alignmentFunction.Add(xSection, 0);
                 }
@@ -498,21 +498,21 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>
         public void RemoveRegressionOutliers()
         {
-            double xIntervalSize = (m_maxX - m_minX) / m_numXBins;
+            var xIntervalSize = (m_maxX - m_minX) / m_numXBins;
             var tempPts = new List<RegressionPoint>();
-            int numPts = m_pts.Count;
+            var numPts = m_pts.Count;
 
-            for (int pointNum = 0; pointNum < numPts; pointNum++)
+            for (var pointNum = 0; pointNum < numPts; pointNum++)
             {
-                RegressionPoint point  = m_pts[pointNum];
-                int intervalNum = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
+                var point  = m_pts[pointNum];
+                var intervalNum = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
                 if (intervalNum == m_numXBins)
                 {
                     intervalNum = m_numXBins - 1;
                 }
-                double stdY = m_stdY[intervalNum];
-                double val = GetPredictedValue(point.X);
-                double delta = (val - point.MassError) / stdY;
+                var stdY = m_stdY[intervalNum];
+                var val = GetPredictedValue(point.X);
+                var delta = (val - point.MassError) / stdY;
                 if (Math.Abs(delta) < m_outlierZScore)
                 {
                     tempPts.Add(point);
@@ -521,7 +521,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             m_pts.Clear();
 
-            foreach (RegressionPoint point in tempPts)
+            foreach (var point in tempPts)
             {
                 m_pts.Add(point);
             }
@@ -534,10 +534,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <returns></returns>
         public double GetPredictedValue(double x)
         {
-            double yIntervalSize = (m_maxY - m_minY) / m_numYBins;
-            double xIntervalSize = (m_maxX - m_minX) / m_numXBins;
+            var yIntervalSize = (m_maxY - m_minY) / m_numYBins;
+            var xIntervalSize = (m_maxX - m_minX) / m_numXBins;
 
-            int xSection = Convert.ToInt32((x - m_minX) / xIntervalSize);
+            var xSection = Convert.ToInt32((x - m_minX) / xIntervalSize);
             int ySectionFrom;
             if (xSection >= m_numXBins)
             {
@@ -550,16 +550,16 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 return m_minY + ySectionFrom * yIntervalSize;
             }
 
-            double xFraction = (x - m_minX) / xIntervalSize - xSection;
+            var xFraction = (x - m_minX) / xIntervalSize - xSection;
             ySectionFrom = m_alignmentFunction.ElementAt(xSection).Value;
-            int ySectionTo = ySectionFrom;
+            var ySectionTo = ySectionFrom;
 
             if (xSection < m_numXBins - 1)
             {
                 ySectionTo = m_alignmentFunction.ElementAt(xSection + 1).Value;
             }
 
-            double yPred = xFraction * yIntervalSize * (ySectionTo - ySectionFrom)
+            var yPred = xFraction * yIntervalSize * (ySectionTo - ySectionFrom)
                             + ySectionFrom * yIntervalSize + m_minY;
 
             return yPred;

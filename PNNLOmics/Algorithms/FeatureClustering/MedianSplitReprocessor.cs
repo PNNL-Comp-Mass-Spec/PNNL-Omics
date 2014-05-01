@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
@@ -75,7 +73,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             double mean     = 0;
             double sum      = 0;
             double stdev    = 0;
-            int N           = Math.Abs(j - i);
+            var N           = Math.Abs(j - i);
 
             if (N == 0)
             {
@@ -93,15 +91,15 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             sum  = 0;
             for (i = 0; i < j; i++)
             {
-                double diff = (data[i] - mean);
+                var diff = (data[i] - mean);
                 sum += (diff * diff);
             }
 
             // Calculate stdev and variance...
             stdev       = Math.Sqrt(sum / N);
-            double var  = sum / (N - 1); 
+            var var  = sum / (N - 1); 
 
-            DistributionData distribution = new DistributionData(mean, stdev, var, N);
+            var distribution = new DistributionData(mean, stdev, var, N);
             return distribution;
         }
         
@@ -116,16 +114,16 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 return null;
 
             // Get negative distribution
-            int i = 0;
+            var i = 0;
             while (i < data.Count && data[i] < 0)  i++;
             
-            int N = data.Count;
+            var N = data.Count;
 
-            DistributionData positive = CalculuteDistributionData(data, 0, i);
-            DistributionData negative = CalculuteDistributionData(data, i, N);
-            DistributionData all      = CalculuteDistributionData(data, 0, N);
+            var positive = CalculuteDistributionData(data, 0, i);
+            var negative = CalculuteDistributionData(data, i, N);
+            var all      = CalculuteDistributionData(data, 0, N);
 
-            Tuple<DistributionData, DistributionData, DistributionData> means 
+            var means 
                             = new Tuple<DistributionData, DistributionData, DistributionData>(positive, negative, all);
             return means;
         }
@@ -135,10 +133,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {
             double z    = 0;
 
-            double stdA = sampleA.StandardDeviation / Math.Sqrt(Convert.ToDouble(sampleA.N));
+            var stdA = sampleA.StandardDeviation / Math.Sqrt(Convert.ToDouble(sampleA.N));
             stdA *= stdA;
 
-            double stdB = sampleB.StandardDeviation / Math.Sqrt(Convert.ToDouble(sampleB.N));
+            var stdB = sampleB.StandardDeviation / Math.Sqrt(Convert.ToDouble(sampleB.N));
             stdB *= stdB;
             
             z = (sampleA.Mean - sampleB.Mean) / Math.Sqrt(stdA + stdB);
@@ -147,7 +145,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
         private void DisplayDistance(List<double> differences)
         {
-            foreach (double diff in differences)
+            foreach (var diff in differences)
             {
                 Console.WriteLine("{0}", diff);
             }
@@ -156,30 +154,30 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
         public List<U> ProcessClusters(List<U> clusters)
         {
-            List<U> newClusters = new List<U>();
+            var newClusters = new List<U>();
 
             //Sort the clusters
             // Look for merged clusters that need to be split...
-            foreach (U cluster in clusters)
+            foreach (var cluster in clusters)
             {
-                double medianNet = cluster.RetentionTime;
-                double medianMass = cluster.MassMonoisotopic;
-                double medianDrift = cluster.DriftTime;
+                var medianNet = cluster.RetentionTime;
+                var medianMass = cluster.MassMonoisotopic;
+                var medianDrift = cluster.DriftTime;
 
-                Dictionary<T, double> massDistributions = new Dictionary<T, double>();
-                Dictionary<T, double> netDistributions = new Dictionary<T, double>();
-                Dictionary<T, double> driftDistributions = new Dictionary<T, double>();
+                var massDistributions = new Dictionary<T, double>();
+                var netDistributions = new Dictionary<T, double>();
+                var driftDistributions = new Dictionary<T, double>();
 
-                List<double> massDistances = new List<double>();
-                List<double> netDistances = new List<double>();
-                List<double> driftDistances = new List<double>();
+                var massDistances = new List<double>();
+                var netDistances = new List<double>();
+                var driftDistances = new List<double>();
 
                 // Build distributions
-                foreach (T feature in cluster.Features)
+                foreach (var feature in cluster.Features)
                 {
-                    double mass = Feature.ComputeMassPPMDifference(feature.MassMonoisotopicAligned, medianMass);
-                    double net = feature.RetentionTime - medianNet;
-                    double drift = feature.DriftTime - medianDrift;
+                    var mass = FeatureLight.ComputeMassPPMDifference(feature.MassMonoisotopicAligned, medianMass);
+                    var net = feature.RetentionTime - medianNet;
+                    var drift = feature.DriftTime - medianDrift;
 
                     massDistributions.Add(feature, mass);
                     netDistributions.Add(feature, drift);
@@ -195,13 +193,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 driftDistances.Sort();
 
                 // Calculates the sample means for positive and negative sides of the median.
-                Tuple<DistributionData, DistributionData, DistributionData> massDistribution    = CalculateAllDistributions(massDistances);
-                Tuple<DistributionData, DistributionData, DistributionData> netDistribution     = CalculateAllDistributions(netDistances);
-                Tuple<DistributionData, DistributionData, DistributionData> driftDistribution   = CalculateAllDistributions(driftDistances);
+                var massDistribution    = CalculateAllDistributions(massDistances);
+                var netDistribution     = CalculateAllDistributions(netDistances);
+                var driftDistribution   = CalculateAllDistributions(driftDistances);
 
-                double massZScore   = CalculateZScore(massDistribution.Item1, massDistribution.Item2);
-                double netZScore    = CalculateZScore(netDistribution.Item1, netDistribution.Item2);
-                double driftZScore  = CalculateZScore(driftDistribution.Item1, driftDistribution.Item2);
+                var massZScore   = CalculateZScore(massDistribution.Item1, massDistribution.Item2);
+                var netZScore    = CalculateZScore(netDistribution.Item1, netDistribution.Item2);
+                var driftZScore  = CalculateZScore(driftDistribution.Item1, driftDistribution.Item2);
 
                 // Now that we have data we can test the distributions to see if they are similar or not...
                 Console.WriteLine("   Neg to Pos ");

@@ -72,17 +72,17 @@ namespace PNNLOmics.Algorithms.Regression
             m_maxX = points.Max(x => x.X);
             m_points.AddRange(points);
             
-            int numPoints = m_points.Count;
+            var numPoints = m_points.Count;
 
             var a = new DenseMatrix(numPoints, m_order + m_numKnots + 1);
             var b = new DenseMatrix(numPoints, 1);
 
-            for (int pointNum = 0; pointNum < numPoints; pointNum++)
+            for (var pointNum = 0; pointNum < numPoints; pointNum++)
             {
-                RegressionPoint calib = m_points[pointNum];
+                var calib = m_points[pointNum];
                 double coeff = 1;
                 a[pointNum, 0] = coeff;
-                for (int colNum = 1; colNum <= m_order; colNum++)
+                for (var colNum = 1; colNum <= m_order; colNum++)
                 {
                     coeff = coeff * calib.X;
                     a[pointNum, colNum] = coeff;
@@ -90,18 +90,18 @@ namespace PNNLOmics.Algorithms.Regression
 
                 if (m_numKnots > 0 && m_order > 0)
                 {
-                    int xInterval = Convert.ToInt32(((m_numKnots + 1) * (calib.X - m_minX)) / (m_maxX - m_minX));
+                    var xInterval = Convert.ToInt32(((m_numKnots + 1) * (calib.X - m_minX)) / (m_maxX - m_minX));
                     if (xInterval >= m_numKnots + 1)
                     {
                         xInterval = m_numKnots;
                     }
 
-                    for (int colNum = m_order + 1; colNum <= m_order + xInterval; colNum++)
+                    for (var colNum = m_order + 1; colNum <= m_order + xInterval; colNum++)
                     {
-                        double xIntervalStart = m_minX + ((colNum - m_order) * (m_maxX - m_minX)) / (m_numKnots + 1);
+                        var xIntervalStart = m_minX + ((colNum - m_order) * (m_maxX - m_minX)) / (m_numKnots + 1);
                         a[pointNum, colNum] = Math.Pow(calib.X - xIntervalStart, m_order);
                     }
-                    for (int colNum = m_order + xInterval + 1; colNum <= m_order + m_numKnots; colNum++)
+                    for (var colNum = m_order + xInterval + 1; colNum <= m_order + m_numKnots; colNum++)
                     {
                         a[pointNum, colNum] = 0;
                     }
@@ -123,7 +123,7 @@ namespace PNNLOmics.Algorithms.Regression
 
             var c = (DenseMatrix)invATransA.Multiply(b);
 
-            for (int colNum = 0; colNum <= m_order + m_numKnots; colNum++)
+            for (var colNum = 0; colNum <= m_order + m_numKnots; colNum++)
             {
                 m_coeffs[colNum] = c[colNum, 0];
             }
@@ -139,9 +139,9 @@ namespace PNNLOmics.Algorithms.Regression
         public double GetPredictedValue(double x)
         {
             double powerN = 1;
-            double val = m_coeffs[0];
+            var val = m_coeffs[0];
 
-            for (int power = 1; power <= m_order; power++)
+            for (var power = 1; power <= m_order; power++)
             {
                 powerN = powerN * x;
                 val = val + m_coeffs[power] * powerN;
@@ -149,15 +149,15 @@ namespace PNNLOmics.Algorithms.Regression
 
             if (m_numKnots > 0 && m_order > 0)
             {
-                int xInterval = Convert.ToInt32(((m_numKnots + 1) * (x - m_minX)) / (m_maxX - m_minX));
+                var xInterval = Convert.ToInt32(((m_numKnots + 1) * (x - m_minX)) / (m_maxX - m_minX));
                 if (xInterval >= m_numKnots + 1)
                 {
                     xInterval = m_numKnots;
                 }
 
-                for (int colNum = m_order + 1; colNum <= m_order + xInterval; colNum++)
+                for (var colNum = m_order + 1; colNum <= m_order + xInterval; colNum++)
                 {
-                    double xIntervalStart = m_minX + ((colNum - m_order) * (m_maxX - m_minX)) / (m_numKnots + 1);
+                    var xIntervalStart = m_minX + ((colNum - m_order) * (m_maxX - m_minX)) / (m_numKnots + 1);
                     val = val + Math.Pow(x - xIntervalStart, m_order) * m_coeffs[colNum];
                 }
             }

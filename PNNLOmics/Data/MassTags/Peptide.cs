@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Data
 {
@@ -8,8 +7,7 @@ namespace PNNLOmics.Data
     /// </summary>
     public class Peptide: Molecule
     {
-        public Peptide():
-            base()
+        public Peptide()
         {
             Clear();
         }       

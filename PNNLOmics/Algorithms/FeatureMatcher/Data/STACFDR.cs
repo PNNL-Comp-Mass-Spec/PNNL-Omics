@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {
@@ -135,36 +132,33 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         #endregion
         public override bool Equals(object obj)
         {
-            STACFDR stacFDR = obj as STACFDR;
+            var stacFDR = obj as STACFDR;
 
             if (stacFDR == null)
             {
                 return false;
             }
-            else if (!this.Cutoff.Equals(stacFDR.Cutoff))
+            if (!Cutoff.Equals(stacFDR.Cutoff))
             {
                 return false;
             }
-            else if (!this.AMTMatches.Equals(stacFDR.AMTMatches))
+            if (!AMTMatches.Equals(stacFDR.AMTMatches))
             {
                 return false;
             }
-            else if (!this.FDR.Equals(stacFDR.FDR))
+            if (!FDR.Equals(stacFDR.FDR))
             {
                 return false;
             }
-            else
-            {
-                return this.ConformationMatches.Equals(stacFDR.ConformationMatches);
-            }
+            return ConformationMatches.Equals(stacFDR.ConformationMatches);
         }
         public override int GetHashCode()
         {
-            int hash = 17;
+            var hash = 17;
             hash = hash * 23 + Cutoff.GetHashCode();
-            hash = hash * 23 + this.AMTMatches.GetHashCode();
+            hash = hash * 23 + AMTMatches.GetHashCode();
             hash = hash * 23 + FDR.GetHashCode();
-            hash = hash * 23 + this.m_label.GetHashCode();
+            hash = hash * 23 + m_label.GetHashCode();
             return hash;
         }
     }
