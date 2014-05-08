@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PNNLOmics.Annotations;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Utilities
@@ -11,14 +12,11 @@ namespace PNNLOmics.Utilities
         /// </summary>
         public static bool PassesCutoff(Peptide peptide, double score, double fdr)
         {
-            var passes = true;
-
             if (peptide == null)
                 return false;
 
             if (peptide.Fdr   > fdr)    return false;            
-            if (peptide.Score > score)  return false;            
-            return passes;
+            return !(peptide.Score > score);
         }
 
         /// <summary>
@@ -27,12 +25,7 @@ namespace PNNLOmics.Utilities
         public static string CleanString(string peptide)
         {
             var peptides = peptide.Split('.');
-
-            if (peptides.Length > 2)
-            {
-                return peptides[1];
-            }
-            return peptides[0];
+            return peptides.Length > 2 ? peptides[1] : peptides[0];
         }
 
         public static Dictionary<string, Peptide> MapWithBestSequence(IEnumerable<Peptide> peptides)
@@ -49,6 +42,7 @@ namespace PNNLOmics.Utilities
         /// <summary>
         /// Maps peptide sequences to a dictionary based on sequence
         /// </summary>
+        [UsedImplicitly]
         public static Dictionary<string, List<Peptide>> MapSequence(IEnumerable<Peptide> peptides)
         {
             var map = new Dictionary<string, List<Peptide>>();
@@ -67,7 +61,8 @@ namespace PNNLOmics.Utilities
         }
         /// <summary>
         /// Maps peptide sequences to a dictionary based on scan
-        /// </summary>        
+        /// </summary>   
+        [UsedImplicitly]     
         public static Dictionary<int, List<Peptide>> MapScan(IEnumerable<Peptide> peptides)
         {
 
@@ -87,6 +82,7 @@ namespace PNNLOmics.Utilities
         /// </summary>
         /// <param name="peptides"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public static Dictionary<int, Peptide> SortBestScan(Dictionary<int, List<Peptide>> peptides)
         {
 
@@ -107,6 +103,7 @@ namespace PNNLOmics.Utilities
         /// </summary>
         /// <param name="peptides"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public static Dictionary<string, Peptide> SortBestSequence(Dictionary<string, List<Peptide>> peptides)
         {
 

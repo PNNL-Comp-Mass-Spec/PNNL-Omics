@@ -50,7 +50,7 @@ namespace PNNLOmicsIO.IO
                 sb.Append(string.Format("TITLE={0}.1.dta", feature.Scan));
                 sb.Append(Environment.NewLine);
 
-                sb.Append(string.Format("PEPMASS={0}", feature.PrecursorMZ));
+                sb.Append(string.Format("PEPMASS={0}", feature.PrecursorMz));
                 sb.Append(Environment.NewLine);
 
                 sb.Append(string.Format("CHARGE={0}+", feature.PrecursorChargeState));

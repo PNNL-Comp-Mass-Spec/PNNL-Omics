@@ -4,7 +4,7 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Chromatograms
 {
-    public class XicFeature : Chromatogram, IComparable<XicFeature>
+    public sealed class XicFeature : Chromatogram, IComparable<XicFeature>
     {
         public double LowMz { get; set; }
         public double HighMz { get; set; }                

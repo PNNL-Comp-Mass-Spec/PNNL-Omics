@@ -38,7 +38,7 @@ namespace PNNLOmics.Data.Constants
                 var rootOfMysteryPath = Directory.GetDirectoryRoot(pPath);
 
                 //this contains all the path - the root
-                var activeDirectoryPath  = PathUtil.AssemblyDirectory;
+                var activeDirectoryPath  = PathUtililities.AssemblyDirectory;
 
                 //2.  repalce // with space for splitting
                 var charSeperator = Path.DirectorySeparatorChar;

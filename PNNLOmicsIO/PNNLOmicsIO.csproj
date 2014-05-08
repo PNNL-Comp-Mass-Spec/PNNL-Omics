@@ -36,11 +36,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\BaseTextFileReader.cs" />
@@ -54,7 +49,7 @@
     <Compile Include="IO\ITextFileReader.cs" />
     <Compile Include="IO\MgfFileWriter.cs" />
     <Compile Include="IO\MSFeatureFileReader.cs" />
-    <Compile Include="IO\MSFeatureLightReader.cs" />
+    <Compile Include="IO\MsFeatureLightFileReader.cs" />
     <Compile Include="IO\MsgfReader.cs" />
     <Compile Include="IO\MsMsFileWriterFactory.cs" />
     <Compile Include="IO\PeptideReaderFactory.cs" />

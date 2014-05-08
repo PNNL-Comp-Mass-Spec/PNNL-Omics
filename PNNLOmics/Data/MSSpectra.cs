@@ -1,28 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using PNNLOmics.Annotations;
 using PNNLOmics.Data.Features;
+using PNNLOmics.Data.Peaks;
 
 namespace PNNLOmics.Data
 {
     /// <summary>
     /// Contains MSn data for a given parent m/z.
     /// </summary>
-    public class MSSpectra: BaseData,IDisposable
+    public class MSSpectra: IDisposable
     {
         /// <summary>
         /// The default MSn level (MS/MS).
         /// </summary>
-        public const int CONST_DEFAULT_MS_LEVEL = 1;
+        private const int CONST_DEFAULT_MS_LEVEL = 1;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         public MSSpectra ()
         {                        
-            Clear();
+            
+            ScanMetaData            = new ScanSummary();
+            MsLevel                 = CONST_DEFAULT_MS_LEVEL;
+            CollisionType           = CollisionType.None;
+            Scan                    = 0;
+            TotalIonCurrent         = 0;
+            PrecursorMz             = 0;
+            GroupId                 = -1;
+            PrecursorChargeState    = -1;
+            Id                      = -1;
+            Peaks                   = new List<XYData>();
+            PeaksProcessed          = new List<ProcessedPeak>();
+            PrecursorPeak           = null;
+            ParentSpectra           = null;
+            Peptides                = new List<Peptide>();
+            PeakProcessingLevel     = PeakProcessingLevel.None;
         }
 
         #region Properties
+        public int Id { get; set; }
         /// <summary>
         /// Gets or sets the retention time.
         /// </summary>
@@ -39,7 +57,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets what group (or dataset) this spectra came from.
         /// </summary>
-        public int GroupID
+        public int GroupId
         {
             get;
             set;
@@ -55,7 +73,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the MS Level.
         /// </summary>
-        public int MSLevel
+        public int MsLevel
         {
             get; 
             set; 
@@ -63,6 +81,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the base peak.
         /// </summary>
+        [UsedImplicitly]
         public ProcessedPeak BasePeak
         {
             get;
@@ -79,6 +98,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets processed peaks asspcoated with this spectra.
         /// </summary>
+        [UsedImplicitly]
         public List<ProcessedPeak> PeaksProcessed
         {
             get;
@@ -87,6 +107,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// The level to which the peaks have been processed
         /// </summary>
+        [UsedImplicitly]
         public PeakProcessingLevel PeakProcessingLevel
         {
             get;
@@ -95,6 +116,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets any n + 1 level MSn child spectra.
         /// </summary>
+        [UsedImplicitly]
         public List<MSSpectra> ChildSpectra
         {
             get;
@@ -103,6 +125,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the parent spectra if MSLevel > 2.
         /// </summary>
+        [UsedImplicitly]
         public MSSpectra ParentSpectra { get; set; }
         /// <summary>
         /// Gets or sets the collision type.
@@ -115,6 +138,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the total ion current.
         /// </summary>
+        [UsedImplicitly]
         public double TotalIonCurrent
         {
             get;
@@ -123,7 +147,8 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the parent precursor M/Z for this MSn spectra.
         /// </summary>
-        public double PrecursorMZ
+        [UsedImplicitly]
+        public double PrecursorMz
         {
             get;
             set;
@@ -131,6 +156,7 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets or sets the more accurate parent precursor M/Z for this MSn spectra.
         /// </summary>
+        [UsedImplicitly]
         public ProcessedPeak PrecursorPeak
         {
             get;
@@ -154,27 +180,6 @@ namespace PNNLOmics.Data
         }
         #endregion
 
-        /// <summary>
-        /// Resets the data to it's default state.
-        /// </summary>
-        public override void  Clear()
-        {
-            ScanMetaData            = new ScanSummary();
-            MSLevel                 = CONST_DEFAULT_MS_LEVEL;
-            CollisionType           = CollisionType.None;
-            Scan                    = 0;
-            TotalIonCurrent         = 0;
-            PrecursorMZ             = 0;
-            GroupID                 = -1;
-            PrecursorChargeState    = -1;
-            ID                      = -1;
-            Peaks                   = new List<XYData>();
-            PeaksProcessed          = new List<ProcessedPeak>();
-            PrecursorPeak           = null;
-            ParentSpectra           = null;
-            Peptides                = new List<Peptide>();
-            PeakProcessingLevel     = Data.PeakProcessingLevel.None;
-        }
 
         #region Overriden Base Methods
         /// <summary>
@@ -184,11 +189,11 @@ namespace PNNLOmics.Data
         public override string ToString()
         {
             return string.Format("ID = {0} Scan = {1} Precursor = {2}  Charge {3} Group = {4}",
-                                ID,
+                                Id,
                                 Scan,
-                                PrecursorMZ,
+                                PrecursorMz,
                                 PrecursorChargeState,
-                                GroupID);
+                                GroupId);
             
         }
         /// <summary>
@@ -205,11 +210,11 @@ namespace PNNLOmics.Data
             if (other == null)
                 return false;
 
-            if (!GroupID.Equals(other.GroupID))
+            if (!GroupId.Equals(other.GroupId))
             {
                 return false;
             }
-            if (!MSLevel.Equals(other.MSLevel))
+            if (!MsLevel.Equals(other.MsLevel))
             {
                 return false;
             }
@@ -217,7 +222,7 @@ namespace PNNLOmics.Data
             {
                 return false;
             }
-            if (!PrecursorMZ.Equals(other.PrecursorMZ))
+            if (!PrecursorMz.Equals(other.PrecursorMz))
             {
                 return false;
             }
@@ -246,11 +251,11 @@ namespace PNNLOmics.Data
         public override int GetHashCode()
         {
             var hashCode =
-                PrecursorMZ.GetHashCode() ^
+                PrecursorMz.GetHashCode() ^
                 PrecursorChargeState.GetHashCode() ^
                 Scan.GetHashCode() ^
-                ID.GetHashCode() ^
-                GroupID.GetHashCode() ^
+                Id.GetHashCode() ^
+                GroupId.GetHashCode() ^
                 TotalIonCurrent.GetHashCode() ^
                 RetentionTime.GetHashCode();
             return hashCode;
@@ -261,24 +266,19 @@ namespace PNNLOmics.Data
 
         public void Dispose()
         {
-            Peaks = null;
+            Peaks          = null;
             PeaksProcessed = null;
-            PrecursorPeak = null;
+            PrecursorPeak  = null;                        
+            ParentSpectra  = null;
 
-            if (ParentSpectra != null)
-            {
-                ParentSpectra.Clear();
-                ParentSpectra = null;
-            }
 
-            if (ChildSpectra != null)
+            if (ChildSpectra == null) return;
+
+            foreach (var spectra in ChildSpectra)
             {
-                foreach (var spectra in ChildSpectra)
-                {
-                    spectra.Dispose();
-                }
-                ChildSpectra = null;
+                spectra.Dispose();
             }
+            ChildSpectra = null;
         }
 
         #endregion

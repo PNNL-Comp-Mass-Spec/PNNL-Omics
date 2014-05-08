@@ -136,12 +136,12 @@ namespace PNNLOmics.Algorithms.Chromatograms
                         // features
                         var spectraData = new MSSpectra
                         {
-                            ID              = msmsFeatureId,
+                            Id              = msmsFeatureId,
                             ScanMetaData    = summary,
                             CollisionType   = summary.CollisionType,
                             Scan            = s,
-                            MSLevel         = summary.MsLevel,
-                            PrecursorMZ     = summary.PrecursorMz,
+                            MsLevel         = summary.MsLevel,
+                            PrecursorMz     = summary.PrecursorMz,
                             TotalIonCurrent = summary.TotalIonCurrent
                         };
                         
@@ -203,10 +203,10 @@ namespace PNNLOmics.Algorithms.Chromatograms
                         MassMonoisotopic = umc.MassMonoisotopic,
                         Scan             = s,
                         Abundance        = Convert.ToInt64(summedIntensity),
-                        ID               = msFeatureId++,
+                        Id               = msFeatureId++,
                         DriftTime        = umc.DriftTime,
                         RetentionTime    = s,
-                        GroupID          = umc.GroupID
+                        GroupId          = umc.GroupId
                     };
                     parentMsList.Add(msFeature);
                     xic.Feature.AddChildFeature(msFeature);
@@ -216,7 +216,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
             }
 
             OnProgress("Filtering bad features with no data.");
-            features = features.Where(x => x.MSFeatures.Count > 0).ToList();
+            features = features.Where(x => x.MsFeatures.Count > 0).ToList();
             
             OnProgress("Refining XIC features.");
             return RefineFeatureXics(features);
@@ -236,7 +236,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                 // Clear the MS Feature List 
                 // Because we're going to refine each charge state then fix the length of the feature
                 // from it's known max abundance value.                
-                feature.MSFeatures.Clear();
+                feature.MsFeatures.Clear();
 
 
                 // Work on a single charge state since XIC's have different m/z values
@@ -292,7 +292,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
                 // Clean up 
             }
-            return features.Where(x => x.MSFeatures.Count > 0).ToList();
+            return features.Where(x => x.MsFeatures.Count > 0).ToList();
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     }
 
                     // Clear the ms feature list...because later we will populate it
-                    feature.MSFeatures.Clear();
+                    feature.MsFeatures.Clear();
 
                     var xicFeature = new XicFeature
                     {
@@ -492,7 +492,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                         // Otherwise add the new feature
                         newFeature.MassMonoisotopic = feature.MassMonoisotopic;
                         newFeature.DriftTime        = feature.DriftTime;
-                        newFeature.GroupID          = feature.GroupID;
+                        newFeature.GroupId          = feature.GroupId;
                     }
                     features[charge].Add(newFeature);
                 }

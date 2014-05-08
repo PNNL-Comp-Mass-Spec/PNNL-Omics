@@ -98,9 +98,6 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
                         solver.Coefficients[2] = 1;//?
                     }
                     break;
-                default:
-                    solver = null;
-                    break;
             }
             return solver;
         }

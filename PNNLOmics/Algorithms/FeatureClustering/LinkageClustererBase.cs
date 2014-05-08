@@ -214,7 +214,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 				// Add the feature to the parent so the cluster will point to the child.
                 var parentFeature         = new U();
                 var id                  = tempID++;
-				parentFeature.ID        = id;
+				parentFeature.Id        = id;
 
                 parentFeature.AddChildFeature(umc);
                 umc.SetParentFeature(parentFeature);		
@@ -514,7 +514,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                         cluster.AddChildFeature(umcX);
 
                         cluster.CalculateStatistics(Parameters.CentroidRepresentation);
-                        cluster.ID = clusterId++;
+                        cluster.Id = clusterId++;
                         writer.WriteCluster(cluster);
                     }
                     else
@@ -528,7 +528,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
                         foreach (var cluster in localClusters.Values)
                         {
-                            cluster.ID = clusterId++;
+                            cluster.Id = clusterId++;
                             CalculateStatistics(cluster);                            
                             writer.WriteCluster(cluster);
                         }
@@ -552,7 +552,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 {
                     foreach (var cluster in localClusters.Values)
                     {
-                        cluster.ID = clusterId++;
+                        cluster.Id = clusterId++;
                         CalculateStatistics(cluster); 
                         writer.WriteCluster(cluster);
                     }
@@ -561,7 +561,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 {
                     foreach (var cluster in blockClusters)
                     {
-                        cluster.ID = clusterId++;
+                        cluster.Id = clusterId++;
                         CalculateStatistics(cluster); 
                         writer.WriteCluster(cluster);
                     }

@@ -60,10 +60,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {
 
             return string.Format("{0},{1},{2},{3},{4},{5}", ID,
-                                                                        VertexA.ID,
-                                                                        VertexA.GroupID,
-                                                                        VertexB.ID,
-                                                                        VertexB.GroupID,
+                                                                        VertexA.Id,
+                                                                        VertexA.GroupId,
+                                                                        VertexB.Id,
+                                                                        VertexB.GroupId,
                                                                         Length);
         }
 

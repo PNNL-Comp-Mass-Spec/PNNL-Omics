@@ -8,7 +8,9 @@
 
         public Protein()
         {
-            Clear();
+            RefId = -1;
+            Sequence = "";
+            CleavageState = CleavageState.NonSpecific;            
         }
 
         /// <summary>
@@ -22,7 +24,7 @@
         /// <summary>
         /// Gets or sets the reference ID
         /// </summary>
-        public int RefID
+        public int RefId
         {
             get;
             set;
@@ -30,7 +32,7 @@
         /// <summary>
         /// Gets or sets the protein ID
         /// </summary>
-        public int ProteinID
+        public int ProteinId
         {
             get;
             set;
@@ -41,26 +43,18 @@
             set;
         }
         /// <summary>
-        /// Clears the 
+        /// Gets or sets the cleavage state of the protein.
         /// </summary>
-        public override void Clear()
-        {
-            RefID    = -1;
-            Sequence = "";
-        }
-    }
-
-    /// <summary>
-    /// Class that holds information about a protein.
-    /// </summary>
-    public class Metabolite : Molecule
-    {
+        public CleavageState CleavageState { get; set; }
 
         /// <summary>
-        /// Clears the 
+        /// Gets or sets the position of the ending residue of a cleaved protein.
         /// </summary>
-        public override void Clear()
-        {
-        }
+        public int ResidueEndPosition { get; set; }
+        /// <summary>
+        /// Gets or sets the position of the starting residue of a cleaved protein.
+        /// </summary>
+        public int ResidueStartPosition { get; set; }
+        
     }
 }

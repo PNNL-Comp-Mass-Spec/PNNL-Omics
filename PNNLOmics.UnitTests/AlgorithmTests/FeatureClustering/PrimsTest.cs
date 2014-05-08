@@ -26,9 +26,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 var lineData = line.Split(new[] {"\t"}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 var feature                 = new UMCLight();
-                feature.ClusterID                = Convert.ToInt32(lineData[0]);                
-                feature.GroupID                  = Convert.ToInt32(lineData[1]);
-                feature.ID                       = Convert.ToInt32(lineData[2]);
+                feature.ClusterId                = Convert.ToInt32(lineData[0]);                
+                feature.GroupId                  = Convert.ToInt32(lineData[1]);
+                feature.Id                       = Convert.ToInt32(lineData[2]);
                 feature.MassMonoisotopicAligned  = Convert.ToDouble(lineData[3]);
                 feature.RetentionTime            = Convert.ToDouble(lineData[4]);
                 feature.DriftTime                = Convert.ToDouble(lineData[5]);
@@ -52,7 +52,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.IsNotEmpty(features);
 
             var cluster = new UMCClusterLight();
-            cluster.ID = features[0].ID;
+            cluster.Id = features[0].Id;
             features.ForEach(x => cluster.AddChildFeature(x));
 
             var maps = new Dictionary<int, UMCClusterLight>();
@@ -68,28 +68,28 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             var cid = 0;
             foreach (var clusterx in clusters)
             {
-                clusterx.ID = cid++;
+                clusterx.Id = cid++;
                 foreach (var feature in clusterx.Features)
                 {
-                    if (!counts.ContainsKey(feature.GroupID))
+                    if (!counts.ContainsKey(feature.GroupId))
                     {
-                        counts.Add(feature.GroupID, new Dictionary<int, int>());
+                        counts.Add(feature.GroupId, new Dictionary<int, int>());
                     }
-                    if (!counts[feature.GroupID].ContainsKey(feature.ID))
+                    if (!counts[feature.GroupId].ContainsKey(feature.Id))
                     {
-                        counts[feature.GroupID].Add(feature.ID, 0);
-                    }
-
-                    if (feature.ID == 51 || feature.ID == 37)
-                    {
-                        Console.WriteLine("Found it {0} cluster {1}", feature.ID, clusterx.ID);
+                        counts[feature.GroupId].Add(feature.Id, 0);
                     }
 
-                    counts[feature.GroupID][feature.ID]++;
-                    Console.WriteLine("Found {0}", clusterx.ID);
-                    if (counts[feature.GroupID][feature.ID] > 1)
+                    if (feature.Id == 51 || feature.Id == 37)
                     {
-                        Console.WriteLine("Duplicate!!!! cluster {0}  feature {1}", clusterx.ID, feature.ID);
+                        Console.WriteLine("Found it {0} cluster {1}", feature.Id, clusterx.Id);
+                    }
+
+                    counts[feature.GroupId][feature.Id]++;
+                    Console.WriteLine("Found {0}", clusterx.Id);
+                    if (counts[feature.GroupId][feature.Id] > 1)
+                    {
+                        Console.WriteLine("Duplicate!!!! cluster {0}  feature {1}", clusterx.Id, feature.Id);
                     }
                 }
             }
@@ -128,7 +128,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.IsNotEmpty(features);
 
             var cluster = new UMCClusterLight();
-            cluster.ID = features[0].ID;
+            cluster.Id = features[0].Id;
             features.ForEach(x => cluster.AddChildFeature(x));
 
             var maps = new Dictionary<int, UMCClusterLight>();
@@ -158,14 +158,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
 
                 var distances = new List<double>();
-                testCluster.ID = id++;
+                testCluster.Id = id++;
                 foreach (var feature in testCluster.Features)
                 {
                     Console.WriteLine("{0},{1},{2},{3}",
                                                                 feature.RetentionTime,                                                
                                                                 feature.MassMonoisotopicAligned,
                                                                 feature.DriftTime,
-                                                                testCluster.ID);
+                                                                testCluster.Id);
 
                     var newDistance = distance.EuclideanDistance(feature, testCluster);
                     distances.Add(newDistance);

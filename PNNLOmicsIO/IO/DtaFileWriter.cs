@@ -46,7 +46,7 @@ namespace PNNLOmicsIO.IO
                                             feature.Scan,
                                             feature.PrecursorChargeState);
                 sb.Append(Environment.NewLine);
-                sb.AppendFormat("{0} {1} scan={2} cs={1}", feature.PrecursorMZ, feature.PrecursorChargeState, feature.Scan);
+                sb.AppendFormat("{0} {1} scan={2} cs={1}", feature.PrecursorMz, feature.PrecursorChargeState, feature.Scan);
                 sb.Append(Environment.NewLine);
                 foreach (var peak in feature.Peaks)
                 {

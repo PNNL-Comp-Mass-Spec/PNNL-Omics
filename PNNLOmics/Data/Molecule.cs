@@ -3,9 +3,14 @@ using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Data
 {
-    public class Molecule: BaseData
+    public class Molecule
     {
-
+        public Molecule()
+        {
+            Spectrum = null;
+            MassTag  = null;
+        }
+        public int Id { get; set; }
         public int GroupId { get; set; }
         /// <summary>
         /// Gets or sets the scan the molecule was identified in.
@@ -39,11 +44,6 @@ namespace PNNLOmics.Data
         {
             get;
             set;
-        }
-        public override void Clear()
-        {
-            Spectrum  = null;
-            MassTag   = null;
         }
         /// <summary>
         /// Gets the moleculare Weight

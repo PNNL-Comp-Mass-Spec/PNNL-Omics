@@ -135,7 +135,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
             var uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
-            var asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtil.AssemblyDirectory);
+            var asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtililities.AssemblyDirectory);
 
             var constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
 			//FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(PathUtil.AssemblyDirectory, OMICS_ELEMENT_DATA_FILE));

@@ -63,7 +63,7 @@ namespace PNNLOmics.Extensions
         public static Dictionary<int, List<MSFeatureLight>> CreateChargeMap(this UMCLight feature)
         {
             var chargeMap = new Dictionary<int, List<MSFeatureLight>>();
-            foreach (var msFeature in feature.MSFeatures)
+            foreach (var msFeature in feature.MsFeatures)
             {
                 if (!chargeMap.ContainsKey(msFeature.ChargeState))
                 {

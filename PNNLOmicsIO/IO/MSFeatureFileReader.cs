@@ -8,7 +8,7 @@ namespace PNNLOmicsIO.IO
     /// <summary>
     /// Decon2ls (MS Feature) file text reader.
     /// </summary>
-    public class MSFeatureFileReader : BaseTextFileReader<MSFeature>
+    public class MsFeatureFileReader : BaseTextFileReader<MSFeatureLight>
     {
         #region Column constants
         private const string SCAN_NUMBER        = "scan";
@@ -41,10 +41,7 @@ namespace PNNLOmicsIO.IO
 
 			for (var i = 0; i < numOfColumns; i++)
 			{
-                var title    = columnTitles[i].Trim();
-                title           = title.ToLower();
-                
-				switch (columnTitles[i].Trim())
+			    switch (columnTitles[i].Trim())
 				{
                     case "frame_num":
                         columnMap.Add(FRAME_NUMBER, i);
@@ -97,9 +94,9 @@ namespace PNNLOmicsIO.IO
         /// <param name="textReader"></param>
         /// <param name="columnMapping"></param>
         /// <returns></returns>
-		protected override IEnumerable<MSFeature> SaveFileToEnumerable(TextReader textReader, Dictionary<string, int> columnMapping)
+		protected override IEnumerable<MSFeatureLight> SaveFileToEnumerable(TextReader textReader, Dictionary<string, int> columnMapping)
 		{
-			var    features     = new List<MSFeature>();			
+            var features = new List<MSFeatureLight>();			
 			var                currentId    = 0;			
 			var             line         = "";			
 
@@ -108,9 +105,9 @@ namespace PNNLOmicsIO.IO
 			
 			while ((line = textReader.ReadLine()) != null)
 			{
-				var columns    = line.Split(new[] {Delimeter}, 0, StringSplitOptions.RemoveEmptyEntries);												
-				var feature   = new MSFeature();
-				feature.ID          = currentId;
+				var columns    = line.Split(new[] {Delimeter}, 0, StringSplitOptions.RemoveEmptyEntries);
+                var feature = new MSFeatureLight();
+				feature.Id          = currentId;
 
 
                 // In case this file does not have drift time, we need to make sure we clean up the
@@ -122,18 +119,13 @@ namespace PNNLOmicsIO.IO
                 else
                 {
                     if (columnMapping.ContainsKey(FRAME_NUMBER))    feature.RetentionTime       = float.Parse(columns[columnMapping[FRAME_NUMBER]]);
-                    if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.ScanIMS             = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
+                    if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.Scan             = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
                 }
                 if (columnMapping.ContainsKey(CHARGE))              feature.ChargeState         = int.Parse(columns[columnMapping[CHARGE]]);
                 if (columnMapping.ContainsKey(ABUNDANCE))           feature.Abundance           = long.Parse(columns[columnMapping[ABUNDANCE]]);
-                if (columnMapping.ContainsKey(MZ))                  feature.MZ                  = float.Parse(columns[columnMapping[MZ]]);
-                if (columnMapping.ContainsKey(ISOTOPIC_FIT))        feature.Fit                 = float.Parse(columns[columnMapping[ISOTOPIC_FIT]]);
-                if (columnMapping.ContainsKey(MONO_MASS))           feature.MassMonoisotopic    = float.Parse(columns[columnMapping[MONO_MASS]]);
-                if (columnMapping.ContainsKey(FWHM))                feature.Fwhm                = float.Parse(columns[columnMapping[FWHM]]);
-                if (columnMapping.ContainsKey(SNR))                 feature.SignalToNoiseRatio  = float.Parse(columns[columnMapping[SNR]]);
-                if (columnMapping.ContainsKey(FWHM))                feature.Fwhm                = float.Parse(columns[columnMapping[FWHM]]);
-                if (columnMapping.ContainsKey(MONO_ABUNDANCE))      feature.AbundanceMono       = int.Parse(columns[columnMapping[MONO_ABUNDANCE]]);
-                if (columnMapping.ContainsKey(MONO_2_ABUNDANCE))    feature.AbundancePlus2      = int.Parse(columns[columnMapping[MONO_2_ABUNDANCE]]);
+                if (columnMapping.ContainsKey(MZ))                  feature.Mz                  = float.Parse(columns[columnMapping[MZ]]);
+                if (columnMapping.ContainsKey(ISOTOPIC_FIT))        feature.Score                 = float.Parse(columns[columnMapping[ISOTOPIC_FIT]]);
+                if (columnMapping.ContainsKey(MONO_MASS))           feature.MassMonoisotopic    = float.Parse(columns[columnMapping[MONO_MASS]]);                
                 
                 features.Add(feature);
                 currentId++;

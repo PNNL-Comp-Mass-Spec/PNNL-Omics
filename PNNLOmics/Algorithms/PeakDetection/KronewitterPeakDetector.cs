@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using PNNLOmics.Data;
+using PNNLOmics.Data.Peaks;
 
 namespace PNNLOmics.Algorithms.PeakDetection
 {

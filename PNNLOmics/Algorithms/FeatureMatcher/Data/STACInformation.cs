@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
-using PNNLOmics.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {
@@ -129,11 +128,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <typeparam name="TU">Feature to be matched to.  Derived from Feature.  Usually AMTTag.</typeparam>
         /// <param name="featureMatchList">List of FeatureMatches to train parameters on.</param>
         /// <param name="uniformTolerances">User provided tolerances.</param>
-        /// <param name="useDriftTime">Whether to train the data on the drift time dimension.</param>
-        /// <param name="usePrior"></param>
+        /// <param name="useDriftTime">Whether to train the data on the drift time dimension.</param>        
         /// <returns>A boolean flag indicating whether convergence was reached.</returns>
-        public bool TrainStac<T, TU>(List<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime, bool usePrior)
-            where T : FeatureLight, new()
+        public bool TrainStac<T, TU>(List<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime)
+            where T  : FeatureLight, new()
             where TU : FeatureLight, new()
         {
             Clear();
@@ -146,14 +144,32 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 uniformDensity /= (2 * toleranceMatrix[i, 0]);
             }
 
-            // Train the EM parameters on the data.
-            if (!usePrior) return TrainWithoutPrior(featureMatchList, uniformDensity, useDriftTime);
-            if (typeof(TU) == typeof(MassTagLight))
+            // Train the EM parameters on the data.            
+            return TrainWithoutPrior(featureMatchList, uniformDensity, useDriftTime);                        
+        }
+
+        private void TrainStac<T, TU>(List<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime, bool usePrior)
+            where T : FeatureLight, new()
+            where TU : MassTagLight, new()
+        {
+            Clear();
+
+            // Calculate the density of the uniform density given the tolerances.
+            var toleranceMatrix = uniformTolerances.AsVector(useDriftTime);
+            var uniformDensity = 1.0;
+            for (var i = 0; i < toleranceMatrix.RowCount; i++)
             {
-                var newFeatureMatchList2 = featureMatchList as List<FeatureMatch<T, MassTagLight>>;
-                return TrainWithPrior(newFeatureMatchList2, uniformDensity, useDriftTime);
+                uniformDensity /= (2 * toleranceMatrix[i, 0]);
             }
-            return TrainWithoutPrior(featureMatchList, uniformDensity, useDriftTime);
+
+            // Train the EM parameters on the data.
+            if (!usePrior)
+            {
+                TrainWithoutPrior(featureMatchList, uniformDensity, useDriftTime);
+                return;
+            }
+
+            TrainWithPrior(featureMatchList, uniformDensity, useDriftTime);            
         }
 
         /// <summary>
@@ -164,9 +180,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="featureMatchList">List of FeatureMatches to calculate scores for.</param>
         /// <param name="uniformTolerances"></param>
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
-        /// <param name="usePrior">Whether to use prior probabilities in the calculation of the STAC score.</param>
         /// <returns>The STAC score corresponding to featureMatch.</returns>
-        public void SetStacScores<T, TU>(IEnumerable<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime, bool usePrior)
+        private void SetStacScores<T, TU>(IEnumerable<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime)
             where T  : FeatureLight, new()
             where TU : FeatureLight, new()
         {
@@ -178,22 +193,39 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 uniformDensity /= (2 * toleranceMatrix[i, 0]);
             }
 
-
-			if (typeof(TU) == typeof(MassTagLight))
+			foreach (var match in featureMatchList)
 			{
-                var newFeatureMatchList = featureMatchList as List<FeatureMatch<T, MassTagLight>>;
-				foreach (var match in newFeatureMatchList)
-				{
-					match.STACScore = ComputeStacMassTag(match, uniformDensity, usePrior);
-				}
+				match.STACScore = ComputeStacFeature(match, uniformDensity);
 			}
-			else
-			{
-				foreach (var match in featureMatchList)
-				{
-					match.STACScore = ComputeStacFeature(match, uniformDensity);
-				}
-			}
+        }
+        /// <summary>
+        /// Function to calculate STAC score.
+        /// </summary>
+        /// <typeparam name="T">Observed feature to be matched.  Derived from Feature.  Usually UMC or UMCCluster.</typeparam>
+        /// <typeparam name="TU">Feature to be matched to.  Derived from Feature.  Usually AMTTag.</typeparam>
+        /// <param name="featureMatchList">List of FeatureMatches to calculate scores for.</param>
+        /// <param name="uniformTolerances"></param>
+        /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
+        /// <param name="usePrior">Whether to use prior probabilities in the calculation of the STAC score.</param>
+        /// <returns>The STAC score corresponding to featureMatch.</returns>
+        private void SetStacScores<T, TU>(IEnumerable<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime, bool usePrior)
+            where T : FeatureLight, new()
+            where TU : MassTagLight, new()
+        {
+            // Calculate the density of the uniform density given the tolerances.
+            var toleranceMatrix = uniformTolerances.AsVector(useDriftTime);
+            var uniformDensity = 1.0;
+            for (var i = 0; i < toleranceMatrix.RowCount; i++)
+            {
+                uniformDensity /= (2 * toleranceMatrix[i, 0]);
+            }
+           
+            var newFeatureMatchList = featureMatchList as List<FeatureMatch<T, MassTagLight>>;
+            foreach (var match in newFeatureMatchList)
+            {
+                match.STACScore = ComputeStacMassTag(match, uniformDensity, usePrior);
+            }
+           
         }
         /// <summary>
         /// Set the STAC Specificity scores for a list of matches.
@@ -211,7 +243,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             while (matchIndex < featureMatchList.Count)
             {
                 var totalCount = 1;
-                while (endIndex < featureMatchList.Count && featureMatchList[endIndex].ObservedFeature.ID == featureMatchList[matchIndex].ObservedFeature.ID)
+                while (endIndex < featureMatchList.Count && featureMatchList[endIndex].ObservedFeature.Id == featureMatchList[matchIndex].ObservedFeature.Id)
                 {
                     totalCount++;
                     endIndex++;
@@ -253,7 +285,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             while (matchIndex < featureMatchList.Count)
             {
 				var maxCount = 0;
-                while (endIndex < featureMatchList.Count && featureMatchList[endIndex].ObservedFeature.ID == featureMatchList[matchIndex].ObservedFeature.ID)
+                while (endIndex < featureMatchList.Count && featureMatchList[endIndex].ObservedFeature.Id == featureMatchList[matchIndex].ObservedFeature.Id)
                 {
 					if (featureMatchList[endIndex].TargetFeature.ObservationCount > maxCount)
 					{
@@ -284,28 +316,38 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="featureMatchList">List of FeatureMatches to perform STAC on.</param>
         /// <param name="uniformTolerances"></param>
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
-        /// <param name="usePrior">Whether to use prior probabilities in the calculation of the STAC score.</param>
-        public void PerformStac<T, TU>(List<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime, bool usePrior)
+        public void PerformStac<T, TU>(List<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime)
             where T : FeatureLight, new()
             where TU : FeatureLight, new()
         {
 			ReportMessage("Training STAC");
-            TrainStac(featureMatchList, uniformTolerances, useDriftTime, usePrior);
-
+            TrainStac(featureMatchList, uniformTolerances, useDriftTime);
 			ReportMessage("Calculating final STAC Scores");
-            SetStacScores(featureMatchList, uniformTolerances, useDriftTime, usePrior);
+            SetStacScores(featureMatchList, uniformTolerances, useDriftTime);
+			ReportMessage("Calculating STAC_UP Scores");            
+			SetStacSpecificitiesFeature(featureMatchList);			
+        }
 
-			ReportMessage("Calculating STAC_UP Scores");
-            if (typeof(TU) == typeof(MassTagLight))
-			{
-                // ReSharper disable once ExpressionIsAlwaysNull
-                var newFeatureMatchList = featureMatchList as List<FeatureMatch<T, MassTagLight>>;
-				SetSTACSpecificitiesMassTag(newFeatureMatchList);
-			}
-			else
-			{
-				SetStacSpecificitiesFeature(featureMatchList);
-			}
+        /// <summary>
+        /// Function to train STAC parameters and to set STAC scores and Specificities.
+        /// </summary>
+        /// <typeparam name="T">Observed feature to be matched.  Derived from Feature.  Usually UMC or UMCCluster.</typeparam>
+        /// <typeparam name="TU">Feature to be matched to.  Derived from Feature.  Usually AMTTag.</typeparam>
+        /// <param name="featureMatchList">List of FeatureMatches to perform STAC on.</param>
+        /// <param name="uniformTolerances"></param>
+        /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
+        /// <param name="usePrior">Whether to use prior probabilities in the calculation of the STAC score.</param>
+        public void PerformStac<T, TU>(List<FeatureMatch<T, TU>> featureMatchList, FeatureMatcherTolerances uniformTolerances, bool useDriftTime, bool usePrior)
+            where T : FeatureLight, new()
+            where TU : MassTagLight, new()           
+        {
+            ReportMessage("Training STAC");
+            TrainStac(featureMatchList, uniformTolerances, useDriftTime, usePrior);
+            ReportMessage("Calculating final STAC Scores");
+            SetStacScores(featureMatchList, uniformTolerances, useDriftTime, usePrior);
+            ReportMessage("Calculating STAC_UP Scores");            
+            SetSTACSpecificitiesMassTag(featureMatchList);
+            
         }
         #endregion
 
@@ -318,6 +360,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             m_logLikelihood = 0.0;
             m_iteration = 0;
         }
+
         /// <summary>
         /// Function to calculate STAC parameters using prior probabilities.
         /// </summary>
@@ -326,12 +369,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
         /// <returns>A boolean flag indicating the convergence state of the algorithm.</returns>
-        private bool TrainWithPrior<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, bool useDriftTime)
+        private void TrainWithPrior<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, bool useDriftTime)
             where T : FeatureLight, new()
 			where U : MassTagLight, new()
         {
-            Clear();
-            var converges = false;
+            Clear();            
 
             var dataList = new List<Matrix>();
             var priorList = new List<double>();
@@ -356,9 +398,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 m_covarianceMatrixF = ExpectationMaximization.UpdateNormalCovarianceMatrix(dataList, m_meanVectorF, alphaList, priorList, false, true);
 
                 // Calculate the loglikelihood based on the new parameters.
-				double nextLogLikelihood = CalculateNnuLogLikelihood(featureMatchList, uniformDensity, useDriftTime, ref alphaList);
+				var nextLogLikelihood = CalculateNnuLogLikelihood(featureMatchList, uniformDensity, useDriftTime, ref alphaList);
 
-                OnIterate(new MessageEventArgs("."));
+                OnIterate(new ProgressNotifierArgs("."));
 				PrintCurrentStatistics(nextLogLikelihood);
 
                 // Increment the counter to show that another iteration has been completed.
@@ -367,7 +409,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 // Set the convergence flag and exit the while loop if the convergence criteria is met.
 				if (m_iteration > 10 && Math.Abs(nextLogLikelihood - m_logLikelihood) < EPSILON)
                 {
-                    converges = true;
                     break;
                 }
 
@@ -387,10 +428,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 			m_refinedTolerances = new FeatureMatcherTolerances((2.5 * massPpmStDev), (2.5 * netStDev), (float)(2.5 * driftTimeStDev))
 			{
 			    Refined = true
-			};
-
-            // Return the convergence flag, which is still false unless changed to true above.
-            return converges;
+			};            
         }
 
         /// <summary>
@@ -691,9 +729,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         #region "Events and related functions"
 
         
-        public event MessageEventHandler IterationEvent;
-        public event MessageEventHandler MessageEvent;
-        public event MessageEventHandler DebugEvent;
+        public event EventHandler<ProgressNotifierArgs> IterationEvent;
+        public event EventHandler<ProgressNotifierArgs> MessageEvent;
+        public event EventHandler<ProgressNotifierArgs> DebugEvent;
 
         /// <summary>
         /// Report detailed debugging information using OnDebugEvent
@@ -701,7 +739,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="message"></param>
         private void ReportDebug(string message) 
         {
-            OnDebugEvent(new MessageEventArgs(message));
+            OnDebugEvent(new ProgressNotifierArgs(message));
         }
 
         /// <summary>
@@ -710,23 +748,23 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="message"></param>
         private void ReportMessage(string message) 
         {
-            OnMessage(new MessageEventArgs(message));
+            OnMessage(new ProgressNotifierArgs(message));
         }
 
 
-        private void OnIterate(MessageEventArgs e) 
+        private void OnIterate(ProgressNotifierArgs e) 
         {
             if (IterationEvent != null)
                 IterationEvent(this, e);
         }
 
-        private void OnMessage(MessageEventArgs e) 
+        private void OnMessage(ProgressNotifierArgs e) 
         {
             if (MessageEvent != null)
                 MessageEvent(this, e);
         }
 
-        private void OnDebugEvent(MessageEventArgs e) 
+        private void OnDebugEvent(ProgressNotifierArgs e) 
         {
             if (DebugEvent != null)
                 DebugEvent(this, e);

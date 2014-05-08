@@ -5,14 +5,22 @@ namespace PNNLOmics.Data.Features
 	/// <summary>
 	/// Basic feature class
 	/// </summary>
-	public class FeatureLight: BaseData
+	public class FeatureLight
 	{
         /// <summary>
         /// Default constructor.
         /// </summary>
 		public FeatureLight()
 		{
-			Clear();
+			Abundance          = 0;
+			ChargeState        = 0;
+			DriftTime          = 0;
+			Id                 = -1;
+			MassMonoisotopic   = 0;
+            MassMonoisotopicAligned = 0;
+            Net                = 0;
+            NetAligned         = 0;
+            RetentionTime      = 0;
 		}
         /// <summary>
         /// Copy constructor.
@@ -20,12 +28,21 @@ namespace PNNLOmics.Data.Features
         /// <param name="feature">Feature to copy data from.</param>
         public FeatureLight(FeatureLight feature)
         {
-            Clear();
+            
+			Abundance          = 0;
+			ChargeState        = 0;
+			DriftTime          = 0;
+			Id                 = -1;
+			MassMonoisotopic   = 0;
+            MassMonoisotopicAligned = 0;
+            Net                = 0;
+            NetAligned         = 0;
+            RetentionTime      = 0;
 
             Abundance                  = feature.Abundance;
             ChargeState                = feature.ChargeState;
             DriftTime                  = feature.DriftTime;
-            ID                         = feature.ID;
+            Id                         = feature.Id;
             MassMonoisotopic           = feature.MassMonoisotopic;
             MassMonoisotopicAligned    = feature.MassMonoisotopicAligned;
             RetentionTime              = feature.RetentionTime;
@@ -33,6 +50,7 @@ namespace PNNLOmics.Data.Features
             Net                        = feature.Net;
             AmbiguityScore             = double.MaxValue;
         }
+        public int Id { get; set; }
         public int Index { get; set; }
         public int IdentifiedSpectraCount { get; set; }
         /// <summary>
@@ -51,6 +69,7 @@ namespace PNNLOmics.Data.Features
             get;
             set;
         }
+        public double Mz { get; set; }
         /// <summary>
         /// Gets or sets the abundance.
         /// </summary>
@@ -95,22 +114,8 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets or sets the group id (e.g. dataset) this feature originated from.
         /// </summary>
-        public int GroupID { get; set; }
-        /// <summary>
-        /// Resets the data structure back to its default state.
-        /// </summary>
-		public override void Clear()
-		{            
-			Abundance          = 0;
-			ChargeState        = 0;
-			DriftTime          = 0;
-			ID                 = -1;
-			MassMonoisotopic   = 0;
-            MassMonoisotopicAligned = 0;
-            Net                = 0;
-            NetAligned         = 0;
-            RetentionTime      = 0;
-		}
+        public int GroupId { get; set; }        
+
 		/// <summary>
 		/// Compares the aligned monoisotopic mass of two Features
 		/// </summary>
@@ -157,7 +162,7 @@ namespace PNNLOmics.Data.Features
 		/// <returns></returns>
 		public override string ToString()
 		{
-			return "Feature Light ID = " + ID +
+			return "Feature Light ID = " + Id +
 					" Mono Mass = " + MassMonoisotopic +
 					" Retention Time = " + RetentionTime +
 					" Drift Time = " + DriftTime;
@@ -176,7 +181,7 @@ namespace PNNLOmics.Data.Features
 			if (other == null)
 				return false;
 
-			if (!ID.Equals(other.ID))
+			if (!Id.Equals(other.Id))
 			{
 				return false;
 			}
@@ -212,7 +217,7 @@ namespace PNNLOmics.Data.Features
 				Abundance.GetHashCode() ^
 				ChargeState.GetHashCode() ^
 				DriftTime.GetHashCode() ^
-				ID.GetHashCode() ^
+				Id.GetHashCode() ^
 				RetentionTime.GetHashCode();						
 			return hashCode;
 		}

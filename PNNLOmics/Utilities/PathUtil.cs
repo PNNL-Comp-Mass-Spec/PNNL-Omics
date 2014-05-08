@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace PNNLOmics.Utilities
 {
-	class PathUtil
+	public static class PathUtililities
 	{
 		/// <summary>
 		/// Returns the path to the directory containing the currently executing DLL

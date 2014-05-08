@@ -8,16 +8,25 @@ namespace PNNLOmics.Data.Features
 	/// </summary>
     public class MSFeatureLight : FeatureLight, IComparable<MSFeatureLight>, IChildFeature<UMCLight>
 	{
-    
+
+	    public MSFeatureLight()
+	    {	        
+            MSnSpectra  = new List<MSSpectra>();
+            MsPeakList  = new List<Peak>();
+            MassMonoisotopicMostAbundant = 0;
+            MsMsCount   = 0;
+            Umc         = null;
+	    }
+
         #region AutoProperties
         /// <summary>
 		/// The list of MSPeaks that make up the MSFeature.  This would be the isotopic distribution.
         /// </summary>
-        public List<Peak> MSPeakList { get; set; }        
+        public List<Peak> MsPeakList { get; set; }        
 		/// <summary>
 		/// The UMC associated with this MS Feature.
 		/// </summary>
-        public UMCLight UMC { get; set; }
+        public UMCLight Umc { get; set; }
         /// <summary>
         /// Gets or sets the mass to charge ratio value.
         /// </summary>
@@ -48,20 +57,6 @@ namespace PNNLOmics.Data.Features
             }
         }
 
-		#region BaseData Members
-		/// <summary>
-		/// Clears the datatype and resets the raw values to their default values.
-		/// </summary>
-		public override void Clear()
-		{
-            MSnSpectra  = new List<MSSpectra>();
-            MSPeakList  = new List<Peak>();
-            MassMonoisotopicMostAbundant = 0;
-            MsMsCount   = 0;
-            UMC         = null;
-			base.Clear();
-		}
-		#endregion
 
 		#region IComparable<MSFeature> Members
 		/// <summary>
@@ -72,31 +67,19 @@ namespace PNNLOmics.Data.Features
 			return other.MassMonoisotopic.CompareTo(MassMonoisotopic);
 		}
 		#endregion
-
-        #region Comparers
-        /// <summary>
-        /// Compares the IMS Scan of two MS Features
-        /// </summary>
-        //TODO: Move to Feature.cs?
-        public static Comparison<MSFeature> ScanIMSComparison = delegate(MSFeature x, MSFeature y)
-        {
-            return x.ScanIMS.CompareTo(y.ScanIMS);
-        };
-		#endregion
-
-
+     
         #region IChildFeature<UMCLight> Members
 
         public void SetParentFeature(UMCLight parentFeature)
         {
-            UMC   = parentFeature;
-            UMCID = UMC.ID;
+            Umc   = parentFeature;
+            UmcId = Umc.Id;
         }
         public UMCLight ParentFeature
         {
-            get { return UMC; }
+            get { return Umc; }
         }
-        public int UMCID
+        public int UmcId
         {
             get;
             set;
@@ -106,8 +89,8 @@ namespace PNNLOmics.Data.Features
         public override int GetHashCode()
         {
             var hash = 17;
-            hash = hash * 23 + ID.GetHashCode();
-            hash = hash * 23 + GroupID.GetHashCode();
+            hash = hash * 23 + Id.GetHashCode();
+            hash = hash * 23 + GroupId.GetHashCode();
             hash = hash * 23 + MassMonoisotopicMostAbundant.GetHashCode();
             hash = hash * 23 + MassMonoisotopic.GetHashCode();
             hash = hash * 23 + RetentionTime.GetHashCode();

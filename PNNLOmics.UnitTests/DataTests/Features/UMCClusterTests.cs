@@ -18,7 +18,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         [TestCase(ExpectedException=typeof(NullReferenceException))]
         public void CalculateStatisticsTestNullUmc()
         {
-            var cluster      = new UMCClusterLight {UMCList = null};
+            var cluster      = new UMCClusterLight {UmcList = null};
             cluster.CalculateStatistics(ClusterCentroidRepresentation.Median);
         }
         /// <summary>
@@ -28,7 +28,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         [TestCase(ExpectedException = typeof(Exception))]
         public void CalculateStatisticsTestEmptyUmc()
         {
-            var cluster = new UMCClusterLight { UMCList = new List<UMCLight>() };
+            var cluster = new UMCClusterLight { UmcList = new List<UMCLight>() };
             cluster.CalculateStatistics(ClusterCentroidRepresentation.Median);
         }
         /// <summary>
@@ -44,7 +44,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                                                         int     umcAbundance,
                                                         ClusterCentroidRepresentation representation)
         {
-            var cluster          = new UMCClusterLight {UMCList = new List<UMCLight>()};
+            var cluster          = new UMCClusterLight {UmcList = new List<UMCLight>()};
 
             var umc = new UMCLight
             {
@@ -54,7 +54,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                 ChargeState = umcCharge,
                 Abundance = umcAbundance
             };
-            cluster.UMCList.Add(umc);
+            cluster.UmcList.Add(umc);
             cluster.CalculateStatistics(representation);
 
             Assert.AreEqual(cluster.MassMonoisotopic,   umc.MassMonoisotopicAligned);
@@ -85,7 +85,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                                                         int     numUmCs,
                                                         ClusterCentroidRepresentation representation)
         {
-            var cluster  = new UMCClusterLight {UMCList = new List<UMCLight>()};
+            var cluster  = new UMCClusterLight {UmcList = new List<UMCLight>()};
 
             var k                   = numUmCs / 2;
             double  medianMass       = 0;
@@ -102,7 +102,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                     ChargeState = umcCharge,
                     Abundance = umcAbundance + multiplier*i
                 };
-                cluster.UMCList.Add(umc);
+                cluster.UmcList.Add(umc);
 
                 if (representation == ClusterCentroidRepresentation.Mean)
                 {

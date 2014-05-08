@@ -15,12 +15,12 @@ namespace PNNLOmics.Extensions
             var map = new Dictionary<int, List<MSSpectra>>();
             foreach (var spectrum in spectra)
             {
-                var doesExists = map.ContainsKey(spectrum.GroupID);
+                var doesExists = map.ContainsKey(spectrum.GroupId);
                 if (!doesExists)
                 {
-                    map.Add(spectrum.GroupID, new List<MSSpectra>());
+                    map.Add(spectrum.GroupId, new List<MSSpectra>());
                 }
-                map[spectrum.GroupID].Add(spectrum);
+                map[spectrum.GroupId].Add(spectrum);
             }
             return map;
         }

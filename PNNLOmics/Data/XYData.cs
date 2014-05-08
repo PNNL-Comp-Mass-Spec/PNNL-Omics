@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PNNLOmics.Data
 {
-    public class XYData: BaseData
+    public class XYData
     {                
         public XYData(double newX, double newY)
         {
@@ -20,11 +20,6 @@ namespace PNNLOmics.Data
         {
             get;
             set;
-        }
-        public override void Clear()
-        {
-            X = 0;
-            Y = 0;
         }
         public static List<XYData> Bin(List<XYData> data, double binSize)
         {            

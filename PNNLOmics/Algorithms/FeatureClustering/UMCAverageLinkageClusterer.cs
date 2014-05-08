@@ -70,7 +70,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 					}
                     clusterY.CalculateStatistics(Parameters.CentroidRepresentation);
 					// Remove the old cluster so we don't process it again.
-					clusters.Remove(clusterX.ID);
+					clusters.Remove(clusterX.Id);
 				}
 			}
 

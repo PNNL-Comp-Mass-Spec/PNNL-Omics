@@ -124,14 +124,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                         var matching = suspectSpectra.FindAll(
                                     delegate(MSSpectra x)
                                     {
-                                        return Math.Abs(x.PrecursorMZ - mass) <= ppmRange;                            
+                                        return Math.Abs(x.PrecursorMz - mass) <= ppmRange;                            
                                     }
                                     );                        
 
                         // Finally link!
                         foreach (var spectrum in matching)
                         {
-                            var spectrumID      = spectrum.ID;
+                            var spectrumID      = spectrum.Id;
                             var hasBeenMapped  = mappedMSSpectra.ContainsKey(spectrumID);
                             if (!hasBeenMapped)
                             {

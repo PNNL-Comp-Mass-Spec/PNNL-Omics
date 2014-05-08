@@ -35,7 +35,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             foreach (var feature in rawMSFeatures)
             {
                 //feature.ID = -1;
-                featureIDToClusterID.Add(feature.ID, -1);
+                featureIDToClusterID.Add(feature.Id, -1);
             }
 
             var maxDistance  = Parameters.MaxDistance;            
@@ -54,7 +54,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             while (currentIndex < N)
             {
                 var currentFeature                = msFeatures[currentIndex];
-                var currentFeatureClusterID     = featureIDToClusterID[currentFeature.ID];
+                var currentFeatureClusterID     = featureIDToClusterID[currentFeature.Id];
 
                 if (currentFeatureClusterID == -1)
                 {
@@ -62,7 +62,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     idFeatureMap[numUmcsSoFar].Add(currentFeature);
                     
                     currentFeatureClusterID                 = numUmcsSoFar;
-                    featureIDToClusterID[currentFeature.ID] = numUmcsSoFar++;
+                    featureIDToClusterID[currentFeature.Id] = numUmcsSoFar++;
                 }
 
                 var matchIndex = currentIndex + 1;
@@ -75,7 +75,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 var matchPeak = msFeatures[matchIndex];
                 while (matchPeak.MassMonoisotopicAligned < maxMass)
                 {
-                    var matchClusterID =  featureIDToClusterID[matchPeak.ID];
+                    var matchClusterID =  featureIDToClusterID[matchPeak.Id];
                     
                     //this is asking if they are already clustered together.
                     if (matchClusterID != currentFeatureClusterID)
@@ -88,7 +88,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             if (matchClusterID == -1)
                             {
                                 idFeatureMap[currentFeatureClusterID].Add(matchPeak);
-                                featureIDToClusterID[matchPeak.ID] = currentFeatureClusterID;
+                                featureIDToClusterID[matchPeak.Id] = currentFeatureClusterID;
                                 //matchPeak.ID = currentFeature.ID;
                             }
                             else
@@ -98,7 +98,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                                 var oldID = matchClusterID;
                                 foreach (var tempFeature in tempFeatures)
                                 {
-                                    featureIDToClusterID[tempFeature.ID] = currentFeatureClusterID;                                    
+                                    featureIDToClusterID[tempFeature.Id] = currentFeatureClusterID;                                    
                                 }
                                 idFeatureMap[currentFeatureClusterID].AddRange(tempFeatures);
                                 idFeatureMap.Remove(oldID);
@@ -135,7 +135,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             var id = 0;
             foreach (var feature in features)
             {
-                feature.ID = id++;
+                feature.Id = id++;
             }
             return features;
         }

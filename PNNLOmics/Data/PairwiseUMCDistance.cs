@@ -63,7 +63,7 @@ namespace PNNLOmics.Data
 
         public override string ToString()
         {
-            return string.Format("{0}  ({1}, {2}) - ({3}, {4})  = {5}", Id, FeatureX.ID, FeatureX.GroupID, FeatureY.ID, FeatureY.GroupID, Distance);
+            return string.Format("{0}  ({1}, {2}) - ({3}, {4})  = {5}", Id, FeatureX.Id, FeatureX.GroupId, FeatureY.Id, FeatureY.GroupId, Distance);
         }
     }    
 }

@@ -287,7 +287,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 
                                 if (spectrumX != null)
                                 {
-                                    spectrumX.PrecursorMZ = xsum.PrecursorMz;
+                                    spectrumX.PrecursorMz = xsum.PrecursorMz;
                                 }
                                 else
                                 {
@@ -315,7 +315,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 
                                 if (spectrumY != null)
                                 {
-                                    spectrumY.PrecursorMZ = ysum.PrecursorMz;
+                                    spectrumY.PrecursorMz = ysum.PrecursorMz;
                                     cache.Add(scany, spectrumY);
                                 }
                                 else continue; // This spectra does not have enough peaks or did not pass our filters, throw it away!

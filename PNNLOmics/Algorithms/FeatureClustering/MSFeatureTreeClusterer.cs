@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using PNNLOmics.Algorithms.Chromatograms;
+using PNNLOmics.Annotations;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Constants.Libraries;
 using PNNLOmics.Data.Features;
@@ -36,11 +37,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Gets or sets the filtering options
         /// </summary>
+        [UsedImplicitly]
         public LcmsFeatureFilteringOptions FilteringOptions { get; set; }
 
         /// <summary>
         /// Gets or sets the tolerances
         /// </summary>
+        [UsedImplicitly]
         public FeatureTolerances Tolerances
         {
             get;
@@ -49,6 +52,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Gets or sets the value between 
         /// </summary>
+        [UsedImplicitly]
         public int ScanTolerance { get; set; }
 
         /// <summary>
@@ -77,7 +81,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {
             var clusters            = new List<TCluster>();            
             var currentIndex        = 0;
-            var N                   = features.Count();
+            var n                   = features.Count();
 
             // Sort the features based on m/z first
             var msFeatures = new List<TChild>();
@@ -89,13 +93,13 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             OnProgress("Examining features within partitions");
 
             // Iterate through all of the clusters
-            while (currentIndex < N)
+            while (currentIndex < n)
             {
                 var hasGap       = false;
                 var lastFeature  = msFeatures[currentIndex];
                 var lastIndex    = currentIndex + 1;
                 var gapFeatures  = new List<TChild> { lastFeature };
-                while (!hasGap && lastIndex < N)
+                while (!hasGap && lastIndex < n)
                 {
 
                     var currentFeature      = msFeatures[lastIndex];
@@ -176,22 +180,22 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                                                         CompareMz,
                                                         Tolerances.Mass);
 
-            var N = features.Count();
+            var n = features.Count();
             OnProgress(string.Format("Found {0} unique  child features from {1} total features", 
-                                            N,
+                                            n,
                                             rawMsFeatures.Count()));
 
 
             OnProgress("Filtering Features");
-            features = LcmsFeatureFilters.FilterFeatures(features.ToList(), FilteringOptions);
-            OnProgress(string.Format("Found {0} Filtered Features from {1} total features.", features.Count(), N));
+          //  features = LcmsFeatureFilters.FilterFeatures(features.ToList(), FilteringOptions);
+            OnProgress(string.Format("Found {0} Filtered Features from {1} total features.", features.Count(), n));
 
             // Then we group into UMC's for clustering across charge states...
             if (features == null)
                 throw new InvalidDataException("No features were found from the input MS Feature list.");
 
             OnProgress("Filtering poor features with no data.  Calculating statistics for the good ones.");
-            features = features.Where(x => x.MSFeatures.Count > 0).ToList();
+            features = features.Where(x => x.MsFeatures.Count > 0).ToList();
             foreach (var feature in features)
             {
                 feature.MassMonoisotopic = (feature.Mz * feature.ChargeState) - (SubAtomicParticleLibrary.MASS_PROTON * feature.ChargeState);
@@ -230,7 +234,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             var featureList = features.ToList();
             foreach (var x in featureList)
             {
-                x.ID = id++;                
+                x.Id = id++;                
             }
             return featureList;
         }
@@ -271,9 +275,6 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             mzMap[featureJ.Mz].Add(featureJ);
                             mzMap[featureJ.Mz].Add(featurePrev);                            
                         }    
-                    }
-                    foreach (var key in mzMap.Keys)
-                    {
                     }
                     features.Clear();                    
                 }

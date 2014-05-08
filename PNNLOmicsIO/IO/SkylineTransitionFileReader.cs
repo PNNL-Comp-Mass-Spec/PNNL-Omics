@@ -45,7 +45,7 @@ namespace PNNLOmicsIO.IO
                 peptide                     = new Peptide();
                 peptide.Sequence            = data[0][3];                
                 var spectrum          = new MSSpectra();
-                spectrum.PrecursorMZ        = Convert.ToDouble(key);
+                spectrum.PrecursorMz        = Convert.ToDouble(key);
                 
                 foreach (var line in data)
                 {

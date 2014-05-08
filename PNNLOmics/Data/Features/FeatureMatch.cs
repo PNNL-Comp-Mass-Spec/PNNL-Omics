@@ -5,7 +5,7 @@ using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 
 namespace PNNLOmics.Data.Features
 {
-    public class FeatureMatch<TObserved, TTarget> : BaseData
+    public sealed class FeatureMatch<TObserved, TTarget> 
         where TObserved : FeatureLight, new()
         where TTarget : FeatureLight, new()
     {
@@ -18,7 +18,7 @@ namespace PNNLOmics.Data.Features
         private double m_stacScore;
         private double m_stacSpecificity;
         private double m_slicScore;
-        private double m_delSLiC;
+        private double m_delSliC;
 
         private Matrix m_differenceVector;
         private Matrix m_reducedDifferenceVector;
@@ -81,8 +81,8 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public double DelSLiC
         {
-            get { return m_delSLiC; }
-            set { m_delSLiC = value; }
+            get { return m_delSliC; }
+            set { m_delSliC = value; }
         }
 
         /// <summary>
@@ -122,7 +122,18 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public FeatureMatch()
         {
-            Clear();
+
+            m_observedFeature = new TObserved();
+            m_targetFeature = new TTarget();
+            m_delSliC = 0;
+            m_slicScore = 0;
+            m_stacScore = 0;
+            m_stacSpecificity = 0;
+            m_differenceVector = new Matrix(2, 1, 0.0);
+            m_reducedDifferenceVector = m_differenceVector;
+            m_useDriftTimePredicted = false;
+            m_withinRefinedRegion = false;
+            m_shiftedMatch = false;
         }
         /// <summary>
         /// Constructor that takes in all necessary information.
@@ -133,6 +144,19 @@ namespace PNNLOmics.Data.Features
         /// <param name="shiftedMatch">Whether the match is the result of a fixed shift.</param>
         public FeatureMatch(TObserved observedFeature, TTarget targetFeature, bool useDriftTime, bool shiftedMatch)
         {
+
+            m_observedFeature = new TObserved();
+            m_targetFeature = new TTarget();
+            m_delSliC = 0;
+            m_slicScore = 0;
+            m_stacScore = 0;
+            m_stacSpecificity = 0;
+            m_differenceVector = new Matrix(2, 1, 0.0);
+            m_reducedDifferenceVector = m_differenceVector;
+            m_useDriftTimePredicted = false;
+            m_withinRefinedRegion = false;
+            m_shiftedMatch = false;
+
             AddFeatures(observedFeature, targetFeature, useDriftTime, shiftedMatch);
         }
         #endregion
@@ -143,7 +167,7 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         public static Comparison<FeatureMatch<TObserved, TTarget>> FeatureComparison = delegate(FeatureMatch<TObserved, TTarget> featureMatch1, FeatureMatch<TObserved, TTarget> featureMatch2)
         {
-            return featureMatch1.m_observedFeature.ID.CompareTo(featureMatch2.ObservedFeature.ID);
+            return featureMatch1.m_observedFeature.Id.CompareTo(featureMatch2.ObservedFeature.Id);
         };
         /// <summary>
         /// Comparison function for sorting by STAC score.
@@ -179,23 +203,7 @@ namespace PNNLOmics.Data.Features
         #endregion
 
         #region Public functions
-        /// <summary>
-        /// Resets all member variables to default values.  Must use AddFeatures to add features after use.
-        /// </summary>
-        public override void Clear()
-        {
-            m_observedFeature = new TObserved();
-            m_targetFeature = new TTarget();
-            m_delSLiC = 0;
-            m_slicScore = 0;
-            m_stacScore = 0;
-            m_stacSpecificity = 0;
-            m_differenceVector = new Matrix(2, 1, 0.0);
-            m_reducedDifferenceVector = m_differenceVector;
-            m_useDriftTimePredicted = false;
-            m_withinRefinedRegion = false;
-            m_shiftedMatch = false;
-        }
+        
         /// <summary>
         /// Add (or replace) features in a match.
         /// </summary>
@@ -205,7 +213,7 @@ namespace PNNLOmics.Data.Features
         /// <param name="shiftedMatch">Whether the match is the result of a fixed shift.</param>
         public void AddFeatures(TObserved observedFeature, TTarget targetFeature, bool useDriftTime, bool shiftedMatch)
         {
-            Clear();
+
             m_observedFeature = observedFeature;
             m_targetFeature = targetFeature;
             m_useDriftTime = useDriftTime;
@@ -264,7 +272,7 @@ namespace PNNLOmics.Data.Features
             return m_withinRefinedRegion;
         }
 
-        public void SetDifferenceMatrices()
+        private void SetDifferenceMatrices()
         {
             m_reducedDifferenceVector = MatrixUtilities.Differences(m_observedFeature, m_targetFeature, m_useDriftTime);
             m_differenceVector = MatrixUtilities.Differences(m_observedFeature, m_targetFeature, m_useDriftTime);

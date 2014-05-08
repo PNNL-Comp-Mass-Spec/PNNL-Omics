@@ -137,11 +137,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 
 			if (feature1.MassMonoisotopicAligned != double.NaN && feature1.MassMonoisotopicAligned > 0.0)
 			{
-				differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature1.MassMonoisotopicAligned, feature2.MassMonoisotopic);
+				differences[0, 0] = MathUtilities.MassDifferenceInPpm(feature1.MassMonoisotopicAligned, feature2.MassMonoisotopic);
 			}
 			else
 			{
-				differences[0, 0] = MathUtilities.MassDifferenceInPPM(feature1.MassMonoisotopic, feature2.MassMonoisotopic);
+				differences[0, 0] = MathUtilities.MassDifferenceInPpm(feature1.MassMonoisotopic, feature2.MassMonoisotopic);
 			}
 
 			if (feature1.NetAligned != double.NaN && feature1.NetAligned > 0.0)

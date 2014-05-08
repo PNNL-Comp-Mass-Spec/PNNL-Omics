@@ -31,9 +31,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 var lineData = line.Split(new[] {"\t"}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 var feature                 = new UMCLight();
-                feature.ClusterID                = Convert.ToInt32(lineData[0]);                
-                feature.GroupID                  = Convert.ToInt32(lineData[1]);
-                feature.ID                       = Convert.ToInt32(lineData[2]);
+                feature.ClusterId                = Convert.ToInt32(lineData[0]);                
+                feature.GroupId                  = Convert.ToInt32(lineData[1]);
+                feature.Id                       = Convert.ToInt32(lineData[2]);
                 feature.MassMonoisotopicAligned  = Convert.ToDouble(lineData[3]);
                 feature.RetentionTime            = Convert.ToDouble(lineData[4]);
                 feature.DriftTime                = Convert.ToDouble(lineData[5]);
@@ -58,7 +58,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.IsNotEmpty(features);
 
             var cluster = new UMCClusterLight();
-            cluster.ID              = features[0].ID;
+            cluster.Id              = features[0].Id;
             features.ForEach(x => cluster.AddChildFeature(x));
 
             var maps = new Dictionary<int, UMCClusterLight>();
@@ -68,11 +68,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             var mapFeatures = new Dictionary<int, List<UMCLight>>();
             foreach (var feature in features)
             {
-                if (!mapFeatures.ContainsKey(feature.GroupID))
+                if (!mapFeatures.ContainsKey(feature.GroupId))
                 {
-                    mapFeatures.Add(feature.GroupID, new List<UMCLight>());
+                    mapFeatures.Add(feature.GroupId, new List<UMCLight>());
                 }
-                mapFeatures[feature.GroupID].Add(feature);
+                mapFeatures[feature.GroupId].Add(feature);
             }
             //// Then sort
             //foreach (int x in mapFeatures.Keys)
@@ -86,7 +86,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 
             //}
             Console.WriteLine("Cluster\tMass\tNET");
-            Console.WriteLine("{0}\t{1}\t{2}\t", cluster.ID, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
+            Console.WriteLine("{0}\t{1}\t{2}\t", cluster.Id, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
             Console.WriteLine();
 
             var distance = new EuclideanDistanceMetric<FeatureLight>();
@@ -109,13 +109,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.IsNotEmpty(features);
 
             var cluster = new UMCClusterLight();
-            cluster.ID              = features[0].ID;
+            cluster.Id              = features[0].Id;
             features.ForEach(x => cluster.AddChildFeature(x));
 
 
             cluster.CalculateStatistics(ClusterCentroidRepresentation.Median);
             Console.WriteLine("Cluster\tMass\tNET");
-            Console.WriteLine("{0}\t{1}\t{2}\t", cluster.ID, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
+            Console.WriteLine("{0}\t{1}\t{2}\t", cluster.Id, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
             Console.WriteLine();
 
             var distance = new EuclideanDistanceMetric<FeatureLight>();
@@ -142,12 +142,12 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.IsNotEmpty(features);
 
             var cluster = new UMCClusterLight();
-            cluster.ID = features[0].ID;
+            cluster.Id = features[0].Id;
             features.ForEach(x => cluster.AddChildFeature(x));
 
             cluster.CalculateStatistics(ClusterCentroidRepresentation.Median);
             Console.WriteLine("Cluster\tMass\tNET");
-            Console.WriteLine("{0}\t{1}\t{2}\t", cluster.ID, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
+            Console.WriteLine("{0}\t{1}\t{2}\t", cluster.Id, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
             Console.WriteLine();
 
             IClusterReprocessor<UMCLight, UMCClusterLight> reprocessor = new MedianSplitReprocessor<UMCLight, UMCClusterLight>();
@@ -168,7 +168,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Assert.IsNotEmpty(features);
 
             var cluster = new UMCClusterLight();
-            cluster.ID = features[0].ID;
+            cluster.Id = features[0].Id;
             features.ForEach(x => cluster.AddChildFeature(x));
 
             

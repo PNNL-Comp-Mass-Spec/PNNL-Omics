@@ -124,12 +124,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             {
                 var feature  = features[i];
                 var cluster     = new MsmsCluster();
-                cluster.ID              = id++;
+                cluster.Id              = id++;
                 cluster.MeanScore       = 0; 
                 cluster.Features.Add(feature);
                 
-                featureMap.Add(feature,    cluster.ID);
-                clusterMap.Add(cluster.ID, cluster);
+                featureMap.Add(feature,    cluster.Id);
+                clusterMap.Add(cluster.Id, cluster);
             }
             var protonMass = AdductMass;
 
@@ -146,11 +146,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     var clusterJ    = clusterMap[featureMap[featureJ]];
 
                     // Don't cluster the same thing
-                    if (clusterI.ID == clusterJ.ID)   continue;
+                    if (clusterI.Id == clusterJ.Id)   continue;
 
                     // Don't cluster from the same dataset.  Let the linkage algorithm decide if they 
                     // belong in the same cluster, and later, go back and determine if the cluster is valid or not.
-                    if (featureI.GroupID == featureJ.GroupID) continue;
+                    if (featureI.GroupId == featureJ.GroupId) continue;
                     // Check the scan difference.  If it fits then we are within range.
                     var scanDiff = Math.Abs(featureI.Scan - featureJ.Scan);
                     if (scanDiff <= ScanRange)
@@ -166,7 +166,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             var scanSummary = new ScanSummary();
                             if (featureI.MSnSpectra[0].Peaks.Count <= 0)
                             {
-                                featureI.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureI.MSnSpectra[0].Scan, featureI.GroupID, out scanSummary);
+                                featureI.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureI.MSnSpectra[0].Scan, featureI.GroupId, out scanSummary);
                                 featureI.MSnSpectra[0].Peaks = XYData.Bin(featureI.MSnSpectra[0].Peaks,
                                                                             0,
                                                                             2000,
@@ -174,7 +174,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                             }
                             if (featureJ.MSnSpectra[0].Peaks.Count <= 0)
                             {
-                                featureJ.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureJ.MSnSpectra[0].Scan, featureJ.GroupID, out scanSummary);
+                                featureJ.MSnSpectra[0].Peaks = provider.GetRawSpectra(featureJ.MSnSpectra[0].Scan, featureJ.GroupId, out scanSummary);
                                 featureJ.MSnSpectra[0].Peaks = XYData.Bin(featureJ.MSnSpectra[0].Peaks, 
                                                                             0,
                                                                             2000,
@@ -191,8 +191,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                                 foreach (var xFeature in clusterI.Features)
                                 {
                                     clusterJ.Features.Add(xFeature);
-                                    featureMap[xFeature] = clusterJ.ID;
-                                    clusterMap.Remove(clusterI.ID);
+                                    featureMap[xFeature] = clusterJ.Id;
+                                    clusterMap.Remove(clusterI.Id);
                                 }
                             }
                         }
@@ -235,7 +235,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 MSFeatureLight maxFeature   = null;
 
                 // Find the max abundance spectrum.  This the number of features we have to search.
-                foreach(var msFeature in feature.MSFeatures)
+                foreach(var msFeature in feature.MsFeatures)
                 {
                     if (msFeature.Abundance > abundance && msFeature.MSnSpectra.Count > 0)
                     {

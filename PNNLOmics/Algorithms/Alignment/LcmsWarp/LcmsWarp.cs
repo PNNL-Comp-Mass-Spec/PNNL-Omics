@@ -664,7 +664,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         {
             foreach (var feature in m_features)
             {
-                umcIndices.Add(feature.ID);
+                umcIndices.Add(feature.Id);
                 umcCalibratedMass.Add(feature.MassMonoisotopicAligned);
                 umcAlignedNets.Add(feature.NetAligned);
                 alignedDriftTimes.Add(feature.DriftTime);
@@ -690,7 +690,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             for (var featureNum = 0; featureNum < numFeatures; featureNum++)
             {
                 var feature = m_features[featureNum];
-                umcIndices.Add(feature.ID);
+                umcIndices.Add(feature.Id);
                 umcCalibratedMasses.Add(feature.MassMonoisotopicAligned);
                 umcAlignedNets.Add(feature.NetAligned);
                 umcAlignedScans.Add(minScan + (int)(feature.NetAligned * (maxScan - minScan)));

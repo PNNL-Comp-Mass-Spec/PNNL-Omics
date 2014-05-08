@@ -6,14 +6,15 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Cluster of MS/MS spectra using matches through features.
     /// </summary>
-    public sealed class MsmsCluster : BaseData
+    public sealed class MsmsCluster
     {
         public MsmsCluster()
         {
             Features = new List<MSFeatureLight>();
-            MeanScore = double.NaN;
-            ID = -1;
+            MeanScore = double.NaN;            
         }
+
+        public int Id { get; set; }
         /// <summary>
         /// Gets or sets the list of available features.
         /// </summary>
@@ -31,14 +32,5 @@ namespace PNNLOmics.Data
             set;
         }
 
-        /// <summary>
-        /// Resets the cluster.
-        /// </summary>
-        public override void Clear()
-        {
-            Features  = new List<MSFeatureLight>();
-            MeanScore = double.NaN;
-            ID        = -1;
-        }
     }
 }

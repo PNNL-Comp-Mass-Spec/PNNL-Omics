@@ -19,7 +19,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         public void CalculateStatisticsTestNullUMC()
         {
             var cluster = new UMCClusterLight();
-            cluster.UMCList         = null;
+            cluster.UmcList         = null;
             cluster.CalculateStatistics(ClusterCentroidRepresentation.Median);
         }
         /// <summary>
@@ -30,7 +30,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         public void CalculateStatisticsTestEmptyUMC()
         {
             var cluster = new UMCClusterLight();
-            cluster.UMCList         = new List<UMCLight>();
+            cluster.UmcList         = new List<UMCLight>();
             cluster.CalculateStatistics(ClusterCentroidRepresentation.Median);
         }
         /// <summary>
@@ -47,7 +47,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                                                         ClusterCentroidRepresentation representation)
         {
             var cluster     = new UMCClusterLight();
-            cluster.UMCList             = new List<UMCLight>();            
+            cluster.UmcList             = new List<UMCLight>();            
 
             var umc                    = new UMCLight();
             umc.MassMonoisotopicAligned            = umcMass;
@@ -55,7 +55,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             umc.DriftTime                   = umcDrifTime;
             umc.ChargeState                 = umcCharge;
             umc.Abundance                   = umcAbundance;
-            cluster.UMCList.Add(umc);
+            cluster.UmcList.Add(umc);
             cluster.CalculateStatistics(representation);
 
             Assert.AreEqual(cluster.MassMonoisotopicAligned, umc.MassMonoisotopicAligned);
@@ -73,7 +73,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         public void CalculateStatisticsSame(ClusterCentroidRepresentation representation)
         {
             var cluster = new UMCClusterLight();
-            cluster.UMCList         = new List<UMCLight>();
+            cluster.UmcList         = new List<UMCLight>();
 
             var umc            = new UMCLight();
             umc.MassMonoisotopicAligned = 100;
@@ -81,8 +81,8 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             umc.DriftTime           = 100;
             umc.ChargeState         = 2;
             umc.Abundance           = 100;
-            cluster.UMCList.Add(umc);
-            cluster.UMCList.Add(umc);
+            cluster.UmcList.Add(umc);
+            cluster.UmcList.Add(umc);
             
             cluster.CalculateStatistics(representation);
             Assert.AreEqual(cluster.Score, 0);
@@ -96,7 +96,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         public void CalculateStatisticsMultipleMass(ClusterCentroidRepresentation representation)
         {
             var cluster = new UMCClusterLight();
-            cluster.UMCList = new List<UMCLight>();
+            cluster.UmcList = new List<UMCLight>();
 
             var umc = new UMCLight();
             umc.MassMonoisotopicAligned = 100;
@@ -104,7 +104,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             umc.DriftTime = 100;
             umc.ChargeState = 2;
             umc.Abundance = 100;
-            cluster.UMCList.Add(umc);
+            cluster.UmcList.Add(umc);
 
             var umc2 = new UMCLight();
             umc2.MassMonoisotopicAligned = 200;
@@ -112,7 +112,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             umc2.DriftTime = 100;
             umc2.ChargeState = 2;
             umc2.Abundance = 100;
-            cluster.UMCList.Add(umc2);
+            cluster.UmcList.Add(umc2);
 
             cluster.CalculateStatistics(representation);
             Assert.AreEqual(cluster.MassMonoisotopic, 150);
@@ -127,7 +127,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         public void CalculateStatisticsMultipleNet(ClusterCentroidRepresentation representation)
         {
             var cluster = new UMCClusterLight();
-            cluster.UMCList         = new List<UMCLight>();
+            cluster.UmcList         = new List<UMCLight>();
 
             var umc            = new UMCLight();
             umc.MassMonoisotopicAligned = 100;
@@ -135,7 +135,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             umc.DriftTime           = 100;
             umc.ChargeState         = 2;
             umc.Abundance           = 100;
-            cluster.UMCList.Add(umc);
+            cluster.UmcList.Add(umc);
             
             var umc2 = new UMCLight();
             umc2.MassMonoisotopicAligned = 100;
@@ -143,7 +143,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             umc2.DriftTime = 100;
             umc2.ChargeState = 2;
             umc2.Abundance = 100;
-            cluster.UMCList.Add(umc2);
+            cluster.UmcList.Add(umc2);
 
             cluster.CalculateStatistics(representation);
             Assert.AreEqual(cluster.RetentionTime, 150);

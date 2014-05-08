@@ -9,13 +9,9 @@ namespace PNNLOmics.Data
     {
         public Peptide()
         {
-            Clear();
-        }       
-        public override void Clear()
-        {
-            base.Clear();
             ProteinList = new List<Protein>();
-        }        
+        }
+
         public List<Protein> ProteinList
         {
             get;

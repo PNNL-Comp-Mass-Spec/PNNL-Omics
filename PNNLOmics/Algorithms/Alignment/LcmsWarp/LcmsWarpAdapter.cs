@@ -169,7 +169,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             foreach (var feature in features)
             {
                 transformedFeatures.Add(feature);
-                map.Add(feature.ID, feature);
+                map.Add(feature.Id, feature);
             }
 
             var originalFeatures = filteredFeatures.ToList();
@@ -195,7 +195,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 tempMaxScan = Math.Max(tempMaxScan, feature.Scan);
                 tempMinScan = Math.Min(tempMinScan, feature.Scan);
 
-                var featureId = feature.ID;
+                var featureId = feature.Id;
                 var isInMap = map.ContainsKey(featureId);
                 if (!isInMap) continue;
 

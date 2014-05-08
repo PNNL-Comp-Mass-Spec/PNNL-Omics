@@ -7,6 +7,7 @@ using NUnit.Framework;
 using PNNLOmics.Algorithms.PeakDetection;
 using PNNLOmics.Algorithms.SpectralProcessing;
 using PNNLOmics.Data;
+using PNNLOmics.Data.Peaks;
 using TestSpectra;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
@@ -27,10 +28,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             Assert.That(xvals != null);
             Assert.AreEqual(122032, xvals.Length);
 
-            var testXYData = convertXYDataToOMICSXYData(xvals, yvals);
-
+            var testXyData = convertXYDataToOMICSXYData(xvals, yvals);
             var newPeakCentroider = new PeakCentroider();
-            var centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
+            var centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXyData);
 
             displayPeakData(centroidedPeakList);
 
@@ -52,10 +52,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.PeakDetectorTests
             Assert.AreEqual(122032, xvals.Length);
             Console.WriteLine("Passed Load" + Environment.NewLine);
 
-            var testXYData = convertXYDataToOMICSXYData(xvals, yvals);
-
-            var newPeakCentroider = new PeakCentroider();
-            var centroidedPeakList = newPeakCentroider.DiscoverPeaks(testXYData);
+            var testXyData          = convertXYDataToOMICSXYData(xvals, yvals);
+            var newPeakCentroider   = new PeakCentroider();
+            var centroidedPeakList  = newPeakCentroider.DiscoverPeaks(testXyData);
 
             Assert.AreEqual(15255, centroidedPeakList.Count);
             Console.WriteLine("Passed Peak Detection" + Environment.NewLine);

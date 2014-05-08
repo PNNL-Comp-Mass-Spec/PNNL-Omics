@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using MathNet.Numerics.LinearAlgebra;
+using PNNLOmics.Annotations;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Utilities
 {
     static public class MathUtilities
     {
-		private const string SCIENTIFIC_NOTATION_CLEANUP_REGEX = "0+E";
-		private static Regex m_scientificNotationTrim = new Regex(SCIENTIFIC_NOTATION_CLEANUP_REGEX, RegexOptions.Compiled);
-
         #region Statistical distributions
         /// <summary>
         /// Finds the density of the n-variate normal distribution with mean meanVector and covariance structure covarianceMatrix 
@@ -24,18 +21,15 @@ namespace PNNLOmics.Utilities
         {
 			var covarianceMatrixDeterminant = covarianceMatrix.Determinant();
 
-			if (covarianceMatrixDeterminant != 0)
-			{
-				var numberOfRows = covarianceMatrix.RowCount;
-				var xMinusMean = xVector - meanVector;
-				var xMinusMeanPrime = xMinusMean.Clone();
-				xMinusMeanPrime.Transpose();
-				var covarianceInverseMatrix = covarianceMatrix.Inverse();
-				var exponent = xMinusMeanPrime * covarianceInverseMatrix * xMinusMean;
-				var denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrixDeterminant));
-				return Math.Exp(-0.5 * exponent[0, 0]) / denominator;
-			}
-            return 0.0;
+            if (!(Math.Abs(covarianceMatrixDeterminant) > double.Epsilon)) return 0.0;
+            var numberOfRows = covarianceMatrix.RowCount;
+            var xMinusMean = xVector - meanVector;
+            var xMinusMeanPrime = xMinusMean.Clone();
+            xMinusMeanPrime.Transpose();
+            var covarianceInverseMatrix = covarianceMatrix.Inverse();
+            var exponent = xMinusMeanPrime * covarianceInverseMatrix * xMinusMean;
+            var denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrixDeterminant));
+            return Math.Exp(-0.5 * exponent[0, 0]) / denominator;
         }
         #endregion
 
@@ -48,39 +42,37 @@ namespace PNNLOmics.Utilities
         /// <returns>List of XYData with X being midpoints of histogram bins and Y being count in the bin.</returns>
         static public List<XYData> GetHistogramValues(List<double> values, double binWidth)
         {
-            if (binWidth > 0 && values.Count > 0)
+            if (!(binWidth > 0) || values.Count <= 0)
+                throw new InvalidOperationException("Invalid parameters passed to function GetHistogramValues.");
+
+            values.Sort();
+            var nValues = values.Count;
+            var minValue = values[0];
+            var maxValue = values[nValues];
+
+            var range = maxValue - minValue;
+            var bins = (uint)Math.Ceiling(range / binWidth);
+            var binRange = binWidth * bins;
+
+            var histogramValues = new List<XYData>(0);
+
+            var currentBin = new XYData(0, 0) {X = Convert.ToSingle(Math.Round(minValue - (binRange - range)/2, 2))};
+            for (var i = 0; i < nValues; i++)
             {
-                values.Sort();
-                var nValues = values.Count;
-                var minValue = values[0];
-                var maxValue = values[nValues];
-
-                var range = maxValue - minValue;
-                var bins = (uint)Math.Ceiling(range / binWidth);
-                var binRange = binWidth * bins;
-
-                var histogramValues = new List<XYData>(0);
-
-                var currentBin = new XYData(0, 0);
-                currentBin.X = Convert.ToSingle(Math.Round(minValue - (binRange - range) / 2, 2));
-                for (var i = 0; i < nValues; i++)
+                if (values[i] <= (currentBin.X + binWidth))
                 {
-                    if (values[i] <= (currentBin.X + binWidth))
-                    {
-                        currentBin.Y++;
-                    }
-                    else
-                    {
-                        currentBin.X += Convert.ToSingle(0.5 * binWidth);
-                        histogramValues.Add(currentBin);
-                        currentBin = new XYData(currentBin.X + Convert.ToSingle(0.5F * binWidth), 0);
-                    }
+                    currentBin.Y++;
                 }
-                histogramValues.Add(currentBin);
-
-                return histogramValues;
+                else
+                {
+                    currentBin.X += Convert.ToSingle(0.5 * binWidth);
+                    histogramValues.Add(currentBin);
+                    currentBin = new XYData(currentBin.X + Convert.ToSingle(0.5F * binWidth), 0);
+                }
             }
-            throw new InvalidOperationException("Invalid parameters passed to function GetHistogramValues.");
+            histogramValues.Add(currentBin);
+
+            return histogramValues;
         }
 
         /// <summary>
@@ -89,18 +81,17 @@ namespace PNNLOmics.Utilities
         /// <param name="values">List of values to compute histogram counts for.</param>
         /// <param name="binWidth">Width of bins to use in computing histogram values.</param>
         /// <returns>List of XYData with X being midpoints of histogram bins and Y being relative frequency in the bin.</returns>
+        [UsedImplicitly]
         static public List<XYData> GetRelativeFrequencyHistogramValues(List<double> values, double binWidth)
         {
             var histogramValues = GetHistogramValues(values, binWidth);
             var nValues = values.Count;
-            for (var i = 0; i < histogramValues.Count; i++)
+            foreach (var t in histogramValues)
             {
-                histogramValues[i].Y /= nValues;
+                t.Y /= nValues;
             }
             return histogramValues;
         }
-
-
         #endregion
 
 
@@ -190,6 +181,7 @@ namespace PNNLOmics.Utilities
             }
         }
 
+        [UsedImplicitly]
         public static void CalcMeanAndStd(List<double> values, out double mean, out double stdev)
         {
             var numPoints = values.Count;
@@ -212,7 +204,7 @@ namespace PNNLOmics.Utilities
         /// <param name="mass1">First mass.  (Aligned mass of observedFeature)</param>
         /// <param name="mass2">Second mass.  (Aligned mass of targetFeature)</param>
         /// <returns></returns>
-        static public double MassDifferenceInPPM(double mass1, double mass2)
+        static public double MassDifferenceInPpm(double mass1, double mass2)
         {
             return ((mass1 - mass2) / mass2 * 1000000);
         }

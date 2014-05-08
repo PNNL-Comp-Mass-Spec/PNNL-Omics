@@ -37,7 +37,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             var features = new List<U>();
             if (m_features.Count > 0)
             {
-                var feature = new U {ID = id++};
+                var feature = new U {Id = id++};
                 m_features.ForEach(feature.AddChildFeature);
                 feature.CalculateStatistics(ClusterCentroidRepresentation.Median);
                 features.Add(feature);

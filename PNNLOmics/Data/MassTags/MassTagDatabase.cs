@@ -94,9 +94,10 @@ namespace PNNLOmics.Data.MassTags
         #endregion
 
         /// <summary>
-        /// Loads the mass tags.
+        /// Loads the mass tags and populates the protein information.
         /// </summary>
         /// <param name="massTags"></param>
+        /// <param name="massTagToProteinMap"></param>
         public void AddMassTagsAndProteins(List<MassTagLight>               massTags,
                                             Dictionary<int, List<Protein>>  massTagToProteinMap)
         {
@@ -107,9 +108,9 @@ namespace PNNLOmics.Data.MassTags
 
             foreach (var tag in massTags)
             {
-                if (massTagMap.ContainsKey(tag.ID) == false)
+                if (massTagMap.ContainsKey(tag.Id) == false)
                 {
-                    massTagMap.Add(tag.ID, tag);
+                    massTagMap.Add(tag.Id, tag);
                 }
             }
             
@@ -130,17 +131,17 @@ namespace PNNLOmics.Data.MassTags
 
                 foreach (var p in proteins)
                 {
-                    if (!proteinMap.ContainsKey(p.RefID))
+                    if (!proteinMap.ContainsKey(p.RefId))
                     {
                         AllProteins.Add(p);
-                        proteinMap.Add(p.RefID, p);                        
+                        proteinMap.Add(p.RefId, p);                        
                     }
 
-                    if (!ProteinsToMassTags.ContainsKey(p.ProteinID))
+                    if (!ProteinsToMassTags.ContainsKey(p.ProteinId))
                     {
-                        ProteinsToMassTags.Add(p.ProteinID, new List<MassTagLight>());
+                        ProteinsToMassTags.Add(p.ProteinId, new List<MassTagLight>());
                     }
-                    ProteinsToMassTags[p.ProteinID].Add(tag);
+                    ProteinsToMassTags[p.ProteinId].Add(tag);
                 }
             }
 

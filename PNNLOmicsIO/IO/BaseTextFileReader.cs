@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using PNNLOmics.Annotations;
 
 namespace PNNLOmicsIO.IO
 {
@@ -10,10 +11,7 @@ namespace PNNLOmicsIO.IO
         /// Default file delimeter.
         /// </summary>
         private const string DEFAULT_DELIMETER = ",";
-
-		// TODO: Change to DelimitedTextFileReader
-		// TODO: Pass in delimiter?
-		public BaseTextFileReader()
+	    protected BaseTextFileReader()
 		{
             Delimeter = DEFAULT_DELIMETER;
 		}
@@ -22,6 +20,7 @@ namespace PNNLOmicsIO.IO
         /// <summary>
         /// Gets or sets the file reading delimeter.
         /// </summary>
+        [UsedImplicitly]
         public string Delimeter
         {
             get;
@@ -36,7 +35,7 @@ namespace PNNLOmicsIO.IO
         /// <returns></returns>
 		public IEnumerable<T> ReadFile(string fileLocation) 
 		{
-            IEnumerable<T> returnEnumerable = null;
+            IEnumerable<T> returnEnumerable;
             using (TextReader textReader = new StreamReader(fileLocation))
             {
                 returnEnumerable = ReadFile(textReader);

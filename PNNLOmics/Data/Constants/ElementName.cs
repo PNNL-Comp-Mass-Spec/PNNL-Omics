@@ -1,114 +1,220 @@
-﻿namespace PNNLOmics.Data.Constants
+﻿using PNNLOmics.Annotations;
+
+namespace PNNLOmics.Data.Constants
 {
     /// <summary>
     /// Elements, updated spellings 10-8-10
     /// </summary>
-    public enum ElementName
-    //the spelling of sulphur is "sulfur" in the USA and now that IUPAC has decided it has jurisdiction over the British English language (as distinct from American English) as well as nomenclature, so we in the UK are expected to use the f word.
+    /// <comment>
+    /// The spelling of sulphur is "sulfur" in the USA and now that IUPAC has decided it has jurisdiction over the British English language (as distinct from American English) as well as nomenclature, so we in the UK are expected to use the f word.
+    /// </comment>       
+    public enum ElementName    
 	{
-		Hydrogen, 
-        Helium, 
-        Lithium, 
-        Beryllium, 
+		Hydrogen,
+        [UsedImplicitly]
+        Helium,
+        [UsedImplicitly]
+        Lithium,
+        [UsedImplicitly]
+        Beryllium,
+        [UsedImplicitly]
         Boron,
-        Carbon, 
-        Nitrogen, 
+        [UsedImplicitly]
+        Carbon,
+        [UsedImplicitly]
+        Nitrogen,
+        [UsedImplicitly]
         Oxygen,
-        Fluorine, 
-        Neon, 
-        Sodium, 
+        [UsedImplicitly]
+        Fluorine,
+        [UsedImplicitly]
+        Neon,
+        [UsedImplicitly]
+        Sodium,
+        [UsedImplicitly]
         Magnesium,
+        [UsedImplicitly]
         Alumunium,
-        Silicon, 
+        [UsedImplicitly]
+        Silicon,
+        [UsedImplicitly]  
         Phosphorous,
+        [UsedImplicitly]
         Sulfur,
+        [UsedImplicitly]
         Chlorine,
-        Argon, 
-        Potassium, 
-        Calcium, 
-        Scandium, 
-        Titanium, 
+        [UsedImplicitly]
+        Argon,
+        [UsedImplicitly]
+        Potassium,
+        [UsedImplicitly]
+        Calcium,
+        [UsedImplicitly]
+        Scandium,
+        [UsedImplicitly]  
+        Titanium,
+        [UsedImplicitly]
         Vanadium,
+        [UsedImplicitly]
         Chromium,
-        Manganese, 
-        Iron, 
-        Cobalt, 
-        Nickle, 
+        [UsedImplicitly]
+        Manganese,
+        [UsedImplicitly]
+        Iron,
+        [UsedImplicitly]  
+        Cobalt,
+        [UsedImplicitly]
+        Nickle,
+        [UsedImplicitly]
         Copper,
+        [UsedImplicitly]
         Zinc,
+        [UsedImplicitly]
         Gallium,
-        Germanium, 
-        Arsenic, 
-        Selenium, 
-        Bromine, 
+        [UsedImplicitly]
+        Germanium,
+        [UsedImplicitly]
+        Arsenic,
+        [UsedImplicitly]
+        Selenium,
+        [UsedImplicitly]
+        Bromine,
+        [UsedImplicitly]
         Krypton,
-        Rubidium, 
-        Strontium, 
+        [UsedImplicitly]
+        Rubidium,
+        [UsedImplicitly]
+        Strontium,
+        [UsedImplicitly]
         Yttrium,
-        Zirconium, 
+        [UsedImplicitly]  
+        Zirconium,
+        [UsedImplicitly]
         Niobium,
-        Molybdenum, 
-        Technetium, 
-        Ruthenium, 
-        Rhodium, 
+        [UsedImplicitly]
+        Molybdenum,
+        [UsedImplicitly]  
+        Technetium,
+        [UsedImplicitly]
+        Ruthenium,
+        [UsedImplicitly]  
+        Rhodium,
+        [UsedImplicitly]
         Palladium,
-        Silver, 
+        [UsedImplicitly]
+        Silver,
+        [UsedImplicitly]
         Cadmium,
-        Indium, 
-        Tin, 
+        [UsedImplicitly]
+        Indium,
+        [UsedImplicitly]
+        Tin,
+        [UsedImplicitly]
         Antimony,
+        [UsedImplicitly]
         Tellurium,
-        Iodine, 
+        [UsedImplicitly]
+        Iodine,
+        [UsedImplicitly]
         Xenon,
+        [UsedImplicitly]
         Cesium,
-        Barium, 
-        Lanthanum, 
-        Cerium, 
+        [UsedImplicitly]
+        Barium,
+        [UsedImplicitly]
+        Lanthanum,
+        [UsedImplicitly]
+        Cerium,
+        [UsedImplicitly]
         Praseodymium,
+        [UsedImplicitly]
         Neodymium,
-        Promethium, 
-        Samarium, 
-        Europium, 
+        [UsedImplicitly]
+        Promethium,
+        [UsedImplicitly]  
+        Samarium,
+        [UsedImplicitly]
+        Europium,
+        [UsedImplicitly]  
         Gadolinium,
-        Terbium, 
-        Dysprosium, 
-        Holmium, 
-        Erbium, 
+        Terbium,
+        [UsedImplicitly]
+        Dysprosium,
+        [UsedImplicitly]
+        Holmium,
+        [UsedImplicitly]
+        Erbium,
+        [UsedImplicitly]
         Thulium,
-        Ytterbium, 
-        Lutetium, 
+        [UsedImplicitly]  
+        Ytterbium,
+        [UsedImplicitly]  
+        Lutetium,
+        [UsedImplicitly]  
         Hafnium,
-        Tantalum, 
-        Tungsten, 
-        Rhenium, 
-        Osmium, 
+        [UsedImplicitly]  
+        Tantalum,
+        [UsedImplicitly]  
+        Tungsten,
+        [UsedImplicitly]  
+        Rhenium,
+        [UsedImplicitly]  
+        Osmium,
+        [UsedImplicitly]  
         Iridium,
-        Platinum, 
-        Gold, 
-        Mercury, 
-        Thallium, 
-        Lead, 
-        Bismuth, 
+        [UsedImplicitly]  
+        Platinum,
+        [UsedImplicitly]  
+        Gold,
+        [UsedImplicitly]  
+        Mercury,
+        [UsedImplicitly]  
+        Thallium,
+        [UsedImplicitly]  
+        Lead,
+        [UsedImplicitly]  
+        Bismuth,
+        [UsedImplicitly]  
         Polonium,
-        Astatine, 
-        Radon, 
-        Francium, 
-        Radium, 
-        Actinium, 
+        [UsedImplicitly]  
+        Astatine,
+        [UsedImplicitly]  
+        Radon,
+        [UsedImplicitly]  
+        Francium,
+        [UsedImplicitly]  
+        Radium,
+        [UsedImplicitly]  
+        Actinium,
+        [UsedImplicitly]  
         Thorium,
-        Protactinium, 
-        Uranium, 
-        Neptunium, 
-        Plutonium, 
+        [UsedImplicitly]  
+        Protactinium,
+        [UsedImplicitly]  
+        Uranium,
+        [UsedImplicitly]
+        Neptunium,
+        [UsedImplicitly]  
+        Plutonium,
+        [UsedImplicitly]  
         Americium,
-        Curium, 
-        Berkelium, 
-        Californium, 
+        [UsedImplicitly]  
+        Curium,
+        [UsedImplicitly]  
+        Berkelium,
+        [UsedImplicitly]  
+        Californium,
+        [UsedImplicitly]  
         Einsteinium,
+        [UsedImplicitly]  
         Fermium,
-        Medelevium, 
-        Nobelium, 
+        [UsedImplicitly]  
+        Medelevium,
+        [UsedImplicitly]  
+        Nobelium,
+        [UsedImplicitly]  
         Lawrencium,
+        [UsedImplicitly]  
         Generic
 	}
 }

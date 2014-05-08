@@ -158,7 +158,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                         }
 
                         // Remove the old cluster so we don't process it again.
-                        clusters.Remove(clusterX.ID);
+                        clusters.Remove(clusterX.Id);
                         clusterX.CalculateStatistics(Parameters.CentroidRepresentation);
                         isClustering = true;
                         break;

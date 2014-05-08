@@ -7,22 +7,20 @@ namespace PNNLOmics.Data
     /// <summary>
     /// Represents a peak.
     /// </summary>
-    public class Peak: BaseData
+    public class Peak
     {
         private const float DEFAULT_HEIGHT = 0;
         private const float DEFAULT_WIDTH  = 0;
         private const float DEFAULT_XVALUE = 0;
-        
-        //TODO: Should we use an enumeration or int to identify the type of peak
-        // e.g. Chromatographic, IMS, Profile, Centroid...or...
-        //TODO: Should we use nullable types for float, etc.
-
+                        
         /// <summary>
         /// Default constructor. 
         /// </summary>
         public Peak()
         {
-            Clear();
+            Height = DEFAULT_HEIGHT;
+            Width = DEFAULT_WIDTH;
+            XValue = DEFAULT_XVALUE;
         }
 
         /// <summary>
@@ -45,8 +43,9 @@ namespace PNNLOmics.Data
             LocalSignalToNoise = localSignalToNoise;
             Background = background;
         }
-        
 
+
+        public int Id { get; set; }
         /// <summary>
         /// Gets or the height of the peak.
         /// </summary>
@@ -110,15 +109,6 @@ namespace PNNLOmics.Data
         {
             get;
             set;
-        }
-        /// <summary>
-        /// Sets the values of the peak to its default value.
-        /// </summary>
-        public override void Clear()
-        {
-            Height = DEFAULT_HEIGHT;
-            Width  = DEFAULT_WIDTH;
-            XValue = DEFAULT_XVALUE;
         }
     }
 }

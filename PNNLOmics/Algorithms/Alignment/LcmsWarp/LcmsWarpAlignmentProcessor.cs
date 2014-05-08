@@ -147,7 +147,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 {
                     var point = new UMCLight
                     {
-                        ID = umcIndices[i],
+                        Id = umcIndices[i],
                         MassMonoisotopicAligned = umcCalibratedMasses[i],
                         NetAligned = umcAlignedNets[i],
                         DriftTime = umcDriftTimes[i]
@@ -175,7 +175,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 {
                     var point = new UMCLight
                     {
-                        ID = umcIndices[i],
+                        Id = umcIndices[i],
                         MassMonoisotopicAligned = umcCalibratedMasses[i],
                         NetAligned = umcAlignedNets[i],
                         ScanAligned = umcAlignedScans[i],
@@ -219,7 +219,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     Net = Convert.ToDouble(features[index].Scan),
                     Mz = features[index].Mz,
                     Abundance = features[index].Abundance,
-                    ID = features[index].ID,
+                    Id = features[index].Id,
                     DriftTime = features[index].DriftTime
                 };
 
@@ -280,7 +280,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 feature.Mz = data.Mz;
                 feature.Abundance = data.Abundance;
                 feature.DriftTime = data.DriftTime;
-                feature.ID = data.ID;
+                feature.Id = data.Id;
 
                 mtFeatures.Add(feature);
 
@@ -330,7 +330,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     Mz = data.Mz,
                     Abundance = data.Abundance,
                     DriftTime = data.DriftTime,
-                    ID = data.ID
+                    Id = data.Id
                 };
                 mtFeatures.Add(feature);
 
@@ -372,7 +372,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 Mz = item.MassMonoisotopic/item.ChargeState + (1.00782*(item.ChargeState - 1)), 
                 Net = item.Net, 
                 DriftTime = item.DriftTime, 
-                ID = item.ID,
+                Id = item.Id,
             }));
 
             m_lcmsWarp.SetReferenceFeatures(ref mtFeatures);

@@ -1,16 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using PNNLOmics.Annotations;
 using PNNLOmics.Data.Features;
 
-namespace PNNLOmics.Data
+namespace PNNLOmics.Data.Peaks
 {
-    //TODO: Change name of processed peak to something more specific? like MSPeak
+    
     public class ProcessedPeak: Peak
-    {
-    //    //TODO set up new peak object so we can return a list
-    //    //TODO break up regions into functions
-        
+    {    
+        public ProcessedPeak()
+            : this(0, 0, 0)
+        {            
+            
+            
+        }
+
+        /// <summary>
+        /// simple constructor
+        /// </summary>
+        /// <param name="xValue">x value</param>
+        /// <param name="height">y value</param>
+        [UsedImplicitly]
+        public ProcessedPeak(double xValue, double height)
+            : this(xValue, height, 0)
+        {
+        }
+
+        /// <summary>
+        /// simple constructor
+        /// </summary>
+        /// <param name="xValue">x value</param>
+        /// <param name="height">y value</param>
+        /// <param name="scan">center scan where peak was found</param>
+        public ProcessedPeak(double xValue, double height, int scan)            
+        {
+            XValue = xValue;
+            Height = height;
+            ScanNumber = scan;
+            LocalLowestMinimaHeight = 0;
+            MinimaOfHigherMassIndex = 0;
+            MinimaOfLowerMassIndex = 0;
+        }
 
         /// <summary>
         /// the lower of the two local minima (lowest between the minima lower in mass and the minima higher in mass)
@@ -70,51 +101,12 @@ namespace PNNLOmics.Data
         //TODO: Remove the charge and scannumber and make them part of the feature.
         public MSFeatureLight Feature {get; set; }
 
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
-        public ProcessedPeak()
-        {
-        }
 
-        /// <summary>
-        /// simple constructor
-        /// </summary>
-        /// <param name="xValue">x value</param>
-        /// <param name="height">y value</param>
-        public ProcessedPeak(double xValue, double height)
-        {
-            XValue = xValue;
-            Height = height;
-        }
-
-        /// <summary>
-        /// simple constructor
-        /// </summary>
-        /// <param name="xValue">x value</param>
-        /// <param name="height">y value</param>
-        /// <param name="scan">center scan where peak was found</param>
-        public ProcessedPeak(double xValue, double height, int scan)
-            :this(xValue,height)
-        {
-            ScanNumber = scan;
-        }
-
-        public override void Clear()
-        {            
-            ScanNumber = 0;
-            LocalLowestMinimaHeight = 0;
-            MinimaOfHigherMassIndex = 0;
-            MinimaOfLowerMassIndex = 0;
-        }
-
-        //TODO: Change List to Collection?
         /// <summary>
         /// Peak is the standard object for the output collection and we need to convert processed peak lists.  
         /// </summary>
-        /// <param name="processedPeakList">list of processed peaks</param>
         /// <returns>list of peaks</returns>
-        public static Collection<Peak> ToPeaks(List<ProcessedPeak> peaks)
+        public static Collection<Peak> ToPeaks(IEnumerable<ProcessedPeak> peaks)
         {
             var outputPeakList = new Collection<Peak>();
 
