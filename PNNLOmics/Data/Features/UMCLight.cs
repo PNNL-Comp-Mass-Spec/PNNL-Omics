@@ -119,11 +119,6 @@ namespace PNNLOmics.Data.Features
             get;
             set;
         }
-        public double Mz
-        {
-            get;
-            set;
-        }
         public double Tightness
         {
             get;

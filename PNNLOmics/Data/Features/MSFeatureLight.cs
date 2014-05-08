@@ -28,10 +28,6 @@ namespace PNNLOmics.Data.Features
 		/// </summary>
         public UMCLight Umc { get; set; }
         /// <summary>
-        /// Gets or sets the mass to charge ratio value.
-        /// </summary>
-        public double Mz { get; set; }
-        /// <summary>
         /// Gets or sets the average monoisotopic mass. 
         /// </summary>
         public double MassMonoisotopicAverage { get; set; }

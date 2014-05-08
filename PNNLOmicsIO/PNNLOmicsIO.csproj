@@ -43,7 +43,6 @@
     <Compile Include="IO\IMsMsSpectraReader.cs" />
     <Compile Include="IO\MgfFileReader.cs" />
     <Compile Include="IO\DtaFileWriter.cs" />
-    <Compile Include="IO\ImporterBase.cs" />
     <Compile Include="IO\IMsMsSpectraWriter.cs" />
     <Compile Include="IO\IPeptideFileReader.cs" />
     <Compile Include="IO\ITextFileReader.cs" />

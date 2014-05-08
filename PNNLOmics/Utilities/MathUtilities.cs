@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using PNNLOmics.Annotations;
 using PNNLOmics.Data;
 
@@ -17,7 +18,7 @@ namespace PNNLOmics.Utilities
         /// <param name="meanVector">Mean vector for the density.  [n x 1]</param>
         /// <param name="covarianceMatrix">Symmetric covariance matrix.  [n x n]</param>
         /// <returns>Double</returns>
-        static public double MultivariateNormalDensity(Matrix xVector, Matrix meanVector, Matrix covarianceMatrix)
+        static public double MultivariateNormalDensity(DenseMatrix  xVector, DenseMatrix meanVector, DenseMatrix covarianceMatrix)
         {
 			var covarianceMatrixDeterminant = covarianceMatrix.Determinant();
 

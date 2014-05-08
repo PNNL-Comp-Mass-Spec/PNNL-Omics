@@ -1,5 +1,6 @@
 ﻿using System;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using PNNLOmics.Algorithms.FeatureMatcher.Data;
 using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 
@@ -20,8 +21,8 @@ namespace PNNLOmics.Data.Features
         private double m_slicScore;
         private double m_delSliC;
 
-        private Matrix m_differenceVector;
-        private Matrix m_reducedDifferenceVector;
+        private DenseMatrix m_differenceVector;
+        private DenseMatrix m_reducedDifferenceVector;
 
         private TObserved m_observedFeature;
         private TTarget m_targetFeature;
@@ -88,14 +89,14 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets the difference vector between the matched features.  This includes both observed and predicted drift times where appropriate.
         /// </summary>
-        public Matrix DifferenceVector
+        public DenseMatrix DifferenceVector
         {
             get { return m_differenceVector; }
         }
         /// <summary>
         /// Gets the distance matrix with only applicable dimensions.
         /// </summary>
-        public Matrix ReducedDifferenceVector
+        public DenseMatrix ReducedDifferenceVector
         {
             get { return m_reducedDifferenceVector; }
         }
@@ -129,7 +130,7 @@ namespace PNNLOmics.Data.Features
             m_slicScore = 0;
             m_stacScore = 0;
             m_stacSpecificity = 0;
-            m_differenceVector = new Matrix(2, 1, 0.0);
+            m_differenceVector = new DenseMatrix(2, 1);
             m_reducedDifferenceVector = m_differenceVector;
             m_useDriftTimePredicted = false;
             m_withinRefinedRegion = false;
@@ -151,7 +152,7 @@ namespace PNNLOmics.Data.Features
             m_slicScore = 0;
             m_stacScore = 0;
             m_stacSpecificity = 0;
-            m_differenceVector = new Matrix(2, 1, 0.0);
+            m_differenceVector = new DenseMatrix(2, 1);
             m_reducedDifferenceVector = m_differenceVector;
             m_useDriftTimePredicted = false;
             m_withinRefinedRegion = false;
@@ -233,7 +234,7 @@ namespace PNNLOmics.Data.Features
                 throw new InvalidOperationException("Match must be populated before using functions involving the match.");
             }
             var toleranceMatrix = tolerances.AsVector(true);
-            if (m_reducedDifferenceVector != new Matrix(2, 1, 0.0))
+            if (m_reducedDifferenceVector != new DenseMatrix(2, 1))
             {
                 var dimensions = m_reducedDifferenceVector.RowCount;
 

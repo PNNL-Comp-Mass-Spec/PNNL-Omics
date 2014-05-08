@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {
@@ -90,19 +91,19 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// </summary>
         /// <param name="driftTime">Whether to include the drift time tolerance.</param>
         /// <returns>A matrix of dimention 2x1 if driftTime=false (3x1 if driftTime=true), containing the tolerances.</returns>
-        public Matrix AsVector(bool driftTime)
+        public DenseMatrix AsVector(bool driftTime)
         {
-            Matrix tolerances;
+            DenseMatrix tolerances;
             if (driftTime)
             {
-                tolerances = new Matrix(3, 1, 0.0);
+                tolerances = new DenseMatrix(3, 1);
                 tolerances[0, 0] = m_massTolerancePPM;
                 tolerances[1, 0] = m_netTolerance;
                 tolerances[2, 0] = m_driftTimeTolerance;
             }
             else
             {
-                tolerances = new Matrix(2, 1, 0.0);
+                tolerances = new DenseMatrix(2, 1);
                 tolerances[0, 0] = m_massTolerancePPM;
                 tolerances[1, 0] = m_netTolerance;
             }

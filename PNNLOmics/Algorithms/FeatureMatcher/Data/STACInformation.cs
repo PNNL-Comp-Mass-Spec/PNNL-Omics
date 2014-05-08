@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
@@ -14,10 +15,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         private double m_mixtureProportion;
         private double m_logLikelihood;
 
-        private Matrix m_meanVectorT;
-        private Matrix m_covarianceMatrixT;
-        private Matrix m_meanVectorF;
-        private Matrix m_covarianceMatrixF;
+        private DenseMatrix m_meanVectorT;
+        private DenseMatrix m_covarianceMatrixT;
+        private DenseMatrix m_meanVectorF;
+        private DenseMatrix m_covarianceMatrixF;
 
 		private FeatureMatcherTolerances m_refinedTolerances;
 
@@ -40,7 +41,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <summary>
         /// Gets or sets the estimated means of the true normal distribution.
         /// </summary>
-        public Matrix MeanVectorT
+        public DenseMatrix MeanVectorT
         {
             get { return m_meanVectorT; }
             set { m_meanVectorT = value; }
@@ -48,7 +49,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <summary>
         /// Gets or sets the estimated covariance matrix of the true normal distribution.
         /// </summary>
-        public Matrix CovarianceMatrixT
+        public DenseMatrix CovarianceMatrixT
         {
             get { return m_covarianceMatrixT; }
             set { m_covarianceMatrixT = value; }
@@ -56,7 +57,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <summary>
         /// Gets or sets the mean vector of the normal distribution used in the case of a low prior probability.
         /// </summary>
-        public Matrix MeanVectorF
+        public DenseMatrix MeanVectorF
         {
             get { return m_meanVectorF; }
             set { m_meanVectorF = value; }
@@ -64,7 +65,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <summary>
         /// Gets or sets the covariance matrix of the normal distribution used in the case of a low prior probability.
         /// </summary>
-        public Matrix CovarianceMatrixF
+        public DenseMatrix CovarianceMatrixF
         {
             get { return m_covarianceMatrixF; }
             set { m_covarianceMatrixF = value; }
@@ -102,8 +103,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             m_logLikelihood = 0.0;
             if (driftTime)
             {
-                m_meanVectorT = new Matrix(3, 1, 0.0);
-                m_covarianceMatrixT = new Matrix(3, 3, 0.0);
+                m_meanVectorT = new DenseMatrix(3, 1);
+                m_covarianceMatrixT = new DenseMatrix(3, 3);
                 m_covarianceMatrixT[0, 0] = 2.0;
                 m_covarianceMatrixT[1, 1] = 0.3;
                 m_covarianceMatrixT[2, 2] = 0.5;
@@ -112,8 +113,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             }
             else
             {
-                m_meanVectorT = new Matrix(2, 1, 0.0);
-                m_covarianceMatrixT = new Matrix(2, 2, 0.0);
+                m_meanVectorT = new DenseMatrix(2, 1);
+                m_covarianceMatrixT = new DenseMatrix(2, 2);
                 m_covarianceMatrixT[0, 0] = 2.0;
                 m_covarianceMatrixT[1, 1] = 0.3;
                 m_meanVectorF = m_meanVectorT;
@@ -375,7 +376,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         {
             Clear();            
 
-            var dataList = new List<Matrix>();
+            var dataList = new List<DenseMatrix>();
             var priorList = new List<double>();
             foreach (var match in featureMatchList)
             {
@@ -447,7 +448,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             Clear();
             var converges = false;
 
-            var dataList = new List<Matrix>();
+            var dataList = new List<DenseMatrix>();
             foreach (var match in featureMatchList)
             {
                 dataList.Add(match.DifferenceVector);
@@ -553,7 +554,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             }
             else
             {
-                var dataList = new List<Matrix>();
+                var dataList = new List<DenseMatrix>();
                 foreach (var match in featureMatchList)
                 {
                     dataList.Add(match.DifferenceVector);
@@ -633,7 +634,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             where T : FeatureLight, new()
             where U : MassTagLight, new()
         {
-            var dataList = new List<Matrix>();
+            var dataList = new List<DenseMatrix>();
             var priorList = new List<double>();
             foreach (var match in featureMatchList)
             {
