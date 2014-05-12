@@ -4,11 +4,64 @@ using System.Diagnostics;
 using NUnit.Framework;
 using PNNLOmics.Data.Constants;
 using PNNLOmics.Data.Constants.Libraries;
+using PNNLOmics.Utilities;
+using System.IO;
 
 namespace PNNLOmics.UnitTests.ConstantsTests
 {
     class ConstantsTest
     {
+        [Test]
+        public void LoadPeriodicDableFromDiskOrCode()
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            string OMICS_ELEMENT_DATA_FILE = "PNNLOmicsElementData.xml";
+            
+            ResolveUNCPath.MappedDriveResolver uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
+            string asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtilities.AssemblyDirectory);
+
+            FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
+
+            ElementLibrary libraryLoad = new ElementLibrary();
+
+            List<string> elementSymbolList = new List<string>();
+            List<Element> elementList = new List<Element>();
+
+            Assert.IsTrue(constantsFileInfo.Exists);
+
+            if (constantsFileInfo.Exists)
+            {
+                try
+                {
+                    libraryLoad.LoadXML(constantsFileInfo.FullName, out elementSymbolList, out elementList);
+                }
+                catch
+                {
+                    //file missing
+                }
+            }
+
+            Assert.AreEqual(elementList.Count, 104);
+            Assert.AreEqual(elementSymbolList.Count, 104);
+            Assert.AreEqual(elementList[50].MassAverage, 121.76);
+            Assert.AreEqual(elementSymbolList[50], "Sb");
+
+            elementSymbolList = null;
+            elementList = null;
+
+            libraryLoad.LoadHardCoded(out elementSymbolList, out elementList);
+
+            Assert.AreEqual(elementList.Count, 104);
+            Assert.AreEqual(elementSymbolList.Count, 104);
+            Assert.AreEqual(elementList[50].MassAverage, 121.76);
+            Assert.AreEqual(elementSymbolList[50], "Sb");
+
+            stopWatch.Stop();
+            Console.WriteLine("This took " + stopWatch.Elapsed + "seconds to Load and initialize the library twice");
+        }
+        
         [Test]
         public void TestCyclingThroughDictionary()
         {
