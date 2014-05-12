@@ -46,7 +46,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             var xyDataList =
                 observedUmcList.Select((t, i) => new XYData(t.DriftTime, targetUmcList[i].DriftTime)).ToList();
 
-            var linearEquation = LinearRegression.CalculateLinearEquation(xyDataList);
+            var regression = new LinearRegressionModel();
+            var linearEquation = regression.CalculateRegression(xyDataList);
             Assert.AreEqual(Math.Round(linearEquation.Slope, 4), 0.7142);
             Assert.AreEqual(Math.Round(linearEquation.Intercept, 4), 1.1324);
         }

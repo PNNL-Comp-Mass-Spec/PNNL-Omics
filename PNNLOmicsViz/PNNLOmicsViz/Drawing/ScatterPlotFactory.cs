@@ -1,16 +1,21 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using OxyPlot;
 using PNNLOmics.Data.Features;
 
+#endregion
+
 namespace PNNLOmicsViz.Drawing
 {
     public static class ScatterPlotFactory
     {
         #region Cluster Scatter Plots
+
         /// <summary>
-        /// Creates a scatter plot for clusters showing NET and Mono Mass.
+        ///     Creates a scatter plot for clusters showing NET and Mono Mass.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="clusters"></param>
@@ -19,12 +24,13 @@ namespace PNNLOmicsViz.Drawing
             where T : UMCClusterLight
         {
             Func<T, double> mass = t => t.MassMonoisotopicAligned;
-            Func<T, double> net  = t => t.RetentionTime;
+            Func<T, double> net = t => t.RetentionTime;
 
             return CreateClustersScatterPlot(clusters, net, mass, "NET", "Monoisotopic Mass", OxyColors.Crimson);
         }
+
         /// <summary>
-        /// Creates a scatter plot for clusters showing NET and Mono Mass.
+        ///     Creates a scatter plot for clusters showing NET and Mono Mass.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="clusters"></param>
@@ -32,11 +38,13 @@ namespace PNNLOmicsViz.Drawing
         public static PlotBase CreateClusterDriftTimeScatterPlot<T>(IEnumerable<T> clusters)
             where T : UMCClusterLight
         {
-            Func<T, double> mass            = t => t.MassMonoisotopicAligned;
-            Func<T, double> driftTime       = t => t.DriftTime;
+            Func<T, double> mass = t => t.MassMonoisotopicAligned;
+            Func<T, double> driftTime = t => t.DriftTime;
 
-            return CreateClustersScatterPlot(clusters, driftTime, mass, "Drift Time", "Monoisotopic Mass", OxyColors.Crimson);
+            return CreateClustersScatterPlot(clusters, driftTime, mass, "Drift Time", "Monoisotopic Mass",
+                OxyColors.Crimson);
         }
+
         public static PlotBase CreateClustersScatterPlot<T>(IEnumerable<T> features,
             Func<T, double> timeSelector,
             Func<T, double> massSelector,
@@ -46,10 +54,9 @@ namespace PNNLOmicsViz.Drawing
             )
             where T : FeatureLight
         {
-
             var x = new List<double>();
             var y = new List<double>();
-            foreach (T feature in features)
+            foreach (var feature in features)
             {
                 x.Add(timeSelector(feature));
                 y.Add(massSelector(feature));
@@ -60,6 +67,7 @@ namespace PNNLOmicsViz.Drawing
             plot.Model.Axes[1].MajorGridlineStyle = LineStyle.Solid;
             return plot;
         }
+
         #endregion
 
         #region Feature Scatter Plots
@@ -74,7 +82,7 @@ namespace PNNLOmicsViz.Drawing
             where T : FeatureLight
         {
             Func<T, double> mass = t => t.MassMonoisotopicAligned;
-            Func<T, double> net  = t => t.NetAligned;
+            Func<T, double> net = t => t.NetAligned;
 
             return CreateFeatureScatterPlot(features, net, mass, "NET Aligned", "Monoisotopic Mass");
         }
@@ -88,7 +96,7 @@ namespace PNNLOmicsViz.Drawing
         public static PlotBase CreateFeatureDriftTimeScatterPlot<T>(IEnumerable<T> features)
             where T : FeatureLight
         {
-            Func<T, double> mass      = t => t.MassMonoisotopicAligned;
+            Func<T, double> mass = t => t.MassMonoisotopicAligned;
             Func<T, double> driftTime = t => t.DriftTime;
 
             return CreateFeatureScatterPlot(features, driftTime, mass, "Drift Time", "Monoisotopic Mass");
@@ -129,7 +137,7 @@ namespace PNNLOmicsViz.Drawing
         {
             // Map charge states.
             var chargeMap = new Dictionary<int, IList<T>>();
-            foreach (T feature in features)
+            foreach (var feature in features)
             {
                 int charge = feature.ChargeState;
                 if (!chargeMap.ContainsKey(charge))
@@ -141,11 +149,11 @@ namespace PNNLOmicsViz.Drawing
 
             var colorIterator = new ColorTypeIterator();
             var plot = new ScatterPlot("Features", timeLabel, massLabel);
-            foreach (int charge in chargeMap.Keys)
+            foreach (var charge in chargeMap.Keys)
             {
                 var x = new List<double>();
                 var y = new List<double>();
-                foreach (T feature in chargeMap[charge])
+                foreach (var feature in chargeMap[charge])
                 {
                     x.Add(timeSelector(feature));
                     y.Add(massSelector(feature));
@@ -206,7 +214,7 @@ namespace PNNLOmicsViz.Drawing
             Func<T, T, double> massPost =
                 (t, u) => FeatureLight.ComputeMassPPMDifference(t.MassMonoisotopic, u.MassMonoisotopicAligned);
 
-            PlotBase plot = CreateResidualAlignmentPlot(x,
+            var plot = CreateResidualAlignmentPlot(x,
                 y,
                 scan,
                 massPre,

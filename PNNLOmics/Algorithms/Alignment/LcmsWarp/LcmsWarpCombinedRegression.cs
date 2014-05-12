@@ -8,12 +8,12 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// Object that holds instances of all three regression types, as well as providing a wrapper method for all three of the
     /// regression types that LCMS could use
     /// </summary>
-    public class LcmsWarpCombinedRegression
+    public sealed class LcmsWarpCombinedRegression
     {
         private LcmsWarpRegressionType m_regressionType;
         private bool m_lsqFailed;
         readonly LcmsWarpCentralRegression m_central;
-        readonly LeastSquaresSplineRegression m_lsqReg;
+        readonly LeastSquaresSplineRegressionModel m_lsqReg;
         readonly LcmsNaturalCubicSplineRegression m_cubicSpline;
 
         /// <summary>
@@ -21,11 +21,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>
         public LcmsWarpCombinedRegression()
         {
-            m_regressionType = LcmsWarpRegressionType.Hybrid;
-            m_lsqFailed = false;
-            m_central = new LcmsWarpCentralRegression();
-            m_lsqReg = new LeastSquaresSplineRegression();
-            m_cubicSpline = new LcmsNaturalCubicSplineRegression();
+            m_regressionType    = LcmsWarpRegressionType.Hybrid;
+            m_lsqFailed         = false;
+            m_central           = new LcmsWarpCentralRegression();
+            m_lsqReg            = new LeastSquaresSplineRegressionModel();
+            m_cubicSpline       = new LcmsNaturalCubicSplineRegression();
         }
 
         /// <summary>
@@ -87,12 +87,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     return m_central.GetPredictedValue(x);
                 
                 default:
-                    if (!m_lsqFailed)
-                    {
-                        return m_cubicSpline.GetPredictedValue(x);
-                    }
-                    return m_central.GetPredictedValue(x);
-                    
+                    return !m_lsqFailed ? m_cubicSpline.GetPredictedValue(x) : m_central.GetPredictedValue(x);
             }
         }
 

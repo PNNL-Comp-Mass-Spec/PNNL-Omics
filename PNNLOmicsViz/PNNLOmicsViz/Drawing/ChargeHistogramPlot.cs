@@ -1,18 +1,24 @@
+#region
+
 using System.Collections.Generic;
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+
+#endregion
 
 namespace PNNLOmicsViz.Drawing
 {
     public class ChargeHistogramPlot : PlotBase
     {
-        protected CategoryAxis m_xAxis;
+        protected readonly CategoryAxis m_xAxis;
 
         public ChargeHistogramPlot(Dictionary<int, int> histogram, string name) :
             base(name)
         {
-            var axis = new CategoryAxis(AxisPosition.Bottom)
+            var axis = new CategoryAxis
             {
+                Position = AxisPosition.Bottom,
                 MinorStep = 1,
                 LabelField = "Charge States",
                 AbsoluteMinimum = 0,
@@ -20,8 +26,9 @@ namespace PNNLOmicsViz.Drawing
             };
 
             // Count axis
-            var linearAxis = new LinearAxis(AxisPosition.Left, 0)
+            var linearAxis = new LinearAxis
             {
+                Position = AxisPosition.Left,
                 MaximumPadding = .15,
                 AbsoluteMinimum = 1,
                 Minimum = 0,
@@ -41,7 +48,7 @@ namespace PNNLOmicsViz.Drawing
             };
 
             var colors = new ColorTypeIterator();
-            foreach (int key in histogram.Keys)
+            foreach (var key in histogram.Keys)
             {
                 axis.Labels.Add(key.ToString());
                 int number = histogram[key];
@@ -55,6 +62,9 @@ namespace PNNLOmicsViz.Drawing
 
             m_xAxis = axis;
             Model.Series.Add(data);
+
+            Model.Axes[0].MajorGridlineStyle = LineStyle.Solid;
+            Model.Axes[1].MajorGridlineStyle = LineStyle.Solid;
         }
     }
 }

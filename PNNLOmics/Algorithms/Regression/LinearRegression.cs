@@ -1,25 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PNNLOmics.Algorithms.Alignment;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Regression
-{
-    //TODO: Move to regression folder - and rename to linear regression
-
-	public static class LinearRegression
+{    
+	public sealed class LinearRegressionModel: IRegressorAlgorithm<LinearRegressionResult>
 	{
-		public static LinearEquation CalculateLinearEquation(IEnumerable<XYData> xyDataList)
+        public LinearRegressionResult CalculateRegression(IEnumerable<XYData> xyDataList)
 		{
-			var linearEquation = new LinearEquation();
+            var linearEquation = new LinearRegressionResult();
 
+            //TODO: Calculate an R^2 value.
 			double sumX = 0;
 			double sumY = 0;
 			double sumXTimesY = 0;
 			double sumXSquared = 0;
-			double numPoints = xyDataList.Count();
 
-			foreach (var xyData in xyDataList)
+            var dataList        = xyDataList as XYData[] ?? xyDataList.ToArray();
+            double numPoints    = dataList.Count();
+
+			foreach (var xyData in dataList)
 			{
 				var xValue = xyData.X;
 				var yValue = xyData.Y;
@@ -34,14 +34,24 @@ namespace PNNLOmics.Algorithms.Regression
 			var intercept = ((sumY * sumXSquared) - (sumX * sumXTimesY)) / ((numPoints * sumXSquared) - (sumX * sumX));
 
 			linearEquation.Intercept = intercept;
-			linearEquation.Slope = slope;
+			linearEquation.Slope     = slope;            
 
 			return linearEquation;
 		}
 
-		public static double CalculateNewValue(double xValue, LinearEquation linearEquation)
-		{
-			return (linearEquation.Slope * xValue) + linearEquation.Intercept;
-		}
-	}
+        public LinearRegressionResult CalculateRegression(IEnumerable<double> observed, IEnumerable<double> predicted)
+        {
+            var observedList = observed.ToList();
+            var predictedList = predicted.ToList();
+
+            var data = observedList.Select((t, i) => new XYData(t, predictedList[i])).ToList();
+            return CalculateRegression(data);
+        }
+
+
+        public double Transform(LinearRegressionResult regressionFunction, double observed)
+        {            
+            return (regressionFunction.Slope * observed) + regressionFunction.Intercept;
+        }
+    }
 }

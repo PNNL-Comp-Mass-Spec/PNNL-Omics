@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Alignment
@@ -6,7 +7,7 @@ namespace PNNLOmics.Algorithms.Alignment
     /// <summary>
     /// Holds matches from drift time alignments.
     /// </summary>
-    public class DriftTimeAlignmentResults<TTarget, TObserved>
+    public sealed class DriftTimeAlignmentResults<TTarget, TObserved>
 		where TTarget   : FeatureLight, new()
         where TObserved : FeatureLight, new()
     {
@@ -15,7 +16,7 @@ namespace PNNLOmics.Algorithms.Alignment
         /// </summary>
         /// <param name="matches"></param>
         /// <param name="alignmentFunction"></param>
-        public DriftTimeAlignmentResults(List<FeatureMatch<TTarget, TObserved>> matches, LinearEquation alignmentFunction)
+        public DriftTimeAlignmentResults(List<FeatureMatch<TTarget, TObserved>> matches, LinearRegressionResult alignmentFunction)
         {
             Matches             = matches;
             AlignmentFunction   = alignmentFunction;
@@ -33,7 +34,7 @@ namespace PNNLOmics.Algorithms.Alignment
         /// <summary>
         /// Gets the alignment function between the matches.
         /// </summary>
-        public LinearEquation AlignmentFunction
+        public LinearRegressionResult AlignmentFunction
         {
             get; 
             private set;

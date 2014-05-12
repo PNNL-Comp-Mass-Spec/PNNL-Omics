@@ -72,7 +72,6 @@
     <Compile Include="Drawing\PlotFactory.cs" />
     <Compile Include="Drawing\ScatterPlot.cs" />
     <Compile Include="Drawing\ScatterPlotFactory.cs" />
-    <Compile Include="Drawing\SvgBasicEncoder.cs" />
     <Compile Include="Drawing\PngPlotModelEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

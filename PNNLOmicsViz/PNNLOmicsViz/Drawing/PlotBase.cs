@@ -1,5 +1,9 @@
-﻿using OxyPlot;
+﻿#region
+
+using OxyPlot;
 using PNNLOmics.Annotations;
+
+#endregion
 
 namespace PNNLOmicsViz.Drawing
 {
@@ -18,8 +22,10 @@ namespace PNNLOmicsViz.Drawing
         /// <param name="name"></param>
         protected PlotBase(string name)
         {
-            Model = new PlotModel(name);
-            Model.Background = OxyColors.White;
+            Model = new PlotModel
+            {
+                Background = OxyColors.White,
+            };
             Name = name;
         }
 

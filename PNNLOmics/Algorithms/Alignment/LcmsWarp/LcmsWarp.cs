@@ -927,16 +927,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             for (var matchNum = 0; matchNum < numMatches; matchNum++)
             {
-                var calibrationMatch = new RegressionPoint();
                 var match = m_featureMatches[matchNum];
                 var feature = m_features[match.FeatureIndex];
                 var baselineFeature = m_baselineFeatures[match.FeatureIndex2];
                 var ppm = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic);
                 var mz = feature.Mz;
                 var netDiff = baselineFeature.Net - feature.NetAligned;
-                calibrationMatch.X = mz;
-                calibrationMatch.NetError = netDiff;
-                calibrationMatch.MassError = ppm;
+
+                var calibrationMatch = new RegressionPoint(mz, 0, netDiff, ppm);
 
                 calibrations.Add(calibrationMatch);
             }
@@ -966,16 +964,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             for (var matchNum = 0; matchNum < numMatches; matchNum++)
             {
-                var calibrationMatch = new RegressionPoint();
                 var match = m_featureMatches[matchNum];
                 var feature = m_features[match.FeatureIndex];
                 var baselineFeature = m_baselineFeatures[match.FeatureIndex2];
                 var ppm = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic);
                 var net = feature.Net;
                 var netDiff = baselineFeature.Net - feature.NetAligned;
-                calibrationMatch.X = net;
-                calibrationMatch.NetError = netDiff;
-                calibrationMatch.MassError = ppm;
+
+                var calibrationMatch = new RegressionPoint(net, 0, netDiff, ppm);                
 
                 calibrations.Add(calibrationMatch);
             }

@@ -1,7 +1,11 @@
-﻿using OxyPlot;
+﻿#region
+
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using PNNLOmics.Annotations;
+
+#endregion
 
 namespace PNNLOmicsViz.Drawing
 {

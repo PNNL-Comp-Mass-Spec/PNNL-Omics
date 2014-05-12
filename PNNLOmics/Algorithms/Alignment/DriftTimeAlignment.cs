@@ -43,13 +43,15 @@ namespace PNNLOmics.Algorithms.Alignment
 				xyDataList.Add(xyData);
 			}
 
+            var linearRegression = new LinearRegressionModel();
+
 			// Find the Linear Equation for the <ObservedDriftTime, TargetDriftTime> XYData List
-			var linearEquation = LinearRegression.CalculateLinearEquation(xyDataList);
+            var linearEquation = linearRegression.CalculateRegression(xyDataList);
 
 			// Set the Aligned Drift Time value for each of the observed Features, even if they were not found in matching
 			foreach (var observedT in fullObservedEnumerable)
 			{
-				observedT.DriftTimeAligned = LinearRegression.CalculateNewValue(observedT.DriftTime, linearEquation);
+                observedT.DriftTimeAligned = linearRegression.Transform(linearEquation, observedT.DriftTime);
 			}
 
             var results = new DriftTimeAlignmentResults<TTarget, TObserved>(matchList, linearEquation);
@@ -82,7 +84,7 @@ namespace PNNLOmics.Algorithms.Alignment
 				var observedFeature = featureMatch.ObservedFeature;
 				var targetFeature = featureMatch.TargetFeature;
 
-				double observedDriftTime = 0;
+				double observedDriftTime;
 				if (observedFeature.DriftTimeAligned != double.NaN && observedFeature.DriftTimeAligned > 0.0)
 				{
 					observedDriftTime = observedFeature.DriftTimeAligned;
@@ -92,8 +94,8 @@ namespace PNNLOmics.Algorithms.Alignment
 					observedDriftTime = observedFeature.DriftTime;
 				}
 
-				double targetDriftTime = 0;
-				if (targetFeature.DriftTimeAligned != double.NaN && targetFeature.DriftTimeAligned > 0.0)
+				double targetDriftTime;
+				if (!double.IsNaN(targetFeature.DriftTimeAligned) && targetFeature.DriftTimeAligned > 0.0)
 				{
 					targetDriftTime = targetFeature.DriftTimeAligned;
 				}
@@ -127,7 +129,7 @@ namespace PNNLOmics.Algorithms.Alignment
 			// Update all of the observed features with the new drift time
 			foreach (var observedFeature in observedEnumerable)
 			{
-				if (observedFeature.DriftTimeAligned != double.NaN && observedFeature.DriftTimeAligned > 0.0)
+				if (!double.IsNaN(observedFeature.DriftTimeAligned) && observedFeature.DriftTimeAligned > 0.0)
 				{
 					observedFeature.DriftTimeAligned -= driftTimeOffset;
 				}
@@ -137,9 +139,7 @@ namespace PNNLOmics.Algorithms.Alignment
 				}
 			}
 
-            var linearEquation           = new LinearEquation();
-            linearEquation.Slope                    = 0;
-            linearEquation.Intercept                = driftTimeOffset;
+            var linearEquation           = new LinearRegressionResult {Slope = 0, Intercept = driftTimeOffset};
             var results = new DriftTimeAlignmentResults<TTarget, TObserved>(matchList, linearEquation);
 
             return results;

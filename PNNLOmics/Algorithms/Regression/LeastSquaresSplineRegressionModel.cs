@@ -9,7 +9,7 @@ namespace PNNLOmics.Algorithms.Regression
     /// <summary>
     /// Object to hold the necesary information for an LSQ regression for LCMSWarp
     /// </summary>
-    public class LeastSquaresSplineRegression
+    public sealed class LeastSquaresSplineRegressionModel
     {
         readonly List<RegressionPoint> m_points;
         readonly double[] m_coeffs = new double[512];
@@ -23,7 +23,7 @@ namespace PNNLOmics.Algorithms.Regression
         /// <summary>
         /// Cleans any remaining data from previous regression
         /// </summary>
-        public void Clear()
+        private void Clear()
         {
             m_points.Clear();
         }
@@ -32,7 +32,7 @@ namespace PNNLOmics.Algorithms.Regression
         /// Constructor for an LSQSplineRegressor. Initializes number of knots, order and sets up
         /// new memory space for the regression points
         /// </summary>
-        public LeastSquaresSplineRegression()
+        public LeastSquaresSplineRegressionModel()
         {
             m_numKnots = 0;
             m_order = 1;
@@ -47,8 +47,6 @@ namespace PNNLOmics.Algorithms.Regression
         {
             m_numKnots = numKnots;
         }
-
-        
 
         /// <summary>
         /// Computes the Regressor coefficients based on the order of the LSQ and the points to regress

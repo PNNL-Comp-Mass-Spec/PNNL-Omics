@@ -5,8 +5,9 @@
     /// </summary>
     public enum HypothesisTests
     {
-        TTest,        
+        TTest,
         MannWhitneyU,
-        KolmogorovSmirnov
+        KolmogorovSmirnov,
+        Wilcoxon
     }
 }

@@ -1,6 +1,10 @@
+#region
+
 using System.Collections.Generic;
 using System.Linq;
 using OxyPlot;
+
+#endregion
 
 namespace MultiAlign.ViewModels.Charting
 {

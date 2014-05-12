@@ -11,7 +11,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// <summary>
     /// Object which performs feature alignment through LCMSWarp
     /// </summary>
-    public sealed class LcmsWarpAdapter :
+    public sealed class LcmsWarpAdapter :  
         IFeatureAligner<IEnumerable<UMCLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>,
         IFeatureAligner<IEnumerable<MassTagLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>
     {
@@ -24,7 +24,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         {
         }
 
-        private LcmsWarpAdapter(LcmsWarpAlignmentOptions options)
+        public LcmsWarpAdapter(LcmsWarpAlignmentOptions options)
         {
             m_options = options;
         }

@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using PNNLOmics.Annotations;
 using PNNLOmics.Data.Features;
-using PNNLOmicsViz.Drawing;
 
-namespace MultiAlignCore.Drawing
+#endregion
+
+namespace PNNLOmicsViz.Drawing
 {
     public static class HistogramFactory
     {
@@ -14,12 +18,13 @@ namespace MultiAlignCore.Drawing
         /// <typeparam name="T"></typeparam>
         /// <param name="features"></param>
         /// <returns></returns>
+        [UsedImplicitly]
         public static PlotBase CreateChargeStateHistogram<T>(IEnumerable<T> features)
             where T : FeatureLight
         {
             // Map charge states.
             var chargeMap = new Dictionary<int, int>();
-            foreach (T feature in features)
+            foreach (var feature in features)
             {
                 int charge = feature.ChargeState;
                 if (!chargeMap.ContainsKey(charge))
@@ -41,7 +46,7 @@ namespace MultiAlignCore.Drawing
         public static PlotBase CreateHistogram(double[,] histogram, string label)
         {
             var plotData = new Dictionary<double, int>();
-            for (int i = 0; i < histogram.GetLength(0); i++)
+            for (var i = 0; i < histogram.GetLength(0); i++)
             {
                 plotData.Add(histogram[i, 0], Convert.ToInt32(histogram[i, 1]));
             }
@@ -56,8 +61,7 @@ namespace MultiAlignCore.Drawing
         /// <returns></returns>
         public static PlotBase CreateHistogram(Dictionary<int, int> histogram, string label)
         {
-            Dictionary<double, int> doubleGram = histogram.Keys.ToDictionary<int, double, int>(key => key,
-                key => histogram[key]);
+            var doubleGram = histogram.Keys.ToDictionary<int, double, int>(key => key, key => histogram[key]);
 
             return new HistogramPlot(doubleGram, label);
         }

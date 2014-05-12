@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
 using System.Windows.Media.Imaging;
+
+#endregion
 
 namespace PNNLOmicsViz.Drawing
 {
@@ -45,7 +49,7 @@ namespace PNNLOmicsViz.Drawing
                 var encoder = new PngBitmapEncoder {Interlace = PngInterlaceOption.On};
                 encoder.Frames.Add(BitmapFrame.Create(image));
                 encoder.Save(stream);
-            }            
+            }
         }
     }
 }
