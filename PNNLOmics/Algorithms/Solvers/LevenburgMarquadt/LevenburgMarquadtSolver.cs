@@ -136,6 +136,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
         /// <param name="didConverge"></param>
         public SolverReport(alglib.lsfitreport report, bool didConverge)
         {
+            //see notes at bottom from Alglib website
             AverageError     = report.avgerror;
             DidConverge      = didConverge;
             IterationCount   = report.iterationscount;
@@ -208,6 +209,39 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
         {
             get;
             private set;
-        }        
+        }      
+  
+        /*
+        Least squares fitting report. This structure contains informational fields
+        which are set by fitting functions provided by this unit.
+
+        Different functions initialize different sets of  fields,  so  you  should
+        read documentation on specific function you used in order  to  know  which
+        fields are initialized.
+
+            TaskRCond       reciprocal of task's condition number
+            IterationsCount number of internal iterations
+
+            VarIdx          if user-supplied gradient contains errors  which  were
+                            detected by nonlinear fitter, this  field  is  set  to
+                            index  of  the  first  component  of gradient which is
+                            suspected to be spoiled by bugs.
+
+            RMSError        RMS error
+            AvgError        average error
+            AvgRelError     average relative error (for non-zero Y[I])
+            MaxError        maximum error
+
+            WRMSError       weighted RMS error
+
+            CovPar          covariance matrix for parameters, filled by some solvers
+            ErrPar          vector of errors in parameters, filled by some solvers
+            ErrCurve        vector of fit errors -  variability  of  the  best-fit
+                            curve, filled by some solvers.
+            Noise           vector of per-point noise estimates, filled by
+                            some solvers.
+            R2              coefficient of determination (non-weighted, non-adjusted),
+                            filled by some solvers.
+        */
     }
 }
