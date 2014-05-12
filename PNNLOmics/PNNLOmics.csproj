@@ -84,6 +84,8 @@
     <Compile Include="Algorithms\Statistics\KolmogorovSmirnovTest.cs" />
     <Compile Include="Algorithms\Statistics\NormalityTestingFactory.cs" />
     <Compile Include="Algorithms\Statistics\NormalityTests.cs" />
+    <Compile Include="Data\Constants\Libraries\PeriodicTable.cs" />
+    <Compile Include="Data\Constants\Libraries\PeriodicTableLibrary.cs" />
     <Compile Include="Data\Features\LcmsFeatureFilteringOptions.cs" />
     <Compile Include="Data\Features\LcmsFeatureFilters.cs" />
     <Compile Include="Data\Features\MsFeatureFilteringOptions.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Extensions\UmcClusterExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
+    <Compile Include="Utilities\PathUtilities.cs" />
     <Compile Include="Utilities\PeptideUtility.cs" />
     <Compile Include="Algorithms\Alignment\SpectralMatching\SpectralAnchorPoint.cs" />
     <Compile Include="Algorithms\Alignment\SpectralMatching\SpectralAnchorPointMatch.cs" />
@@ -323,7 +326,6 @@
     <Compile Include="Data\XYData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\MassTags\Protein.cs" />
-    <Compile Include="Utilities\PathUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="PNNLOmicsElementData.xml">

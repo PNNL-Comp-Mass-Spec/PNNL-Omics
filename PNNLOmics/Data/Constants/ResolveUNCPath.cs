@@ -5,7 +5,7 @@ using PNNLOmics.Utilities;
 
 namespace PNNLOmics.Data.Constants
 {
-    class ResolveUNCPath
+    public class ResolveUNCPath
     {
         public class MappedDriveResolver
         {
@@ -38,7 +38,7 @@ namespace PNNLOmics.Data.Constants
                 var rootOfMysteryPath = Directory.GetDirectoryRoot(pPath);
 
                 //this contains all the path - the root
-                var activeDirectoryPath  = PathUtililities.AssemblyDirectory;
+                var activeDirectoryPath = PathUtilities.AssemblyDirectory;
 
                 //2.  repalce // with space for splitting
                 var charSeperator = Path.DirectorySeparatorChar;

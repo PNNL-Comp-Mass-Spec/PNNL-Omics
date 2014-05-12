@@ -1,10 +1,13 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Reflection;
+using System.IO;
 
 namespace PNNLOmics.Utilities
 {
-	public static class PathUtililities
+    public static class PathUtilities
 	{
 		/// <summary>
 		/// Returns the path to the directory containing the currently executing DLL
@@ -17,9 +20,9 @@ namespace PNNLOmics.Utilities
 		{
 			get
 			{
-				var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-				var uri = new UriBuilder(codeBase);
-				var path = Uri.UnescapeDataString(uri.Path);
+				string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+				UriBuilder uri = new UriBuilder(codeBase);
+				string path = Uri.UnescapeDataString(uri.Path);
 				return Path.GetDirectoryName(path);
 			}
 		}

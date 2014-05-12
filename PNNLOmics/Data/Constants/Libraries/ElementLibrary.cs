@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using PNNLOmics.Data.Constants;
 using PNNLOmics.Utilities;
 
 /// <example>
@@ -37,13 +38,13 @@ namespace PNNLOmics.Data.Constants.Libraries
         /// IUPAC 2000 Atomic Weights of the Elements (published 2003) was used.
         /// Differences from the old version:  Elements H, B, C, N, O, Na, P, S, Cl, K, Ca were updated.  Table 5 in the paper has the probabilities (best measurement column was used).
         /// </summary>
-        private void LoadXML(string constantsFileName, out List<string> elementSymbolList, out List<Element> elementList)
+        public void LoadXML(string constantsFileName, out List<string> elementSymbolList, out List<Element> elementList)
         {
-            var readerXML = XmlReader.Create(constantsFileName);
+            XmlReader readerXML = XmlReader.Create(constantsFileName);
 
-            var numberOfIsotopes = 0;
-            var atomicity = 0;
-            var isotopeNumber = 0;
+            int numberOfIsotopes = 0;
+            int atomicity = 0;
+            int isotopeNumber = 0;
             double massAverage = 0;
             double massAverageUncertainty = 0;
             double isotopeMass = 0;
@@ -58,13 +59,13 @@ namespace PNNLOmics.Data.Constants.Libraries
                 {
                     if (readerXML.Name == "NumElements")
                     {
-                        var numElements = readerXML.ReadElementContentAsInt();// Parse(Xreader.GetAttribute("Symbol"));
+                        int numElements = readerXML.ReadElementContentAsInt();// Parse(Xreader.GetAttribute("Symbol"));
                     }
 
                     if (readerXML.Name == "Element")
                     {
-                        var newElement = new Element();
-                        var newIsotopeDictionary = new Dictionary<string, Isotope>();
+                        Element newElement = new Element();
+                        Dictionary<string, Isotope> newIsotopeDictionary = new Dictionary<string, Isotope>();
 
                         readerXML.ReadToFollowing("Symbol");
                         newElement.Symbol = readerXML.ReadElementContentAsString();
@@ -85,7 +86,7 @@ namespace PNNLOmics.Data.Constants.Libraries
                         massAverageUncertainty = readerXML.ReadElementContentAsDouble();
 
                         //for each isotope
-                        for (var i = 0; i < numberOfIsotopes; i++)
+                        for (int i = 0; i < numberOfIsotopes; i++)
                         {
                             readerXML.ReadToFollowing("Isotope");
 
@@ -105,9 +106,9 @@ namespace PNNLOmics.Data.Constants.Libraries
                             readerXML.ReadToFollowing("Probability");
                             isotopeProbability = readerXML.ReadElementContentAsDouble();
 
-                            var NewIsotope = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
+                            Isotope NewIsotope = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
 
-                            newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber, NewIsotope);
+                            newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope);
                             //newIsotopeDictionary.Add(newElement.Symbol + i.ToString(), NewIsotope);//used for interating through
                         }
 
@@ -126,6 +127,16 @@ namespace PNNLOmics.Data.Constants.Libraries
         }
 
         /// <summary>
+        /// This is a Class designed to load periodic table of the elements data from a hard coded class derived from PNNLOmicsElementData.xml
+        /// IUPAC 2000 Atomic Weights of the Elements (published 2003) was used.
+        /// Differences from the old version:  Elements H, B, C, N, O, Na, P, S, Cl, K, Ca were updated.  Table 5 in the paper has the probabilities (best measurement column was used).
+        /// </summary>
+        public void LoadHardCoded(out List<string> elementSymbolList, out List<Element> elementList)
+        {
+            PeriodicTableLibrary.Load(out elementSymbolList, out elementList);
+        }
+
+        /// <summary>
         /// This is a Class designed to convert raw values into element objects (including masses and isotope abundances)
         /// and create an element dictionary searchable by key string such as "C" for carbon.
         /// </summary>
@@ -134,28 +145,50 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap = new Dictionary<string, Element>();
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
-            var uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
-            var asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtililities.AssemblyDirectory);
+            ResolveUNCPath.MappedDriveResolver uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
+            string asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtilities.AssemblyDirectory);
 
-            var constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
+            FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
 			//FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(PathUtil.AssemblyDirectory, OMICS_ELEMENT_DATA_FILE));
 
-			if (!constantsFileInfo.Exists)
+            
+
+            List<string> elementSymbolList = new List<string>();
+            List<Element> elementList = new List<Element>();
+
+            if (constantsFileInfo.Exists)
             {
-				throw new FileNotFoundException("The " + OMICS_ELEMENT_DATA_FILE + " file cannot be found at " + constantsFileInfo.FullName);
+                try
+                {
+                    LoadXML(constantsFileInfo.FullName, out elementSymbolList, out elementList);
+                }
+                catch
+                {
+                    LoadHardCoded(out elementSymbolList, out elementList);
+                }
+            }
+            else
+            {
+                LoadHardCoded(out elementSymbolList, out elementList);
             }
 
-            var elementSymbolList = new List<string>();
-            var elementList = new List<Element>();
+            //if there is no file load from code
+            if(elementSymbolList.Count==0)//file did not work
+            {
+                LoadHardCoded(out elementSymbolList, out elementList);
+            }
 
-			LoadXML(constantsFileInfo.FullName, out elementSymbolList, out elementList);
-
-            for (var i = 0; i < elementSymbolList.Count; i++)
+            if (elementSymbolList.Count==0)//we still failed
+            {
+                throw new FileNotFoundException("The " + OMICS_ELEMENT_DATA_FILE + " file cannot be found at " + constantsFileInfo.FullName);
+            }
+           
+            for (int i = 0; i < elementSymbolList.Count; i++)
             {
                 m_symbolToCompoundMap.Add(elementSymbolList[i], elementList[i]);
             }
 
-            var counter = 0;
+            int counter = 0;
             foreach (ElementName enumElement in Enum.GetValues(typeof(ElementName)))
             {
                 m_enumToSymbolMap.Add(enumElement, elementList[counter].Symbol);
