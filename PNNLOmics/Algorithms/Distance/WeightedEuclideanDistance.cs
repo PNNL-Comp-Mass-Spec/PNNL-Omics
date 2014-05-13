@@ -57,7 +57,7 @@ namespace PNNLOmics.Algorithms.Distance
             var massDifference   = (x.MassMonoisotopicAligned - y.MassMonoisotopicAligned) * 1e6 / meanMass; 
             //  / MassWeight;
 
-            var netDifference    = (x.RetentionTime - y.RetentionTime) / NetWeight;
+            var netDifference    = (x.Net - y.Net) / NetWeight;
             var driftDifference  = (x.DriftTime - y.DriftTime) / DriftWeight;
             var sum              = (massDifference * massDifference) +
                                       (netDifference * netDifference) +
@@ -75,7 +75,7 @@ namespace PNNLOmics.Algorithms.Distance
         {
             var massDifference   = x.MassMonoisotopicAligned - y.MassMonoisotopicAligned;
             
-            var netDifference    = x.RetentionTime - y.RetentionTime;
+            var netDifference    = x.Net - y.Net;
             var driftDifference  = x.DriftTime - y.DriftTime;
             var sum              = MassWeight *   (massDifference * massDifference) +
                                       NetWeight   *   (netDifference * netDifference) +
@@ -93,7 +93,7 @@ namespace PNNLOmics.Algorithms.Distance
         public double EuclideanDistance(T x, T y, double massWeight, double netWeight, double driftWeight)
         {
             var massDifference = FeatureLight.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned);
-            var netDifference = x.RetentionTime - y.RetentionTime;
+            var netDifference = x.Net - y.Net;
             var driftDifference = x.DriftTime - y.DriftTime;
             var sum = (massDifference * massDifference) * massWeight +
                                      (netDifference * netDifference) * netDifference +
@@ -104,7 +104,7 @@ namespace PNNLOmics.Algorithms.Distance
         public double EuclideanDistance(T x, FeatureLight y)
         {
             var massDifference   = x.MassMonoisotopicAligned - y.MassMonoisotopicAligned;
-            var netDifference    = x.RetentionTime - y.RetentionTime;
+            var netDifference    = x.Net - y.Net;
             var driftDifference  = x.DriftTime - y.DriftTime;
             var sum              = MassWeight * (massDifference * massDifference) +
                                       NetWeight * (netDifference * netDifference) +

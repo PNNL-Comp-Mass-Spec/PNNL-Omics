@@ -10,12 +10,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
         public MSFeatureSingleLinkageClustering()
         {
-            Parameters = new MSFeatureClusterParameters<T>();
+            Parameters = new MsFeatureClusterParameters<T>();
         }
 
         #region IClusterer<T,U> Members
 
-        public MSFeatureClusterParameters<T> Parameters
+        public MsFeatureClusterParameters<T> Parameters
         {
             get;
             set;

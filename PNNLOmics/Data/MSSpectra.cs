@@ -46,6 +46,11 @@ namespace PNNLOmics.Data
         /// </summary>
         public double RetentionTime { get; set; }
         /// <summary>
+        /// Gets or sets the normalized elution time of this spectrum.
+        /// </summary>
+        public double Net { get; set; }
+
+        /// <summary>
         /// Gets or sets the scan value for this spectra.
         /// </summary>
         public int Scan
@@ -226,7 +231,7 @@ namespace PNNLOmics.Data
             {
                 return false;
             }
-            if (!RetentionTime.Equals(other.RetentionTime))
+            if (!Net.Equals(other.Net))
             {
                 return false;
             }

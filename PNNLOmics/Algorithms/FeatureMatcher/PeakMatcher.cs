@@ -37,7 +37,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
             // Sort by mass, gives us the best search time.
             allFeatures.Sort(FeatureLight.MassComparison);
             
-            var netTolerance     = options.Tolerances.RetentionTime;
+            var netTolerance     = options.Tolerances.Net;
             var massTolerance    = options.Tolerances.Mass;
             var driftTolerance   = options.Tolerances.DriftTime;
             var shift            = options.DaltonShift;

@@ -1037,6 +1037,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 m_tempFeatureBestIndex.Add(-1);
             }
 
+            numFeatures = m_featureMatches.Count;
             for (var i = 0; i < numFeatures; i++)
             {
                 var net = m_featureMatches[i].Net;

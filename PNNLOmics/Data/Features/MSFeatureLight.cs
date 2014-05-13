@@ -89,7 +89,7 @@ namespace PNNLOmics.Data.Features
             hash = hash * 23 + GroupId.GetHashCode();
             hash = hash * 23 + MassMonoisotopicMostAbundant.GetHashCode();
             hash = hash * 23 + MassMonoisotopic.GetHashCode();
-            hash = hash * 23 + RetentionTime.GetHashCode();
+            hash = hash * 23 + Net.GetHashCode();
 
             return hash;
         }

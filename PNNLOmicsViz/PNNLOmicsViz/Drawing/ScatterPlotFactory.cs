@@ -24,7 +24,7 @@ namespace PNNLOmicsViz.Drawing
             where T : UMCClusterLight
         {
             Func<T, double> mass = t => t.MassMonoisotopicAligned;
-            Func<T, double> net = t => t.RetentionTime;
+            Func<T, double> net = t => t.Net;
 
             return CreateClustersScatterPlot(clusters, net, mass, "NET", "Monoisotopic Mass", OxyColors.Crimson);
         }
@@ -139,7 +139,7 @@ namespace PNNLOmicsViz.Drawing
             var chargeMap = new Dictionary<int, IList<T>>();
             foreach (var feature in features)
             {
-                int charge = feature.ChargeState;
+                var charge = feature.ChargeState;
                 if (!chargeMap.ContainsKey(charge))
                 {
                     chargeMap.Add(charge, new List<T>());
@@ -158,7 +158,7 @@ namespace PNNLOmicsViz.Drawing
                     x.Add(timeSelector(feature));
                     y.Add(massSelector(feature));
                 }
-                OxyColor color = colorIterator.GetColor(charge);
+                var color = colorIterator.GetColor(charge);
                 plot.AddSeries(x, y, "Charge " + charge, color);
             }
             plot.Model.Axes[0].MajorGridlineStyle = LineStyle.Solid;
@@ -246,8 +246,8 @@ namespace PNNLOmicsViz.Drawing
             string yLabel)
             where T : FeatureLight
         {
-            T[] xPoints = x as T[] ?? x.ToArray();
-            T[] yPoints = y as T[] ?? y.ToArray();
+            var xPoints = x as T[] ?? x.ToArray();
+            var yPoints = y as T[] ?? y.ToArray();
 
             var colorIterator = new ColorTypeIterator();
             var plot = new ScatterPlot("", xLabel, yLabel);
@@ -255,17 +255,17 @@ namespace PNNLOmicsViz.Drawing
             if (xPoints.Length != yPoints.Length)
                 throw new Exception("The two data arrays must be of equal length.");
 
-            OxyColor preColor = colorIterator.GetColor(1);
-            OxyColor postColor = colorIterator.GetColor(2);
+            var preColor = colorIterator.GetColor(1);
+            var postColor = colorIterator.GetColor(2);
 
             var preX = new List<double>();
             var preY = new List<double>();
             var postY = new List<double>();
 
-            for (int i = 0; i < xPoints.Length; i++)
+            for (var i = 0; i < xPoints.Length; i++)
             {
-                T featureX = xPoints[i];
-                T featureY = yPoints[i];
+                var featureX = xPoints[i];
+                var featureY = yPoints[i];
 
                 preX.Add(abscissaFunc(featureX));
                 preY.Add(ordinateFuncPre(featureX, featureY));
@@ -285,9 +285,9 @@ namespace PNNLOmicsViz.Drawing
             string xLabel,
             string yLabel)
         {
-            IEnumerable<double> xd = x.Select(Convert.ToDouble);
-            IEnumerable<double> yPreD = yPre.Select(Convert.ToDouble);
-            IEnumerable<double> yPostD = yPost.Select(Convert.ToDouble);
+            var xd = x.Select(Convert.ToDouble);
+            var yPreD = yPre.Select(Convert.ToDouble);
+            var yPostD = yPost.Select(Convert.ToDouble);
 
             return CreateResidualPlot(xd, yPreD, yPostD, title, xLabel, yLabel);
         }
@@ -302,8 +302,8 @@ namespace PNNLOmicsViz.Drawing
             var colorIterator = new ColorTypeIterator();
             var plot = new ScatterPlot(title, xLabel, yLabel);
 
-            OxyColor preColor = colorIterator.GetColor(1);
-            OxyColor postColor = colorIterator.GetColor(2);
+            var preColor = colorIterator.GetColor(1);
+            var postColor = colorIterator.GetColor(2);
 
             plot.AddSeries(x, yPre, "Pre-Alignment ", preColor);
             plot.AddSeries(x, yPost, "Post-Alignment ", postColor);

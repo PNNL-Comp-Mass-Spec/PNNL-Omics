@@ -19,7 +19,7 @@ namespace PNNLOmics.Algorithms
     /// <summary>
     /// Tolerances for the single linkage clustering algorithm.
     /// </summary>
-    public class FeatureTolerances
+    public sealed class FeatureTolerances
     {
         /// <summary>
         /// Default drift time value in ms.
@@ -28,7 +28,7 @@ namespace PNNLOmics.Algorithms
         /// <summary>
         /// Default normalized elution time (NET) value as % of total experiment.
         /// </summary>
-        public const double DEFAULT_RETENTION_TIME        = .02;
+        public const double DEFAULT_NET_TIME        = .02;
         /// <summary>
         /// Default mass value in parts per million (ppm).
         /// </summary>
@@ -66,7 +66,7 @@ namespace PNNLOmics.Algorithms
         /// <summary>
         /// Gets or sets the normalized elution time (NET) tolerance.
         /// </summary>
-        public double RetentionTime
+        public double Net
         {
             get;
             set;
@@ -80,7 +80,7 @@ namespace PNNLOmics.Algorithms
         {
             DriftTime   = DEFAULT_DRIFT_TIME;
             Mass        = DEFAULT_MASS;
-            RetentionTime         = DEFAULT_RETENTION_TIME;
+            Net         = DEFAULT_NET_TIME;
         }
     }
 }

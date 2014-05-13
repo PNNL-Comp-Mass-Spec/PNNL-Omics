@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -18,38 +19,55 @@ namespace PNNLOmicsViz.Drawing
         public HistogramPlot(Dictionary<double, int> histogram, string name) :
             base(name)
         {
-            var axis = new CategoryAxis
+            Model.PlotMargins = new OxyThickness(double.NaN, 40, 40, double.NaN);
+
+            var axis = new CategoryAxis            
             {
-                Position = AxisPosition.Bottom,
-                MinorStep = 1,
-                LabelField = "Values",
+                Position = AxisPosition.Bottom,                                              
                 AbsoluteMinimum = 0,
-                GapWidth = 0
+                GapWidth = 0,     
+                Angle =  -90,
+                IsAxisVisible = false
             };
+            Model.Axes.Add(axis);
 
             // Count axis
             var linearAxis = new LinearAxis
+            {
+                AbsoluteMinimum = 0,
+                Position = AxisPosition.Bottom,   
+            };
+            Model.Axes.Add(linearAxis);
+
+            // Count axis
+            var linearAxis2 = new LinearAxis
             {
                 Position = AxisPosition.Left,
                 AbsoluteMinimum = 0,
                 MinimumPadding = 1,
                 Minimum = 0
             };
+            Model.Axes.Add(linearAxis2);
 
-            Model.Axes.Add(axis);
-            Model.Axes.Add(linearAxis);
 
             // Add the data to the view model
             var data = new ColumnSeries
             {
                 FillColor = OxyColors.Red,
                 StrokeColor = OxyColors.Black,
+                ValueField = "Value",
                 StrokeThickness = 2
             };
+            var keys = histogram.Keys.OrderBy(x => x);
 
-            foreach (var key in histogram.Keys.OrderBy(x => x))
+            var count = 0;
+            foreach (var key in keys)
             {
-                axis.Labels.Add(key.ToString());
+                var keyValue = key.ToString();
+
+                axis.Labels.Add(keyValue);
+                axis.ActualLabels.Add(keyValue);
+
                 var number = histogram[key];
                 data.Items.Add(new ColumnItem(number));
             }

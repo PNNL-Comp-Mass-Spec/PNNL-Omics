@@ -166,7 +166,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             var maxScan = Convert.ToDouble(rawMsFeatures.Max(x => x.Scan));
             foreach (var msFeature in rawMsFeatures)
             {
-                msFeature.RetentionTime = (Convert.ToDouble(msFeature.Scan) - minScan)/(maxScan - minScan);
+                msFeature.Net = (Convert.ToDouble(msFeature.Scan) - minScan)/(maxScan - minScan);
             }
 
             OnProgress("Filtering ambiguous features");
@@ -219,7 +219,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             foreach (var feature in features)
             {
                 feature.CalculateStatistics(ClusterCentroidRepresentation.Median);
-                feature.RetentionTime = Convert.ToDouble(feature.Scan - minScan) / Convert.ToDouble(maxScan - minScan);
+                feature.Net = Convert.ToDouble(feature.Scan - minScan) / Convert.ToDouble(maxScan - minScan);
             }
 
             OnProgress(string.Format("Combining child feature charge states"));
@@ -304,8 +304,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             if (Math.Abs(mzDiff) < Tolerances.Mass && featureX.ChargeState != featureY.ChargeState)
             {
                 // otherwise make sure that our scan value is within range
-                var scanDiff = featureX.RetentionTime - featureY.RetentionTime;                
-                return Math.Abs(scanDiff) <= Tolerances.RetentionTime ? 0 : 1;
+                var scanDiff = featureX.Net - featureY.Net;                
+                return Math.Abs(scanDiff) <= Tolerances.Net ? 0 : 1;
             }
             if (mzDiff < 0)
                 return -1;

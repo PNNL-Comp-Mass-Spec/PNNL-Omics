@@ -160,7 +160,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             // Look for merged clusters that need to be split...
             foreach (var cluster in clusters)
             {
-                var medianNet = cluster.RetentionTime;
+                var medianNet = cluster.Net;
                 var medianMass = cluster.MassMonoisotopic;
                 var medianDrift = cluster.DriftTime;
 
@@ -176,7 +176,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 foreach (var feature in cluster.Features)
                 {
                     var mass = FeatureLight.ComputeMassPPMDifference(feature.MassMonoisotopicAligned, medianMass);
-                    var net = feature.RetentionTime - medianNet;
+                    var net = feature.Net - medianNet;
                     var drift = feature.DriftTime - medianDrift;
 
                     massDistributions.Add(feature, mass);

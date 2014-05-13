@@ -157,14 +157,14 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     if (DumpLinearRelationship)
                     {
                         Console.WriteLine("{0}", dist.Length); /*,,{1},{2},{3},{4},{5},{6},{7},{8}", dist.Length,
-                                                                          dist.VertexA.RetentionTime,
+                                                                          dist.VertexA.NetAligned,
                                                                           dist.VertexA.MassMonoisotopicAligned,
                                                                           dist.VertexA.DriftTime,
-                                                                          dist.VertexB.RetentionTime,
+                                                                          dist.VertexB.NetAligned,
                                                                           dist.VertexB.MassMonoisotopicAligned,
                                                                           dist.VertexB.DriftTime,
                                                                           ppmDist,
-                                                                          Math.Abs(dist.VertexA.RetentionTime - dist.VertexB.RetentionTime));
+                                                                          Math.Abs(dist.VertexA.NetAligned - dist.VertexB.NetAligned));
                                                          */
                     }
                 }

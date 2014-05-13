@@ -51,7 +51,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
 
             var umc                    = new UMCLight();
             umc.MassMonoisotopicAligned            = umcMass;
-            umc.RetentionTime               = umcNET;
+            umc.Net               = umcNET;
             umc.DriftTime                   = umcDrifTime;
             umc.ChargeState                 = umcCharge;
             umc.Abundance                   = umcAbundance;
@@ -59,7 +59,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             cluster.CalculateStatistics(representation);
 
             Assert.AreEqual(cluster.MassMonoisotopicAligned, umc.MassMonoisotopicAligned);
-            Assert.AreEqual(cluster.RetentionTime,      umc.RetentionTime);
+            Assert.AreEqual(cluster.Net,      umc.Net);
             Assert.AreEqual(cluster.DriftTime,          umc.DriftTime);
             Assert.AreEqual(cluster.ChargeState,        umc.ChargeState); 
             Assert.AreEqual(cluster.Score, 0);           
@@ -77,7 +77,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
 
             var umc            = new UMCLight();
             umc.MassMonoisotopicAligned = 100;
-            umc.RetentionTime       = 100;
+            umc.Net       = 100;
             umc.DriftTime           = 100;
             umc.ChargeState         = 2;
             umc.Abundance           = 100;
@@ -100,7 +100,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
 
             var umc = new UMCLight();
             umc.MassMonoisotopicAligned = 100;
-            umc.RetentionTime = 100;
+            umc.Net = 100;
             umc.DriftTime = 100;
             umc.ChargeState = 2;
             umc.Abundance = 100;
@@ -108,7 +108,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
 
             var umc2 = new UMCLight();
             umc2.MassMonoisotopicAligned = 200;
-            umc2.RetentionTime = 100;
+            umc2.Net = 100;
             umc2.DriftTime = 100;
             umc2.ChargeState = 2;
             umc2.Abundance = 100;
@@ -131,7 +131,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
 
             var umc            = new UMCLight();
             umc.MassMonoisotopicAligned = 100;
-            umc.RetentionTime       = 100;
+            umc.Net       = 100;
             umc.DriftTime           = 100;
             umc.ChargeState         = 2;
             umc.Abundance           = 100;
@@ -139,14 +139,14 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             
             var umc2 = new UMCLight();
             umc2.MassMonoisotopicAligned = 100;
-            umc2.RetentionTime = 200;
+            umc2.Net = 200;
             umc2.DriftTime = 100;
             umc2.ChargeState = 2;
             umc2.Abundance = 100;
             cluster.UmcList.Add(umc2);
 
             cluster.CalculateStatistics(representation);
-            Assert.AreEqual(cluster.RetentionTime, 150);
+            Assert.AreEqual(cluster.Net, 150);
         }
     }
 }

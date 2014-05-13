@@ -20,7 +20,7 @@ namespace PNNLOmics.Data.Features
             MassMonoisotopicAligned = 0;
             Net                = 0;
             NetAligned         = 0;
-            RetentionTime      = 0;
+            Net      = 0;
 		}
         /// <summary>
         /// Copy constructor.
@@ -37,7 +37,7 @@ namespace PNNLOmics.Data.Features
             MassMonoisotopicAligned = 0;
             Net                = 0;
             NetAligned         = 0;
-            RetentionTime      = 0;
+            Net      = 0;
 
             Abundance                  = feature.Abundance;
             ChargeState                = feature.ChargeState;
@@ -45,7 +45,7 @@ namespace PNNLOmics.Data.Features
             Id                         = feature.Id;
             MassMonoisotopic           = feature.MassMonoisotopic;
             MassMonoisotopicAligned    = feature.MassMonoisotopicAligned;
-            RetentionTime              = feature.RetentionTime;
+            Net              = feature.Net;
             Score                      = feature.Score;
             Net                        = feature.Net;
             AmbiguityScore             = double.MaxValue;
@@ -85,11 +85,16 @@ namespace PNNLOmics.Data.Features
         /// <summary>
         /// Gets or sets the retention time of a feature.
         /// </summary>
-        public double RetentionTime { get; set; }
+        public double Net { get; set; }
+
+        /// <summary>
+        /// Gets or sets the retention time of a feature.
+        /// </summary>
+        public double RetentionTimexx { get; set; }
         /// <summary>
         /// Gets or sets the normalized retention time for this feature.
         /// </summary>
-        public double Net { get; set; }
+        public double Netx { get; set; }
         public double NetAligned { get; set; }
         /// <summary>
         /// Gets or sets the drift time of a feature.
@@ -164,7 +169,7 @@ namespace PNNLOmics.Data.Features
 		{
 			return "Feature Light ID = " + Id +
 					" Mono Mass = " + MassMonoisotopic +
-					" Retention Time = " + RetentionTime +
+					" Retention Time = " + Net +
 					" Drift Time = " + DriftTime;
 		}
 		/// <summary>
@@ -201,7 +206,7 @@ namespace PNNLOmics.Data.Features
 			{
 				return false;
 			}
-			if (!RetentionTime.Equals(other.RetentionTime))
+			if (!Net.Equals(other.Net))
 			{
 				return false;
 			}			
@@ -218,7 +223,7 @@ namespace PNNLOmics.Data.Features
 				ChargeState.GetHashCode() ^
 				DriftTime.GetHashCode() ^
 				Id.GetHashCode() ^
-				RetentionTime.GetHashCode();						
+				Net.GetHashCode();						
 			return hashCode;
 		}
 		#endregion

@@ -6,7 +6,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// Options for MS feature clustering.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class MSFeatureClusterParameters<T>:
+    public class MsFeatureClusterParameters<T>:
         FeatureClusterParameters<T>
         where T : FeatureLight, new()
         
@@ -14,7 +14,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MSFeatureClusterParameters()
+        public MsFeatureClusterParameters()
         {
             Clear();
         }

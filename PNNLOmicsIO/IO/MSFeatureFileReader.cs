@@ -114,11 +114,11 @@ namespace PNNLOmicsIO.IO
                 // feature so the downstream processing can complete successfully.
                 if (!hasDriftTimeData)
                 {                    
-                    if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.RetentionTime       = float.Parse(columns[columnMapping[SCAN_NUMBER]]);
+                    if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.Net       = float.Parse(columns[columnMapping[SCAN_NUMBER]]);
                 }
                 else
                 {
-                    if (columnMapping.ContainsKey(FRAME_NUMBER))    feature.RetentionTime       = float.Parse(columns[columnMapping[FRAME_NUMBER]]);
+                    if (columnMapping.ContainsKey(FRAME_NUMBER))    feature.Net       = float.Parse(columns[columnMapping[FRAME_NUMBER]]);
                     if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.Scan             = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
                 }
                 if (columnMapping.ContainsKey(CHARGE))              feature.ChargeState         = int.Parse(columns[columnMapping[CHARGE]]);

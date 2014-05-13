@@ -62,7 +62,7 @@ namespace PNNLOmics.Data.Features
             Mz                                 = feature.Mz;
             Net                                = feature.Net;
             NetAligned                         = feature.NetAligned;
-            RetentionTime                      = feature.RetentionTime;
+            Net                      = feature.Net;
             SaturatedMemberCount               = feature.SaturatedMemberCount ;
             Scan                               = feature.Scan;
             ScanAligned                        = feature.ScanAligned;
@@ -269,12 +269,12 @@ namespace PNNLOmics.Data.Features
                     representativeMz = feature.Mz;
                 }
 
-                net.Add(feature.RetentionTime);
+                net.Add(feature.Net);
                 mass.Add(feature.MassMonoisotopic);
                 driftTime.Add(feature.DriftTime);
 
                 sumAbundance    += feature.Abundance;
-                sumNet          += feature.RetentionTime;
+                sumNet          += feature.Net;
                 sumMass         += feature.MassMonoisotopicAligned;
                 sumDrifttime    += feature.DriftTime;
                 minScan          = Math.Min(feature.Scan, minScan);
@@ -291,7 +291,7 @@ namespace PNNLOmics.Data.Features
             {
                 case ClusterCentroidRepresentation.Mean:
                     MassMonoisotopic   = (sumMass / numUmCs);
-                    RetentionTime      = (sumNet / numUmCs);
+                    Net      = (sumNet / numUmCs);
                     DriftTime          = Convert.ToSingle(sumDrifttime / numUmCs);
                     break;
                 case ClusterCentroidRepresentation.Median:
@@ -304,13 +304,13 @@ namespace PNNLOmics.Data.Features
                     if ((numUmCs % 2) == 0)
                     {
                         median                  = Convert.ToInt32(numUmCs / 2);
-                        RetentionTime      = (net[median] + net[median - 1]) / 2;
+                        Net      = (net[median] + net[median - 1]) / 2;
                         DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
                     }
                     else
                     {
                         median                  = Convert.ToInt32((numUmCs) / 2);
-                        RetentionTime      = net[median];
+                        Net      = net[median];
                         DriftTime          = Convert.ToSingle(driftTime[median]);
                     }                                        
                     break;

@@ -35,7 +35,7 @@ namespace PNNLOmics.Data.Features
             ChargeState			= umc.ChargeState;
             DriftTime			= umc.DriftTime;
             Id					= umc.Id;
-            RetentionTime       = umc.NetAligned;
+            Net       = umc.NetAligned;
             MassMonoisotopic    = umc.MassMonoisotopicAligned;                        
             MsMsCount           = umc.MsMsCount;
             AddChildFeature(umc);            
@@ -146,11 +146,11 @@ namespace PNNLOmics.Data.Features
                 }
                 datasetMembers[umc.GroupId]++;
 
-				net.Add(umc.RetentionTime);
+				net.Add(umc.Net);
 				mass.Add(umc.MassMonoisotopicAligned);
 				driftTime.Add(umc.DriftTime);
 
-				sumNet		 += umc.RetentionTime;
+				sumNet		 += umc.Net;
 				sumMass		 += umc.MassMonoisotopicAligned;
 				sumDrifttime += umc.DriftTime;
 
@@ -174,7 +174,7 @@ namespace PNNLOmics.Data.Features
 			{
 				case ClusterCentroidRepresentation.Mean:
 					MassMonoisotopic   = (sumMass / numUmCs);
-					RetentionTime      = (sumNet / numUmCs);
+					Net      = (sumNet / numUmCs);
 					DriftTime          = Convert.ToSingle(sumDrifttime / numUmCs);
 					break;
 				case ClusterCentroidRepresentation.Median:
@@ -188,14 +188,14 @@ namespace PNNLOmics.Data.Features
 					{
 						median                  = Convert.ToInt32(numUmCs / 2);
 						MassMonoisotopic   = (mass[median] + mass[median - 1]) / 2;
-						RetentionTime      = (net[median] + net[median - 1]) / 2;
+						Net      = (net[median] + net[median - 1]) / 2;
 						DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
 					}
 					else
 					{
 						median                  = Convert.ToInt32((numUmCs) / 2);
 						MassMonoisotopic   = mass[median];
-						RetentionTime      = net[median];
+						Net      = net[median];
 						DriftTime          = Convert.ToSingle(driftTime[median]);
 					}
 					break;
@@ -210,7 +210,7 @@ namespace PNNLOmics.Data.Features
 
             foreach (var umc in UmcList)
             {
-                var netValue   = RetentionTime       - umc.RetentionTime;
+                var netValue   = Net       - umc.Net;
                 var massValue  = MassMonoisotopic    - umc.MassMonoisotopicAligned;
                 var driftValue = DriftTime           - Convert.ToSingle(umc.DriftTime);
 

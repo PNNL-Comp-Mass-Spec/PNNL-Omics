@@ -114,14 +114,14 @@ namespace PNNLOmicsIO.IO
                 if (!hasDriftTimeData)
                 {                    
                     if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.Scan                        = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
-                    feature.RetentionTime                                                               = Convert.ToDouble(feature.Scan);       
+                    feature.Net                                                               = Convert.ToDouble(feature.Scan);       
                 }
                 else
                 {
                     if (columnMapping.ContainsKey(FRAME_NUMBER))    feature.Scan                        = int.Parse(columns[columnMapping[FRAME_NUMBER]]);
                     if (columnMapping.ContainsKey(SCAN_NUMBER))     feature.DriftTime                   = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
 
-                    feature.RetentionTime = Convert.ToDouble(feature.Scan);                    
+                    feature.Net = Convert.ToDouble(feature.Scan);                    
                 }
                 if (columnMapping.ContainsKey(CHARGE))              feature.ChargeState                 = int.Parse(columns[columnMapping[CHARGE]]);
 			    if (columnMapping.ContainsKey(ABUNDANCE))

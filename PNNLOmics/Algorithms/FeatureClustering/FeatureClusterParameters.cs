@@ -99,11 +99,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         {
 			// later is more related to determining a scalar value instead.
             var massDiff = Math.Abs(FeatureLight.ComputeMassPPMDifference(x.MassMonoisotopicAligned, y.MassMonoisotopicAligned));
-			var netDiff          = Math.Abs(x.RetentionTime - y.RetentionTime);
+			var netDiff          = Math.Abs(x.Net - y.Net);
 			var driftDiff        = Math.Abs(x.DriftTime - y.DriftTime);
 
 			// Make sure we fall within the distance range before computing...
-            return (massDiff <= Tolerances.Mass && netDiff <= Tolerances.RetentionTime && driftDiff <= Tolerances.DriftTime);            
+            return (massDiff <= Tolerances.Mass && netDiff <= Tolerances.Net && driftDiff <= Tolerances.DriftTime);            
         }                
         #endregion
     }

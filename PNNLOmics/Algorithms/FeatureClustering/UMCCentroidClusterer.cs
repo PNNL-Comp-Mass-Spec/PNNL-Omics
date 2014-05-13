@@ -53,7 +53,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         protected List<PairwiseDistance<U>> CalculateDistances(Dictionary<int, U> clusters)
         {
             var massTolerance             = Parameters.Tolerances.Mass;
-            var netTolerance              = Parameters.Tolerances.RetentionTime;
+            var netTolerance              = Parameters.Tolerances.Net;
             var driftTolerance            = Parameters.Tolerances.DriftTime;
             var onlyClusterSameChargeStates = Parameters.OnlyClusterSameChargeStates;
 
@@ -61,7 +61,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             foreach(var clusterI in clusters.Values) 
             {                
                 var driftTimeX   = clusterI.DriftTime;
-                var netAlignedX  = clusterI.RetentionTime;
+                var netAlignedX  = clusterI.Net;
                 var massAlignedX = clusterI.MassMonoisotopicAligned;
                 var chargeStateX    = clusterI.ChargeState;
                 
@@ -78,7 +78,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                     // later is more related to determining a scalar value instead.
                     var massDiff = Math.Abs(FeatureLight.ComputeMassPPMDifference(massAlignedX,
                                                                         clusterJ.MassMonoisotopicAligned));
-                    var netDiff = Math.Abs(netAlignedX - clusterJ.RetentionTime);
+                    var netDiff = Math.Abs(netAlignedX - clusterJ.Net);
                     var driftDiff = Math.Abs(driftTimeX - clusterJ.DriftTime);
 
                     // Make sure we fall within the distance range before computing...
@@ -184,12 +184,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 		{
 			// Grab the tolerances
 			var massTolerance    = Parameters.Tolerances.Mass;
-			var netTolerance     = Parameters.Tolerances.RetentionTime;
+			var netTolerance     = Parameters.Tolerances.Net;
 			var driftTolerance   = Parameters.Tolerances.DriftTime;
 
 			// Calculate differences
             var massDiff = Math.Abs(FeatureLight.ComputeMassPPMDifference(clusterX.MassMonoisotopicAligned, clusterY.MassMonoisotopicAligned));
-			var netDiff      = Math.Abs(clusterX.RetentionTime - clusterY.RetentionTime);
+			var netDiff      = Math.Abs(clusterX.Net - clusterY.Net);
 			var driftDiff    = Math.Abs(clusterX.DriftTime - clusterY.DriftTime);
 
 			// Return true only if all differences are within tolerance

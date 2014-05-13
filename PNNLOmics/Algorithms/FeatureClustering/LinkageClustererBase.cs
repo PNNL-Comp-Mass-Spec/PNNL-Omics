@@ -275,12 +275,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
                     var featureJ = new T();
                     featureJ.MassMonoisotopicAligned = clusterJ.MassMonoisotopicAligned;
-                    featureJ.RetentionTime  = clusterJ.RetentionTime;
+                    featureJ.Net  = clusterJ.Net;
                     featureJ.DriftTime      = clusterJ.DriftTime;
 
                     var featureI = new T();
                     featureI.MassMonoisotopicAligned    = clusterI.MassMonoisotopicAligned;
-                    featureI.RetentionTime              = clusterI.RetentionTime;
+                    featureI.Net              = clusterI.Net;
                     featureI.DriftTime                  = clusterI.DriftTime;
                     var centroidDistance             = Parameters.DistanceFunction(featureJ, featureI);
                     minCentroidDistance                 = Math.Min(centroidDistance, minCentroidDistance);
@@ -304,7 +304,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         protected virtual List<PairwiseDistance<T>> CalculatePairWiseDistances(int start, int stop, List<T> data)
 		{
 			var massTolerance                = Parameters.Tolerances.Mass;
-			var netTolerance                 = Parameters.Tolerances.RetentionTime;
+			var netTolerance                 = Parameters.Tolerances.Net;
 			var driftTolerance               = Parameters.Tolerances.DriftTime;
 			var onlyClusterSameChargeStates    = Parameters.OnlyClusterSameChargeStates;
 
@@ -313,7 +313,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 			{
 				var featureX          = data[i];
 				var driftTimeX   = featureX.DriftTime;
-				var netAlignedX  = featureX.RetentionTime;
+				var netAlignedX  = featureX.Net;
 				var massAlignedX = featureX.MassMonoisotopicAligned;
 				var chargeStateX    = featureX.ChargeState;			
 
@@ -396,12 +396,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
             // Grab the tolerances
             var massTolerance  = Parameters.Tolerances.Mass;
-            var netTolerance   = Parameters.Tolerances.RetentionTime;
+            var netTolerance   = Parameters.Tolerances.Net;
             var driftTolerance = Parameters.Tolerances.DriftTime;
 
             // Calculate differences
             var massDiff = Math.Abs(FeatureLight.ComputeMassPPMDifference(clusterX.MassMonoisotopicAligned, clusterY.MassMonoisotopicAligned));
-            var netDiff   = Math.Abs(clusterX.RetentionTime - clusterY.RetentionTime);
+            var netDiff   = Math.Abs(clusterX.Net - clusterY.Net);
             var driftDiff = Math.Abs(clusterX.DriftTime   - clusterY.DriftTime);
 
             // Return true only if all differences are within tolerance
@@ -418,12 +418,12 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
             // Grab the tolerances
             var massTolerance  = Parameters.Tolerances.Mass;
-            var netTolerance   = Parameters.Tolerances.RetentionTime;
+            var netTolerance   = Parameters.Tolerances.Net;
             var driftTolerance = Parameters.Tolerances.DriftTime;
 
             // Calculate differences
             var massDiff = Math.Abs(FeatureLight.ComputeMassPPMDifference(clusterX.MassMonoisotopicAligned, clusterY.MassMonoisotopicAligned));
-            var netDiff = Math.Abs(clusterX.RetentionTime - clusterY.RetentionTime);
+            var netDiff = Math.Abs(clusterX.Net - clusterY.Net);
             var driftDiff = Math.Abs(clusterX.DriftTime - clusterY.DriftTime);
 
             // Return true only if all differences are within tolerance

@@ -5,7 +5,10 @@
     /// </summary>
     public class MsFeatureFilteringOptions
     {
-        public const double MINIMUM_DEISOTOPING_SCORE = .15;
+        /// <summary>
+        /// Minimum deisotoping score from the DeconTools paper
+        /// </summary>
+        private const double MINIMUM_DEISOTOPING_SCORE = .15;
 
         public MsFeatureFilteringOptions()
         {

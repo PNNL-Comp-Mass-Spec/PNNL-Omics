@@ -35,7 +35,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.GroupId                  = Convert.ToInt32(lineData[1]);
                 feature.Id                       = Convert.ToInt32(lineData[2]);
                 feature.MassMonoisotopicAligned  = Convert.ToDouble(lineData[3]);
-                feature.RetentionTime            = Convert.ToDouble(lineData[4]);
+                feature.Net            = Convert.ToDouble(lineData[4]);
                 feature.DriftTime                = Convert.ToDouble(lineData[5]);
                 feature.ChargeState              = Convert.ToInt32(lineData[6]);
 
@@ -74,17 +74,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 }
                 mapFeatures[feature.GroupId].Add(feature);
             }
-            //// Then sort
-            //foreach (int x in mapFeatures.Keys)
-            //{
-            //    mapFeatures[x].Sort(delegate(UMCLight x, UMCLight y)
-            //    {
-            //        return x.RetentionTime.CompareTo(y.RetentionTime);
-            //    });
 
-            //    int count = 0;
-                
-            //}
             Console.WriteLine("Cluster\tMass\tNET");
             Console.WriteLine("{0}\t{1}\t{2}\t", cluster.Id, cluster.MassStandardDeviation, cluster.NetStandardDeviation);
             Console.WriteLine();

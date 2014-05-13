@@ -67,7 +67,6 @@
     <Compile Include="AlgorithmTests\FeatureClustering\UMCAverageLinkageTests.cs" />
     <Compile Include="AlgorithmTests\FeatureClustering\PrimsTest.cs" />
     <Compile Include="AlgorithmTests\FeatureClustering\UMCClusterReprocessingTests.cs" />
-    <Compile Include="AlgorithmTests\FeatureClustering\UMCSingleLinkageClusteringTests.cs" />
     <Compile Include="AlgorithmTests\FeatureClustering\UMCSingleLinkageClusterParametersTest.cs" />
     <Compile Include="AlgorithmTests\PeakDetectorTests\PeakDetectorTests.cs">
       <SubType>Code</SubType>

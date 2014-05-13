@@ -17,7 +17,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
             var cluster  = new UMCClusterLight();
             cluster.MassMonoisotopic = mass;
             cluster.Net              = net;
-            cluster.RetentionTime    = net;
+            cluster.Net    = net;
             cluster.DriftTime        = drift;
             return cluster;
         }
@@ -51,15 +51,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Distances
 
             for (var i = 0; i < N; i++)
             {
-                clusterB.RetentionTime += stepNET;
+                clusterB.Net += stepNET;
                 var distance = dist.EuclideanDistance(clusterA, clusterB);
-                Console.WriteLine("{0}, {1}, {3}, {2}", clusterB.RetentionTime, clusterB.RetentionTime, distance, clusterB.RetentionTime - clusterA.RetentionTime);                
+                Console.WriteLine("{0}, {1}, {3}, {2}", clusterB.Net, clusterB.Net, distance, clusterB.Net - clusterA.Net);                
             }
 
 
             Console.WriteLine();
             Console.WriteLine("Walk in mass ");
-            clusterB.RetentionTime = .2;
+            clusterB.Net = .2;
             for (var i = 0; i < N; i++)
             {
 

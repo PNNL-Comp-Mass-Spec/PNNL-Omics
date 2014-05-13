@@ -205,7 +205,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                         Abundance        = Convert.ToInt64(summedIntensity),
                         Id               = msFeatureId++,
                         DriftTime        = umc.DriftTime,
-                        RetentionTime    = s,
+                        Net    = s,
                         GroupId          = umc.GroupId
                     };
                     parentMsList.Add(msFeature);
@@ -461,7 +461,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                 var newFeature = new MSFeatureLight
                 {
                     Scan = i,
-                    RetentionTime = i,
+                    Net = i,
                     Abundance = Convert.ToInt64(summedIntensity)
                 };
                 newFeatures.Add(newFeature);                

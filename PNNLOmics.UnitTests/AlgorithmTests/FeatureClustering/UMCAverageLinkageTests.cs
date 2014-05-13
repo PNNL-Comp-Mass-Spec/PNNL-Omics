@@ -30,7 +30,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 feature.GroupId                  = Convert.ToInt32(lineData[1]);
                 feature.Id                       = Convert.ToInt32(lineData[2]);
                 feature.MassMonoisotopicAligned  = Convert.ToDouble(lineData[3]);
-                feature.RetentionTime            = Convert.ToDouble(lineData[4]);
+                feature.Net            = Convert.ToDouble(lineData[4]);
                 feature.DriftTime                = Convert.ToDouble(lineData[5]);
                 feature.ChargeState              = Convert.ToInt32(lineData[6]);
 
@@ -63,7 +63,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             average.Parameters = new FeatureClusterParameters<UMCLight>();
             average.Parameters.CentroidRepresentation = ClusterCentroidRepresentation.Median;
             average.Parameters.Tolerances = new Algorithms.FeatureTolerances();
-            average.Parameters.Tolerances.RetentionTime = .02;
+            average.Parameters.Tolerances.Net = .02;
             average.Parameters.Tolerances.Mass          = 6;
             average.Parameters.Tolerances.DriftTime     = .3;
 
@@ -83,7 +83,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 foreach (var feature in testCluster.Features)
                 {
                     Console.WriteLine("{0},{1},{2},{3}",
-                                                                feature.RetentionTime,
+                                                                feature.Net,
                                                                 feature.MassMonoisotopicAligned,
                                                                 feature.DriftTime,
                                                                 testCluster.Id);
@@ -141,7 +141,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
                 {
                     Console.WriteLine("{0},{1},{2},{3},{4}",feature.GroupId, 
                                                             feature.Id,
-                                                            feature.RetentionTime, 
+                                                            feature.Net, 
                                                             feature.MassMonoisotopicAligned,
                                                             feature.DriftTime);
 

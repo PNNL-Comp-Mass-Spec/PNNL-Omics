@@ -201,7 +201,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
                 map[featureId].MassMonoisotopicAligned = feature.MassMonoisotopicAligned;
                 map[featureId].NetAligned = feature.NetAligned;
-                map[featureId].RetentionTime = feature.NetAligned;
+                map[featureId].Net = feature.NetAligned;
                 map[featureId].ScanAligned = feature.ScanAligned;
             }
             minScanBaseline = Math.Min(minScanBaseline, tempMinScan);
@@ -218,38 +218,35 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             yIntervals.Add(yInterval);
             heatScores.Add(heatScore);
 
-            //// Get the histograms
-            //double[,] massErrorHistogram;
-            //double[,] netErrorHistogram;
-            //double[,] driftErrorHistogram;
+            // Get the histograms
+            double[,] massErrorHistogram;
+            double[,] netErrorHistogram;
+            double[,] driftErrorHistogram;
 
-            //processor.GetErrorHistograms(options.MassBinSize, options.NetBinSize, options.DriftTimeBinSize,
-            //    out massErrorHistogram, out netErrorHistogram, out driftErrorHistogram);
+            processor.GetErrorHistograms(options.MassBinSize, options.NetBinSize, options.DriftTimeBinSize,
+                out massErrorHistogram, out netErrorHistogram, out driftErrorHistogram);
 
-            //massErrorHistograms.Add(massErrorHistogram);
-            //netErrorHistograms.Add(netErrorHistogram);
-            //driftErrorHistograms.Add(driftErrorHistogram);
-
+            
             // Get the residual data
             var residualData = processor.GetResidualData();
 
             var data = new LcmsWarpAlignmentData
             {
-                //MassErrorHistogram = massErrorHistogram,
-                //DriftErrorHistogram = driftErrorHistogram,
-                //NetErrorHistogram = netErrorHistogram,
-                AlignmentFunction = alignmentFunction,
-                HeatScores = heatScore,
-                MinScanBaseline = minScanBaseline,
-                MaxScanBaseline = maxScanBaseline,
-                NetIntercept = processor.NetIntercept,
-                NetRsquared = processor.NetRsquared,
-                NetSlope = processor.NetSlope,
-                ResidualData = residualData,
-                MassMean = processor.MassMu,
-                MassStandardDeviation = processor.MassStd,
-                NetMean = processor.NetMu,
-                NetStandardDeviation = processor.NetStd
+                MassErrorHistogram      = massErrorHistogram,
+                DriftErrorHistogram     = driftErrorHistogram,
+                NetErrorHistogram       = netErrorHistogram,
+                AlignmentFunction       = alignmentFunction,
+                HeatScores              = heatScore,
+                MinScanBaseline         = minScanBaseline,
+                MaxScanBaseline         = maxScanBaseline,
+                NetIntercept            = processor.NetIntercept,
+                NetRsquared             = processor.NetRsquared,
+                NetSlope                = processor.NetSlope,
+                ResidualData            = residualData,
+                MassMean                = processor.MassMu,
+                MassStandardDeviation   = processor.MassStd,
+                NetMean                 = processor.NetMu,
+                NetStandardDeviation    = processor.NetStd
             };
 
             if (!options.AlignToMassTagDatabase) return data;
