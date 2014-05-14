@@ -29,11 +29,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             //3.  set up processor and options
             LcmsWarpAlignmentProcessor processor = new LcmsWarpAlignmentProcessor();
             var options = new LcmsWarpAlignmentOptions();
-            options.MassTolerance = 0.5;
-            options.NumTimeSections = 10;
+            options.MassTolerance = 0.5;//masses are exact so this does not matter in this test
+            options.NumTimeSections = 12;//default is 100
             options.StoreAlignmentFunction = true;
-            options.NetBinSize = 0.001;
+            options.NetBinSize = 0.001;//default is 0.001;//this does not do much
             options.AlignType = LcmsWarpAlignmentOptions.AlignmentType.NET_MASS_WARP;
+            options.UsePromiscuousPoints = false;//this does not do much
+            options.AlignmentAlgorithmType = LcmsWarpAlignmentOptions.FeatureAlignmentType.LCMS_WARP;
+            options.ContractionFactor = 1;//setting this to 1 helped
 
             processor.Options = options;
             processor.ApplyAlignmentOptions();
@@ -49,19 +52,21 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref experimentalTimesAsUmc);
             
             //7.  test alignment
+            Console.WriteLine("index" + "," + "ReferecneNet" + "," + "ExperimentalNet" + "," + "AlignedNet");
             double sum = 0;
             for (int i = 0; i < experimentalTimes.Count; i++)
             {
                 double referecneNet = referenceTimes[i];
+                double experimentalNet = experimentalTimes[i];
                 double alighnedNet = experimentalTimesAsUmc[i].NetAligned / multiplier;//replace with calculated Net
 
-                Console.WriteLine(i + "," + referecneNet + "," + alighnedNet);
+                Console.WriteLine(i + "," + referecneNet + "," + experimentalNet + "," + alighnedNet);
 
                 sum += (alighnedNet - referecneNet)*(alighnedNet - referecneNet);
             }
             
-            Console.WriteLine(" The sum of the squares score is " + Math.Round(sum,0));
-            Assert.AreEqual(6.674340864882689, sum);
+            Console.WriteLine(" The sum of the squares score is " + Math.Round(sum,2));
+            Assert.AreEqual(2.0126026729399675, sum);
         }
 
         private static void ConvertToUMCLight(List<double> referenceTimes, List<double> experimentalTimes, out List<UMCLight> experimentalTimesAsUMC, out List<UMCLight> referenceTimesAsUMC, int multiplier)
