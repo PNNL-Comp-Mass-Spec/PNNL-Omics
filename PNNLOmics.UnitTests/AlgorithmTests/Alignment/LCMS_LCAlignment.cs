@@ -17,23 +17,51 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             
             List<double> referenceTimes = new List<double>();
             List<double> experimentalTimes = new List<double>();
-
-
+           
             ExampleTimesDB02(experimentalTimes, referenceTimes);
 
 
-
-            alligner.SetMassCalibrationFunctionWithTime(ref referenceTimes, ref experimentalTimes);
-
+            List<UMCLight> referenceTimesAsUMC;
+            List<UMCLight> experimentalTimesAsUMC;
+            
+            ConvertToUMCLight(referenceTimes, experimentalTimes, out experimentalTimesAsUMC, out referenceTimesAsUMC);
 
             LcmsWarpAlignmentProcessor processor = new LcmsWarpAlignmentProcessor();
-            //processor.SetAligneeDatasetFeatures();
+            processor.SetReferenceDatasetFeatures(referenceTimesAsUMC);
+            processor.SetAligneeDatasetFeatures(experimentalTimesAsUMC);
 
-            UMCLight aligner = new UMCLight();
-            FeatureLight referenceFeature = new FeatureLight();
-            referenceFeature.Net = 4;
+            processor.PerformAlignmentToMsFeatures();
+
+            //test alighment
+            double sum = 0;
+            for (int i = 0; i < experimentalTimes.Count; i++)
+            {
+                double referecneNet = referenceTimes[i];
+                double alighnedNet = 0;//replace with calculated Net
+
+                sum += (alighnedNet - referecneNet)*(alighnedNet - referecneNet);
+            }
             
+            Console.WriteLine(" The sum of the squares score is " + Math.Round(sum,0));
             Assert.AreEqual("Success","Success");
+        }
+
+        private static void ConvertToUMCLight(List<double> referenceTimes,List<double> experimentalTimes, out List<UMCLight> experimentalTimesAsUMC ,out List<UMCLight> referenceTimesAsUMC)
+        {
+            referenceTimesAsUMC = new List<UMCLight>();
+            experimentalTimesAsUMC = new List<UMCLight>();
+
+            for (int i = 0; i < experimentalTimes.Count; i++)
+            {
+                UMCLight referencePoint = new UMCLight();
+                UMCLight experimentalPoint = new UMCLight();
+
+                referencePoint.Net = referenceTimes[i];
+                experimentalPoint.Net = experimentalTimes[i];
+
+                referenceTimesAsUMC.Add(referencePoint);
+                experimentalTimesAsUMC.Add(experimentalPoint);
+            }
         }
 
         private static void ExampleTimesDB02(List<double> experimentalTimes, List<double> referenceTimes)
