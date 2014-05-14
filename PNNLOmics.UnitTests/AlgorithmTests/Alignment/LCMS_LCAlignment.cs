@@ -13,40 +13,55 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
         [Test]
         public void GlycoAlignment()
         {
-            LcmsWarpAlignmentFunction alligner = new LcmsWarpAlignmentFunction(LcmsWarpAlignmentOptions.CalibrationType.SCAN_CALIBRATION, LcmsWarpAlignmentOptions.AlignmentType.NET_WARP);
+            LcmsWarpAlignmentOptions.AlignmentType warpType = LcmsWarpAlignmentOptions.AlignmentType.NET_WARP;
             
             List<double> referenceTimes = new List<double>();
             List<double> experimentalTimes = new List<double>();
            
             ExampleTimesDB02(experimentalTimes, referenceTimes);
 
+            int multiplier = 100000;
 
             List<UMCLight> referenceTimesAsUMC;
             List<UMCLight> experimentalTimesAsUMC;
-            
-            ConvertToUMCLight(referenceTimes, experimentalTimes, out experimentalTimesAsUMC, out referenceTimesAsUMC);
+
+            ConvertToUMCLight(referenceTimes, experimentalTimes, out experimentalTimesAsUMC, out referenceTimesAsUMC, multiplier);
 
             LcmsWarpAlignmentProcessor processor = new LcmsWarpAlignmentProcessor();
+            var options = new LcmsWarpAlignmentOptions();
+            options.MassTolerance = 0.5;
+            options.NumTimeSections = 10;
+            options.StoreAlignmentFunction = true;
+            options.NetBinSize = 0.001;
+
+            
+
+            processor.Options = options;
+            processor.ApplyAlignmentOptions();
             processor.SetReferenceDatasetFeatures(referenceTimesAsUMC);
             processor.SetAligneeDatasetFeatures(experimentalTimesAsUMC);
 
             processor.PerformAlignmentToMsFeatures();
 
+            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref experimentalTimesAsUMC);
+            
             //test alighment
             double sum = 0;
             for (int i = 0; i < experimentalTimes.Count; i++)
             {
                 double referecneNet = referenceTimes[i];
-                double alighnedNet = 0;//replace with calculated Net
+                double alighnedNet = experimentalTimesAsUMC[i].NetAligned / multiplier;//replace with calculated Net
+
+                Console.WriteLine(i + "," + referecneNet + "," + alighnedNet);
 
                 sum += (alighnedNet - referecneNet)*(alighnedNet - referecneNet);
             }
             
             Console.WriteLine(" The sum of the squares score is " + Math.Round(sum,0));
-            Assert.AreEqual("Success","Success");
+            Assert.AreEqual(sum, 6.674340864882689);
         }
 
-        private static void ConvertToUMCLight(List<double> referenceTimes,List<double> experimentalTimes, out List<UMCLight> experimentalTimesAsUMC ,out List<UMCLight> referenceTimesAsUMC)
+        private static void ConvertToUMCLight(List<double> referenceTimes, List<double> experimentalTimes, out List<UMCLight> experimentalTimesAsUMC, out List<UMCLight> referenceTimesAsUMC, int multiplier)
         {
             referenceTimesAsUMC = new List<UMCLight>();
             experimentalTimesAsUMC = new List<UMCLight>();
@@ -56,8 +71,20 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
                 UMCLight referencePoint = new UMCLight();
                 UMCLight experimentalPoint = new UMCLight();
 
-                referencePoint.Net = referenceTimes[i];
-                experimentalPoint.Net = experimentalTimes[i];
+                referencePoint.Net = Math.Round(referenceTimes[i] * multiplier);
+                //experimentalPoint.Net = experimentalTimes[i]*multiplier;
+
+
+                //referencePoint.Scan = Convert.ToInt32(referenceTimes[i]*multiplier);
+                //scan needs to be populated
+                experimentalPoint.Scan = Convert.ToInt32(Math.Round(experimentalTimes[i] * multiplier, 0));
+
+                referencePoint.Mz = 1000 + i;
+                experimentalPoint.Mz = 1000 + i;
+
+                //this is needed
+                referencePoint.MassMonoisotopic = 1000 + i;
+                experimentalPoint.MassMonoisotopic = 1000 + i;
 
                 referenceTimesAsUMC.Add(referencePoint);
                 experimentalTimesAsUMC.Add(experimentalPoint);

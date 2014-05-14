@@ -78,7 +78,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         // Applies the alignment options to the LCMSWarper, setting the Mass
         // and NET Tolerances, the options for NET Alignment options for 
         // Mass calibration, the Least Squares options and the calibration type
-        private void ApplyAlignmentOptions()
+        public void ApplyAlignmentOptions()
         {
             // Applying the Mass and NET Tolerances
             m_lcmsWarp.MassTolerance = Options.MassTolerance;
