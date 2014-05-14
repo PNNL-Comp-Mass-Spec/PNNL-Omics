@@ -8,49 +8,52 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
 {
-    class LCMS_LCAlignment
+    [TestFixture]
+    public class LCMS_LCAlignment
     {
         [Test]
         public void GlycoAlignment()
         {
-            LcmsWarpAlignmentOptions.AlignmentType warpType = LcmsWarpAlignmentOptions.AlignmentType.NET_WARP;
-            
-            List<double> referenceTimes = new List<double>();
-            List<double> experimentalTimes = new List<double>();
-           
-            ExampleTimesDB02(experimentalTimes, referenceTimes);
+            int multiplier = 100000;//for converting doubles to ints
 
-            int multiplier = 100000;
+            //1.  pull in test data
+            List<double> referenceTimes;
+            List<double> experimentalTimes;
+            ExampleTimesDB02(out experimentalTimes, out referenceTimes);
 
-            List<UMCLight> referenceTimesAsUMC;
-            List<UMCLight> experimentalTimesAsUMC;
+            //2.  convert to acceptable format
+            List<UMCLight> referenceTimesAsUmc;
+            List<UMCLight> experimentalTimesAsUmc;
+            ConvertToUMCLight(referenceTimes, experimentalTimes, out experimentalTimesAsUmc, out referenceTimesAsUmc, multiplier);
 
-            ConvertToUMCLight(referenceTimes, experimentalTimes, out experimentalTimesAsUMC, out referenceTimesAsUMC, multiplier);
-
+            //3.  set up processor and options
             LcmsWarpAlignmentProcessor processor = new LcmsWarpAlignmentProcessor();
             var options = new LcmsWarpAlignmentOptions();
             options.MassTolerance = 0.5;
             options.NumTimeSections = 10;
             options.StoreAlignmentFunction = true;
             options.NetBinSize = 0.001;
-
-            
+            options.AlignType = LcmsWarpAlignmentOptions.AlignmentType.NET_MASS_WARP;
 
             processor.Options = options;
             processor.ApplyAlignmentOptions();
-            processor.SetReferenceDatasetFeatures(referenceTimesAsUMC);
-            processor.SetAligneeDatasetFeatures(experimentalTimesAsUMC);
 
+            //4.  Set references with processor setter
+            processor.SetReferenceDatasetFeatures(referenceTimesAsUmc);
+            processor.SetAligneeDatasetFeatures(experimentalTimesAsUmc);
+
+            //5.  perform alignment
             processor.PerformAlignmentToMsFeatures();
 
-            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref experimentalTimesAsUMC);
+            //6.  apply alignment to data
+            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref experimentalTimesAsUmc);
             
-            //test alighment
+            //7.  test alignment
             double sum = 0;
             for (int i = 0; i < experimentalTimes.Count; i++)
             {
                 double referecneNet = referenceTimes[i];
-                double alighnedNet = experimentalTimesAsUMC[i].NetAligned / multiplier;//replace with calculated Net
+                double alighnedNet = experimentalTimesAsUmc[i].NetAligned / multiplier;//replace with calculated Net
 
                 Console.WriteLine(i + "," + referecneNet + "," + alighnedNet);
 
@@ -58,7 +61,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             }
             
             Console.WriteLine(" The sum of the squares score is " + Math.Round(sum,0));
-            Assert.AreEqual(sum, 6.674340864882689);
+            Assert.AreEqual(6.674340864882689, sum);
         }
 
         private static void ConvertToUMCLight(List<double> referenceTimes, List<double> experimentalTimes, out List<UMCLight> experimentalTimesAsUMC, out List<UMCLight> referenceTimesAsUMC, int multiplier)
@@ -91,8 +94,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             }
         }
 
-        private static void ExampleTimesDB02(List<double> experimentalTimes, List<double> referenceTimes)
+        private static void ExampleTimesDB02(out List<double> experimentalTimes, out List<double> referenceTimes)
         {
+            experimentalTimes = new List<double>();
+            referenceTimes = new List<double>();     
             referenceTimes.Add(0.59678225); experimentalTimes.Add(0.57193475);
             referenceTimes.Add(0.59678225); experimentalTimes.Add(0.57193475);
             referenceTimes.Add(0.587572175925926); experimentalTimes.Add(0.56411899537037);
@@ -205,9 +210,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
 
         }
 
-        private static void ExampleTimesDB09(List<double> experimentalTimes, List<double> referenceTimes)
+        private static void ExampleTimesDB09(out List<double> experimentalTimes, out List<double> referenceTimes)
         {
-
+            experimentalTimes = new List<double>();
+            referenceTimes = new List<double>(); 
             referenceTimes.Add(0.597636236111111); experimentalTimes.Add(0.604530111111111);
             referenceTimes.Add(0.59678225); experimentalTimes.Add(0.568825597222222);
             referenceTimes.Add(0.59678225); experimentalTimes.Add(0.568825597222222);
@@ -329,9 +335,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
 
         }
 
-        private static void ExampleTimesDB12(List<double> experimentalTimes, List<double> referenceTimes)
+        private static void ExampleTimesDB12(out List<double> experimentalTimes, out List<double> referenceTimes)
         {
-
+            experimentalTimes = new List<double>();
+            referenceTimes = new List<double>(); 
             referenceTimes.Add(0.597636236111111); experimentalTimes.Add(0.663321032407408);
             referenceTimes.Add(0.59678225); experimentalTimes.Add(0.608498402777778);
             referenceTimes.Add(0.59678225); experimentalTimes.Add(0.608498402777778);
