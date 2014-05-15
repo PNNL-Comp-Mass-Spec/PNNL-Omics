@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
@@ -457,10 +458,23 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             PerformNetWarp();
 
             m_lcmsWarp.PerformMassCalibration();
+
+
+
             m_lcmsWarp.CalculateStandardDeviations();
             m_lcmsWarp.MassTolerance = massTolerance;
             m_lcmsWarp.UseMassAndNetScore(true);
             PerformNetWarp();
+
+
+            using (var writer = File.CreateText(@"m:\featureMatches-us-post.txt"))
+            {
+                foreach (var match in m_lcmsWarp.m_featureMatches)
+                {
+                    writer.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
+                        match.FeatureIndex, match.FeatureIndex2, match.Net, match.Net2, match.NetError, match.PpmMassError);
+                }
+            }
         }
 
         /// <summary>
