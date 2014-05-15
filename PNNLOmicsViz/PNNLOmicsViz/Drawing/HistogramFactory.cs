@@ -42,15 +42,16 @@ namespace PNNLOmicsViz.Drawing
         /// </summary>
         /// <param name="histogram"></param>
         /// <param name="label"></param>
+        /// <param name="axisLabel"></param>
         /// <returns></returns>
-        public static PlotBase CreateHistogram(double[,] histogram, string label)
+        public static PlotBase CreateHistogram(double[,] histogram, string label, string axisLabel)
         {
             var plotData = new Dictionary<double, int>();
             for (var i = 0; i < histogram.GetLength(0); i++)
             {
                 plotData.Add(histogram[i, 0], Convert.ToInt32(histogram[i, 1]));
             }
-            return CreateHistogram(plotData, label);
+            return CreateHistogram(plotData, label, axisLabel);
         }
 
         /// <summary>
@@ -58,12 +59,14 @@ namespace PNNLOmicsViz.Drawing
         /// </summary>
         /// <param name="histogram"></param>
         /// <param name="label"></param>
+        /// <param name="axisLabel"></param>
         /// <returns></returns>
-        public static PlotBase CreateHistogram(Dictionary<int, int> histogram, string label)
+        public static PlotBase CreateHistogram(Dictionary<int, int> histogram, string label, string axisLabel)
         {
             var doubleGram = histogram.Keys.ToDictionary<int, double, int>(key => key, key => histogram[key]);
 
-            return new HistogramPlot(doubleGram, label);
+            var model           =  new HistogramPlot(doubleGram, label, axisLabel);            
+            return model;
         }
 
         /// <summary>
@@ -72,9 +75,9 @@ namespace PNNLOmicsViz.Drawing
         /// <param name="histogram"></param>
         /// <param name="label"></param>
         /// <returns></returns>
-        public static PlotBase CreateHistogram(Dictionary<double, int> histogram, string label)
+        public static PlotBase CreateHistogram(Dictionary<double, int> histogram, string label, string axisLabel)
         {
-            return new HistogramPlot(histogram, label);
+            return new HistogramPlot(histogram, label, axisLabel);
         }
     }
 }

@@ -16,26 +16,26 @@ namespace PNNLOmicsViz.Drawing
     /// </summary>
     public sealed class HistogramPlot : PlotBase
     {
-        public HistogramPlot(Dictionary<double, int> histogram, string name) :
+        public HistogramPlot(Dictionary<double, int> histogram, string name, string abscissaAxisLabel) :
             base(name)
         {
             Model.PlotMargins = new OxyThickness(double.NaN, 40, 40, double.NaN);
+            Model.Title = name;
 
             var axis = new CategoryAxis            
             {
                 Position = AxisPosition.Bottom,                                              
-                AbsoluteMinimum = 0,
-                GapWidth = 0,     
+                GapWidth = 0,                
                 Angle =  -90,
-                IsAxisVisible = false
+                IsAxisVisible = false                
             };
             Model.Axes.Add(axis);
 
             // Count axis
             var linearAxis = new LinearAxis
             {
-                AbsoluteMinimum = 0,
-                Position = AxisPosition.Bottom,   
+                Position = AxisPosition.Bottom,
+                Title = abscissaAxisLabel
             };
             Model.Axes.Add(linearAxis);
 
@@ -45,7 +45,8 @@ namespace PNNLOmicsViz.Drawing
                 Position = AxisPosition.Left,
                 AbsoluteMinimum = 0,
                 MinimumPadding = 1,
-                Minimum = 0
+                Minimum = 0,
+                Title =  "Count"
             };
             Model.Axes.Add(linearAxis2);
 
@@ -60,15 +61,27 @@ namespace PNNLOmicsViz.Drawing
             };
             var keys = histogram.Keys.OrderBy(x => x);
 
+            var min = keys.Min();
+            var max = keys.Max();
+
             var count = 0;
+            //axis.Minimum = min;
+            //axis.Maximum = max;
+            //axis.AbsoluteMaximum = max;
+            //axis.AbsoluteMinimum = min;
+            //linearAxis.AbsoluteMaximum = max;
+            //linearAxis.AbsoluteMinimum = min;
+            linearAxis.Maximum = max;
+            linearAxis.Minimum = min;
+
             foreach (var key in keys)
             {
                 var keyValue = key.ToString();
-
+                
                 axis.Labels.Add(keyValue);
-                axis.ActualLabels.Add(keyValue);
+                //axis.ActualLabels.Add(keyValue);
 
-                var number = histogram[key];
+                var number = histogram[key];                
                 data.Items.Add(new ColumnItem(number));
             }
 

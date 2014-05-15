@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using PNNLOmics.Algorithms.Statistics;
 using PNNLOmics.Data;
@@ -230,7 +231,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_massStd = 20;            
             MaxPromiscuousUmcMatches = 5;
             m_keepPromiscuousMatches = false;
-            m_alignmentScore = null;
             m_bestPreviousIndex = null;
 
             CalibrationType = LcmsWarpCalibrationType.MzRegression;
@@ -350,9 +350,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
                 if (m_useMass)
                 {
-                    var massDelta = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic) * 100000 / baselineFeature.MassMonoisotopic;
+                    var massDelta = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic) * 1000000 / baselineFeature.MassMonoisotopic;
                     var likelihood = GetMatchLikelihood(massDelta, deltaNet);
-                    matchScore = matchScore + Math.Log(likelihood);
+                    matchScore += Math.Log(likelihood);
                 }
                 else
                 {
@@ -553,6 +553,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
                 netTransformed = ((feature.Net - netStart) * (netEndBaseline - netStartBaseline)) / (netEnd - netStart) + netStartBaseline;
                 m_features[featureIndex].NetAligned = netTransformed;
+
+                File.AppendAllText(@"m:\features-us.txt", string.Format("{0}\t{1}\n", m_features[featureIndex].Id, m_features[featureIndex].NetAligned));
             }
         }
 
@@ -602,14 +604,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     if (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic > feature.MassMonoisotopic - massTolerance)
                     {
                         //Calculate the mass and net errors
-                        var netDiff = m_baselineFeatures[baselineFeatureIndex].Net - feature.NetAligned;
-                        var baselineDrift = m_baselineFeatures[baselineFeatureIndex].DriftTime;
-                        var driftDiff = baselineDrift - feature.DriftTime;
-                        var massDiff = (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic - feature.MassMonoisotopic) * 1000000.0 / feature.MassMonoisotopic;
+                        var netDiff         = m_baselineFeatures[baselineFeatureIndex].Net - feature.NetAligned;
+                        var baselineDrift   = m_baselineFeatures[baselineFeatureIndex].DriftTime;
+                        var driftDiff       = baselineDrift - feature.DriftTime;
+                        var massDiff        = (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic - feature.MassMonoisotopic) * 1000000.0 / feature.MassMonoisotopic;
 
                         //Calculate the match score
-                        var matchScore = -0.5 * (netDiff * netDiff) / (m_netStd * m_netStd);
-                        matchScore = matchScore - 0.5 * (massDiff * massDiff) / (m_massStd * m_massStd);
+                        var matchScore  = -0.5 * (netDiff * netDiff) / (m_netStd * m_netStd);
+                        matchScore      = matchScore - 0.5 * (massDiff * massDiff) / (m_massStd * m_massStd);
 
                         //If the match score is greater than the best match score, update the holding item
                         if (matchScore > bestMatchScore)
@@ -745,7 +747,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             while (featureIndex < numFeatures)
             {
                 var feature = m_features[featureIndex];
-                var massTolerance = feature.MassMonoisotopic*(MassTolerance/1000000);
+                var massTolerance = feature.MassMonoisotopic * MassTolerance/1000000;
 
                 if (baselineFeatureIndex == numBaselineFeatures)
                 {
@@ -846,6 +848,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     }
                 }
             }
+
             m_featureMatches = tempMatches;
         }
 
@@ -1037,19 +1040,20 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 m_tempFeatureBestIndex.Add(-1);
             }
 
-            numFeatures = m_featureMatches.Count;
+            numFeatures = m_features.Count;
             for (var i = 0; i < numFeatures; i++)
             {
-                var net = m_featureMatches[i].Net;
+                var net = m_features[i].Net;
                 var sectionNum = Convert.ToInt32(((net - MinNet) * NumSections) / (MaxNet - MinNet));
+                //TODO: Should be setting section number to numSections - 1
                 if (sectionNum >= NumSections)
                 {
                     sectionNum--;
                 }
-                if (sectionNum < 0)
-                {
-                    sectionNum = 0;
-                }
+                //if (sectionNum < 0)
+                //{
+                //    sectionNum = 0;
+                //}
                 m_numFeaturesInSections[sectionNum]++;
             }
 
@@ -1057,6 +1061,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             MaxBaselineNet = double.MinValue;
 
             var numBaselineFeatures = m_baselineFeatures.Count;
+
+            //MinBaselineNet = m_baselineFeatures.Min(x => x.Net);
+            //MaxBaselineNet = m_baselineFeatures.Max(x => x.Net);
+
             for (var i = 0; i < numBaselineFeatures; i++)
             {
                 if (m_baselineFeatures[i].Net < MinBaselineNet)
@@ -1080,9 +1088,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 m_numFeaturesInBaselineSections[msmsSectionNum]++;
             }
 
-            m_featureMatches.Sort();
-
-            var numMatches = m_featureMatches.Count;
+            m_featureMatches = m_featureMatches.OrderBy(x => x.Net).ToList();
+            var numMatches   = m_featureMatches.Count;
 
             var sectionFeatures = new List<LcmsWarpFeatureMatch>();
 
@@ -1116,17 +1123,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 {
                     endMatchIndex++;
                 }
-                if (endMatchIndex == numMatches)
-                {
-                    endMatchIndex--;
-                }
                 if (endMatchIndex != startMatchIndex)
                 {
-                    for (var index = startMatchIndex; index <= endMatchIndex; index++)
+                    for (var index = startMatchIndex; index < endMatchIndex; index++)
                     {
                         sectionFeatures.Add(m_featureMatches[index]);
                     }
                 }
+                
                 ComputeSectionMatch(section, ref sectionFeatures, sectionStartNet, sectionEndNet);
             }
         }
@@ -1142,30 +1146,14 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             var bestPreviousAlignmentIndex = -1;
             var bestScore = double.MinValue;
             var bestAlignedBaselineSection = -1;
-            var numBaselineFeatures = m_baselineFeatures.Count;
-            var numUnmatchedBaselineFeaturesSectionStart = numBaselineFeatures;
             var bestAlignmentIndex = -1;
 
             for (var baselineSection = 0; baselineSection < NumBaselineSections; baselineSection++)
             {
                 // Everything past this section would have remained unmatched.
                 for (var sectionWidth = 0; sectionWidth < NumMatchesPerBaseline; sectionWidth++)
-                {
-                    int numUnmatchedBaselineFeaturesSectionEnd;
-                    if (baselineSection + sectionWidth >= NumBaselineSections)
-                    {
-                        numUnmatchedBaselineFeaturesSectionEnd = 0;
-                    }
-                    else
-                    {
-                        numUnmatchedBaselineFeaturesSectionEnd = numUnmatchedBaselineFeaturesSectionStart - m_numFeaturesInBaselineSections[baselineSection + sectionWidth];
-                    }
-                    if (numUnmatchedBaselineFeaturesSectionEnd < 0)
-                    {
-                        //DEGAN 2/20/14 Error message that this is where it becomes less than 0
-                    }
+                {                                       
                     var alignmentIndex = (section * NumMatchesPerSection) + (baselineSection * NumMatchesPerBaseline) + sectionWidth;
-
                     var alignmentScore = m_alignmentScore[alignmentIndex];
 
                     if (!(alignmentScore > bestScore)) continue;
@@ -1174,7 +1162,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     bestAlignedBaselineSection = baselineSection;
                     bestAlignmentIndex = alignmentIndex;
                 }
-                numUnmatchedBaselineFeaturesSectionStart = numUnmatchedBaselineFeaturesSectionStart - m_numFeaturesInBaselineSections[baselineSection];
             }
 
             var msmsSectionWidth = (MaxBaselineNet - MinBaselineNet) / NumBaselineSections;
@@ -1213,6 +1200,21 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 m_alignmentFunc.Add(match);
             }
             m_alignmentFunc.Sort();
+
+            foreach (var function in m_alignmentFunc)
+            {
+                File.AppendAllText(@"m:\alignmentFuncs-us.txt", string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\n",                    
+                    function.AlignmentScore,
+                    function.MatchScore,
+                    function.NetEnd,
+                    function.NetEnd2,
+                    function.NetStart,
+                    function.NetStart2,
+                    function.SectionEnd,
+                    function.SectionEnd2,
+                    function.SectionStart,
+                    function.SectionStart2));
+            }
         }
 
         /// <summary>
@@ -1238,11 +1240,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             var unmatchedScore = -0.5 * log2PiStdNetStdNet;
             if (NetTolerance < 3 * m_netStd)
             {
-                unmatchedScore = unmatchedScore - (0.5 * 9.0);
+                unmatchedScore -= (0.5 * 9.0);
             }
             else
             {
-                unmatchedScore = unmatchedScore - (0.5 * (NetTolerance * NetTolerance) / (m_netStd * m_netStd));
+                unmatchedScore -= (0.5 * (NetTolerance * NetTolerance) / (m_netStd * m_netStd));
             }
             if (m_useMass)
             {
@@ -1250,7 +1252,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 unmatchedScore = 2 * unmatchedScore;
             }
 
-            var numUnmatchedMsMsFeatures = 0;
+            
             for (var baselineSection = 0; baselineSection < NumBaselineSections; baselineSection++)
             {
                 //Assume everything that was matched was past 3 standard devs in net.
@@ -1259,8 +1261,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     //no need to mulitply with msSection because its 0
                     var alignmentIndex = baselineSection * NumMatchesPerBaseline + sectionWidth;
                     m_alignmentScore[alignmentIndex] = 0;
-                }
-                numUnmatchedMsMsFeatures = numUnmatchedMsMsFeatures + m_numFeaturesInBaselineSections[baselineSection];
+                }            
             }
 
             var numUnmatchedMsFeatures = 0;
@@ -1271,7 +1272,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     var alignmentIndex = section * NumMatchesPerSection + sectionWidth;
                     m_alignmentScore[alignmentIndex] = m_subsectionMatchScores[alignmentIndex] + unmatchedScore * numUnmatchedMsFeatures;
                 }
-                numUnmatchedMsFeatures = numUnmatchedMsFeatures + m_numFeaturesInSections[section];
+                numUnmatchedMsFeatures += m_numFeaturesInSections[section];
             }
 
             for (var section = 1; section < NumSections; section++)
@@ -1315,6 +1316,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     }
                 }
             }
+            foreach (var oovarscore in m_alignmentScore)
+            {
+                File.AppendAllText(@"m:\scores-us.txt", oovarscore.ToString() + "\n");
+            }
         }
 
         private void ComputeSectionMatch(int msSection, ref List<LcmsWarpFeatureMatch> sectionMatchingFeatures, double minNet, double maxNet)
@@ -1352,15 +1357,12 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 {
                     endSection = NumBaselineSections;
                 }
-                var numBaselineFeaturesInSection = 0;
                 for (var baselineSectionEnd = baselineSectionStart; baselineSectionEnd < endSection; baselineSectionEnd++)
                 {
-                    var numUniqueFeatures = numUniqueFeaturesStart;                
-
-                    numBaselineFeaturesInSection = numBaselineFeaturesInSection + m_numFeaturesInBaselineSections[baselineSectionEnd];
+                    var numUniqueFeatures = numUniqueFeaturesStart;
 
                     var sectionIndex = msSection * NumMatchesPerSection + baselineSectionStart * NumMatchesPerBaseline
-                                     + baselineSectionEnd - baselineSectionStart;
+                                     + (baselineSectionEnd - baselineSectionStart);
                     var baselineEndNet = MinBaselineNet + (baselineSectionEnd + 1) * baselineSectionWidth;
 
                     for (var i = 0; i < numUniqueFeatures; i++)

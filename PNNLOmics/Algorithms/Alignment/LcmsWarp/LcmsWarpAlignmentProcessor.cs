@@ -216,7 +216,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 {
                     MassMonoisotopic = features[index].MassMonoisotopic,
                     MassMonoisotopicAligned = features[index].MassMonoisotopicAligned,
-                    Net = Convert.ToDouble(features[index].Scan),
+                    Net = Convert.ToDouble(features[index].ScanStart),
                     Mz = features[index].Mz,
                     Abundance = features[index].Abundance,
                     Id = features[index].Id,
@@ -282,56 +282,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 feature.DriftTime = data.DriftTime;
                 feature.Id = data.Id;
 
-                mtFeatures.Add(feature);
-
-                if (data.Scan > m_maxReferenceDatasetScan)
-                {
-                    m_maxReferenceDatasetScan = data.Scan;
-                }
-                if (data.Scan < m_minReferenceDatasetScan)
-                {
-                    m_minReferenceDatasetScan = data.Scan;
-                }
-                if (data.Mz > m_maxAligneeDatasetMz)
-                {
-                    m_maxAligneeDatasetMz = data.Mz;
-                }
-                if (data.Mz < m_minAligneeDatasetMz)
-                {
-                    m_minAligneeDatasetMz = data.Mz;
-                }
-            }
-            m_lcmsWarp.SetReferenceFeatures(ref mtFeatures);
-        }
-
-        /// <summary>
-        /// TEMPORARY FROM C++ PORT. UMCLight from PNNLOmics does not have a seperate collection class 
-        /// that clsUMCData had.
-        /// Use the NET value of the UMCs in the Array as the value to align to, the predictor variable
-        /// </summary>
-        /// <param name="umcData"></param>
-        public void SetReferenceDatasetFeatures(UMCLight[] umcData)
-        {
-            AligningToMassTagDb = false;            
-            var numPts          = umcData.Length;
-            var mtFeatures      = new List<UMCLight> { Capacity = numPts };
-
-            m_minAligneeDatasetScan = int.MaxValue;
-            m_maxAligneeDatasetScan = int.MinValue;
-
-            for (var index = 0; index < numPts; index++)
-            {
-                var data = umcData[index];
-                var feature = new UMCLight
-                {
-                    MassMonoisotopic = data.MassMonoisotopic,
-                    MassMonoisotopicAligned = data.MassMonoisotopicAligned,
-                    Net = data.Net,
-                    Mz = data.Mz,
-                    Abundance = data.Abundance,
-                    DriftTime = data.DriftTime,
-                    Id = data.Id
-                };
                 mtFeatures.Add(feature);
 
                 if (data.Scan > m_maxReferenceDatasetScan)
@@ -534,7 +484,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             // Original .cpp code did not include the boolean standardize. Hard coding to false for the moment
             // Mike - 3/10/14
-            m_lcmsWarp.GetSubsectionMatchScore(ref alignmentScores, ref aligneeIntervals, ref baselineIntervals, false);
+            m_lcmsWarp.GetSubsectionMatchScore(ref alignmentScores, ref aligneeIntervals, ref baselineIntervals, true);
 
             var numBaselineSections = baselineIntervals.Count;
             var numAligneeSections = aligneeIntervals.Count;

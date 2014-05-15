@@ -19,22 +19,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>
         public double[,] HeatScores { get; set; }
         /// <summary>
-        /// Property to hold the min scan number from the reference set
-        /// </summary>
-        public int MinScanBaseline { get; set; }
-        /// <summary>
-        /// Property to hold the max scan number from the reference set
-        /// </summary>
-        public int MaxScanBaseline { get; set; }
-        /// <summary>
-        /// Property to hold the min scan number from the alignment
-        /// </summary>
-        public double MinMtdbnet { get; set; }
-        /// <summary>
-        /// Property to hold the max scan number from the alignment
-        /// </summary>
-        public double MaxMtdbnet { get; set; }
-        /// <summary>
         /// Property to hold the mass error histogram from the alignment
         /// </summary>
         public double[,] MassErrorHistogram { get; set; }

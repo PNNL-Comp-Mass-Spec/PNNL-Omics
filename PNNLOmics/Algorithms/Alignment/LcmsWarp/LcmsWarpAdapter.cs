@@ -27,7 +27,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public LcmsWarpAdapter(LcmsWarpAlignmentOptions options)
         {
             m_options = options;
-        }
+        }        
         /// <summary>
         /// Gets or sets the baseline spectra provider
         /// </summary>
@@ -131,29 +131,13 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
 
             OnProgress("Aligning features");
-            var data = AlignFeatures(alignmentProcessor, alignee, options);
-
-            var minScan = int.MaxValue;
-            var maxScan = int.MinValue;
-
-            foreach (var feature in baseline)
-            {
-                minScan = Math.Min(minScan, feature.Scan);
-                maxScan = Math.Max(maxScan, feature.Scan);
-            }
-
-            data.MaxMtdbnet = maxScan;
-            data.MinMtdbnet = minScan;
-
-            return data;
+            return AlignFeatures(alignmentProcessor, alignee, options);            
         }
 
         private LcmsWarpAlignmentData AlignFeatures(LcmsWarpAlignmentProcessor processor, List<UMCLight> features, LcmsWarpAlignmentOptions options)
         {
             var alignmentFunctions = new List<LcmsWarpAlignmentFunction>();
-            //var netErrorHistograms = new List<double[,]>();
-            //var massErrorHistograms = new List<double[,]>();
-            //var driftErrorHistograms = new List<double[,]>();
+            
             var heatScores = new List<double[,]>();
             var xIntervals = new List<double[]>();
             var yIntervals = new List<double[]>();
@@ -162,58 +146,25 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             double maxMtdbNet;
             processor.GetReferenceNetRange(out minMtdbNet, out maxMtdbNet);
 
-            var filteredFeatures = FilterFeaturesByAbundance(features, options);
-            var transformedFeatures = new List<UMCLight>();
-            var map = new Dictionary<int, UMCLight>();
-
-            foreach (var feature in features)
-            {
-                transformedFeatures.Add(feature);
-                map.Add(feature.Id, feature);
-            }
-
-            var originalFeatures = filteredFeatures.ToList();
-
-            var minScanBaseline = int.MaxValue;
-            var maxScanBaseline = int.MinValue;
-
+            var filteredFeatures = FilterFeaturesByAbundance(features, options).ToList();            
+                       
             // Set features
-            processor.SetAligneeDatasetFeatures(originalFeatures);
+            processor.SetAligneeDatasetFeatures(filteredFeatures);
+
             // Find alignment
             processor.PerformAlignmentToMsFeatures();
             // Extract alignment function
             var alignmentFunction = processor.GetAlignmentFunction();
             alignmentFunctions.Add(alignmentFunction);
             // Correct the features
-            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref transformedFeatures);
-            // Find the min and max scan for the data
-            var tempMinScan = int.MaxValue;
-            var tempMaxScan = int.MinValue;
-
-            foreach (var feature in transformedFeatures)
-            {
-                tempMaxScan = Math.Max(tempMaxScan, feature.Scan);
-                tempMinScan = Math.Min(tempMinScan, feature.Scan);
-
-                var featureId = feature.Id;
-                var isInMap = map.ContainsKey(featureId);
-                if (!isInMap) continue;
-
-                map[featureId].MassMonoisotopicAligned = feature.MassMonoisotopicAligned;
-                map[featureId].NetAligned = feature.NetAligned;
-                map[featureId].Net = feature.NetAligned;
-                map[featureId].ScanAligned = feature.ScanAligned;
-            }
-            minScanBaseline = Math.Min(minScanBaseline, tempMinScan);
-            maxScanBaseline = Math.Max(maxScanBaseline, tempMaxScan);
-
+            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref filteredFeatures);
+                        
             // Get the heat maps
             double[,] heatScore;
             double[] xInterval;
             double[] yInterval;
 
             processor.GetAlignmentHeatMap(out heatScore, out xInterval, out yInterval);
-
             xIntervals.Add(xInterval);
             yIntervals.Add(yInterval);
             heatScores.Add(heatScore);
@@ -225,7 +176,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             processor.GetErrorHistograms(options.MassBinSize, options.NetBinSize, options.DriftTimeBinSize,
                 out massErrorHistogram, out netErrorHistogram, out driftErrorHistogram);
-
             
             // Get the residual data
             var residualData = processor.GetResidualData();
@@ -237,8 +187,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 NetErrorHistogram       = netErrorHistogram,
                 AlignmentFunction       = alignmentFunction,
                 HeatScores              = heatScore,
-                MinScanBaseline         = minScanBaseline,
-                MaxScanBaseline         = maxScanBaseline,
                 NetIntercept            = processor.NetIntercept,
                 NetRsquared             = processor.NetRsquared,
                 NetSlope                = processor.NetSlope,
@@ -248,14 +196,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 NetMean                 = processor.NetMu,
                 NetStandardDeviation    = processor.NetStd
             };
-
-            if (!options.AlignToMassTagDatabase) return data;
-
-            data.MinMtdbnet = minMtdbNet;
-            data.MaxMtdbnet = maxMtdbNet;
-
+            
             return data;
-
         }
 
         private static IEnumerable<UMCLight> FilterFeaturesByAbundance(List<UMCLight> features, LcmsWarpAlignmentOptions options)
