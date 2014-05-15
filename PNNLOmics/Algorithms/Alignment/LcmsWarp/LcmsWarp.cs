@@ -736,6 +736,16 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 return;
             }
 
+            m_sectionUniqueFeatureIndices.Clear();
+            m_numFeaturesInSections.Clear();
+            m_numFeaturesInBaselineSections.Clear();
+            m_alignmentFunc.Clear();
+            m_featureMatches.Clear();
+            m_subsectionMatchScores.Clear();
+            m_tempFeatureBestDelta.Clear();
+            m_tempFeatureBestIndex .Clear();
+
+
             m_features.Sort(ByMass);
             m_baselineFeatures.Sort(ByMass);
 
@@ -1014,6 +1024,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>
         public void GetMatchProbabilities()
         {
+
+
             var numFeatures = m_features.Count;
 
             m_tempFeatureBestDelta.Clear();
