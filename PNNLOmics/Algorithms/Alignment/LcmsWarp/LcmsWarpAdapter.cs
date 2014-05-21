@@ -122,6 +122,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             {
                 Options = options
             };
+            alignmentProcessor.ApplyAlignmentOptions();
 
             OnProgress("Filtering based on abundance");            
             var filteredFeatures = FilterFeaturesByAbundance(baseline, options) as List<UMCLight>;

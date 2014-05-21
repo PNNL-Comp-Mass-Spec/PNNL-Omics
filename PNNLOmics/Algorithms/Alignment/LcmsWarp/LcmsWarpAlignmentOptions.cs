@@ -89,7 +89,7 @@
         /// <summary>
         /// The type of calibration which will be performed; Either MZ, Scan or hybrid 
         /// </summary>
-        public CalibrationType CalibType { get; set; }
+        public LcmsWarpCalibrationType CalibrationType { get; set; }
 
         /// <summary>
         /// Flag for if the warper is aligning to a database of mass tags
@@ -153,7 +153,7 @@
             NetTolerance = 0.03;
 
             AlignType = AlignmentType.NET_MASS_WARP;
-            CalibType = CalibrationType.HYBRID_CALIBRATION;
+            CalibrationType = LcmsWarpCalibrationType.Both;
 
             AlignToMassTagDatabase = false;
             MassBinSize = 0.2;
@@ -163,24 +163,6 @@
             AlignmentAlgorithmType = FeatureAlignmentType.LCMS_WARP;
         }
 
-        /// <summary>
-        /// Enumerations of possible Calibration types
-        /// </summary>
-        public enum CalibrationType
-        {
-            /// <summary>
-            /// Calibration based on the M/Z value of the features and baseline
-            /// </summary>
-            MZ_CALIBRATION = 0,
-            /// <summary>
-            /// Calibration based on the scan number of the features and baseline
-            /// </summary>
-            SCAN_CALIBRATION,
-            /// <summary>
-            /// Calibration that utilizes both Scan and M/Z calibrations
-            /// </summary>
-            HYBRID_CALIBRATION
-        }
 
         /// <summary>
         /// Enumerations of possible Alignment Types

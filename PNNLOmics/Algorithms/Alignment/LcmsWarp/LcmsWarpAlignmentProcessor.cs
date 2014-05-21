@@ -54,7 +54,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <summary>
         /// Options for the Alignment processor
         /// </summary>
-        public LcmsWarpAlignmentOptions Options { private get; set; }
+        public LcmsWarpAlignmentOptions Options { get; set; }
         /// <summary>
         /// Flag for if the Processor is aligning to a Mass Tag Database
         /// </summary>
@@ -117,7 +117,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_lcmsWarp.NetRecalibration.SetLsqOptions(Options.MassCalibLsqNumKnots, Options.MassCalibLsqMaxZScore);
 
             // Setting the calibration type
-            m_lcmsWarp.CalibrationType = (LcmsWarpCalibrationType)Options.CalibType;
+            m_lcmsWarp.CalibrationType = Options.CalibrationType;
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <returns></returns>
         public LcmsWarpAlignmentFunction GetAlignmentFunction()
         {
-            var func = new LcmsWarpAlignmentFunction(Options.CalibType, Options.AlignType);
+            var func = new LcmsWarpAlignmentFunction(Options.CalibrationType, Options.AlignType);
 
             var aligneeNets = new List<double>();
             var referenceNets = new List<double>();
@@ -370,8 +370,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             var aligneeNetMassFunc = new List<double>();
             var aligneePpmShiftMassFunc = new List<double>();
 
-            if (Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.SCAN_CALIBRATION ||
-                Options.CalibType == LcmsWarpAlignmentOptions.CalibrationType.HYBRID_CALIBRATION)
+            if (Options.CalibrationType == LcmsWarpCalibrationType.ScanRegression ||
+                Options.CalibrationType == LcmsWarpCalibrationType.Both)
             {
                 // get the PPM for each knot
                 for (var knotNum = 0; knotNum < numXKnots; knotNum++)
@@ -384,8 +384,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 func.SetMassCalibrationFunctionWithTime(ref aligneeNetMassFunc, ref aligneePpmShiftMassFunc);
             }
 
-            if (Options.CalibType != LcmsWarpAlignmentOptions.CalibrationType.MZ_CALIBRATION &&
-                Options.CalibType != LcmsWarpAlignmentOptions.CalibrationType.HYBRID_CALIBRATION) return func;
+            if (Options.CalibrationType != LcmsWarpCalibrationType.MzRegression &&
+                Options.CalibrationType != LcmsWarpCalibrationType.Both) return func;
 
 
             // Get the ppm for each knot
@@ -454,27 +454,12 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             var massTolerance = m_lcmsWarp.MassTolerance;
             m_lcmsWarp.MassTolerance = m_lcmsWarp.MassCalibrationWindow;
             m_lcmsWarp.UseMassAndNetScore(false);
-
             PerformNetWarp();
-
-            m_lcmsWarp.PerformMassCalibration();
-
-
-
+            m_lcmsWarp.PerformMassCalibration();             
             m_lcmsWarp.CalculateStandardDeviations();
             m_lcmsWarp.MassTolerance = massTolerance;
             m_lcmsWarp.UseMassAndNetScore(true);
             PerformNetWarp();
-
-
-            //using (var writer = File.CreateText(@"d:\featureMatches-us-post.txt"))
-            //{
-            //    foreach (var match in m_lcmsWarp.m_featureMatches)
-            //    {
-            //        writer.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}",
-            //            match.FeatureIndex, match.FeatureIndex2, match.Net, match.Net2, match.NetError, match.PpmMassError);
-            //    }
-            //}
         }
 
         /// <summary>

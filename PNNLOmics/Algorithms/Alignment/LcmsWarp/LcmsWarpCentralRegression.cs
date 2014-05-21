@@ -491,6 +491,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             CalculateScoreMatrix();
             CalculateAlignmentMatrix();
             CalculateRegressionFunction();
+
+
         }
 
         /// <summary>
