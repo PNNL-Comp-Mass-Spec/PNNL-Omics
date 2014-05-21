@@ -913,7 +913,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 var feature = m_features[match.FeatureIndex];
                 var baselineFeature = m_baselineFeatures[match.FeatureIndex2];
                 var currentMassDelta = ((baselineFeature.MassMonoisotopic - feature.MassMonoisotopic) * 1000000) / feature.MassMonoisotopic;
-                var currentNetDelta = baselineFeature.Net - feature.Net;
+                var currentNetDelta = baselineFeature.Net - feature.NetAligned;
 
                 massDeltas.Add(currentMassDelta);
                 netDeltas.Add(currentNetDelta);
