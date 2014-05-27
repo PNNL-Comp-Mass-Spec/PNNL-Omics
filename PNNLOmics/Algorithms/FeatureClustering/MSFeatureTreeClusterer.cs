@@ -92,7 +92,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
 
             OnProgress("Examining features within partitions");
 
-            // Iterate through all of the clusters
+            // Iterate through all of the features
             while (currentIndex < n)
             {
                 var hasGap       = false;

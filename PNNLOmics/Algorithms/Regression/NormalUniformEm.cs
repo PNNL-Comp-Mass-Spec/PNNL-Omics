@@ -88,7 +88,7 @@ namespace PNNLOmics.Algorithms.Regression
             foreach (var val in listVals)
             {
                 minVal = Math.Min(val, minVal);
-                maxVal = Math.Min(val, maxVal);
+                maxVal = Math.Max(val, maxVal);
             }
             if (Math.Abs(minVal - maxVal) < double.Epsilon)
             {

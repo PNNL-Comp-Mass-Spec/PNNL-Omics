@@ -10,7 +10,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// </summary>
     public sealed class LcmsWarpAlignmentFunction
     {
-        readonly LcmsWarpAlignmentOptions.CalibrationType m_calibrationType;
+        readonly LcmsWarpCalibrationType m_calibrationType;
         readonly LcmsWarpAlignmentOptions.AlignmentType m_alignmentType;
 
         readonly List<double> m_netFuncTimeInput = new List<double>();
@@ -31,7 +31,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>
         /// <param name="calibType"></param>
         /// <param name="alignmentType"></param>
-        public LcmsWarpAlignmentFunction(LcmsWarpAlignmentOptions.CalibrationType calibType,
+        public LcmsWarpAlignmentFunction(LcmsWarpCalibrationType calibType,
                                  LcmsWarpAlignmentOptions.AlignmentType alignmentType)
         {
             m_calibrationType = calibType;
@@ -59,7 +59,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 throw new InvalidOperationException("Recalibration of mass not enabled with NET_WARP alignment type. PPM shift cannot be retrieved. Used NET_MASS_WARP as alignment type instead");
             }
 
-            if (m_calibrationType == LcmsWarpAlignmentOptions.CalibrationType.SCAN_CALIBRATION)
+            if (m_calibrationType == LcmsWarpCalibrationType.ScanRegression)
             {
                 throw new InvalidOperationException("Attempting to set MZ calibration of masses when option chosen was SCAN_CALIBRATION");
             }

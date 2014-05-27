@@ -349,8 +349,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         {
             m_bestPreviousIndex.Clear();
             m_alignmentScores.Clear();
-            m_alignmentScores.Capacity = m_numXBins + 1 * m_numYBins;
-            m_bestPreviousIndex.Capacity = m_numXBins + 1 * m_numYBins;
+            m_alignmentScores.Capacity = (m_numXBins + 1) * m_numYBins;
+            m_bestPreviousIndex.Capacity = (m_numXBins + 1) * m_numYBins;
 
             for (var ySection = 0; ySection < m_numYBins; ySection++)
             {
@@ -491,6 +491,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             CalculateScoreMatrix();
             CalculateAlignmentMatrix();
             CalculateRegressionFunction();
+
+
         }
 
         /// <summary>

@@ -122,6 +122,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             {
                 Options = options
             };
+            alignmentProcessor.ApplyAlignmentOptions();
 
             OnProgress("Filtering based on abundance");            
             var filteredFeatures = FilterFeaturesByAbundance(baseline, options) as List<UMCLight>;
@@ -207,6 +208,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             var percent = 1 - (options.TopFeatureAbundancePercent / 100);
             var total = features.Count - Convert.ToInt32(features.Count * percent);
             var threshhold = features[Math.Min(features.Count - 1, Math.Max(0, total))].AbundanceSum;
+            
+            if (threshhold <= 0)
+                return features;
 
             //Filters features below the threshold
             var filteredFeatures = features.FindAll(feature => feature.AbundanceSum >= threshhold);

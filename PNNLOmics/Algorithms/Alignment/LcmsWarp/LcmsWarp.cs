@@ -468,7 +468,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 if (m_useMass)
                 {
                     ppmShift = GetPpmShift(feature.Mz, scanNumber);
-                    File.AppendAllText(@"m:\ppmCheck-us.txt", string.Format("{0}\t{1}\t{2}\n", scanNumber, feature.Mz, ppmShift));
+                    //File.AppendAllText(@"d:\ppmCheck-us.txt", string.Format("{0}\t{1}\t{2}\n", scanNumber, feature.Mz, ppmShift));
                 }
                 mz.Add(feature.Mz);
                 massError.Add(ppmMassError);
@@ -913,7 +913,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 var feature = m_features[match.FeatureIndex];
                 var baselineFeature = m_baselineFeatures[match.FeatureIndex2];
                 var currentMassDelta = ((baselineFeature.MassMonoisotopic - feature.MassMonoisotopic) * 1000000) / feature.MassMonoisotopic;
-                var currentNetDelta = baselineFeature.Net - feature.Net;
+                var currentNetDelta = baselineFeature.Net - feature.NetAligned;
 
                 massDeltas.Add(currentMassDelta);
                 netDeltas.Add(currentNetDelta);
@@ -925,10 +925,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             MathUtilities.TwoDem(massDeltas, netDeltas, out m_normalProb, out m_u,
                 out m_muMass, out m_muNet, out m_massStd, out m_netStd);
 
-            File.AppendAllText(@"m:\standards-us.txt", m_normalProb.ToString() + "\n");
-            File.AppendAllText(@"m:\standards-us.txt", m_u.ToString() + "\n");
-            File.AppendAllText(@"m:\standards-us.txt", m_muMass.ToString() + "\n");
-            File.AppendAllText(@"m:\standards-us.txt", m_muNet.ToString() + "\n");
+            File.AppendAllText(@"E:\MultiAlignTest\Results\standards-us.txt", m_normalProb.ToString() + "\n");
+            File.AppendAllText(@"E:\MultiAlignTest\Results\standards-us.txt", m_u.ToString() + "\n");
+            File.AppendAllText(@"E:\MultiAlignTest\Results\standards-us.txt", m_muMass.ToString() + "\n");
+            File.AppendAllText(@"E:\MultiAlignTest\Results\standards-us.txt", m_muNet.ToString() + "\n");
 
         }
         
@@ -957,7 +957,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 var match           = m_featureMatches[matchNum];
                 var feature         = m_features[match.FeatureIndex];
                 var baselineFeature = m_baselineFeatures[match.FeatureIndex2];
-                var ppm             = FeatureLight.ComputeMassPPMDifference(feature.MassMonoisotopic, baselineFeature.MassMonoisotopic);
+                var ppm             = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic) / baselineFeature.MassMonoisotopic * 1000000; //FeatureLight.ComputeMassPPMDifference(feature.MassMonoisotopic, baselineFeature.MassMonoisotopic);
                 var mz              = feature.Mz;
                 var netDiff         = baselineFeature.Net - feature.NetAligned;
 
@@ -994,7 +994,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 var match           = m_featureMatches[matchNum];
                 var feature         = m_features[match.FeatureIndex];
                 var baselineFeature = m_baselineFeatures[match.FeatureIndex2];
-                var ppm             = FeatureLight.ComputeMassPPMDifference(feature.MassMonoisotopic, baselineFeature.MassMonoisotopic);
+                var ppm             = (feature.MassMonoisotopic - baselineFeature.MassMonoisotopic) / baselineFeature.MassMonoisotopic * 1000000; //FeatureLight.ComputeMassPPMDifference(feature.MassMonoisotopic, baselineFeature.MassMonoisotopic);
                 var net             = feature.Net;
                 var netDiff         = baselineFeature.Net - feature.NetAligned;
 
