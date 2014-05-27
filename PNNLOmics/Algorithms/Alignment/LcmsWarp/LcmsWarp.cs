@@ -925,10 +925,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             MathUtilities.TwoDem(massDeltas, netDeltas, out m_normalProb, out m_u,
                 out m_muMass, out m_muNet, out m_massStd, out m_netStd);
 
-            File.AppendAllText(@"E:\MultiAlignTest\Results\standards-us.txt", m_normalProb.ToString() + "\n");
-            File.AppendAllText(@"E:\MultiAlignTest\Results\standards-us.txt", m_u.ToString() + "\n");
-            File.AppendAllText(@"E:\MultiAlignTest\Results\standards-us.txt", m_muMass.ToString() + "\n");
-            File.AppendAllText(@"E:\MultiAlignTest\Results\standards-us.txt", m_muNet.ToString() + "\n");
+            File.AppendAllText(@"d:\standards-us.txt", m_normalProb.ToString() + "\n");
+            File.AppendAllText(@"d:\standards-us.txt", m_u.ToString() + "\n");
+            File.AppendAllText(@"d:\standards-us.txt", m_muMass.ToString() + "\n");
+            File.AppendAllText(@"d:\standards-us.txt", m_muNet.ToString() + "\n");
 
         }
         
