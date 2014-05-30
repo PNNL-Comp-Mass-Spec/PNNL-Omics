@@ -254,7 +254,7 @@ namespace PNNLOmics.Algorithms.Regression
 
         public LinearRegressionResult CalculateRegression(IEnumerable<double> observed, IEnumerable<double> predicted)
         {
-            SetPoints(observed as double[], predicted as double[]);
+            SetPoints(observed as List<double>, predicted as List<double>);
 
             m_regressionPoints.Sort();
 
@@ -392,7 +392,7 @@ namespace PNNLOmics.Algorithms.Regression
             return m_regressionResult;
         }
 
-        private void SetPoints(double[] x, double[] y)
+        private void SetPoints(List<double> x, List<double> y)
         {
             m_regressionPoints.Clear();
             double minScan = 1024 * 1024 * 16;
@@ -410,7 +410,7 @@ namespace PNNLOmics.Algorithms.Regression
             var lowerX = minScan + (maxScan - minScan) * (percentToIgnore / 2.0);
             var upperX = maxScan - (maxScan - minScan) * (percentToIgnore / 2.0);
 
-            for (var ptNum = 0; ptNum < x.Length; ptNum++)
+            for (var ptNum = 0; ptNum < x.Count; ptNum++)
             {                
                 var pt = new RegressionPoint(x[ptNum], y[ptNum]);
 

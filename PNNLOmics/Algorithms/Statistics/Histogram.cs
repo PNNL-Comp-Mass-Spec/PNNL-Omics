@@ -41,7 +41,7 @@ namespace PNNLOmics.Algorithms.Statistics
                 return;
             }
 
-            var numBins = (int)Math.Floor((maxVal - minVal) / valStep);
+            var numBins = Math.Max((int)Math.Floor((maxVal - minVal) / valStep), 1);
 
             var binVal = minVal;
             for (var i = 0; i < numBins; i++)
