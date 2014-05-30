@@ -49,7 +49,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             var umc = new UMCLight
             {
                 MassMonoisotopicAligned = umcMass,
-                NetAligned = umcNet,
+                Net = umcNet,
                 DriftTime = umcDrifTime,
                 ChargeState = umcCharge,
                 Abundance = umcAbundance
@@ -58,7 +58,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             cluster.CalculateStatistics(representation);
 
             Assert.AreEqual(cluster.MassMonoisotopic,   umc.MassMonoisotopicAligned);
-            Assert.AreEqual(cluster.Net,                umc.NetAligned);
+            Assert.AreEqual(cluster.Net,                umc.Net);
             Assert.AreEqual(cluster.DriftTime,          umc.DriftTime);
             Assert.AreEqual(cluster.ChargeState,        umc.ChargeState);            
         }
@@ -97,7 +97,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                 var umc = new UMCLight
                 {
                     MassMonoisotopicAligned = umcMass + multiplier*i,
-                    NetAligned = umcNet + multiplier*i,
+                    Net = umcNet + multiplier*i,
                     DriftTime = umcDrifTime + multiplier*i,
                     ChargeState = umcCharge,
                     Abundance = umcAbundance + multiplier*i
@@ -107,14 +107,14 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                 if (representation == ClusterCentroidRepresentation.Mean)
                 {
                     medianMass      += umc.MassMonoisotopicAligned;
-                    medianNet       += umc.NetAligned;
+                    medianNet       += umc.Net;
                     medianDriftTime += umc.DriftTime;
                 }
                 // Odd
                 else if (k == i && (numUmCs % 2 == 1))
                 {
                     medianMass      = umc.MassMonoisotopicAligned;
-                    medianNet       = umc.NetAligned;
+                    medianNet       = umc.Net;
                     medianDriftTime = umc.DriftTime;
                 }
                 // Even 
@@ -127,13 +127,13 @@ namespace PNNLOmics.UnitTests.DataTests.Features
                     if (k - 1 == i)
                     {
                         medianMass      = umc.MassMonoisotopicAligned;
-                        medianNet       = umc.NetAligned;
+                        medianNet       = umc.Net;
                         medianDriftTime = umc.DriftTime;
                     }
                     else if (k == i)
                     {
                         medianMass      += umc.MassMonoisotopicAligned;
-                        medianNet       += umc.NetAligned;
+                        medianNet       += umc.Net;
                         medianDriftTime += umc.DriftTime;
                         medianMass      /= 2;
                         medianNet       /= 2;

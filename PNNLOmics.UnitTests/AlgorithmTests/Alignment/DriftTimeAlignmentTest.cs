@@ -55,7 +55,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
         private void CreateObservedAndTargetUmcLists(ref List<UMCLight> observedUmcList,
             ref List<UMCLight> targetUmcList)
         {
-            if (observedUmcList == null) throw new ArgumentNullException("observedUmcList");
+            //if (observedUmcList == null) throw new ArgumentNullException("observedUmcList");
             observedUmcList = new List<UMCLight>();
             targetUmcList = new List<UMCLight>();
 

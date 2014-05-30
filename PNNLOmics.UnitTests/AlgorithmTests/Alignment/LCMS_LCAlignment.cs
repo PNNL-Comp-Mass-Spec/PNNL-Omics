@@ -37,6 +37,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             options.UsePromiscuousPoints = false;//this does not do much
             options.AlignmentAlgorithmType = LcmsWarpAlignmentOptions.FeatureAlignmentType.LCMS_WARP;
             options.ContractionFactor = 1;//setting this to 1 helped
+            options.AlignType = LcmsWarpAlignmentOptions.AlignmentType.NET_WARP;
 
             processor.Options = options;
             processor.ApplyAlignmentOptions();
@@ -86,6 +87,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
                 //referencePoint.Scan = Convert.ToInt32(referenceTimes[i]*multiplier);
                 //scan needs to be populated
                 experimentalPoint.Scan = Convert.ToInt32(Math.Round(experimentalTimes[i] * multiplier, 0));
+                experimentalPoint.ScanStart = Convert.ToInt32(Math.Round(experimentalTimes[i] * multiplier, 0));
+                experimentalPoint.ScanEnd = Convert.ToInt32(Math.Round(experimentalTimes[i] * multiplier, 0));
 
                 referencePoint.Mz = 1000 + i;
                 experimentalPoint.Mz = 1000 + i;
