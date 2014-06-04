@@ -468,7 +468,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 if (m_useMass)
                 {
                     ppmShift = GetPpmShift(feature.Mz, scanNumber);
-                    //File.AppendAllText(@"d:\ppmCheck-us.txt", string.Format("{0}\t{1}\t{2}\n", scanNumber, feature.Mz, ppmShift));
                 }
                 mz.Add(feature.Mz);
                 massError.Add(ppmMassError);
@@ -924,12 +923,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_muNet = 0;
             MathUtilities.TwoDem(massDeltas, netDeltas, out m_normalProb, out m_u,
                 out m_muMass, out m_muNet, out m_massStd, out m_netStd);
-
-            File.AppendAllText(@"d:\standards-us.txt", m_normalProb.ToString() + "\n");
-            File.AppendAllText(@"d:\standards-us.txt", m_u.ToString() + "\n");
-            File.AppendAllText(@"d:\standards-us.txt", m_muMass.ToString() + "\n");
-            File.AppendAllText(@"d:\standards-us.txt", m_muNet.ToString() + "\n");
-
         }
         
         /// <summary>

@@ -271,75 +271,77 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             // For each point that is seen, add the supporting score to the appropriate section.
             var numPts = m_pts.Count();
-
-            for (var pointNum = 0; pointNum < numPts; pointNum++)
+            if ((yIntervalSize > 0.000001) && (xIntervalSize > 0.000001))
             {
-                var point = m_pts[pointNum];
-                var xSection = Convert.ToInt32((point.X - m_minX) / xIntervalSize);
-                if (xSection == m_numXBins)
+                for (var pointNum = 0; pointNum < numPts; pointNum++)
                 {
-                    xSection = m_numXBins - 1;
-                }
+                    var point = m_pts[pointNum];
+                    var xSection = Convert.ToInt32((point.X - m_minX)/xIntervalSize);
+                    if (xSection == m_numXBins)
+                    {
+                        xSection = m_numXBins - 1;
+                    }
 
-                // If the point belongs to a section where the num # of points is not met, ignore it
-                if (m_count[xSection] < m_minSectionPts || Math.Abs(m_stdY[xSection]) < double.Epsilon)
-                {
-                    continue;
-                }
-
-                var yTolerance = m_sectionTolerance[xSection];
-
-                var yInterval = Convert.ToInt32((0.0001 + (point.MassError - m_minY) / yIntervalSize));
-
-                if (yInterval == m_numYBins)
-                {
-                    yInterval = m_numYBins - 1;
-                }
-
-                // Matches to the section that the point would contribute to.
-                var minYStart = Convert.ToInt32(yInterval - yTolerance / yIntervalSize);
-                var maxYStart = Convert.ToInt32(yInterval + yTolerance / yIntervalSize);
-
-                var sectionMismatchScore = m_sectionMisMatchScore[xSection];
-
-                var xFraction = (point.X - m_minX) / xIntervalSize - xSection;
-
-                for (var yFrom = minYStart; yFrom <= maxYStart; yFrom++)
-                {
-                    if (yFrom < 0)
+                    // If the point belongs to a section where the num # of points is not met, ignore it
+                    if (m_count[xSection] < m_minSectionPts || Math.Abs(m_stdY[xSection]) < double.Epsilon)
                     {
                         continue;
                     }
-                    if (yFrom >= m_numYBins)
+
+                    var yTolerance = m_sectionTolerance[xSection];
+
+                    var yInterval = Convert.ToInt32((0.0001 + (point.MassError - m_minY)/yIntervalSize));
+
+                    if (yInterval == m_numYBins)
                     {
-                        break;
+                        yInterval = m_numYBins - 1;
                     }
-                    for (var yTo = yFrom - m_numJumps; yTo <= yFrom + m_numJumps; yTo++)
+
+                    // Matches to the section that the point would contribute to.
+                    var minYStart = Convert.ToInt32(yInterval - yTolerance/yIntervalSize);
+                    var maxYStart = Convert.ToInt32(yInterval + yTolerance/yIntervalSize);
+
+                    var sectionMismatchScore = m_sectionMisMatchScore[xSection];
+
+                    var xFraction = (point.X - m_minX)/xIntervalSize - xSection;
+
+                    for (var yFrom = minYStart; yFrom <= maxYStart; yFrom++)
                     {
-                        if (yTo < 0)
+                        if (yFrom < 0)
                         {
                             continue;
                         }
-                        if (yTo >= m_numYBins)
+                        if (yFrom >= m_numYBins)
                         {
                             break;
                         }
-
-                        //Assumes linear piecewise transform to calculate the estimated y
-                        var yEstimated = (yFrom + (yTo - yFrom) * xFraction) * yIntervalSize + m_minY;
-                        var yDelta = point.MassError - yEstimated;
-
-                        //Make sure the point is in the linear range to effect the score
-                        if (Math.Abs(yDelta) > yTolerance)
+                        for (var yTo = yFrom - m_numJumps; yTo <= yFrom + m_numJumps; yTo++)
                         {
-                            continue;
-                        }
+                            if (yTo < 0)
+                            {
+                                continue;
+                            }
+                            if (yTo >= m_numYBins)
+                            {
+                                break;
+                            }
 
-                        var matchScore = (yDelta * yDelta) / (m_stdY[xSection] * m_stdY[xSection]);
-                        var jump = yTo - yFrom + m_numJumps;
-                        var sectionIndex = xSection * m_numSectionMatches + yFrom * (2 * m_numJumps + 1) + jump;
-                        var currentMatchScore = m_matchScores[sectionIndex];
-                        m_matchScores[sectionIndex] = currentMatchScore - sectionMismatchScore + matchScore;
+                            //Assumes linear piecewise transform to calculate the estimated y
+                            var yEstimated = (yFrom + (yTo - yFrom)*xFraction)*yIntervalSize + m_minY;
+                            var yDelta = point.MassError - yEstimated;
+
+                            //Make sure the point is in the linear range to effect the score
+                            if (Math.Abs(yDelta) > yTolerance)
+                            {
+                                continue;
+                            }
+
+                            var matchScore = (yDelta*yDelta)/(m_stdY[xSection]*m_stdY[xSection]);
+                            var jump = yTo - yFrom + m_numJumps;
+                            var sectionIndex = xSection*m_numSectionMatches + yFrom*(2*m_numJumps + 1) + jump;
+                            var currentMatchScore = m_matchScores[sectionIndex];
+                            m_matchScores[sectionIndex] = currentMatchScore - sectionMismatchScore + matchScore;
+                        }
                     }
                 }
             }

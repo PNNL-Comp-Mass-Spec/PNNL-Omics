@@ -1,0 +1,16 @@
+_Old/
+bak/data/
+bak/
+SVN_Path.txt
+.svn/
+PNNLOmics/bin/
+PNNLOmics/obj/
+PNNLOmicsViz/bin/
+PNNLOmicsViz/obj/
+PNNLOmicsData/bin/
+PNNLOmicsData/obj/
+PNNLOmicsIO/bin/
+PNNLOmicsIO/obj/
+PNNLOmics.UnitTests/bin/
+PNNLOmics.UnitTests/obj/
+*.suo
