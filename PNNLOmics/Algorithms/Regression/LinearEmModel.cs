@@ -171,9 +171,12 @@ namespace PNNLOmics.Algorithms.Regression
             {
 //                if (Math.Abs(x[ptNum] - y[ptNum]) < 0.2)
                 {
-                    var pt = new RegressionPoint (x[ptNum],  y[ptNum]);
-                    if (pt.X > lowerX && pt.X < upperX)
+                    if (x[ptNum] >= lowerX && x[ptNum] <= upperX)
+                    {
+                        var pt = new RegressionPoint(x[ptNum], y[ptNum]);
                         m_regressionPoints.Add(pt);
+                    }                   
+                        
                 }
             }
         }

@@ -1064,15 +1064,15 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             {
                 var net = m_features[i].Net;
                 var sectionNum = Convert.ToInt32(((net - MinNet) * NumSections) / (MaxNet - MinNet));
-                //TODO: Should be setting section number to numSections - 1
+                
                 if (sectionNum >= NumSections)
                 {
-                    sectionNum--;
+                    sectionNum = NumSections - 1;
                 }
-                //if (sectionNum < 0)
-                //{
-                //    sectionNum = 0;
-                //}
+                if (sectionNum < 0)
+                {
+                    sectionNum = 0;
+                }
                 m_numFeaturesInSections[sectionNum]++;
             }
 
