@@ -154,11 +154,13 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             // Find alignment
             processor.PerformAlignmentToMsFeatures();
+
             // Extract alignment function
             var alignmentFunction = processor.GetAlignmentFunction();
             alignmentFunctions.Add(alignmentFunction);
+
             // Correct the features
-            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref filteredFeatures);
+            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref features);
                         
             // Get the heat maps
             double[,] heatScore;
@@ -203,12 +205,18 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
         private static IEnumerable<UMCLight> FilterFeaturesByAbundance(List<UMCLight> features, LcmsWarpAlignmentOptions options)
         {
+            // Sort by abundance to ease filtering process. Options look at the percentage of abundance
+            // so threshhold needs to be converted to what the abundance sum would be. 
             features.Sort((x, y) => x.AbundanceSum.CompareTo(y.AbundanceSum));
 
             var percent = 1 - (options.TopFeatureAbundancePercent / 100);
             var total = features.Count - Convert.ToInt32(features.Count * percent);
             var threshhold = features[Math.Min(features.Count - 1, Math.Max(0, total))].AbundanceSum;
             
+            // Re-sort with regards to monoisotopic mass for accurate application of NET-Mass function
+            // to the dataset we need to align.
+            features.Sort((x, y) => x.MassMonoisotopic.CompareTo(y.MassMonoisotopic));
+
             if (threshhold <= 0)
                 return features;
 

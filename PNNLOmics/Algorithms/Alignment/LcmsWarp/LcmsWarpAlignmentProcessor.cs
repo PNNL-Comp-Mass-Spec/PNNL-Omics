@@ -156,7 +156,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
                     if (i < data.Count)
                     {
-                        data[i] = point;
+                        // Update the data without stomping the data that shouldn't change.
+                        data[i].MassMonoisotopicAligned = point.MassMonoisotopicAligned;
+                        data[i].NetAligned = point.NetAligned;
+                        data[i].DriftTime = point.DriftTime;
                     }
                     else
                     {
@@ -185,7 +188,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
                     if (i < data.Count)
                     {
-                        data[i] = point;
+                        // Update the data without stomping the data that shouldn't change.
+                        data[i].MassMonoisotopicAligned = point.MassMonoisotopicAligned;
+                        data[i].NetAligned = point.NetAligned;
+                        data[i].ScanAligned = point.ScanAligned;
+                        data[i].DriftTime = point.DriftTime;
                     }
                     else
                     {

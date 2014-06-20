@@ -501,7 +501,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         {
             int featureIndex;
             var numFeatures = m_features.Count;
-
             var alignmentFuncLength = m_alignmentFunc.Count;
             var dicSectionToIndex = new Dictionary<int, int>();
 
@@ -557,8 +556,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
                 netTransformed = ((feature.Net - netStart) * (netEndBaseline - netStartBaseline)) / (netEnd - netStart) + netStartBaseline;
                 m_features[featureIndex].NetAligned = netTransformed;
-
-                
             }
         }
 
