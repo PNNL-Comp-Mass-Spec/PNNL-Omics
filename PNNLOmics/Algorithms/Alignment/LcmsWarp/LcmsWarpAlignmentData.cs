@@ -1,4 +1,6 @@
-﻿
+﻿using System.Collections.Generic;
+using PNNLOmics.Algorithms.Alignment.SpectralMatching;
+
 namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
@@ -65,6 +67,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public ResidualData ResidualData { get; set; }
 
 
+        /// <summary>
+        ///     Gets or sets the anchor poitns defined by spectral matching if that algorithm was used.
+        ///     This is a stop gap until I can port this all to better objects.
+        /// </summary>
+        public IEnumerable<SpectralAnchorPointMatch> Matches { get; set; }
         ///// <summary>
         ///// Test to see if the alignment datasets are equal based on
         ///// the ID number of the alignment data. Returns true if

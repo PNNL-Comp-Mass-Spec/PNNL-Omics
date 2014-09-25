@@ -196,7 +196,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     var umc = xic.Feature;
 
                     // otherwise create a new feature here...
-                    var msFeature               = new MSFeatureLight
+                    var msFeature        = new MSFeatureLight
                     {
                         ChargeState      = xic.ChargeState,   
                         Mz               = xic.Mz,
@@ -302,12 +302,11 @@ namespace PNNLOmics.Algorithms.Chromatograms
         /// <param name="massError"></param>
         /// <returns></returns>
         private  List<XicFeature> CreateXicTargets(IEnumerable<UMCLight> features, double massError)
-        {
-            
-            var allFeatures = new List<XicFeature>();
+        {            
+            var allFeatures   = new List<XicFeature>();
 
             // Create XIC Features
-            var id = 0;
+            var id            = 0;
             // Then for each feature turn it into a new feature
             foreach (var feature in features)
             {
@@ -315,13 +314,13 @@ namespace PNNLOmics.Algorithms.Chromatograms
                 var x = feature.CreateChargeMap();
                 foreach (var charge in x.Keys)
                 {
-                    long maxIntensity = 0;
-                    double mz = 0;
-                    var min = double.MaxValue;
-                    var max = double.MinValue;
+                    long maxIntensity  = 0;
+                    double mz          = 0;
+                    var min            = double.MaxValue;
+                    var max            = double.MinValue;
 
-                    var scanStart = int.MaxValue;
-                    var scanEnd = 0;
+                    var scanStart      = int.MaxValue;
+                    var scanEnd        = 0;
 
                     foreach (var chargeFeature in x[charge])
                     {
@@ -332,8 +331,8 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
                         if (chargeFeature.Abundance > maxIntensity)
                         {
-                            maxIntensity = chargeFeature.Abundance;
-                            mz = chargeFeature.Mz;
+                            maxIntensity  = chargeFeature.Abundance;
+                            mz            = chargeFeature.Mz;
                         }
                     }
 
@@ -342,8 +341,8 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
                     var xicFeature = new XicFeature
                     {
-                        HighMz = FeatureLight.ComputeDaDifferenceFromPPM(mz, -massError),
-                        LowMz = FeatureLight.ComputeDaDifferenceFromPPM(mz, massError),
+                        HighMz      = FeatureLight.ComputeDaDifferenceFromPPM(mz, -massError),
+                        LowMz       = FeatureLight.ComputeDaDifferenceFromPPM(mz, massError),
                         Mz          = mz,
                         Feature     = feature,
                         Id          = id++,

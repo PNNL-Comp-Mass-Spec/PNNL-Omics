@@ -33,11 +33,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             options.NumTimeSections = 12;//default is 100
             options.StoreAlignmentFunction = true;
             options.NetBinSize = 0.001;//default is 0.001;//this does not do much
-            options.AlignType = LcmsWarpAlignmentOptions.AlignmentType.NET_MASS_WARP;
+            options.AlignType = AlignmentType.NET_MASS_WARP;
             options.UsePromiscuousPoints = false;//this does not do much
-            options.AlignmentAlgorithmType = LcmsWarpAlignmentOptions.FeatureAlignmentType.LCMS_WARP;
+            options.AlignmentAlgorithmType = FeatureAlignmentType.LCMS_WARP;
             options.ContractionFactor = 1;//setting this to 1 helped
-            options.AlignType = LcmsWarpAlignmentOptions.AlignmentType.NET_WARP;
+            options.AlignType = AlignmentType.NET_WARP;
 
             processor.Options = options;
             processor.ApplyAlignmentOptions();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using PNNLOmics.Algorithms.Alignment.SpectralMatches;
 using PNNLOmics.Algorithms.SpectralComparisons;
@@ -224,8 +225,9 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             var yTotal          = ySpectraSummary.Count;
             var xTotal          = xSpectraSummary.Count;
 
-            var cache = new Dictionary<int, MSSpectra>();
+            var similarities = new List<double>();
 
+            var cache   = new Dictionary<int, MSSpectra>();
             var pointsY = new Dictionary<int, SpectralAnchorPoint>();
 
             while (i < xTotal && j < yTotal)
@@ -330,8 +332,13 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                         if (!skipComparison)
                             spectralSimilarity = comparer.CompareSpectra(spectrumX, spectrumY);
 
+                        // similarities.Add(spectralSimilarity);
+                        File.AppendAllText(@"c:\data\proteomics\test.txt", string.Format("{0}\t{1}\t{2}\n", spectrumX.PrecursorMz, spectrumY.PrecursorMz, spectralSimilarity));
+
                         if (double.IsNaN(spectralSimilarity) || double.IsInfinity(spectralSimilarity))
                             continue;
+
+
 
                         if (spectralSimilarity < options.SimilarityCutoff)
                             continue;

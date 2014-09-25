@@ -80,12 +80,13 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
             OnProgress("Creating Alignment Functions");
             var aligner = new SpectralAnchorPointAligner();
             var spectralAnchorPointMatches = matches as SpectralAnchorPointMatch[] ?? matches.ToArray();
+            //TODO: Brian modified to test alignment using LCMSWarp regression code.
             aligner.CreateAlignmentFunctions(spectralAnchorPointMatches);
 
             OnProgress("Transforming sub-features");
             foreach (var feature in alignee)
             {
-                feature.NetAligned = aligner.AlignNet(feature.Net);
+                feature.NetAligned = feature.Net; // aligner.AlignNet(feature.Net);
             }
 
             return spectralAnchorPointMatches;

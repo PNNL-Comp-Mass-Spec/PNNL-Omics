@@ -11,7 +11,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     public sealed class LcmsWarpAlignmentFunction
     {
         readonly LcmsWarpCalibrationType m_calibrationType;
-        readonly LcmsWarpAlignmentOptions.AlignmentType m_alignmentType;
+        readonly AlignmentType m_alignmentType;
 
         readonly List<double> m_netFuncTimeInput = new List<double>();
         readonly List<double> m_netFuncNetOutput = new List<double>();
@@ -32,7 +32,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <param name="calibType"></param>
         /// <param name="alignmentType"></param>
         public LcmsWarpAlignmentFunction(LcmsWarpCalibrationType calibType,
-                                 LcmsWarpAlignmentOptions.AlignmentType alignmentType)
+                                 AlignmentType alignmentType)
         {
             m_calibrationType = calibType;
             m_alignmentType = alignmentType;
@@ -54,7 +54,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 throw new ArgumentException("Input Mass Calibration Function with time has no ppm data.");
             }
 
-            if (m_alignmentType != LcmsWarpAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (m_alignmentType != AlignmentType.NET_MASS_WARP)
             {
                 throw new InvalidOperationException("Recalibration of mass not enabled with NET_WARP alignment type. PPM shift cannot be retrieved. Used NET_MASS_WARP as alignment type instead");
             }

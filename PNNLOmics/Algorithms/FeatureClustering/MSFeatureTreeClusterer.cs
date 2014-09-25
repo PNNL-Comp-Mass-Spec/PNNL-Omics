@@ -157,10 +157,10 @@ namespace PNNLOmics.Algorithms.FeatureClustering
         /// <returns></returns>
         public List<TParentFeature> Cluster(List<TChildFeature> rawMsFeatures)
         {            
-            Comparison<TChildFeature> mzSort                        = (x, y) => x.Mz.CompareTo(y.Mz);                               
-            Comparison<TParentFeature> monoSort                     = (x, y) => x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
-            Func<TChildFeature, TChildFeature, double> mzDiff = (x, y) => FeatureLight.ComputeMassPPMDifference(x.Mz, y.Mz);
-            Func<TParentFeature, TParentFeature, double> monoDiff = (x, y) => FeatureLight.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
+            Comparison<TChildFeature> mzSort                         = (x, y) => x.Mz.CompareTo(y.Mz);                               
+            Comparison<TParentFeature> monoSort                      = (x, y) => x.MassMonoisotopic.CompareTo(y.MassMonoisotopic);
+            Func<TChildFeature, TChildFeature, double> mzDiff        = (x, y) => FeatureLight.ComputeMassPPMDifference(x.Mz, y.Mz);
+            Func<TParentFeature, TParentFeature, double> monoDiff    = (x, y) => FeatureLight.ComputeMassPPMDifference(x.MassMonoisotopic, y.MassMonoisotopic);
 
             var minScan = Convert.ToDouble(rawMsFeatures.Min(x => x.Scan));
             var maxScan = Convert.ToDouble(rawMsFeatures.Max(x => x.Scan));
@@ -185,10 +185,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                                             n,
                                             rawMsFeatures.Count()));
 
-
             OnProgress("Filtering Features");
-          //  features = LcmsFeatureFilters.FilterFeatures(features.ToList(), FilteringOptions);
-            OnProgress(string.Format("Found {0} Filtered Features from {1} total features.", features.Count(), n));
 
             // Then we group into UMC's for clustering across charge states...
             if (features == null)

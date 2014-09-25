@@ -1,4 +1,6 @@
-﻿namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
+﻿using System.ComponentModel;
+
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Object to hold the options for LcmsWarp Alignment. 
@@ -9,6 +11,7 @@
         /// <summary>
         /// Number of Time Sections
         /// </summary>
+        [Description("Percentage of top Abundance features to use for alignment. ")]        
         public int NumTimeSections { get; set; }
 
         /// <summary>
@@ -127,7 +130,7 @@
         /// The type of aligner the processor uses.
         /// </summary>
         public FeatureAlignmentType AlignmentAlgorithmType { get; set; }
-
+        public int MassTagObservationCount { get; set; }
         #endregion
 
         /// <summary>
@@ -164,35 +167,36 @@
         }
 
 
-        /// <summary>
-        /// Enumerations of possible Alignment Types
-        /// </summary>
-        public enum AlignmentType
-        {
-            /// <summary>
-            /// Alignment type that uses a single NET warp
-            /// </summary>
-            NET_WARP = 0,
-            /// <summary>
-            /// Alignment type that performs a NET warp, recalibrates with regards to Mass
-            /// and then performs warping again
-            /// </summary>
-            NET_MASS_WARP
-        }
+    }
 
+    /// <summary>
+    /// Enumerations of possible Feature aligner types
+    /// </summary>
+    public enum FeatureAlignmentType
+    {
         /// <summary>
-        /// Enumerations of possible Feature aligner types
+        /// Uses LCMSWarp
         /// </summary>
-        public enum FeatureAlignmentType
-        {
-            /// <summary>
-            /// Uses LCMSWarp
-            /// </summary>
-            LCMS_WARP,
-            /// <summary>
-            /// Not Implemented.
-            /// </summary>
-            DIRECT_IMS_INFUSION
-        }
+        LCMS_WARP,
+        /// <summary>
+        /// Not Implemented.
+        /// </summary>
+        DIRECT_IMS_INFUSION,
+        SPECTRAL_ALIGNMENT
+    }
+    /// <summary>
+    /// Enumerations of possible Alignment Types
+    /// </summary>
+    public enum AlignmentType
+    {
+        /// <summary>
+        /// Alignment type that uses a single NET warp
+        /// </summary>
+        NET_WARP = 0,
+        /// <summary>
+        /// Alignment type that performs a NET warp, recalibrates with regards to Mass
+        /// and then performs warping again
+        /// </summary>
+        NET_MASS_WARP
     }
 }

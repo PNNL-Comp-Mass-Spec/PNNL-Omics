@@ -68,6 +68,8 @@
     <Compile Include="Algorithms\Alignment\LCMSWarp\LcmsWarpCalibrationType.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\RegressionType.cs" />
     <Compile Include="Algorithms\Alignment\LCMSWarp\ResidualData.cs" />
+    <Compile Include="Algorithms\Alignment\SpectralMatching\GlobalClusterPeptideStatistics.cs" />
+    <Compile Include="Algorithms\Alignment\SpectralMatching\GlobalPeptideClusterScorer.cs" />
     <Compile Include="Algorithms\FeatureMatcher\FeatureMatcherMassTag.cs" />
     <Compile Include="Algorithms\FeatureMatcher\IFeatureMatcher.cs" />
     <Compile Include="Algorithms\ProgressNotifierArgs.cs" />
@@ -144,6 +146,9 @@
     <Compile Include="Algorithms\Regression\LinearRegression.cs" />
     <Compile Include="Algorithms\Regression\Loess.cs" />
     <Compile Include="Data\MassTags\MassTagDatabase.cs" />
+    <Compile Include="Extensions\MSFeatureExtensions.cs" />
+    <Compile Include="Extensions\MsnExtensions.cs" />
+    <Compile Include="Extensions\PeptideExtensions.cs" />
     <Compile Include="Extensions\UmcClusterExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />

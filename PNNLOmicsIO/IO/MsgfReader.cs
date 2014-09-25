@@ -72,7 +72,7 @@ namespace PNNLOmicsIO.IO
                 }
                 if (columnMapping.ContainsKey("Peptide.Charge"))
                 {
-                    
+                   peptide.ChargeState = Convert.ToInt32(columns[columnMapping["Peptide.Charge"]]);
                 }
                 if (columnMapping.ContainsKey("Peptide.Protein"))
                 {

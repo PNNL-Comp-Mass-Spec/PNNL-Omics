@@ -28,8 +28,6 @@
                 case SequenceFileType.SkylineTransitionFile:
                     reader = new SkylineTransitionFileReader();
                     break;
-                default:
-                    break;
             }
 
             return reader;

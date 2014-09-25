@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
 
@@ -10,7 +11,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// <summary>
     /// Class which will use LCMSWarp to process alignment
     /// </summary>
-    public sealed class LcmsWarpAlignmentProcessor
+    public sealed class LcmsWarpAlignmentProcessor:
+        IFeatureAligner<IEnumerable<UMCLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>,
+        IFeatureAligner<MassTagDatabase, IEnumerable<UMCLight>, LcmsWarpAlignmentData>
     {
         // In case alignment was to ms features, this will kepe track of the minimum scan in the
         // reference features. They are needed because LCMSWarp uses NET values for reference and
@@ -68,8 +71,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>
         public LcmsWarpAlignmentProcessor()
         {
-            m_lcmsWarp = new LcmsWarp();
-            Options = new LcmsWarpAlignmentOptions();
+            m_lcmsWarp  = new LcmsWarp();
+            Options     = new LcmsWarpAlignmentOptions();
 
             ApplyAlignmentOptions();
 
@@ -363,7 +366,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 func.SetNetFunction(ref aligneeNets, ref referenceNets, ref referenceScans);
             }
 
-            if (Options.AlignType == LcmsWarpAlignmentOptions.AlignmentType.NET_WARP)
+            if (Options.AlignType == AlignmentType.NET_WARP)
             {
                 return func;
             }
@@ -419,7 +422,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 throw new NullReferenceException("Alignment Options were not set in AlignmentProcessor");
             }
 
-            if (Options.AlignType != LcmsWarpAlignmentOptions.AlignmentType.NET_MASS_WARP)
+            if (Options.AlignType != AlignmentType.NET_MASS_WARP)
             {
                 PerformNetWarp();
             }
@@ -701,6 +704,20 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             };
 
             return data;
+        }
+
+        public ISpectraProvider BaselineSpectraProvider { get; set; }
+        public ISpectraProvider AligneeSpectraProvider  { get; set; }
+
+        public event EventHandler<ProgressNotifierArgs> Progress;
+
+        public LcmsWarpAlignmentData Align(MassTagDatabase baseline, IEnumerable<UMCLight> alignee)
+        {
+            throw new NotImplementedException();
+        }
+        public LcmsWarpAlignmentData Align(IEnumerable<UMCLight> baseline, IEnumerable<UMCLight> alignee)
+        {
+            throw new NotImplementedException();
         }
     }
 }

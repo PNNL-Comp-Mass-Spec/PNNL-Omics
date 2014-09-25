@@ -1,4 +1,5 @@
 ﻿using System;
+using PNNLOmics.Data.Constants.Libraries;
 
 namespace PNNLOmics.Data.Features
 {
@@ -136,7 +137,14 @@ namespace PNNLOmics.Data.Features
         {
             return x.MassMonoisotopicAligned.CompareTo(y.MassMonoisotopicAligned);
         };
-        #region Public Utility Functions
+
+	   public static double ComputeMonoisotopicMassFromMz(double mz, int chargeState)
+	   {
+         var charge = Convert.ToDouble(chargeState);
+         return (mz * charge) - (SubAtomicParticleLibrary.MASS_PROTON * charge);   
+	   }
+        
+      #region Public Utility Functions
         /// <summary>
         /// Computes the mass difference in parts per million (ppm) for two given masses.
         /// </summary>

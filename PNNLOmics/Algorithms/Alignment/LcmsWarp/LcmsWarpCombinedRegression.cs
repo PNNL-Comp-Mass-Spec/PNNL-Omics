@@ -28,6 +28,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_cubicSpline       = new LcmsNaturalCubicSplineRegression();
         }
 
+        public LcmsWarpRegressionType RegressionType
+        {
+            get { return m_regressionType; }
+            set { m_regressionType = value; }
+        }
         /// <summary>
         /// Sets the options for all three regression types, setting up the number of knots for
         /// cubic spline and LSQ while setting the outlier z score for central regression

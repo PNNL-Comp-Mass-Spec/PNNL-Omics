@@ -27,6 +27,7 @@ namespace PNNLOmics.Data
             get;
             set;
         }
+       
         public string ExtendedSequence
         {
             get;

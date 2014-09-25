@@ -1,0 +1,12 @@
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\PNNLOmicsElementData.xml
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\PNNLOmicsIO.dll
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\PNNLOmicsIO.pdb
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\PNNLOmics.dll
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\MathNet.Numerics.dll
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\alglibnet2.dll
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\PNNLOmics.pdb
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\MathNet.Numerics.pdb
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\bin\AnyCPU\Debug\MathNet.Numerics.xml
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\obj\Debug\PNNLOmicsIO.csprojResolveAssemblyReference.cache
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\obj\Debug\PNNLOmicsIO.dll
+C:\development\proteomics\PNNL-Omics\PNNLOmicsIO\obj\Debug\PNNLOmicsIO.pdb

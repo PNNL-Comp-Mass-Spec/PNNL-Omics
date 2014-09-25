@@ -71,6 +71,7 @@
     <Compile Include="AlgorithmTests\PeakDetectorTests\PeakDetectorTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AlgorithmTests\Regression\LoessRegression.cs" />
     <Compile Include="AlgorithmTests\Solvers\NumericalIntegrationTests.cs" />
     <Compile Include="AlgorithmTests\Solvers\LevenburgMarquadtSolverTests.cs" />
     <Compile Include="AlgorithmTests\Solvers\SolverTestBase.cs" />
