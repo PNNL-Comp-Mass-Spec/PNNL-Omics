@@ -10,4 +10,3 @@ C:\development\proteomics\PNNL-Omics\PNNLOmics\bin\AnyCPU\Debug\MathNet.Numerics
 C:\development\proteomics\PNNL-Omics\PNNLOmics\bin\AnyCPU\Debug\MathNet.Numerics.IO.xml
 C:\development\proteomics\PNNL-Omics\PNNLOmics\obj\Debug\PNNLOmics.dll
 C:\development\proteomics\PNNL-Omics\PNNLOmics\obj\Debug\PNNLOmics.pdb
-C:\development\proteomics\PNNL-Omics\PNNLOmics\obj\Debug\PNNLOmics.csprojResolveAssemblyReference.cache

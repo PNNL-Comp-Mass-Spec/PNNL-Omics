@@ -9,8 +9,10 @@ namespace PNNLOmics.Data
     {
         public Peptide()
         {
-            ProteinList = new List<Protein>();
+           ProteinList = new List<Protein>();
+           Sequence = "";
         }
+
 
         public List<Protein> ProteinList
         {
