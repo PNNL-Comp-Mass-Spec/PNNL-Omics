@@ -151,6 +151,7 @@
     <Compile Include="Extensions\PeptideExtensions.cs" />
     <Compile Include="Extensions\UmcClusterExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Utilities\CommandLineUtil.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Utilities\PathUtilities.cs" />
     <Compile Include="Utilities\PeptideUtility.cs" />
