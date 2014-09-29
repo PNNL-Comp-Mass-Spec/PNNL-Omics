@@ -61,10 +61,12 @@ namespace PNNLOmicsViz.Drawing
             };
             var keys = histogram.Keys.OrderBy(x => x);
 
+            if (!keys.Any())
+                return;
+
             var min = keys.Min();
             var max = keys.Max();
 
-            var count = 0;
             //axis.Minimum = min;
             //axis.Maximum = max;
             //axis.AbsoluteMaximum = max;
