@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("PNNLOmics.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Battelle PNNL")]
+[assembly: AssemblyCompany("PNNL")]
 [assembly: AssemblyProduct("PNNLOmics.UnitTests")]
-[assembly: AssemblyCopyright("Copyright © Battelle PNNL 2010")]
+[assembly: AssemblyCopyright("Copyright © PNNL 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+//
+// Use Versioning Controlled Build add-in for Visual Studio to auto-increment these using Microsoft's numbering scheme
+// http://www.codeproject.com/Articles/5851/Versioning-Controlled-Build#InstallationNotes
+[assembly: AssemblyVersion("1.1.5385.36913")]
+[assembly: AssemblyFileVersion("1.1.5385.36913")]
