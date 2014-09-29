@@ -18,14 +18,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "H";
             newElement.Name = "Hydrogen";
-            atomicity = 1;
+            // atomicity = 1;
             massAverage = 1.00794;
             massAverageUncertainty = 0.00007;
 
@@ -62,14 +60,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "He";
             newElement.Name = "Helium";
-            atomicity = 2;
+            // atomicity = 2;
             massAverage = 4.002602;
             massAverageUncertainty = 0.000002;
 
@@ -105,14 +101,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Li";
             newElement.Name = "Lithium";
-            atomicity = 3;
+            // atomicity = 3;
             massAverage = 6.941;
             massAverageUncertainty = 0.002;
 
@@ -148,14 +142,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Be";
             newElement.Name = "Beryllium";
-            atomicity = 4;
+            // atomicity = 4;
             massAverage = 9.012182;
             massAverageUncertainty = 0.000003;
 
@@ -185,14 +177,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "B";
             newElement.Name = "Boron";
-            atomicity = 5;
+            // atomicity = 5;
             massAverage = 10.811;
             massAverageUncertainty = 0.007;
 
@@ -228,14 +218,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "C";
             newElement.Name = "Carbon";
-            atomicity = 6;
+            // atomicity = 6;
             massAverage = 12.0107;
             massAverageUncertainty = 0.0008;
 
@@ -272,14 +260,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "N";
             newElement.Name = "Nitrogen";
-            atomicity = 7;
+            // atomicity = 7;
             massAverage = 14.0067;
             massAverageUncertainty = 0.0002;
 
@@ -315,14 +301,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "O";
             newElement.Name = "Oxygen";
-            atomicity = 8;
+            // atomicity = 8;
             massAverage = 15.9994;
             massAverageUncertainty = 0.0003;
 
@@ -364,14 +348,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "F";
             newElement.Name = "Fluorine";
-            atomicity = 9;
+            // atomicity = 9;
             massAverage = 18.9984032;
             massAverageUncertainty = 0.0000005;
 
@@ -402,14 +384,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ne";
             newElement.Name = "Neon";
-            atomicity = 10;
+            // atomicity = 10;
             massAverage = 20.1797;
             massAverageUncertainty = 0.0006;
 
@@ -452,14 +432,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Na";
             newElement.Name = "Sodium";
-            atomicity = 11;
+            // atomicity = 11;
             massAverage = 22.98976928;
             massAverageUncertainty = 0.00000002;
 
@@ -489,14 +467,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Mg";
             newElement.Name = "Magnesium";
-            atomicity = 12;
+            // atomicity = 12;
             massAverage = 24.305;
             massAverageUncertainty = 0.006;
 
@@ -538,14 +514,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Al";
             newElement.Name = "Alumunium";
-            atomicity = 13;
+            // atomicity = 13;
             massAverage = 26.9815386;
             massAverageUncertainty = 0.0000008;
 
@@ -575,14 +549,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Si";
             newElement.Name = "Silicon";
-            atomicity = 14;
+            // atomicity = 14;
             massAverage = 28.0855;
             massAverageUncertainty = 0.0003;
 
@@ -624,14 +596,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "P";
             newElement.Name = "Phosphorous";
-            atomicity = 15;
+            // atomicity = 15;
             massAverage = 30.973762;
             massAverageUncertainty = 0.000002;
 
@@ -661,14 +631,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "S";
             newElement.Name = "Sulfur";
-            atomicity = 16;
+            // atomicity = 16;
             massAverage = 32.065;
             massAverageUncertainty = 0.005;
 
@@ -716,14 +684,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Cl";
             newElement.Name = "Chlorine";
-            atomicity = 17;
+            // atomicity = 17;
             massAverage = 35.453;
             massAverageUncertainty = 0.002;
 
@@ -760,14 +726,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ar";
             newElement.Name = "Argon";
-            atomicity = 18;
+            // atomicity = 18;
             massAverage = 39.948;
             massAverageUncertainty = 0.001;
 
@@ -810,14 +774,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "K";
             newElement.Name = "Potassium";
-            atomicity = 19;
+            // atomicity = 19;
             massAverage = 39.0983;
             massAverageUncertainty = 0.0001;
 
@@ -860,14 +822,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ca";
             newElement.Name = "Calcium";
-            atomicity = 20;
+            // atomicity = 20;
             massAverage = 40.078;
             massAverageUncertainty = 0.004;
 
@@ -928,14 +888,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Sc";
             newElement.Name = "Scandium";
-            atomicity = 21;
+            // atomicity = 21;
             massAverage = 44.955912;
             massAverageUncertainty = 0.000006;
 
@@ -966,14 +924,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ti";
             newElement.Name = "Titanium";
-            atomicity = 22;
+            // atomicity = 22;
             massAverage = 47.867;
             massAverageUncertainty = 0.001;
 
@@ -1028,14 +984,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "V";
             newElement.Name = "Vanadium";
-            atomicity = 23;
+            // atomicity = 23;
             massAverage = 50.9415;
             massAverageUncertainty = 0.0001;
 
@@ -1072,14 +1026,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Cr";
             newElement.Name = "Chromium";
-            atomicity = 24;
+            // atomicity = 24;
             massAverage = 51.9961;
             massAverageUncertainty = 0.0006;
 
@@ -1128,14 +1080,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Mn";
             newElement.Name = "Manganese";
-            atomicity = 25;
+            // atomicity = 25;
             massAverage = 54.938045;
             massAverageUncertainty = 0.000005;
 
@@ -1165,14 +1115,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Fe";
             newElement.Name = "Iron";
-            atomicity = 26;
+            // atomicity = 26;
             massAverage = 55.845;
             massAverageUncertainty = 0.002;
 
@@ -1221,14 +1169,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Co";
             newElement.Name = "Cobalt";
-            atomicity = 27;
+            // atomicity = 27;
             massAverage = 58.933195;
             massAverageUncertainty = 0.000005;
 
@@ -1260,14 +1206,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ni";
             newElement.Name = "Nickel";
-            atomicity = 28;
+            // atomicity = 28;
             massAverage = 58.6934;
             massAverageUncertainty = 0.0004;
 
@@ -1323,14 +1267,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Cu";
             newElement.Name = "Copper";
-            atomicity = 29;
+            // atomicity = 29;
             massAverage = 63.546;
             massAverageUncertainty = 0.003;
 
@@ -1368,14 +1310,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Zn";
             newElement.Name = "Zinc";
-            atomicity = 30;
+            // atomicity = 30;
             massAverage = 65.38;
             massAverageUncertainty = 0.02;
 
@@ -1430,14 +1370,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ga";
             newElement.Name = "Gallium";
-            atomicity = 31;
+            // atomicity = 31;
             massAverage = 69.723;
             massAverageUncertainty = 0.001;
 
@@ -1475,14 +1413,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ge";
             newElement.Name = "Germanium";
-            atomicity = 32;
+            // atomicity = 32;
             massAverage = 72.64;
             massAverageUncertainty = 0.01;
 
@@ -1537,14 +1473,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "As";
             newElement.Name = "Arsenic";
-            atomicity = 33;
+            // atomicity = 33;
             massAverage = 74.9216;
             massAverageUncertainty = 0.0002;
 
@@ -1575,14 +1509,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Se";
             newElement.Name = "Selenium";
-            atomicity = 34;
+            // atomicity = 34;
             massAverage = 78.96;
             massAverageUncertainty = 0.03;
 
@@ -1645,14 +1577,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Br";
             newElement.Name = "Bromine";
-            atomicity = 35;
+            // atomicity = 35;
             massAverage = 79.904;
             massAverageUncertainty = 0.001;
 
@@ -1689,14 +1619,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Kr";
             newElement.Name = "Krypton";
-            atomicity = 36;
+            // atomicity = 36;
             massAverage = 83.798;
             massAverageUncertainty = 0.002;
 
@@ -1755,14 +1683,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Rb";
             newElement.Name = "Rubidium";
-            atomicity = 37;
+            // atomicity = 37;
             massAverage = 85.4678;
             massAverageUncertainty = 0.0003;
 
@@ -1799,14 +1725,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Sr";
             newElement.Name = "Strontium";
-            atomicity = 38;
+            // atomicity = 38;
             massAverage = 87.62;
             massAverageUncertainty = 0.01;
 
@@ -1855,14 +1779,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Y";
             newElement.Name = "Yttrium";
-            atomicity = 39;
+            // atomicity = 39;
             massAverage = 88.90585;
             massAverageUncertainty = 0.00002;
 
@@ -1893,14 +1815,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Zr";
             newElement.Name = "Zirconium";
-            atomicity = 40;
+            // atomicity = 40;
             massAverage = 91.224;
             massAverageUncertainty = 0.002;
 
@@ -1955,14 +1875,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Nb";
             newElement.Name = "Niobium";
-            atomicity = 41;
+            // atomicity = 41;
             massAverage = 92.90638;
             massAverageUncertainty = 0.00002;
 
@@ -1993,14 +1911,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Mo";
             newElement.Name = "Molybdenum";
-            atomicity = 42;
+            // atomicity = 42;
             massAverage = 95.96;
             massAverageUncertainty = 0.02;
 
@@ -2065,14 +1981,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Tc";
             newElement.Name = "Technetium";
-            atomicity = 43;
+            // atomicity = 43;
             massAverage = 98;
             massAverageUncertainty = 0;
 
@@ -2103,14 +2017,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ru";
             newElement.Name = "Ruthenium";
-            atomicity = 44;
+            // atomicity = 44;
             massAverage = 101.07;
             massAverageUncertainty = 0.02;
 
@@ -2177,14 +2089,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Rh";
             newElement.Name = "Rhodium";
-            atomicity = 45;
+            // atomicity = 45;
             massAverage = 102.9055;
             massAverageUncertainty = 0.0002;
 
@@ -2216,14 +2126,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Pd";
             newElement.Name = " Palladium";
-            atomicity = 46;
+            // atomicity = 46;
             massAverage = 106.42;
             massAverageUncertainty = 0.01;
 
@@ -2285,14 +2193,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ag";
             newElement.Name = "Silver";
-            atomicity = 47;
+            // atomicity = 47;
             massAverage = 107.8682;
             massAverageUncertainty = 0.0002;
 
@@ -2329,14 +2235,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Cd";
             newElement.Name = "Cadmium";
-            atomicity = 48;
+            // atomicity = 48;
             massAverage = 112.411;
             massAverageUncertainty = 0.008;
 
@@ -2408,14 +2312,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "In";
             newElement.Name = "Indium";
-            atomicity = 49;
+            // atomicity = 49;
             massAverage = 114.818;
             massAverageUncertainty = 0.003;
 
@@ -2452,14 +2354,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Sn";
             newElement.Name = "Tin";
-            atomicity = 50;
+            // atomicity = 50;
             massAverage = 118.71;
             massAverageUncertainty = 0.07;
 
@@ -2545,14 +2445,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Sb";
             newElement.Name = "Antimony";
-            atomicity = 51;
+            // atomicity = 51;
             massAverage = 121.76;
             massAverageUncertainty = 0.01;
 
@@ -2589,14 +2487,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Te";
             newElement.Name = "Tellurium";
-            atomicity = 52;
+            // atomicity = 52;
             massAverage = 127.6;
             massAverageUncertainty = 0.3;
 
@@ -2669,14 +2565,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "I";
             newElement.Name = "Iodine";
-            atomicity = 53;
+            // atomicity = 53;
             massAverage = 126.90447;
             massAverageUncertainty = 0.00003;
 
@@ -2708,14 +2602,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Xe";
             newElement.Name = "Xenon";
-            atomicity = 54;
+            // atomicity = 54;
             massAverage = 131.293;
             massAverageUncertainty = 0.006;
 
@@ -2794,14 +2686,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Cs";
             newElement.Name = "Cesium";
-            atomicity = 55;
+            // atomicity = 55;
             massAverage = 132.9054519;
             massAverageUncertainty = 0.0000002;
 
@@ -2832,14 +2722,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ba";
             newElement.Name = "Barium";
-            atomicity = 56;
+            // atomicity = 56;
             massAverage = 137.327;
             massAverageUncertainty = 0.007;
 
@@ -2906,14 +2794,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "La";
             newElement.Name = "Lanthanum";
-            atomicity = 57;
+            // atomicity = 57;
             massAverage = 138.90547;
             massAverageUncertainty = 0.00007;
 
@@ -2950,14 +2836,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ce";
             newElement.Name = "Cerium";
-            atomicity = 58;
+            // atomicity = 58;
             massAverage = 140.116;
             massAverageUncertainty = 0.001;
 
@@ -3006,14 +2890,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Pr";
             newElement.Name = "Praseodymium";
-            atomicity = 59;
+            // atomicity = 59;
             massAverage = 140.90765;
             massAverageUncertainty = 0.00002;
 
@@ -3044,14 +2926,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Nd";
             newElement.Name = "Neodymium";
-            atomicity = 60;
+            // atomicity = 60;
             massAverage = 144.242;
             massAverageUncertainty = 0.003;
 
@@ -3119,14 +2999,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Pm";
             newElement.Name = "Promethium";
-            atomicity = 61;
+            // atomicity = 61;
             massAverage = 145;
             massAverageUncertainty = 0;
 
@@ -3157,14 +3035,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Sm";
             newElement.Name = "Samarium";
-            atomicity = 62;
+            // atomicity = 62;
             massAverage = 150.36;
             massAverageUncertainty = 0.02;
 
@@ -3231,14 +3107,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Eu";
             newElement.Name = "Europium";
-            atomicity = 63;
+            // atomicity = 63;
             massAverage = 151.964;
             massAverageUncertainty = 0.001;
 
@@ -3275,14 +3149,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Gd";
             newElement.Name = "Gadolinium";
-            atomicity = 64;
+            // atomicity = 64;
             massAverage = 157.25;
             massAverageUncertainty = 0.03;
 
@@ -3350,14 +3222,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Tb";
             newElement.Name = "Terbium";
-            atomicity = 65;
+            // atomicity = 65;
             massAverage = 158.92535;
             massAverageUncertainty = 0.00002;
 
@@ -3388,14 +3258,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Dy";
             newElement.Name = "Dysprosium";
-            atomicity = 66;
+            // atomicity = 66;
             massAverage = 162.5;
             massAverageUncertainty = 0.1;
 
@@ -3463,14 +3331,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ho";
             newElement.Name = "Holmium";
-            atomicity = 67;
+            // atomicity = 67;
             massAverage = 164.93032;
             massAverageUncertainty = 0.00002;
 
@@ -3501,14 +3367,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Er";
             newElement.Name = "Erbium";
-            atomicity = 68;
+            // atomicity = 68;
             massAverage = 167.259;
             massAverageUncertainty = 0.003;
 
@@ -3569,14 +3433,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Tm";
             newElement.Name = "Thulium";
-            atomicity = 69;
+            // atomicity = 69;
             massAverage = 168.93421;
             massAverageUncertainty = 0.00002;
 
@@ -3607,14 +3469,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Yb";
             newElement.Name = "Ytterbium";
-            atomicity = 70;
+            // atomicity = 70;
             massAverage = 173.054;
             massAverageUncertainty = 0.005;
 
@@ -3681,14 +3541,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Lu";
             newElement.Name = "Lutetium";
-            atomicity = 71;
+            // atomicity = 71;
             massAverage = 174.9668;
             massAverageUncertainty = 0.0001;
 
@@ -3725,14 +3583,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Hf";
             newElement.Name = "Hafnium";
-            atomicity = 72;
+            // atomicity = 72;
             massAverage = 178.49;
             massAverageUncertainty = 0.02;
 
@@ -3793,14 +3649,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ta";
             newElement.Name = "Tantalum";
-            atomicity = 73;
+            // atomicity = 73;
             massAverage = 180.94788;
             massAverageUncertainty = 0.00002;
 
@@ -3836,14 +3690,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "W";
             newElement.Name = "Tungsten";
-            atomicity = 74;
+            // atomicity = 74;
             massAverage = 183.84;
             massAverageUncertainty = 0.01;
 
@@ -3898,14 +3750,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Re";
             newElement.Name = "Rhenium";
-            atomicity = 75;
+            // atomicity = 75;
             massAverage = 186.207;
             massAverageUncertainty = 0.001;
 
@@ -3942,14 +3792,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Os";
             newElement.Name = "Osmium";
-            atomicity = 76;
+            // atomicity = 76;
             massAverage = 190.23;
             massAverageUncertainty = 0.03;
 
@@ -4016,14 +3864,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ir";
             newElement.Name = "Iridium";
-            atomicity = 77;
+            // atomicity = 77;
             massAverage = 192.217;
             massAverageUncertainty = 0.003;
 
@@ -4060,14 +3906,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Pt";
             newElement.Name = "Platinum";
-            atomicity = 78;
+            // atomicity = 78;
             massAverage = 195.084;
             massAverageUncertainty = 0.009;
 
@@ -4128,14 +3972,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Au";
             newElement.Name = "Gold";
-            atomicity = 79;
+            // atomicity = 79;
             massAverage = 196.966569;
             massAverageUncertainty = 0.000004;
 
@@ -4166,14 +4008,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Hg";
             newElement.Name = "Mercury";
-            atomicity = 80;
+            // atomicity = 80;
             massAverage = 200.59;
             massAverageUncertainty = 0.02;
 
@@ -4240,14 +4080,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Tl";
             newElement.Name = "Thallium";
-            atomicity = 81;
+            // atomicity = 81;
             massAverage = 204.3833;
             massAverageUncertainty = 0.0002;
 
@@ -4284,14 +4122,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Pb";
             newElement.Name = "Lead";
-            atomicity = 82;
+            // atomicity = 82;
             massAverage = 207.2;
             massAverageUncertainty = 0.1;
 
@@ -4340,14 +4176,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Bi";
             newElement.Name = "Bismuth";
-            atomicity = 83;
+            // atomicity = 83;
             massAverage = 208.9804;
             massAverageUncertainty = 0.0001;
 
@@ -4378,14 +4212,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Po";
             newElement.Name = "Polonium";
-            atomicity = 84;
+            // atomicity = 84;
             massAverage = 209;
             massAverageUncertainty = 0;
 
@@ -4416,14 +4248,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "At";
             newElement.Name = "Astatine";
-            atomicity = 85;
+            // atomicity = 85;
             massAverage = 210;
             massAverageUncertainty = 0;
 
@@ -4455,14 +4285,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Rn";
             newElement.Name = "Radon";
-            atomicity = 86;
+            // atomicity = 86;
             massAverage = 222;
             massAverageUncertainty = 0;
 
@@ -4493,14 +4321,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Fr";
             newElement.Name = "Francium";
-            atomicity = 87;
+            // atomicity = 87;
             massAverage = 223;
             massAverageUncertainty = 0;
 
@@ -4531,14 +4357,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ra";
             newElement.Name = "Radium";
-            atomicity = 88;
+            // atomicity = 88;
             massAverage = 226.25;
             massAverageUncertainty = 0;
 
@@ -4569,14 +4393,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Ac";
             newElement.Name = "Actinium";
-            atomicity = 89;
+            // atomicity = 89;
             massAverage = 227.028;
             massAverageUncertainty = 0;
 
@@ -4607,14 +4429,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Th";
             newElement.Name = "Thorium";
-            atomicity = 90;
+            // atomicity = 90;
             massAverage = 232.03806;
             massAverageUncertainty = 0.00002;
 
@@ -4645,14 +4465,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Pa";
             newElement.Name = "Protactinium";
-            atomicity = 91;
+            // atomicity = 91;
             massAverage = 231.03588;
             massAverageUncertainty = 0.00002;
 
@@ -4683,14 +4501,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "U";
             newElement.Name = "Uranium";
-            atomicity = 92;
+            // atomicity = 92;
             massAverage = 238.02891;
             massAverageUncertainty = 0.00003;
 
@@ -4733,14 +4549,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Np";
             newElement.Name = "Neptunium";
-            atomicity = 93;
+            // atomicity = 93;
             massAverage = 237.048;
             massAverageUncertainty = 0;
 
@@ -4772,14 +4586,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Pu";
             newElement.Name = "Plutonium";
-            atomicity = 94;
+            // atomicity = 94;
             massAverage = 244;
             massAverageUncertainty = 0;
 
@@ -4810,14 +4622,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Am";
             newElement.Name = "Americium";
-            atomicity = 95;
+            // atomicity = 95;
             massAverage = 243;
             massAverageUncertainty = 0;
 
@@ -4848,14 +4658,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Cm";
             newElement.Name = "Curium";
-            atomicity = 96;
+            // atomicity = 96;
             massAverage = 247;
             massAverageUncertainty = 0;
 
@@ -4886,14 +4694,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Bk";
             newElement.Name = "Berkelium";
-            atomicity = 97;
+            // atomicity = 97;
             massAverage = 247;
             massAverageUncertainty = 0;
 
@@ -4924,14 +4730,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Cf";
             newElement.Name = "Californium";
-            atomicity = 98;
+            // atomicity = 98;
             massAverage = 251;
             massAverageUncertainty = 0;
 
@@ -4962,14 +4766,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Es";
             newElement.Name = "Einsteinium";
-            atomicity = 99;
+            // atomicity = 99;
             massAverage = 252;
             massAverageUncertainty = 0;
 
@@ -5000,14 +4802,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Fm";
             newElement.Name = "Fermium";
-            atomicity = 100;
+            // atomicity = 100;
             massAverage = 257;
             massAverageUncertainty = 0;
 
@@ -5038,14 +4838,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Md";
             newElement.Name = "Medelevium";
-            atomicity = 101;
+            // atomicity = 101;
             massAverage = 258;
             massAverageUncertainty = 0;
 
@@ -5076,14 +4874,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "No";
             newElement.Name = "Nobelium";
-            atomicity = 102;
+            // atomicity = 102;
             massAverage = 259;
             massAverageUncertainty = 0;
 
@@ -5114,14 +4910,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "Lr";
             newElement.Name = "Lawrencium";
-            atomicity = 103;
+            // atomicity = 103;
             massAverage = 262;
             massAverageUncertainty = 0;
 
@@ -5152,14 +4946,12 @@ namespace PNNLOmics.Data.Constants.Libraries
             double monoIsotopicMass = 0;
             double isotopeProbability;
             double massAverage;
-            int atomicity;
-            int numberOfIsotopes;
             double massAverageUncertainty;
             double isotopeMass;
             int isotopeNumber;
             newElement.Symbol = "X";
             newElement.Name = "Generic";
-            atomicity = 104;
+            // atomicity = 104;
             massAverage = 999;
             massAverageUncertainty = 0;
 
