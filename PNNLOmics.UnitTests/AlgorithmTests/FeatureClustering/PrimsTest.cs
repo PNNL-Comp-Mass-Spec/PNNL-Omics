@@ -38,16 +38,18 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             }
             return features;
         }
+
         [Test(Description = "Tests clusters that should have been split.")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-mergedSmall.txt")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-toy.txt")]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-ideal.txt")]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-nodelin.txt")]
+        //[TestCase(@"ClusterData\clusterData-merged.txt")]
+        //[TestCase(@"ClusterData\clusterData-mergedSmall.txt")]
+        //[TestCase(@"ClusterData\clusterData-toy.txt")]
+		//[TestCase(@"ClusterData\clusterData-ideal.txt")]
+		[TestCase(@"ClusterData\clusterData-ideal.txt")]
+        //[TestCase(@"ClusterData\clusterData-merged-nodelin.txt")]
         public void TestPrims(string path)
         {
             Console.WriteLine("Test: " + path);
-            var features = GetClusterData(path);
+            var features = GetClusterData(Path.Combine(TestPaths.TestFilesDirectory, path));
 
             Assert.IsNotEmpty(features);
 
@@ -106,15 +108,15 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Console.WriteLine("Clusters = {0}", clusters.Count);
         }
         [Test(Description = "Tests clusters that should have been split.")]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-multiple-driftTime.txt", 4)]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-ideal.txt", 4)]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged.txt", 4)]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-nodelin.txt", 4)]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-smallMerged.txt", 4)]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-small.txt", 4)]
-        [TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-merged-small.txt", 4)]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-single-1500.txt", 4)]
-        //[TestCase(@"..\..\..\TestFiles\ClusterData\clusterData-single-1500-two.txt", 4)]
+        [TestCase(@"ClusterData\clusterData-multiple-driftTime.txt", 4)]
+        [TestCase(@"ClusterData\clusterData-ideal.txt", 4)]
+        [TestCase(@"ClusterData\clusterData-merged.txt", 4)]
+        [TestCase(@"ClusterData\clusterData-merged-nodelin.txt", 4)]
+        [TestCase(@"ClusterData\clusterData-smallMerged.txt", 4)]
+        [TestCase(@"ClusterData\clusterData-merged-small.txt", 4)]
+        [TestCase(@"ClusterData\clusterData-merged-small.txt", 4)]
+        //[TestCase(@"ClusterData\clusterData-single-1500.txt", 4)]
+        //[TestCase(@"ClusterData\clusterData-single-1500-two.txt", 4)]
         public void TestPrimsWeighted(string path, double sigma)        
         {
 
@@ -123,7 +125,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             Console.WriteLine();
             Console.WriteLine("Tests: " + path);
             Console.WriteLine("Sigma Cutoff: {0}", sigma);
-            var features = GetClusterData(path);
+            var features = GetClusterData(Path.Combine(TestPaths.TestFilesDirectory, path));
 
             Assert.IsNotEmpty(features);
 

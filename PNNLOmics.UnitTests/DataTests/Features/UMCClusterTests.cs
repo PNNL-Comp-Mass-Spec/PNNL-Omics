@@ -39,7 +39,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         [TestCase(100, 100, 50, 2, 15000, ClusterCentroidRepresentation.Mean)]
         public void CalculateStatisticsTestSingleUmc(   double  umcMass, 
                                                         double  umcNet,
-                                                        float   umcDrifTime,
+                                                        float   umcDriftTime,
                                                         int     umcCharge, 
                                                         int     umcAbundance,
                                                         ClusterCentroidRepresentation representation)
@@ -50,17 +50,17 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             {
                 MassMonoisotopicAligned = umcMass,
                 Net = umcNet,
-                DriftTime = umcDrifTime,
+                DriftTime = umcDriftTime,
                 ChargeState = umcCharge,
                 Abundance = umcAbundance
             };
             cluster.UmcList.Add(umc);
             cluster.CalculateStatistics(representation);
 
-            Assert.AreEqual(cluster.MassMonoisotopic,   umc.MassMonoisotopicAligned);
-            Assert.AreEqual(cluster.Net,                umc.Net);
-            Assert.AreEqual(cluster.DriftTime,          umc.DriftTime);
-            Assert.AreEqual(cluster.ChargeState,        umc.ChargeState);            
+			Assert.AreEqual(umc.MassMonoisotopicAligned, cluster.MassMonoisotopic, "Monoisotopic Mass");
+            Assert.AreEqual(umc.Net,                     cluster.Net,              "NET");
+            Assert.AreEqual(umc.DriftTime,               cluster.DriftTime,        "Drift Time");
+            Assert.AreEqual(umc.ChargeState,             cluster.ChargeState,      "Charge State");            
         }
 
 
@@ -152,10 +152,10 @@ namespace PNNLOmics.UnitTests.DataTests.Features
 
             cluster.CalculateStatistics(representation);
 
-            Assert.AreEqual(cluster.MassMonoisotopic,   medianMass);
-            Assert.AreEqual(cluster.Net,                medianNet);
-            Assert.AreEqual(cluster.DriftTime,          medianDriftTime);
-            Assert.AreEqual(cluster.ChargeState,        umcCharge);
+            Assert.AreEqual(medianMass,      cluster.MassMonoisotopic, "Monoisotopic Mass");
+            Assert.AreEqual(medianNet,       cluster.Net,              "NET");
+            Assert.AreEqual(medianDriftTime, cluster.DriftTime,        "Drift Time");
+            Assert.AreEqual(umcCharge,       cluster.ChargeState,      "Charge State");
         }        
     }    
 }

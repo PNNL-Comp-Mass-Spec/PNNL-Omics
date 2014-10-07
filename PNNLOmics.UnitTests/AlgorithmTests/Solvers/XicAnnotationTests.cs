@@ -81,13 +81,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         /// 
         /// </summary>
         [Test]
-       // [TestCase(@"..\..\..\TestFiles\annotatedXicDatabase.xic", BasisFunctionsEnum.Gaussian)]
-        //[TestCase(@"..\..\..\TestFiles\annotatedXicDatabase.xic", BasisFunctionsEnum.Chebyshev)]
-        [TestCase(@"..\..\..\TestFiles\annotatedXicDatabase.xic", BasisFunctionsEnum.AsymmetricGaussian)]
+       // [TestCase(@"annotatedXicDatabase.xic", BasisFunctionsEnum.Gaussian)]
+        //[TestCase(@"annotatedXicDatabase.xic", BasisFunctionsEnum.Chebyshev)]
+        [TestCase(@"annotatedXicDatabase.xic", BasisFunctionsEnum.AsymmetricGaussian)]
         [Description("Fits the XIC's for testing .")]
         public void SolveAsymmetricGaussianFactory(string path, BasisFunctionsEnum functionChoise)
         {
-            var data      = ReadXicDatabase(path);                        
+			var data = ReadXicDatabase(Path.Combine(TestPaths.TestFilesDirectory, path));                        
             var newData   = new List<Xic>();
             foreach (var xic in data)
             {
@@ -198,11 +198,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         /// 
         /// </summary>
         [Test]
-        [TestCase(@"..\..\..\TestFiles\annotatedXicDatabase.xic", BasisFunctionsEnum.Gaussian)]
+        [TestCase(@"annotatedXicDatabase.xic", BasisFunctionsEnum.Gaussian)]
         [Description("Fits the XIC's for testing .")]
         public void SolveGaussianFactory(string path, BasisFunctionsEnum functionChoise)
         {
-            var data = ReadXicDatabase(path);
+            var data = ReadXicDatabase(Path.Combine(TestPaths.TestFilesDirectory, path));
             var newData = new List<Xic>();
             foreach (var xic in data)
             {

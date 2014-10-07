@@ -8,3 +8,4 @@ SVN_Path.txt
 */*/bin/
 */*/obj/
 *.suo
+*.DotSettings.user

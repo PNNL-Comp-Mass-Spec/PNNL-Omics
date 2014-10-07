@@ -65,7 +65,8 @@ namespace PNNLOmics.UnitTests.DataTests.Features
         {
             var massYdelta = FeatureLight.ComputeDaDifferenceFromPPM(massX, ppm);
             var ppmDelta = FeatureLight.ComputeMassPPMDifference(massX, massYdelta);
-            Assert.IsTrue( (ppm - ppmDelta) < epsilon);
-        }       
+            //Assert.IsTrue( (ppm - ppmDelta) < epsilon);
+			Assert.Less(ppm - ppmDelta, epsilon);
+        }
     }
 }

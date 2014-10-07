@@ -47,13 +47,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         /// 
         /// </summary>
         [Test(Description = "Tests clusters that should have been split.")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-ideal.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged-nodelin.txt")]
+        [TestCase(@"ClusterData\clusterData-merged.txt")]
+        [TestCase(@"ClusterData\clusterData-ideal.txt")]
+        [TestCase(@"ClusterData\clusterData-merged-nodelin.txt")]
         public void TestDatasets(string path)
         {
             Console.WriteLine("Test: " + path);
-            var features = GetClusterData(path);
+            var features = GetClusterData(Path.Combine(TestPaths.TestFilesDirectory, path));
 
             Assert.IsNotEmpty(features);
 
@@ -88,13 +88,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         /// 
         /// </summary>
         [Test(Description = "Tests clusters that should have been split.")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-ideal.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged-nodelin.txt")]
+        [TestCase(@"ClusterData\clusterData-merged.txt")]
+        [TestCase(@"ClusterData\clusterData-ideal.txt")]
+        [TestCase(@"ClusterData\clusterData-merged-nodelin.txt")]
         public void TestTwoClusters(string path)
         {
             Console.WriteLine("Test: " + path);
-            var features = GetClusterData(path);
+            var features = GetClusterData(Path.Combine(TestPaths.TestFilesDirectory, path));
             
             Assert.IsNotEmpty(features);
 
@@ -117,17 +117,17 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
         /// 
         /// </summary>
         [Test(Description = "Tests clusters that should have been split.")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-ideal.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-single-smallSpread.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-single-large.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-single-large2.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged-nodelin.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged-Net.txt")]
+        [TestCase(@"ClusterData\clusterData-merged.txt")]
+        [TestCase(@"ClusterData\clusterData-ideal.txt")]
+        [TestCase(@"ClusterData\clusterData-single-smallSpread.txt")]
+        [TestCase(@"ClusterData\clusterData-single-large.txt")]
+        [TestCase(@"ClusterData\clusterData-single-large2.txt")]
+        [TestCase(@"ClusterData\clusterData-merged-nodelin.txt")]
+        [TestCase(@"ClusterData\clusterData-merged-Net.txt")]
         public void TestReprocessing(string path)
         {
             Console.WriteLine("Test: " + path);
-            var features = GetClusterData(path);
+            var features = GetClusterData(Path.Combine(TestPaths.TestFilesDirectory, path));
 
             Assert.IsNotEmpty(features);
 
@@ -147,13 +147,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
 
         [Test(Description = "Tests clusters that should have been split.")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-ideal.txt")]
-        [TestCase(@"..\..\...\TestFiles\ClusterData\clusterData-merged-nodelin.txt")]
+        [TestCase(@"ClusterData\clusterData-merged.txt")]
+        [TestCase(@"ClusterData\clusterData-ideal.txt")]
+        [TestCase(@"ClusterData\clusterData-merged-nodelin.txt")]
         public void TestPairwise(string path)
         {
             Console.WriteLine("Test: " + path);
-            var features = GetClusterData(path);
+            var features = GetClusterData(Path.Combine(TestPaths.TestFilesDirectory, path));
 
             Assert.IsNotEmpty(features);
 

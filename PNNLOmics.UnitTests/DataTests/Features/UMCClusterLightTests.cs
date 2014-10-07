@@ -58,11 +58,11 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             cluster.UmcList.Add(umc);
             cluster.CalculateStatistics(representation);
 
-            Assert.AreEqual(cluster.MassMonoisotopicAligned, umc.MassMonoisotopicAligned);
-            Assert.AreEqual(cluster.Net,      umc.Net);
-            Assert.AreEqual(cluster.DriftTime,          umc.DriftTime);
-            Assert.AreEqual(cluster.ChargeState,        umc.ChargeState); 
-            Assert.AreEqual(cluster.Score, 0);           
+            Assert.AreEqual(umc.MassMonoisotopicAligned, cluster.MassMonoisotopic, "Monoisotopic Mass");
+            Assert.AreEqual(umc.Net,                     cluster.Net,              "NET");
+            Assert.AreEqual(umc.DriftTime,               cluster.DriftTime,        "Drift Time");
+            Assert.AreEqual(umc.ChargeState,             cluster.ChargeState,      "Charge State"); 
+            Assert.AreEqual(0,                           cluster.Score,            "Score");           
         }
         /// <summary>
         /// Calculates statistics for a empty UMC list.
@@ -85,7 +85,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             cluster.UmcList.Add(umc);
             
             cluster.CalculateStatistics(representation);
-            Assert.AreEqual(cluster.Score, 0);
+            Assert.AreEqual(0, cluster.Score);
         }
         /// <summary>
         /// Calculates statistics for a empty UMC list.
@@ -115,7 +115,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             cluster.UmcList.Add(umc2);
 
             cluster.CalculateStatistics(representation);
-            Assert.AreEqual(cluster.MassMonoisotopic, 150);
+            Assert.AreEqual(150, cluster.MassMonoisotopic);
         }
            
         /// <summary>
@@ -146,7 +146,7 @@ namespace PNNLOmics.UnitTests.DataTests.Features
             cluster.UmcList.Add(umc2);
 
             cluster.CalculateStatistics(representation);
-            Assert.AreEqual(cluster.Net, 150);
+            Assert.AreEqual(150, cluster.Net);
         }
     }
 }
