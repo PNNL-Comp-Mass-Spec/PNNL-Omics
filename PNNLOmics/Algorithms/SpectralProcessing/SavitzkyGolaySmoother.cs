@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra.Double;
-using MathNet.Numerics.LinearAlgebra.Generic;
+using MathNet.Numerics.LinearAlgebra;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
@@ -234,7 +234,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
 
             var sTranspose = (DenseMatrix)denseMatrix.ConjugateTranspose();
             var f = sTranspose * denseMatrix;
-            var fInverse = (DenseMatrix)f.LU().Solve(DenseMatrix.Identity(f.ColumnCount));
+            var fInverse = (DenseMatrix)f.LU().Solve(DenseMatrix.CreateIdentity(f.ColumnCount));
             var smoothingFilters = denseMatrix * fInverse * sTranspose;
 
             return smoothingFilters;
