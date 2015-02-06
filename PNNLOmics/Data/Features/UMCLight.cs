@@ -9,7 +9,7 @@ namespace PNNLOmics.Data.Features
 	/// </summary>
     public class UMCLight : FeatureLight,
                             IFeatureCluster<MSFeatureLight>,        // This allows for ms features
-                            IFeatureCluster<UMCLight>,              // This allows for labeled devlepment
+                            IFeatureCluster<UMCLight>,              // This allows for labeled development
                             IChildFeature<UMCClusterLight>
 	{
 		/// <summary>
@@ -42,6 +42,7 @@ namespace PNNLOmics.Data.Features
                 m_umcList = new List<UMCLight>();
             m_umcList.Clear();		
 		}
+
         [UsedImplicitly]
         public UMCLight(UMCLight feature)
         {
@@ -62,7 +63,7 @@ namespace PNNLOmics.Data.Features
             Mz                                 = feature.Mz;
             Net                                = feature.Net;
             NetAligned                         = feature.NetAligned;
-            Net                      = feature.Net;
+            Net                                = feature.Net;
             SaturatedMemberCount               = feature.SaturatedMemberCount ;
             Scan                               = feature.Scan;
             ScanAligned                        = feature.ScanAligned;
@@ -73,26 +74,31 @@ namespace PNNLOmics.Data.Features
             Tightness                          = feature.Tightness;
             MsMsCount                          = feature.MsMsCount;
 
-            /// Charge state and Isotopic Chromatograms
+            // Charge state and Isotopic Chromatograms
             ChargeStateChromatograms           = new Dictionary<int, Chromatogram>();    
             IsotopeChromatograms               = new Dictionary<int, List<Chromatogram>>();
         } 
+
         /// <summary>
 		/// Gets or sets the UMC Cluster this feature is part of.
 		/// </summary>
-		public UMCClusterLight UmcCluster	{ get; set; }
+		public UMCClusterLight UmcCluster { get; set; }
+
         /// <summary>
         /// Gets or sets the list of MS features for the given UMC.
         /// </summary>
+        /// 
         public List<MSFeatureLight> MsFeatures { get; private set; }
         /// <summary>
         /// Gets or sets the first scan number the feature was seen in.
         /// </summary>
+        /// 
         public int ScanStart
         {
             get;
             set;
         }
+
         /// <summary>
         /// Gets or sets the last scan number the feature was seen in.
         /// </summary>
@@ -101,24 +107,28 @@ namespace PNNLOmics.Data.Features
             get;
             set;
         }
+
         public int ScanAligned
         {
             get;
             set;
         }
+
         /// <summary>
         /// Gets or sets the sum of abundances from all MS features
         /// </summary>
-        public long AbundanceSum
+        public double AbundanceSum
         {
             get;
             set;
         }
+
         public int SpectralCount
         {
             get;
             set;
         }
+
         public double Tightness
         {
             get;
@@ -132,6 +142,7 @@ namespace PNNLOmics.Data.Features
             get;
             set;
         }
+
         /// <summary>
         /// Gets or sets the chromatograms for each isotope for a given charge state.
         /// </summary>
@@ -140,11 +151,13 @@ namespace PNNLOmics.Data.Features
             get;
             set;
         }
+
         public double MeanIsotopicRsquared
         {
             get;
             set;
         }
+
         public double MeanChargeStateRsquared
         {
             get;
@@ -228,6 +241,7 @@ namespace PNNLOmics.Data.Features
 		}
 
 		#endregion
+        
         /// <summary>
         /// Calculates the centroid and other statistics about the cluster.
         /// </summary>
@@ -244,17 +258,14 @@ namespace PNNLOmics.Data.Features
             var net        = new List<double>();
             var mass       = new List<double>();
             var driftTime  = new List<double>();
-
-            // Histogram of representative charge states
-            new Dictionary<int, int>();
-
+        
             double  sumNet          = 0;
             double  sumMass         = 0;
             double  sumDrifttime    = 0;
-            long    sumAbundance    = 0;
+            double  sumAbundance    = 0;
             var     minScan         = int.MaxValue;
             var     maxScan         = int.MinValue;
-            var    maxAbundance    = long.MinValue;
+            double  maxAbundance = int.MinValue;
             double representativeMz = 0;
             foreach (var feature in MsFeatures)
             {

@@ -40,6 +40,7 @@ namespace PNNLOmics.Data.Features
             MsMsCount           = umc.MsMsCount;
             AddChildFeature(umc);            
         }		
+
         /// <summary>
         /// Copy constructor. 
         /// </summary>
@@ -60,6 +61,7 @@ namespace PNNLOmics.Data.Features
             IdentifiedSpectraCount  = cluster.IdentifiedSpectraCount;
             MeanSpectralSimilarity  = cluster.MeanSpectralSimilarity;
         }
+
         public double MeanSpectralSimilarity { get; set; }
 
         public double Tightness
@@ -67,16 +69,19 @@ namespace PNNLOmics.Data.Features
             get;
             set;
         }
+
         public int MemberCount
         {
             get;
             set;
         }
+
         public int DatasetMemberCount
         {
             get;
             set;
         }
+
         public override double MassMonoisotopicAligned
         {
             get
@@ -89,19 +94,18 @@ namespace PNNLOmics.Data.Features
             }
         }
 
-
         public double MassStandardDeviation
         {
             get;
             private set;
         }
+
         public double NetStandardDeviation
         {
             get;
             private set;
         }
         
-
 		/// <summary>
 		/// Gets or sets the list of UMC's that comprise this cluster.
 		/// </summary>
