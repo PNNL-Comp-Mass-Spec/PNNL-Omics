@@ -25,7 +25,7 @@ namespace PNNLOmics.Algorithms
         }
 
         /// <summary>
-        /// Gets or sets the percentage complete.
+        /// Gets or sets the percentage complete (value between 0 and 100)
         /// </summary>
         public double PercentComplete
         {

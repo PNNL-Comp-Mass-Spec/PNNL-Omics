@@ -277,7 +277,8 @@ namespace PNNLOmics.Data
             ParentSpectra  = null;
 
 
-            if (ChildSpectra == null) return;
+            if (ChildSpectra == null)
+                return;
 
             foreach (var spectra in ChildSpectra)
             {

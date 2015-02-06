@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using PNNLOmics.Annotations;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Features;
 using PNNLOmics.Data.MassTags;
@@ -28,6 +29,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
         // LCMSWarp instance which will do the alignment when processing
         LcmsWarp m_lcmsWarp;
+
+        /// <summary>
+        /// Percent complete, value between 0 and 100
+        /// </summary>
+        double m_progress;
 
         #region Public properties
         /// <summary>
@@ -58,6 +64,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// Options for the Alignment processor
         /// </summary>
         public LcmsWarpAlignmentOptions Options { get; set; }
+
         /// <summary>
         /// Flag for if the Processor is aligning to a Mass Tag Database
         /// </summary>
@@ -424,7 +431,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             if (Options.AlignType != AlignmentType.NET_MASS_WARP)
             {
-                PerformNetWarp();
+                PerformNetWarp(0, 100);
             }
             else
             {
@@ -437,19 +444,42 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// calculates the alignment matrix and alignment function, gets the transformed NETs
         /// and then calculates the alignment matches
         /// </summary>
-        private void PerformNetWarp()
+        private void PerformNetWarp(double percentCompleteAtStart, double percentCompleteAtEnd)
         {
+            OnProgress("NET Warp, get candidate matches", ComputeIncrementalProgress(percentCompleteAtStart, percentCompleteAtEnd, 0));
+
             m_lcmsWarp.GenerateCandidateMatches();
             if (m_lcmsWarp.NumCandidateMatches < 10)
             {
                 throw new ApplicationException("Insufficient number of candidate matches by mass alone");
             }
 
+            OnProgress("NET Warp, get match probabilities", ComputeIncrementalProgress(percentCompleteAtStart, percentCompleteAtEnd, 10));
             m_lcmsWarp.GetMatchProbabilities();
+
+            OnProgress("NET Warp, calculate alignment matrix", ComputeIncrementalProgress(percentCompleteAtStart, percentCompleteAtEnd, 30));
             m_lcmsWarp.CalculateAlignmentMatrix();
+
+            OnProgress("NET Warp, calculate alignment function", ComputeIncrementalProgress(percentCompleteAtStart, percentCompleteAtEnd, 50));
             m_lcmsWarp.CalculateAlignmentFunction();
+
+            OnProgress("NET Warp, get transformed NETs", ComputeIncrementalProgress(percentCompleteAtStart, percentCompleteAtEnd, 70));
             m_lcmsWarp.GetTransformedNets();
+
+            OnProgress("NET Warp, calculate alignment matches", ComputeIncrementalProgress(percentCompleteAtStart, percentCompleteAtEnd, 90));
             m_lcmsWarp.CalculateAlignmentMatches();
+        }
+
+        /// <summary>
+        /// Compute the effective Percent Complete value given a starting and ending percent complete, plus the percent complete of a subtask
+        /// </summary>
+        /// <param name="percentCompleteAtStart"></param>
+        /// <param name="percentCompleteAtEnd"></param>
+        /// <param name="subtaskPercentComplete"></param>
+        /// <returns></returns>
+        private double ComputeIncrementalProgress(double percentCompleteAtStart, double percentCompleteAtEnd, double subtaskPercentComplete)
+        {
+            return percentCompleteAtStart + (percentCompleteAtEnd - percentCompleteAtStart) * subtaskPercentComplete / 100;
         }
 
         /// <summary>
@@ -459,17 +489,29 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// </summary>
         private void PerformNetMassWarp()
         {
+            OnProgress("LCMSWarp phase one", 0);
+
             // First, perform the net calibration using a mass tolerance of the same size as the mass window
             // and then perform the net calibration again using the appropriate mass tolerance
             var massTolerance = m_lcmsWarp.MassTolerance;
             m_lcmsWarp.MassTolerance = m_lcmsWarp.MassCalibrationWindow;
             m_lcmsWarp.UseMassAndNetScore(false);
-            PerformNetWarp();
+            
+            PerformNetWarp(m_progress, 50);
+
+            OnProgress("Calibrating mass", 50);
+
             m_lcmsWarp.PerformMassCalibration();             
             m_lcmsWarp.CalculateStandardDeviations();
+
+            OnProgress("LCMSWarp phase two", 60);
+
             m_lcmsWarp.MassTolerance = massTolerance;
             m_lcmsWarp.UseMassAndNetScore(true);
-            PerformNetWarp();
+
+            PerformNetWarp(m_progress, 100);            
+
+            OnProgress("Complete", 100);
         }
 
         /// <summary>
@@ -705,11 +747,26 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             return data;
         }
-
+       
         public ISpectraProvider BaselineSpectraProvider { get; set; }
         public ISpectraProvider AligneeSpectraProvider  { get; set; }
 
         public event EventHandler<ProgressNotifierArgs> Progress;
+
+        private void OnProgress(string message)
+        {
+            OnProgress(message, m_progress);
+        }
+
+        private void OnProgress(string message, double percentComplete)
+        {
+            m_progress = percentComplete;
+
+            if (Progress != null)
+            {
+                Progress(this, new ProgressNotifierArgs(message, percentComplete));
+            }
+        }
 
         public LcmsWarpAlignmentData Align(MassTagDatabase baseline, IEnumerable<UMCLight> alignee)
         {

@@ -364,7 +364,9 @@ namespace PNNLOmics.Algorithms.Regression
                 // set the next set of coefficient. 
                 for (short coefficientNum = 0; coefficientNum < m_order + 1; coefficientNum++)
                     m_coefficients.At(coefficientNum, 0, nextCoefficients.At(coefficientNum, 0));
-                if (iterationNum <= 0) continue;
+                if (iterationNum <= 0)
+                    continue;
+
                 var likelihoodChange =
                     Math.Abs(m_likelihoodsList[iterationNum] - m_likelihoodsList[iterationNum - 1]);
                 var minLikelihoodChange =

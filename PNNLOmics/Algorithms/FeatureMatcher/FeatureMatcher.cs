@@ -261,7 +261,8 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
 					var stac = match.STACScore;
 					if (stac >= stacFdrList[cutoffIndex].Cutoff)
 					{
-					    if (uniqueIndexList.Contains(match.TargetFeature.Index)) continue;
+                        if (uniqueIndexList.Contains(match.TargetFeature.Index))
+                            continue;
 
 					    // Find out if this is a new, unique Mass Tag. If not, then it is just a new conformation.
 					    if (!uniqueIdList.Contains(match.TargetFeature.Id))

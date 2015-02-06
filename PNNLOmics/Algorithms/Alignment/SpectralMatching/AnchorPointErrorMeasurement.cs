@@ -25,7 +25,8 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
                 var featureX = x.Spectrum.ParentFeature;
                 var featureY = y.Spectrum.ParentFeature;
 
-                if (featureX == null || featureY == null) continue;
+                if (featureX == null || featureY == null)
+                    continue;
 
                 var umcX = featureX.ParentFeature;
                 var umcY = featureY.ParentFeature;

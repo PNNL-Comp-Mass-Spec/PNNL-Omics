@@ -14,9 +14,9 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
         public XicCreator()
         {
-            ScanWindowSize          = 100;
+            ScanWindowSize = 100;
             FragmentationSizeWindow = .5;
-            NumberOfPoints          = 5;
+            NumberOfPoints = 5;
         }
 
         public event EventHandler<ProgressNotifierArgs> Progress;
@@ -29,9 +29,9 @@ namespace PNNLOmics.Algorithms.Chromatograms
             }
         }
 
-        public IEnumerable<UMCLight> CreateXic(IList<UMCLight> features, 
-                              double            massError,
-                              ISpectraProvider  provider)
+        public IEnumerable<UMCLight> CreateXic(IList<UMCLight> features,
+                              double massError,
+                              ISpectraProvider provider)
         {
             // this algorithm works as follows
             // 
@@ -63,7 +63,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
             //  Building UMC's then takes linear time  (well O(N Lg N) time if you consider sort)
             //      and theoretically is only bounded by the time it takes to read an entire raw file
             // 
-            if (features.Count <= 0) 
+            if (features.Count <= 0)
                 throw new Exception("No features were available to create XIC's from");
 
             var minScan = Math.Max(0, features.Min(x => x.Scan - ScanWindowSize));
@@ -77,13 +77,13 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
             // PART B 
             // sort the features...
-            var m           = allFeatures.Count;
-            allFeatures     = allFeatures.OrderBy(x => x.StartScan).ToList();
+            var m = allFeatures.Count;
+            allFeatures = allFeatures.OrderBy(x => x.StartScan).ToList();
 
             // This map tracks all possible features to keep            
-            var j           = 0;  // this is our feature index
+            var j = 0;  // this is our feature index
             var msFeatureId = 0;
-            
+
             // This list stores a temporary amount of parent MS features
             // so that we can link MS/MS spectra to MS Features
             var parentMsList = new List<MSFeatureLight>();
@@ -120,8 +120,8 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
                 // Here We link the MSMS Spectra to the UMC Features
                 ScanSummary summary;
-                var spectrum = provider.GetRawSpectra(s, 0, 1, out summary);                
-                                
+                var spectrum = provider.GetRawSpectra(s, 0, 1, out summary);
+
                 if (summary.MsLevel > 1)
                 {
                     // If it is an MS 2 spectra... then let's link it to the parent MS
@@ -129,28 +129,28 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     var matching = parentMsList.FindAll(
                         x => Math.Abs(x.Mz - summary.PrecursorMz) <= FragmentationSizeWindow
                         );
-                    
+
                     foreach (var match in matching)
                     {
                         // We create multiple spectra because this guy is matched to multiple ms
                         // features
                         var spectraData = new MSSpectra
                         {
-                            Id              = msmsFeatureId,
-                            ScanMetaData    = summary,
-                            CollisionType   = summary.CollisionType,
-                            Scan            = s,
-                            MsLevel         = summary.MsLevel,
-                            PrecursorMz     = summary.PrecursorMz,
+                            Id = msmsFeatureId,
+                            ScanMetaData = summary,
+                            CollisionType = summary.CollisionType,
+                            Scan = s,
+                            MsLevel = summary.MsLevel,
+                            PrecursorMz = summary.PrecursorMz,
                             TotalIonCurrent = summary.TotalIonCurrent
                         };
-                        
+
                         match.MSnSpectra.Add(spectraData);
                         spectraData.ParentFeature = match;
                     }
 
                     if (spectrum != null)
-                        spectrum.Clear();                    
+                        spectrum.Clear();
                     msmsFeatureId++;
 
                     continue;
@@ -159,19 +159,19 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
 
                 var sortedList = spectrum.OrderBy(x => x.X).ToList();
-                
+
 
                 // Tracks which spectra need to be removed from the cache
                 var toRemove = new List<XicFeature>();
                 // Tracks which features we need to link to MSMS spectra with
                 parentMsList.Clear();
-                
+
                 // now we iterate through all features that need data from this scan
                 //foreach (var xic in xicFeatures.Values)
                 var k = 0;
                 foreach (var xic in xicFeatures)
-                {                    
-                    var lower  = xic.LowMz;
+                {
+                    var lower = xic.LowMz;
                     var higher = xic.HighMz;
 
 
@@ -184,7 +184,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     while (k < sortedList.Count && sortedList[k].X <= higher)
                     {
                         summedIntensity += sortedList[k++].Y;
-                    }                    
+                    }
                     // See if we need to remove this feature
                     // We only do so if the intensity has dropped off and we are past the end of the feature.
                     if (summedIntensity < 1 && xic.EndScan < s)
@@ -196,17 +196,17 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     var umc = xic.Feature;
 
                     // otherwise create a new feature here...
-                    var msFeature        = new MSFeatureLight
+                    var msFeature = new MSFeatureLight
                     {
-                        ChargeState      = xic.ChargeState,   
-                        Mz               = xic.Mz,
+                        ChargeState = xic.ChargeState,
+                        Mz = xic.Mz,
                         MassMonoisotopic = umc.MassMonoisotopic,
-                        Scan             = s,
-                        Abundance        = Convert.ToInt64(summedIntensity),
-                        Id               = msFeatureId++,
-                        DriftTime        = umc.DriftTime,
-                        Net    = s,
-                        GroupId          = umc.GroupId
+                        Scan = s,
+                        Abundance = Convert.ToInt64(summedIntensity),
+                        Id = msFeatureId++,
+                        DriftTime = umc.DriftTime,
+                        Net = s,
+                        GroupId = umc.GroupId
                     };
                     parentMsList.Add(msFeature);
                     xic.Feature.AddChildFeature(msFeature);
@@ -217,10 +217,10 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
             OnProgress("Filtering bad features with no data.");
             features = features.Where(x => x.MsFeatures.Count > 0).ToList();
-            
+
             OnProgress("Refining XIC features.");
             return RefineFeatureXics(features);
-            
+
         }
 
         private IEnumerable<UMCLight> RefineFeatureXics(IList<UMCLight> features)
@@ -228,7 +228,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
             // Here we smooth the points...and remove any features with from and trailing zero points
             var numberOfPoints = NumberOfPoints;
             var smoother = new SavitzkyGolaySmoother(numberOfPoints, CONST_POLYNOMIAL_ORDER, false);
-            
+
             foreach (var feature in features)
             {
                 var map = feature.CreateChargeMap();
@@ -247,11 +247,12 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     msFeatures.ForEach(x => xic.Add(new XYData(x.Scan, x.Abundance)));
 
                     var points = smoother.Smooth(xic);
-                    if (msFeatures.Count <= 0) continue;
+                    if (msFeatures.Count <= 0)
+                        continue;
 
                     // Find the biggest peak...
-                    var maxScanIndex  = 0;
-                    long maxAbundance = 0;
+                    var maxScanIndex = 0;
+                    double maxAbundance = 0;
                     for (var i = 0; i < msFeatures.Count; i++)
                     {
                         msFeatures[i].Abundance = Convert.ToInt64(points[i].Y);
@@ -301,12 +302,12 @@ namespace PNNLOmics.Algorithms.Chromatograms
         /// <param name="features"></param>
         /// <param name="massError"></param>
         /// <returns></returns>
-        private  List<XicFeature> CreateXicTargets(IEnumerable<UMCLight> features, double massError)
-        {            
-            var allFeatures   = new List<XicFeature>();
+        private List<XicFeature> CreateXicTargets(IEnumerable<UMCLight> features, double massError)
+        {
+            var allFeatures = new List<XicFeature>();
 
             // Create XIC Features
-            var id            = 0;
+            var id = 0;
             // Then for each feature turn it into a new feature
             foreach (var feature in features)
             {
@@ -314,25 +315,25 @@ namespace PNNLOmics.Algorithms.Chromatograms
                 var x = feature.CreateChargeMap();
                 foreach (var charge in x.Keys)
                 {
-                    long maxIntensity  = 0;
-                    double mz          = 0;
-                    var min            = double.MaxValue;
-                    var max            = double.MinValue;
+                    double maxIntensity = 0;
+                    double mz = 0;
+                    var min = double.MaxValue;
+                    var max = double.MinValue;
 
-                    var scanStart      = int.MaxValue;
-                    var scanEnd        = 0;
+                    var scanStart = int.MaxValue;
+                    var scanEnd = 0;
 
                     foreach (var chargeFeature in x[charge])
                     {
-                        min         = Math.Min(min, chargeFeature.Mz);
-                        max         = Math.Max(max, chargeFeature.Mz);
-                        scanStart   = Math.Min(scanStart, chargeFeature.Scan);
-                        scanEnd     = Math.Min(scanStart, chargeFeature.Scan);
+                        min = Math.Min(min, chargeFeature.Mz);
+                        max = Math.Max(max, chargeFeature.Mz);
+                        scanStart = Math.Min(scanStart, chargeFeature.Scan);
+                        scanEnd = Math.Min(scanStart, chargeFeature.Scan);
 
                         if (chargeFeature.Abundance > maxIntensity)
                         {
-                            maxIntensity  = chargeFeature.Abundance;
-                            mz            = chargeFeature.Mz;
+                            maxIntensity = chargeFeature.Abundance;
+                            mz = chargeFeature.Mz;
                         }
                     }
 
@@ -341,13 +342,13 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
                     var xicFeature = new XicFeature
                     {
-                        HighMz      = FeatureLight.ComputeDaDifferenceFromPPM(mz, -massError),
-                        LowMz       = FeatureLight.ComputeDaDifferenceFromPPM(mz, massError),
-                        Mz          = mz,
-                        Feature     = feature,
-                        Id          = id++,
-                        EndScan     = scanEnd + ScanWindowSize,
-                        StartScan   = scanStart - ScanWindowSize,
+                        HighMz = FeatureLight.ComputeDaDifferenceFromPPM(mz, -massError),
+                        LowMz = FeatureLight.ComputeDaDifferenceFromPPM(mz, massError),
+                        Mz = mz,
+                        Feature = feature,
+                        Id = id++,
+                        EndScan = scanEnd + ScanWindowSize,
+                        StartScan = scanStart - ScanWindowSize,
                         ChargeState = charge
                     };
 
@@ -365,34 +366,34 @@ namespace PNNLOmics.Algorithms.Chromatograms
         /// <param name="msFeatures">Seed features that provide the targets</param>
         /// <param name="provider"></param>
         /// <returns></returns>
-        public IEnumerable<MSFeatureLight> CreateXic(   IList<MSFeatureLight> msFeatures, 
-                                                        double massError,                  
+        public IEnumerable<MSFeatureLight> CreateXic(IList<MSFeatureLight> msFeatures,
+                                                        double massError,
                                                         ISpectraProvider provider)
         {
             var newFeatures = new List<MSFeatureLight>();
 
             if (msFeatures.Count <= 0) return newFeatures;
 
-            var minScan  = msFeatures[0].Scan;
-            var maxScan  = msFeatures[msFeatures.Count - 1].Scan;
-            minScan     -= 100;
-            maxScan     += 100;
-            minScan      = Math.Max(0, minScan); 
+            var minScan = msFeatures[0].Scan;
+            var maxScan = msFeatures[msFeatures.Count - 1].Scan;
+            minScan -= 100;
+            maxScan += 100;
+            minScan = Math.Max(0, minScan);
 
-            var  min             = double.MaxValue;
-            var  max             = double.MinValue;
-            long maxIntensity    = 0;
-            var  featureMap      = new Dictionary<int, MSFeatureLight>();
-            double mz            = 0;
+            var min = double.MaxValue;
+            var max = double.MinValue;
+            double maxIntensity = 0;
+            var featureMap = new Dictionary<int, MSFeatureLight>();
+            double mz = 0;
             foreach (var chargeFeature in msFeatures)
             {
                 min = Math.Min(min, chargeFeature.Mz);
-                max = Math.Max(max, chargeFeature.Mz);                    
+                max = Math.Max(max, chargeFeature.Mz);
 
                 if (chargeFeature.Abundance > maxIntensity)
                 {
                     maxIntensity = chargeFeature.Abundance;
-                    mz           = chargeFeature.Mz;
+                    mz = chargeFeature.Mz;
                 }
 
                 // Map the feature...
@@ -406,9 +407,9 @@ namespace PNNLOmics.Algorithms.Chromatograms
             foreach (var msFeature in features)
             {
                 var scan = msFeature.Scan;
-                if (featureMap.ContainsKey(msFeature.Scan))                
-                    featureMap[scan].Abundance = msFeature.Abundance;                                
-                newFeatures.Add(msFeature);                
+                if (featureMap.ContainsKey(msFeature.Scan))
+                    featureMap[scan].Abundance = msFeature.Abundance;
+                newFeatures.Add(msFeature);
             }
             return newFeatures;
         }
@@ -432,7 +433,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
             var lower = FeatureLight.ComputeDaDifferenceFromPPM(mz, massError);
             var higher = FeatureLight.ComputeDaDifferenceFromPPM(mz, -massError);
 
-                        
+
 
             for (var i = minScan; i < maxScan; i++)
             {
@@ -442,9 +443,10 @@ namespace PNNLOmics.Algorithms.Chromatograms
                 {
                     var summary = new ScanSummary();
                     spectrum = provider.GetRawSpectra(i, 0, 1, out summary);
-                }catch
+                }
+                catch
                 {
-                    
+
                 }
 
                 if (spectrum == null)
@@ -456,28 +458,28 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
                 var summedIntensity = data.Sum(x => x.Y);
 
-               
+
                 var newFeature = new MSFeatureLight
                 {
                     Scan = i,
                     Net = i,
                     Abundance = Convert.ToInt64(summedIntensity)
                 };
-                newFeatures.Add(newFeature);                
+                newFeatures.Add(newFeature);
             }
-            return newFeatures;   
+            return newFeatures;
         }
 
         public IDictionary<int, IList<MSFeatureLight>> CreateXic(UMCLight feature, double massError, ISpectraProvider provider)
         {
-            var features        = new Dictionary<int, IList<MSFeatureLight>>();
-            var chargeFeatures  = feature.CreateChargeMap();
+            var features = new Dictionary<int, IList<MSFeatureLight>>();
+            var chargeFeatures = feature.CreateChargeMap();
 
             // For each UMC...
             foreach (var charge in chargeFeatures.Keys)
             {
                 // Find the mininmum and maximum features                             
-                var msFeatures = CreateXic(chargeFeatures[charge], 
+                var msFeatures = CreateXic(chargeFeatures[charge],
                                             massError,
                                             provider);
 
@@ -490,8 +492,8 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     {
                         // Otherwise add the new feature
                         newFeature.MassMonoisotopic = feature.MassMonoisotopic;
-                        newFeature.DriftTime        = feature.DriftTime;
-                        newFeature.GroupId          = feature.GroupId;
+                        newFeature.DriftTime = feature.DriftTime;
+                        newFeature.GroupId = feature.GroupId;
                     }
                     features[charge].Add(newFeature);
                 }

@@ -306,7 +306,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     {
                         var alignmentIndex = (section * NumMatchesPerSection) + (baselineSection * NumMatchesPerBaseline) + sectionWidth;
 
-                        if (!(m_subsectionMatchScores[alignmentIndex] > maxScore)) continue;
+                        if (!(m_subsectionMatchScores[alignmentIndex] > maxScore))
+                            continue;
+
                         maxScore = m_subsectionMatchScores[alignmentIndex];
                         y = baselineSection;
                     }
@@ -896,8 +898,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public void CalculateStandardDeviations()
         {
             var numMatches = m_featureMatches.Count;
-            
-            if (numMatches <= REQUIRED_MATCHES) return;
+
+            if (numMatches <= REQUIRED_MATCHES)
+                return;
 
             var massDeltas = new List<double>();
             var netDeltas = new List<double>();
@@ -1172,7 +1175,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     var alignmentIndex = (section * NumMatchesPerSection) + (baselineSection * NumMatchesPerBaseline) + sectionWidth;
                     var alignmentScore = m_alignmentScore[alignmentIndex];
 
-                    if (!(alignmentScore > bestScore)) continue;
+                    if (!(alignmentScore > bestScore))
+                        continue;
+
                     bestScore = alignmentScore;
                     bestPreviousAlignmentIndex = m_bestPreviousIndex[alignmentIndex];
                     bestAlignedBaselineSection = baselineSection;
@@ -1302,7 +1307,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                             }
                             var previousBaselineSectionWidth = maxWidth;
                             var previousAlignmentIndex = (section - 1) * NumMatchesPerSection + previousBaselineSection * NumMatchesPerBaseline + previousBaselineSectionWidth - 1;
-                            if (!(m_alignmentScore[previousAlignmentIndex] > currentBestScore)) continue;
+                            if (!(m_alignmentScore[previousAlignmentIndex] > currentBestScore))
+                                continue;
 
                             currentBestScore = m_alignmentScore[previousAlignmentIndex];
                             bestPreviousAlignmentIndex = previousAlignmentIndex;
@@ -1335,7 +1341,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 var match = sectionMatchingFeatures[i];
                 for (var j = 0; j < i; j++)
                 {
-                    if (match.FeatureIndex != sectionMatchingFeatures[j].FeatureIndex) continue;
+                    if (match.FeatureIndex != sectionMatchingFeatures[j].FeatureIndex)
+                        continue;
 
                     found = true;
                     break;
@@ -1383,7 +1390,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                         transformNet = transformNet / (maxNet - minNet) + baselineStartNet;
 
                         var deltaMatch = transformNet - match.Net2;
-                        if (!(Math.Abs(deltaMatch) < Math.Abs(m_tempFeatureBestDelta[msFeatureIndex]))) continue;
+                        if (!(Math.Abs(deltaMatch) < Math.Abs(m_tempFeatureBestDelta[msFeatureIndex])))
+                            continue;
+
                         m_tempFeatureBestDelta[msFeatureIndex] = deltaMatch;
                         m_tempFeatureBestIndex[msFeatureIndex] = match.FeatureIndex2;
                     }
@@ -1467,7 +1476,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                     subsectionMatchScores.Add(maxScore);
                 }
             }
-            if (!standardize) return;
+            if (!standardize)
+                return;
 
             var index = 0;
             for (var msSection = 0; msSection < NumSections; msSection++)

@@ -27,7 +27,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public LcmsWarpAdapter(LcmsWarpAlignmentOptions options)
         {
             m_options = options;
-        }        
+        }
+
         /// <summary>
         /// Gets or sets the baseline spectra provider
         /// </summary>
@@ -62,8 +63,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         {
             return AlignFeatures(baseline as List<MassTagLight>, features as List<UMCLight>, m_options);
         }
-
-        
     
         /// <summary>
         /// Uses a list of MassTagLights as a baseline for aligning a list of UMCLights to it, using
@@ -76,27 +75,34 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <param name="features"></param>
         /// <param name="options"></param>        
         /// <returns></returns>
-        private LcmsWarpAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> features,
+        private LcmsWarpAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> aligneeFeatures,
             LcmsWarpAlignmentOptions options)
         {
-            var processor = new LcmsWarpAlignmentProcessor
+            var alignmentProcessor = new LcmsWarpAlignmentProcessor
             {
                 Options = options
             };
+            alignmentProcessor.ApplyAlignmentOptions();
+            alignmentProcessor.Progress += alignmentProcessor_Progress;
 
-            var featureTest = features.Find(x => x.DriftTime > 0);
+            var featureTest = aligneeFeatures.Find(x => x.DriftTime > 0);
             var massTagTest = massTags.Find(x => x.DriftTime > 0);
 
             if (featureTest != null && massTagTest == null)
             {
-                // Warming! Data has drift time info, but the mass tags do not.
+                Console.WriteLine("Warning! Data has drift time info, but the mass tags do not.");
             }
 
-            processor.SetReferenceDatasetFeatures(massTags);
+            alignmentProcessor.SetReferenceDatasetFeatures(massTags);
 
-            var data = AlignFeatures(processor, features, options);
+            var data = AlignFeatures(alignmentProcessor, aligneeFeatures, options);
 
             return data;
+        }
+
+        void alignmentProcessor_Progress(object sender, ProgressNotifierArgs e)
+        {
+            OnProgress(e);
         }
 
         private void OnProgress(string message)
@@ -106,6 +112,15 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 Progress(this, new ProgressNotifierArgs(message));
             }
         }
+
+        private void OnProgress(ProgressNotifierArgs e)
+        {
+            if (Progress != null)
+            {
+                Progress(this, e);
+            }
+        }
+
         /// <summary>
         /// Uses a list of UMCLights as a baseline for aligning a second list of UMCLights to it, using
         /// the passed in options for processor options
@@ -116,26 +131,23 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// <param name="alignee"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        private LcmsWarpAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> alignee, LcmsWarpAlignmentOptions options)
+        private LcmsWarpAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> aligneeFeatures, LcmsWarpAlignmentOptions options)
         {
             var alignmentProcessor = new LcmsWarpAlignmentProcessor
             {
                 Options = options
             };
             alignmentProcessor.ApplyAlignmentOptions();
+            alignmentProcessor.Progress += alignmentProcessor_Progress;
 
-            OnProgress("Filtering based on abundance");            
-            var filteredFeatures = FilterFeaturesByAbundance(baseline, options) as List<UMCLight>;
+            var filteredBaselineFeatures = FilterFeaturesByAbundance(baseline, options) as List<UMCLight>;
 
-            OnProgress("Setting reference features based on abundance");
-            alignmentProcessor.SetReferenceDatasetFeatures(filteredFeatures);
+            alignmentProcessor.SetReferenceDatasetFeatures(filteredBaselineFeatures);
 
-
-            OnProgress("Aligning features");
-            return AlignFeatures(alignmentProcessor, alignee, options);            
+            return AlignFeatures(alignmentProcessor, aligneeFeatures, options);            
         }
 
-        private LcmsWarpAlignmentData AlignFeatures(LcmsWarpAlignmentProcessor processor, List<UMCLight> features, LcmsWarpAlignmentOptions options)
+        private LcmsWarpAlignmentData AlignFeatures(LcmsWarpAlignmentProcessor processor, List<UMCLight> aligneeFeatures, LcmsWarpAlignmentOptions options)
         {
             var alignmentFunctions = new List<LcmsWarpAlignmentFunction>();
             
@@ -147,7 +159,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             double maxMtdbNet;
             processor.GetReferenceNetRange(out minMtdbNet, out maxMtdbNet);
 
-            var filteredFeatures = FilterFeaturesByAbundance(features, options).ToList();            
+            var filteredFeatures = FilterFeaturesByAbundance(aligneeFeatures, options).ToList();            
                        
             // Set features
             processor.SetAligneeDatasetFeatures(filteredFeatures);
@@ -160,7 +172,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             alignmentFunctions.Add(alignmentFunction);
 
             // Correct the features
-            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref features);
+            processor.ApplyNetMassFunctionToAligneeDatasetFeatures(ref aligneeFeatures);
                         
             // Get the heat maps
             double[,] heatScore;

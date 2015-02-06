@@ -40,7 +40,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public bool MassCalibUseLsq { get; set; }
 
         /// <summary>
-        /// Window for the Mass calibration alignment
+        /// Window for the Mass calibration alignment (in ppm)
         /// </summary>
         public double MassCalibrationWindow { get; set; }
 
@@ -75,7 +75,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public int MassCalibLsqNumKnots { get; set; }
 
         /// <summary>
-        /// Mass tolerance for the Alignment and warping
+        /// Mass tolerance (in ppm) for the Alignment and warping
         /// </summary>
         public double MassTolerance { get; set; }
 
@@ -130,7 +130,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// The type of aligner the processor uses.
         /// </summary>
         public FeatureAlignmentType AlignmentAlgorithmType { get; set; }
-        public int MassTagObservationCount { get; set; }
+        
         #endregion
 
         /// <summary>
