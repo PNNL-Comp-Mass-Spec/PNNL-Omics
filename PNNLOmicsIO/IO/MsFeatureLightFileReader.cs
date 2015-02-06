@@ -145,7 +145,7 @@ namespace PNNLOmicsIO.IO
                         }
                         else
                         {
-                            throw new InvalidDataException("The abundance column in the input ISOS file was not undestood.");
+                            throw new InvalidDataException("The abundance column in the input ISOS file was not understood.");
                         }                        
                     }
                     
