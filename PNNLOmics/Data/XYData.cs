@@ -65,7 +65,7 @@ namespace PNNLOmics.Data
         /// <param name="yArray">Array to be populated with Y values.</param>
         public static void XYDataListToArrays(List<XYData> xyList, double[] xArray, double[] yArray)
         {
-            if (xArray.Length == xyList.Count || yArray.Length == xyList.Count)
+            if (xArray.Length == xyList.Count && yArray.Length == xyList.Count)
             {
                 for (var i = 0; i < xyList.Count; i++)
                 {
