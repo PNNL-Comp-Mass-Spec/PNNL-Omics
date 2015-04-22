@@ -109,6 +109,11 @@ namespace PNNLOmicsIO.IO
 				var columns        = line.Split(',');
                 var feature  = new MSFeatureLight {Id = currentId};
 
+                //If mono_plus2_abundance is 0, we don't want to count this as a real feature.
+                //TODO: Make an optional filter. This biases against low abundance features.
+                //if (columnMapping.ContainsKey(MONO_2_ABUNDANCE))
+                //    if (double.Parse(columns[columnMapping[MONO_2_ABUNDANCE]]) <= 0) continue; 
+
 			    // In case this file does not have drift time, we need to make sure we clean up the
                 // feature so the downstream processing can complete successfully.
                 if (!hasDriftTimeData)
@@ -154,7 +159,8 @@ namespace PNNLOmicsIO.IO
                 if (columnMapping.ContainsKey(MONO_MASS))           feature.MassMonoisotopic            = double.Parse(columns[columnMapping[MONO_MASS]]);  
                 if (columnMapping.ContainsKey(ISOTOPIC_FIT))        feature.Score                       = double.Parse(columns[columnMapping[ISOTOPIC_FIT]]);       
                 if (columnMapping.ContainsKey(AVERAGE_MASS))        feature.MassMonoisotopicAverage     = double.Parse(columns[columnMapping[AVERAGE_MASS]]);
-                if (columnMapping.ContainsKey(ABUNDANT_MASS))       feature.MassMonoisotopicMostAbundant    = double.Parse(columns[columnMapping[ABUNDANT_MASS]]);                                
+                if (columnMapping.ContainsKey(ABUNDANT_MASS))       feature.MassMonoisotopicMostAbundant    = double.Parse(columns[columnMapping[ABUNDANT_MASS]]);
+               
                 features.Add(feature);
                 currentId++;
             }

@@ -77,11 +77,11 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
             // PART B 
             // sort the features...
-            var m = allFeatures.Count;
+            var featureCount = allFeatures.Count;
             allFeatures = allFeatures.OrderBy(x => x.StartScan).ToList();
 
             // This map tracks all possible features to keep            
-            var j = 0;  // this is our feature index
+            
             var msFeatureId = 0;
 
             // This list stores a temporary amount of parent MS features
@@ -91,27 +91,32 @@ namespace PNNLOmics.Algorithms.Chromatograms
             // Creates a comparison function for building a BST from a spectrum.
             var msmsFeatureId = 0;
 
-            var N = provider.GetTotalScans(0);
-            OnProgress(string.Format("Analyzing {0} scans", N));
+            var totalScans = provider.GetTotalScans(0);
+            OnProgress(string.Format("Analyzing {0} scans", totalScans));
 
 
             // Iterate over all the scans...
-            for (var s = minScan; s < maxScan && s < N; s++)
+            for (var currentScan = minScan; currentScan < maxScan && currentScan < totalScans; currentScan++)
             {
-                // Find any features that need data from this scan, s 
-                while (j < m)
+                // Find any features that need data from this scan 
+                var featureIndex = 0;
+                while (featureIndex < featureCount)
                 {
-                    var xicFeature = allFeatures[j];
+                    var xicFeature = allFeatures[featureIndex];
                     // This means that no new features were eluting with this scan....
-                    if (xicFeature.StartScan > s)
+                    if (xicFeature.StartScan > currentScan)
                         break;
 
                     // This means that there is a new feature...
-                    if (s < xicFeature.EndScan)
+                    if (currentScan <= xicFeature.EndScan)
                     {
-                        xicFeatures.Add(xicFeature);
+                        if (!xicFeatures.Contains(xicFeature))
+                        {
+                            xicFeatures.Add(xicFeature);
+                        }
+                        
                     }
-                    j++;
+                    featureIndex++;
                 }
 
                 // Skip pulling the data from the file if there is nothing to pull from.
@@ -120,8 +125,9 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
                 // Here We link the MSMS Spectra to the UMC Features
                 ScanSummary summary;
-                var spectrum = provider.GetRawSpectra(s, 0, 1, out summary);
+                var spectrum = provider.GetRawSpectra(currentScan, 0, 1, out summary);
 
+               
                 if (summary.MsLevel > 1)
                 {
                     // If it is an MS 2 spectra... then let's link it to the parent MS
@@ -139,7 +145,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                             Id = msmsFeatureId,
                             ScanMetaData = summary,
                             CollisionType = summary.CollisionType,
-                            Scan = s,
+                            Scan = currentScan,
                             MsLevel = summary.MsLevel,
                             PrecursorMz = summary.PrecursorMz,
                             TotalIonCurrent = summary.TotalIonCurrent
@@ -157,37 +163,46 @@ namespace PNNLOmics.Algorithms.Chromatograms
                 }
 
 
-
-                var sortedList = spectrum.OrderBy(x => x.X).ToList();
-
+                var mzList = new double[spectrum.Count];
+                var intensityList = new double[spectrum.Count];                
+                XYData.XYDataListToArrays(spectrum, mzList, intensityList);
+                Array.Sort(mzList, intensityList);
 
                 // Tracks which spectra need to be removed from the cache
                 var toRemove = new List<XicFeature>();
+
                 // Tracks which features we need to link to MSMS spectra with
                 parentMsList.Clear();
 
                 // now we iterate through all features that need data from this scan
-                //foreach (var xic in xicFeatures.Values)
-                var k = 0;
+                
                 foreach (var xic in xicFeatures)
                 {
                     var lower = xic.LowMz;
                     var higher = xic.HighMz;
 
-
-                    while (k < sortedList.Count && sortedList[k].X < lower)
-                    {
-                        k++;
-                    }
+                    var startIndex = Array.BinarySearch(mzList, lower);
+                    if (startIndex < 0)
+                        startIndex = startIndex * -1 + 0;
 
                     double summedIntensity = 0;
-                    while (k < sortedList.Count && sortedList[k].X <= higher)
+
+                    if (mzList[startIndex] < lower)
                     {
-                        summedIntensity += sortedList[k++].Y;
+                        // All data in the list is ligher than lower; nothing to sum
                     }
+                    else
+                    {
+                        while (startIndex < mzList.Count() && mzList[startIndex] <= higher)
+                        {
+                            summedIntensity += intensityList[startIndex];
+                            startIndex++;
+                        }    
+                    }
+
                     // See if we need to remove this feature
                     // We only do so if the intensity has dropped off and we are past the end of the feature.
-                    if (summedIntensity < 1 && xic.EndScan < s)
+                    if (summedIntensity < 1 && currentScan > xic.EndScan)
                     {
                         toRemove.Add(xic);
                         continue;
@@ -201,17 +216,18 @@ namespace PNNLOmics.Algorithms.Chromatograms
                         ChargeState = xic.ChargeState,
                         Mz = xic.Mz,
                         MassMonoisotopic = umc.MassMonoisotopic,
-                        Scan = s,
+                        Scan = currentScan,
                         Abundance = Convert.ToInt64(summedIntensity),
                         Id = msFeatureId++,
                         DriftTime = umc.DriftTime,
-                        Net = s,
+                        Net = currentScan,
                         GroupId = umc.GroupId
                     };
                     parentMsList.Add(msFeature);
                     xic.Feature.AddChildFeature(msFeature);
                 }
 
+                // Remove features that end their elution prior to the current scan
                 toRemove.ForEach(x => xicFeatures.Remove(x));
             }
 

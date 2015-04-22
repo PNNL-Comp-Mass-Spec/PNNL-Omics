@@ -195,8 +195,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             features = features.Where(x => x.MsFeatures.Count > 0).ToList();
             foreach (var feature in features)
             {
-                feature.MassMonoisotopic = (feature.Mz * feature.ChargeState) - (SubAtomicParticleLibrary.MASS_PROTON * feature.ChargeState);
-                feature.CalculateStatistics(ClusterCentroidRepresentation.Median);             
+                feature.CalculateStatistics(ClusterCentroidRepresentation.Median); 
+                feature.MassMonoisotopic = (feature.Mz * feature.ChargeState) - (SubAtomicParticleLibrary.MASS_PROTON * feature.ChargeState);                            
             }
             
             // Here we should merge the XIC data...trying to find the best possible feature
@@ -229,9 +229,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             var id = 0;
             OnProgress(string.Format("Assigning unique feature id's to each feature."));
             var featureList = features.ToList();
-            foreach (var x in featureList)
+            foreach (var feature in featureList)
             {
-                x.Id = id++;                
+                feature.Id = id++;
             }
             return featureList;
         }
