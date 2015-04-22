@@ -22,6 +22,39 @@ namespace PNNLOmics.Data.Features
 
             return newFeatures.Where(x => x.Abundance > 0).ToList();
         }
+
+        public static List<T> FilterFeatures<T>(List<T> features, LcmsFeatureFilteringOptions options, Dictionary<int, double> scanTimes)
+    where T : UMCLight
+        {
+            var minimumSize = options.FeatureLengthRange.Minimum;
+            var maximumSize = options.FeatureLengthRange.Maximum;
+
+
+            // Scan Length
+            var newFeatures = features.FindAll(delegate(T x)
+            {
+                try
+                {
+                    if (x.ScanStart != 0)
+                    {
+                        var size = Math.Abs(scanTimes[x.ScanStart] - scanTimes[x.ScanEnd]);
+                        return size >= minimumSize && size <= maximumSize;
+                    }
+                    else //Scan 0 won't show up in scanTimes dictionary, so the feature length is just the time of the last feature scan.
+                    {
+                        var size = scanTimes[x.ScanEnd];
+                        return size >= minimumSize && size <= maximumSize;
+                    }
+                }
+                catch
+                {
+                    throw (new IndexOutOfRangeException(String.Format("Scan {0} or {1} not found in scan to time map.", x.ScanStart, x.ScanEnd)));
+                }
+            });
+
+            return newFeatures.Where(x => x.Abundance > 0).ToList();
+        }
+
         /// <summary>
         /// Filters the list of MS Features based on user defined filtering criteria.
         /// </summary>

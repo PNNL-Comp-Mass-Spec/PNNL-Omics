@@ -11,10 +11,16 @@
         public LcmsFeatureFilteringOptions()
         {
             FeatureLengthRange = new FilterRange(MIN_FEATURE_LENGTH, MAX_FEATURE_LENGTH);
+            TreatAsTimeNotScan = false;
         }
         /// <summary>
         /// Gets or sets the range to use for feature lengths (size in scans minimum number to maximum number).
         /// </summary>
         public FilterRange FeatureLengthRange { get; set; }
+
+        /// <summary>
+        /// If true, then feature lengths are defined based on times rather than scans.
+        /// </summary>
+        public bool TreatAsTimeNotScan { get; set; }
     }
 }
