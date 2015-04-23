@@ -14,8 +14,9 @@
             TreatAsTimeNotScan = false;
         }
         /// <summary>
-        /// Gets or sets the range to use for feature lengths (size in scans minimum number to maximum number).
+        /// Gets or sets the range to use for feature lengths
         /// </summary>
+        /// <remarks>Scan numbers if TreatAsTimeNotScan=False, or time (in minutes) if TreatAsTimeNotScan=True</remarks>
         public FilterRange FeatureLengthRange { get; set; }
 
         /// <summary>
