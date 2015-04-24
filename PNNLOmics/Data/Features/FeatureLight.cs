@@ -23,6 +23,7 @@ namespace PNNLOmics.Data.Features
             NetAligned = 0;
             Net = 0;
         }
+
         /// <summary>
         /// Copy constructor.
         /// </summary>
@@ -51,25 +52,26 @@ namespace PNNLOmics.Data.Features
             Net = feature.Net;
             AmbiguityScore = double.MaxValue;
         }
+
         public int Id { get; set; }
         public int Index { get; set; }
         public int IdentifiedSpectraCount { get; set; }
+
         /// <summary>
         /// Gets or sets the number of MSMS spectra 
         /// </summary>
         public int MsMsCount { get; set; }
+
         /// <summary>
         /// Gets or sets the scan value.
         /// </summary>
         public int Scan { get; set; }
+
         /// <summary>
         /// Gets or sets the minimum distance between this feature's elements and another
         /// </summary>
-        public double MinimumCentroidDistance
-        {
-            get;
-            set;
-        }
+        public double MinimumCentroidDistance { get; set; }
+      
         public double Mz { get; set; }
 
         /// <summary>

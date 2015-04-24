@@ -11,10 +11,12 @@ namespace PNNLOmicsIO.IO
         {
             var columnMap = new Dictionary<String, int>(StringComparer.CurrentCultureIgnoreCase);
 
-            // TODO: Different types of delimiters?
-            var columnTitles = textReader.ReadLine().Split('\t', '\n');
-            var numOfColumns = columnTitles.Length;
+            var readLine = textReader.ReadLine();
+            if (readLine == null) return columnMap;
 
+            var columnTitles = readLine.Split('\t', '\n');
+            var numOfColumns = columnTitles.Length;
+        
             for (var i = 0; i < numOfColumns; i++)
             {
                 var column = columnTitles[i].ToLower().Trim();
@@ -44,8 +46,6 @@ namespace PNNLOmicsIO.IO
                     case "precursormz":
                         columnMap.Add("Peptide.PrecursorMz", i);
                         break;
-                    default:
-                        break;
                 }
             }
 
@@ -54,13 +54,14 @@ namespace PNNLOmicsIO.IO
         }
         public IEnumerable<Peptide> Read(string path)
         {
-            return base.ReadFile(path);
+            return ReadFile(path);
         }
 
         protected override IEnumerable<Peptide> SaveFileToEnumerable(System.IO.TextReader textReader, Dictionary<string, int> columnMapping)
         {
             var peptides = new List<Peptide>();
-            var line = "";
+            string line;
+
             while ((line = textReader.ReadLine()) != null)
             {
                 var columns = line.Split('\t', '\n');
@@ -76,8 +77,10 @@ namespace PNNLOmicsIO.IO
                 }
                 if (columnMapping.ContainsKey("Peptide.Protein"))
                 {
-                    var protein = new Protein();
-                    protein.ProteinDescription = columns[columnMapping["Peptide.Protein"]];
+                    var protein = new Protein
+                    {
+                        ProteinDescription = columns[columnMapping["Peptide.Protein"]]
+                    };
                     peptide.ProteinList.Add(protein);
                 }
                 if (columnMapping.ContainsKey("Peptide.Sequence"))

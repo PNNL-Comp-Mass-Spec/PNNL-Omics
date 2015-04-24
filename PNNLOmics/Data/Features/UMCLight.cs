@@ -58,12 +58,17 @@ namespace PNNLOmics.Data.Features
             DriftTime                          = feature.DriftTime;
             GroupId                            = feature.GroupId; 
             Id                                 = feature.Id;
+            IdentifiedSpectraCount             = feature.IdentifiedSpectraCount;
+            Index                              = feature.Index;
             MassMonoisotopic                   = feature.MassMonoisotopic;
             MassMonoisotopicAligned            = feature.MassMonoisotopicAligned;
+            MeanChargeStateRsquared            = feature.MeanChargeStateRsquared;
+            MeanIsotopicRsquared               = feature.MeanIsotopicRsquared;
+            MinimumCentroidDistance            = feature.MinimumCentroidDistance;
+            MsMsCount                          = feature.MsMsCount;
             Mz                                 = feature.Mz;
             Net                                = feature.Net;
             NetAligned                         = feature.NetAligned;
-            Net                                = feature.Net;
             SaturatedMemberCount               = feature.SaturatedMemberCount ;
             Scan                               = feature.Scan;
             ScanAligned                        = feature.ScanAligned;
@@ -72,8 +77,8 @@ namespace PNNLOmics.Data.Features
             Score                              = feature.Score;
             SpectralCount                      = feature.SpectralCount;
             Tightness                          = feature.Tightness;
-            MsMsCount                          = feature.MsMsCount;
-
+            // UmcCluster                      = feature.UmcCluster;
+            
             // Charge state and Isotopic Chromatograms
             ChargeStateChromatograms           = new Dictionary<int, Chromatogram>();    
             IsotopeChromatograms               = new Dictionary<int, List<Chromatogram>>();
