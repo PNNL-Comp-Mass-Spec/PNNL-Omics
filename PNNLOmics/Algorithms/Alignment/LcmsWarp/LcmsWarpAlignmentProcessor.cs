@@ -230,6 +230,9 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             for (var index = 0; index < numPts; index++)
             {
+                // Note: We are using ScanStart for the NET of the feature
+                // This is to void odd effects from broad or tailing LC-MS features
+
                 var mtFeature = new UMCLight
                 {
                     MassMonoisotopic = features[index].MassMonoisotopic,
