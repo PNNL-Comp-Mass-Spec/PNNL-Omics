@@ -30,7 +30,7 @@ namespace PNNLOmicsIO.IO
             var readLine = textReader.ReadLine();
             if (readLine == null) return columnMap;
 
-            var columnTitles = readLine.Split('\t', '\n');
+            var columnTitles = readLine.Split(',', '\n');
             var numOfColumns = columnTitles.Length;
 
             for (var i = 0; i < numOfColumns; i++)
@@ -74,15 +74,15 @@ namespace PNNLOmicsIO.IO
 
             while ((line = textReader.ReadLine()) != null)
             {
-                var columns = line.Split(new[] { Delimeter }, 0, StringSplitOptions.RemoveEmptyEntries);
+                var columns = line.Split(new[] { Delimeter }, StringSplitOptions.RemoveEmptyEntries);
                 var scan = new ScanSummary();
 
                 if (columnMapping.ContainsKey(SCAN_NUMBER)) scan.Scan = int.Parse(columns[columnMapping[SCAN_NUMBER]]);
                 if (columnMapping.ContainsKey(SCAN_TIME)) scan.Time = double.Parse(columns[columnMapping[SCAN_TIME]]);
                 if (columnMapping.ContainsKey(TYPE)) scan.MsLevel = int.Parse(columns[columnMapping[TYPE]]);
-                if (columnMapping.ContainsKey(BPI)) scan.Bpi = long.Parse(columns[columnMapping[BPI]]);
-                if (columnMapping.ContainsKey(BPI_MZ)) scan.BpiMz = int.Parse(columns[columnMapping[BPI_MZ]]);
-                if (columnMapping.ContainsKey(TIC)) scan.TotalIonCurrent = long.Parse(columns[columnMapping[TIC]]);
+                if (columnMapping.ContainsKey(BPI)) scan.Bpi = double.Parse(columns[columnMapping[BPI]]);
+                if (columnMapping.ContainsKey(BPI_MZ)) scan.BpiMz = double.Parse(columns[columnMapping[BPI_MZ]]);
+                if (columnMapping.ContainsKey(TIC)) scan.TotalIonCurrent = double.Parse(columns[columnMapping[TIC]]);
                 if (columnMapping.ContainsKey(NUM_PEAKS)) scan.NumberOfPeaks = int.Parse(columns[columnMapping[NUM_PEAKS]]);
                 if (columnMapping.ContainsKey(NUM_DEISOTOPED)) scan.NumberOfDeisotoped = int.Parse(columns[columnMapping[NUM_DEISOTOPED]]);
 

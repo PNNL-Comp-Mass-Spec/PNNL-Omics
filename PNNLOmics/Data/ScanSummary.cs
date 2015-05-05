@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets or sets the base peak intensity
         /// </summary>
-        public long Bpi
+        public double Bpi
         {
             get;
             set;
@@ -58,7 +58,7 @@
         /// <summary>
         /// Gets or sets the total ion current of the scan.
         /// </summary>
-        public long TotalIonCurrent
+        public double TotalIonCurrent
         {
             get;
             set;
