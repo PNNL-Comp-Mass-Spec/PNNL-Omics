@@ -30,7 +30,14 @@ namespace PNNLOmicsIO.IO
             var readLine = textReader.ReadLine();
             if (readLine == null) return columnMap;
 
-            var columnTitles = readLine.Split(',', '\n');
+            string[] columnTitles;
+
+            // Check for a null delimiter
+            if (Delimiter == char.MinValue)
+                columnTitles = readLine.Split(',', '\t');
+            else
+                columnTitles = readLine.Split(Delimiter);
+           
             var numOfColumns = columnTitles.Length;
 
             for (var i = 0; i < numOfColumns; i++)
@@ -72,9 +79,17 @@ namespace PNNLOmicsIO.IO
             var scans = new List<ScanSummary>();
             string line;
 
+            char[] delimiters;
+
+            // Check for a null delimiter
+            if (Delimiter == char.MinValue)
+                delimiters = new[] {',', '\t'};
+            else
+                delimiters = new[] { Delimiter };
+
             while ((line = textReader.ReadLine()) != null)
             {
-                var columns = line.Split(new[] { Delimeter }, StringSplitOptions.RemoveEmptyEntries);
+                var columns = line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                 var scan = new ScanSummary();
 
                 if (columnMapping.ContainsKey(SCAN_NUMBER)) scan.Scan = int.Parse(columns[columnMapping[SCAN_NUMBER]]);

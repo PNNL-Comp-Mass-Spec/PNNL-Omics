@@ -14,7 +14,6 @@ namespace PNNLOmicsIO.IO
         /// Creates a MGF file based on the spectra provided.
         /// </summary>
         /// <param name="path"></param>
-        /// <param name="msmsFeatures"></param>
         public List<MSSpectra> Read(string path)
         {
             var lines  = File.ReadAllLines(path);
@@ -22,7 +21,7 @@ namespace PNNLOmicsIO.IO
 
             var spectra   = new List<MSSpectra>();
             MSSpectra currentSpectrum = null;
-            var delimeter       = new[] {" "};
+            var delimiter       = new[] {" "};
 
             for(var i = 0; i < lines.Length; i++)
             {
@@ -49,7 +48,7 @@ namespace PNNLOmicsIO.IO
 
                 if (mode == 1)
                 {
-                    var data = line.Split(delimeter,
+                    var data = line.Split(delimiter,
                                                 StringSplitOptions.RemoveEmptyEntries);
 
                     if (data.Length < 2)

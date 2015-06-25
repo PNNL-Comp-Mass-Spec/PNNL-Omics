@@ -106,7 +106,7 @@ namespace PNNLOmicsIO.IO
 
             while ((line = textReader.ReadLine()) != null)
             {
-                var columns = line.Split(new[] { Delimeter }, 0, StringSplitOptions.RemoveEmptyEntries);
+                var columns = line.Split(new[] { Delimiter }, 0, StringSplitOptions.RemoveEmptyEntries);
                 var feature = new MSFeatureLight
                 {
                     Id = currentId

@@ -8,24 +8,38 @@ namespace PNNLOmicsIO.IO
 	public abstract class BaseTextFileReader<T> : ITextFileReader<T>
 	{
         /// <summary>
-        /// Default file delimeter.
+        /// Default file delimiter.
         /// </summary>
-        private const string DEFAULT_DELIMETER = ",";
+        private const char DEFAULT_DELIMITER = ',';
 	    protected BaseTextFileReader()
 		{
-            Delimeter = DEFAULT_DELIMETER;
+            Delimiter = DEFAULT_DELIMITER;
 		}
 
         #region Properties
+
         /// <summary>
-        /// Gets or sets the file reading delimeter.
+        /// Gets or sets the file reading delimiter.
         /// </summary>
         [UsedImplicitly]
+	    public char Delimiter { get; set; }
+
+	    /// <summary>
+        /// Gets or sets the file reading delimiter.
+        /// </summary>
+        [ObsoleteAttribute("Old spelling; use Delimiter")]
         public string Delimeter
         {
-            get;
-            set;
+	        get { return Delimiter.ToString(); }
+	        set
+	        {
+	            if (string.IsNullOrEmpty(value))
+	                throw new ArgumentOutOfRangeException(value, "Column delimiter cannot be empty");
+
+                Delimiter = value[0]; 
+            }
         }
+
         #endregion
 
         /// <summary>
