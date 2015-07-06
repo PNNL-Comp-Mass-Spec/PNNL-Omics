@@ -1,11 +1,10 @@
 #region
 
 using System;
-using PNNLOmicsViz.Drawing;
 
 #endregion
 
-namespace MultiAlignCore.Drawing
+namespace PNNLOmicsViz.Drawing
 {
     public static class HeatmapFactory
     {

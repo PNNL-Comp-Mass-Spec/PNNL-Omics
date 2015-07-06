@@ -6,7 +6,7 @@ using OxyPlot;
 
 #endregion
 
-namespace MultiAlign.ViewModels.Charting
+namespace PNNLOmicsViz.Drawing
 {
     public class MarkerTypeIterator
     {
