@@ -9,4 +9,4 @@ SVN_Path.txt
 */*/obj/
 *.suo
 *.DotSettings.user
-packages/*/
+packages/
