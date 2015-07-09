@@ -10,6 +10,11 @@ namespace PNNLOmics.Algorithms.FeatureClustering
             InstrumentTolerances = instrumentTolerances;
         }
 
+        public LcmsClusteringOptions()
+        {
+            InstrumentTolerances = new FeatureTolerances();
+        }
+
         public bool                          ShouldSeparateCharge { get; set; }
         public DistanceMetric                DistanceFunction { get; set; }
         public LcmsFeatureClusteringAlgorithmType       LcmsFeatureClusteringAlgorithm { get; set; }
