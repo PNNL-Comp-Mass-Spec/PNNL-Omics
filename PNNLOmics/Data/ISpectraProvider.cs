@@ -77,10 +77,24 @@ namespace PNNLOmics.Data
         ScanSummary GetScanSummary(int scan, int group);
 
         /// <summary>
-        /// Gets the total number ofscans
+        /// Gets the total number of scans
         /// </summary>
         /// <param name="group">Group (or dataset) provider</param>
         /// <returns>Total scans for that dataset.</returns>
         int GetTotalScans(int group);
+
+        /// <summary>
+        /// Gets the lowest scan number
+        /// </summary>
+        /// <param name="group">Group (or dataset) provider</param>
+        /// <returns>Lowest scan number for that dataset</returns>
+        int GetMinScan(int group);
+
+        /// <summary>
+        /// Gets the highest scan number
+        /// </summary>
+        /// <param name="group">Group (or dataset) provider</param>
+        /// <returns>Highest scan number for that dataset</returns>
+        int GetMaxScan(int group);
     }
 }

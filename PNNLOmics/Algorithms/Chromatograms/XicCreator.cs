@@ -66,7 +66,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
             if (features.Count <= 0)
                 throw new Exception("No features were available to create XIC's from");
 
-            var minScan = Math.Max(0, features.Min(x => x.Scan - ScanWindowSize));
+            var minScan = Math.Max(1, features.Min(x => x.Scan - ScanWindowSize));
             var maxScan = features.Max(x => x.Scan + ScanWindowSize);
 
             OnProgress("Sorting features for optimized scan partitioning");
@@ -96,7 +96,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
 
 
             // Iterate over all the scans...
-            for (var currentScan = minScan; currentScan < maxScan && currentScan < totalScans; currentScan++)
+            for (var currentScan = minScan; currentScan < maxScan && currentScan <= totalScans; currentScan++)
             {
                 // Find any features that need data from this scan 
                 var featureIndex = 0;
@@ -182,14 +182,15 @@ namespace PNNLOmics.Algorithms.Chromatograms
                     var higher = xic.HighMz;
 
                     var startIndex = Array.BinarySearch(mzList, lower);
+                    // A bitwise complement of the index, so use the bitwise complement
                     if (startIndex < 0)
-                        startIndex = startIndex * -1 + 0;
+                        startIndex = ~startIndex;
 
                     double summedIntensity = 0;
 
-                    if (mzList[startIndex] < lower)
+                    if (startIndex < mzList.Count() && mzList[startIndex] < lower)
                     {
-                        // All data in the list is ligher than lower; nothing to sum
+                        // All data in the list is lighter than lower; nothing to sum
                     }
                     else
                     {
