@@ -115,10 +115,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 }
                 SolverReport worked = null;
                 Console.WriteLine();
+                var showDetails = false;
 
                 try
                 {
-                    worked = EvaluateFunction(xic.x, xic.y, basisFunction, ref coefficients);
+                    worked = EvaluateFunction(xic.x, xic.y, basisFunction, ref coefficients, showDetails);
 
                 }
                 catch (Exception)
@@ -194,9 +195,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
+        [Ignore("Slow test")]
         [Test]
         [TestCase(@"annotatedXicDatabase.xic", BasisFunctionsEnum.Gaussian)]
         [Description("Fits the XIC's for testing .")]
@@ -220,16 +219,21 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 Console.WriteLine("Xic {0}", xic.id);
                 Console.WriteLine();
 
-                for (var i = 0; i < xic.x.Count; i++)
+                if (mShowDetails)
                 {
-                    Console.WriteLine("{0}\t{1}", xic.x[i], xic.y[i]);
+                    for (var i = 0; i < xic.x.Count; i++)
+                    {
+                        Console.WriteLine("{0}\t{1}", xic.x[i], xic.y[i]);
+                    }
                 }
+
                 SolverReport worked = null;
                 Console.WriteLine();
+                var showDetails = false;
 
                 try
                 {
-                    worked = EvaluateFunction(xic.x, xic.y, basisFunction, ref coefficients);
+                    worked = EvaluateFunction(xic.x, xic.y, basisFunction, ref coefficients, showDetails);
 
                 }
                 catch (Exception)
@@ -266,7 +270,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
                     newXic.x.Add(x);
                     newXic.y.Add(y);
-                    Console.WriteLine("{0}\t{1}", x, y);
+
+                    if (mShowDetails)
+                    {
+                        Console.WriteLine("{0}\t{1}", x, y);
+                    }
                 }
                 Console.WriteLine();
 

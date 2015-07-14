@@ -23,7 +23,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             var functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Chebyshev);
             var coeffs     = functionSelector.Coefficients;
-            var report = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            
+            var showDetails = false;
+            var report = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             // Make sure it converged.
             Assert.IsTrue(report.DidConverge);
@@ -49,7 +51,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             var functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Linear);
             var coeffs = functionSelector.Coefficients;
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(5, coeffs[0], .0001);
             Assert.AreEqual(0, coeffs[1], .0001);
@@ -96,7 +100,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             var functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.PolynomialQuadratic);
             var coeffs = functionSelector.Coefficients;
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(-0.99999999960388553d, coeffs[0], .000001);
             Assert.AreEqual(2.410211171560969E-10d, coeffs[1], .000001);
@@ -142,7 +148,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coeffs[0] = 30;//hanningI
             coeffs[1] = 5;//hanningK
             coeffs[2] = 1234.388251;//xoffset
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(Math.Round(30.521054724721569d, 7), Math.Round(coeffs[0], 7), .00001);
             Assert.AreEqual(Math.Round(37.723968728457208d, 6), Math.Round(coeffs[1], 6), .00001);
@@ -167,8 +175,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coeffs[0] = 5;//hanningI
             coeffs[1] = 80000;//hanningK
             coeffs[2] = 1234.388251;//xoffset
-
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(0.014591732782157337d, coeffs[0], .001);
             Assert.AreEqual(41816.913857810927d, coeffs[1], .001);
@@ -189,7 +198,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             var functionChoise = BasisFunctionsEnum.PolynomialCubic;
             var functionSelector = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
             var coeffs = functionSelector.Coefficients;
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(-0.9999999999984106d, coeffs[0], .00001);
             Assert.AreEqual(5.0000000000444658d, coeffs[1], .00001);
@@ -212,8 +223,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             var functionSelector = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
             var coeffs = functionSelector.Coefficients;
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
-
+            
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
 
             //Assert.AreEqual(-0.9999999999984106d, coeffs[0]);
@@ -240,9 +252,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             coeffs[0] = 6;//width
             coeffs[1] = 50;//height
-            coeffs[2] = -1;//xoffset            
-            
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            coeffs[2] = -1;//xoffset   
+         
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(0.50000000000535016d, coeffs[0], .00001);//real is 0.5. 
             Assert.AreEqual(150.00000000174555d, coeffs[1], .00001);//real is 75
@@ -274,8 +287,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coeffs[0] = 6;//sigma
             coeffs[1] = 50;//height
             coeffs[2] = -1;//xoffset            
-            
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(0.50000000014842283d, Math.Abs(coeffs[0]), .00001);//real is 0.5.  may return a negative value
             Assert.AreEqual(99.999999955476071d, coeffs[1], .00001);//real is 100
@@ -301,9 +314,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             coeffs[0] = 2;//sigma
             coeffs[1] = 7375230.5281385286;//height
-            coeffs[2] = 1080;//xoffset            
-
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+            coeffs[2] = 1080;//xoffset
+        
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(15.307150768556957d, Math.Abs(coeffs[0]), .01);//real is 
             Assert.AreEqual(5839780.76391418d, coeffs[1], 100);//real is 
@@ -321,7 +335,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 coeffs[1] = 7375230.5281385286; //height
                 coeffs[2] = 1102; //xoffset            
 
-                var workedPoorChoiseOfX = EvaluateFunction(x, y, functionSelectorPoorChoice, ref coeffs);
+                var workedPoorChoiseOfX = EvaluateFunction(x, y, functionSelectorPoorChoice, ref coeffs, showDetails);
 
                 Assert.AreEqual(15.307150768556957d, Math.Abs(coeffs[0]), .01); //real is 
                 Assert.AreEqual(5839780.76391418d, coeffs[1], 100); //real is 
@@ -342,7 +356,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             var functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.PolynomialQuadratic);
             var coeffs = functionSelector.Coefficients;
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             Assert.AreEqual(-0.99999999959999375d, coeffs[0], .00001);
             Assert.AreEqual(2.4338897338076459E-10d, coeffs[1], .00001);
@@ -363,7 +379,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
             var functionSelector = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.Gaussian);
             var coeffs = functionSelector.Coefficients;
-            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs);
+
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, functionSelector, ref coeffs, showDetails);
 
             //sigma must be positive
             Assert.AreEqual(0.50000000014842283d, Math.Abs(coeffs[0]), .00001);//real is 0.5.  may return a negative value
@@ -389,10 +407,14 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             var A = y.Max();
 
 
-            for (var i = 0; i < x.Count; i++)
+            if (mShowDetails)
             {
-                Console.WriteLine("{0}\t{1}", x[i], y[i]);
+                for (var i = 0; i < x.Count; i++)
+                {
+                    Console.WriteLine("{0}\t{1}", x[i], y[i]);
+                }
             }
+
             Console.WriteLine();
 
             var basisFunction     = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.AsymmetricGaussian);
@@ -401,8 +423,9 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             coefficients[1]                     = A;
             coefficients[2]                     = width*.9;
             coefficients[3]                     = coefficients[2];
-            
-            var worked                 = EvaluateFunction(x, y, basisFunction, ref coefficients);
+
+            var showDetails = false;
+            var worked = EvaluateFunction(x, y, basisFunction, ref coefficients, showDetails);
             var numberOfSamples = x.Count * 2;
 
             // Calculate the width an spacing of each of the trapezoids.
@@ -415,7 +438,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 xx += delta;
                 var yy = basisFunction.Evaluate(coefficients, xx);
 
-                Console.WriteLine("{0}\t{1}", xx, yy);
+                if (mShowDetails)
+                {
+                    Console.WriteLine("{0}\t{1}", xx, yy);
+                }
             }
 
         }

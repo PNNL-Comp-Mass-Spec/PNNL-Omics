@@ -11,6 +11,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
     /// </summary>
     public abstract class SolverTestBase
     {
+        protected bool mShowDetails = false;
+
         /// <summary>
         /// 
         /// </summary>
@@ -19,8 +21,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         /// <param name="initialCoefficients"></param>
         /// <param name="functionChoise"></param>
         /// <returns></returns>
-        protected SolverReport EvaluateFunction(List<double> x, List<double> y, BasisFunctionBase basisFunction, ref double[] coeffs)
+        protected SolverReport EvaluateFunction(List<double> x, List<double> y, BasisFunctionBase basisFunction, ref double[] coeffs, bool showDetails)
         {
+            mShowDetails = showDetails;
+
             coeffs = basisFunction.Coefficients;
             basisFunction.Scale(x);
             

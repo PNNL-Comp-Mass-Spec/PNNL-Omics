@@ -144,7 +144,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             prims.Parameters.Tolerances.DriftTime       = .3;
             prims.Parameters.Tolerances.Mass            = 15;
             prims.Parameters.Tolerances.Net   = .02;
-            prims.DumpLinearRelationship                = true;
+            prims.DumpLinearRelationship                = false;
 
             var distance = new WeightedEuclideanDistance<UMCLight>();
             prims.Parameters.DistanceFunction   = distance.EuclideanDistance;
@@ -153,21 +153,33 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
 
             Console.WriteLine();
             Console.WriteLine("Clusters = {0}", clusters.Count);
+
             var id = 1;
             foreach (var testCluster in clusters)
             {
                 testCluster.CalculateStatistics(ClusterCentroidRepresentation.Mean);
 
-
                 var distances = new List<double>();
+
+                // Show a sampling of 15 results
+                var threshold = (int)(testCluster.Features.Count / (double)15);
+                if (threshold < 1)
+                    threshold = 1;
+
                 testCluster.Id = id++;
+                var featureID = 0;
+
                 foreach (var feature in testCluster.Features)
                 {
-                    Console.WriteLine("{0},{1},{2},{3}",
-                                                                feature.Net,                                                
-                                                                feature.MassMonoisotopicAligned,
-                                                                feature.DriftTime,
-                                                                testCluster.Id);
+                    featureID++;
+                    if (featureID % threshold == 0)
+                    {
+                        Console.WriteLine("{0},{1},{2},{3}",
+                                          feature.Net,
+                                          feature.MassMonoisotopicAligned,
+                                          feature.DriftTime,
+                                          testCluster.Id);
+                    }
 
                     var newDistance = distance.EuclideanDistance(feature, testCluster);
                     distances.Add(newDistance);
