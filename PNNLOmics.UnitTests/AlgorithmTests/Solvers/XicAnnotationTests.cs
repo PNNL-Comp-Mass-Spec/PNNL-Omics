@@ -195,7 +195,6 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         }
 
 
-        [Ignore("Slow test")]
         [Test]
         [TestCase(@"annotatedXicDatabase.xic", BasisFunctionsEnum.Gaussian)]
         [Description("Fits the XIC's for testing .")]
@@ -276,7 +275,8 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                         Console.WriteLine("{0}\t{1}", x, y);
                     }
                 }
-                Console.WriteLine();
+                if (mShowDetails)
+                    Console.WriteLine();
 
                 newData.Add(newXic);
             }

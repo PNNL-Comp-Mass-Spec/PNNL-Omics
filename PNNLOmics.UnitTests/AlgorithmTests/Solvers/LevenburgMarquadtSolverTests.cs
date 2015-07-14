@@ -413,9 +413,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 {
                     Console.WriteLine("{0}\t{1}", x[i], y[i]);
                 }
-            }
 
-            Console.WriteLine();
+                Console.WriteLine();
+            }
+           
 
             var basisFunction     = BasisFunctionFactory.BasisFunctionSelector(BasisFunctionsEnum.AsymmetricGaussian);
             var coefficients               = basisFunction.Coefficients;

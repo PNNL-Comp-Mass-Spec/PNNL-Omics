@@ -55,7 +55,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
             Console.WriteLine("");
             Console.WriteLine("Samples\tTime(ms)\tArea\tPercentError");
 
-            for (var i = 0; i < 100; i++)
+            for (var i = 1; i < 10; i++)
             {
                 var averageTimes   = new List<double>();
                 double sum                  = 0;

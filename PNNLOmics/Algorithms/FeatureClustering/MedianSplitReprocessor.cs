@@ -229,9 +229,9 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 //Console.WriteLine("Mass Difference");
                 //DisplayDistance(massDistances);
 
-                Console.WriteLine();
-                Console.WriteLine("NET Difference");
-                DisplayDistance(netDistances);
+                //Console.WriteLine();
+                //Console.WriteLine("NET Difference");
+                //DisplayDistance(netDistances);
 
                 //Console.WriteLine();
                 //Console.WriteLine("Drift Time Difference");

@@ -79,14 +79,26 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.FeatureClustering
             {
                 testCluster.CalculateStatistics(ClusterCentroidRepresentation.Mean);
                 var distances = new List<double>();
+
+                // Show a sampling of 5 results
+                var threshold = (int)(testCluster.Features.Count / (double)5);
+                if (threshold < 1)
+                    threshold = 1;
+
                 testCluster.Id = id++;
+                var featureID = 0;
+
                 foreach (var feature in testCluster.Features)
                 {
-                    Console.WriteLine("{0},{1},{2},{3}",
-                                                                feature.Net,
-                                                                feature.MassMonoisotopicAligned,
-                                                                feature.DriftTime,
-                                                                testCluster.Id);
+                    featureID++;
+                    if (featureID % threshold == 0)
+                    {
+                        Console.WriteLine("{0},{1},{2},{3}",
+                                          feature.Net,
+                                          feature.MassMonoisotopicAligned,
+                                          feature.DriftTime,
+                                          testCluster.Id);
+                    }
 
                     var newDistance = distance.EuclideanDistance(feature, testCluster);
                     distances.Add(newDistance);

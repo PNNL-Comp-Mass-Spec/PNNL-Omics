@@ -50,7 +50,10 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 //quadSolver2.FunctionDelegate(coeffs, new double[] { xValue }, ref fitValue, null);
                 myDelegate.Invoke(coeffs, new[] { xValue }, ref fitValue, null);
             }         
-            Console.WriteLine(Environment.NewLine);
+
+            if (mShowDetails)
+                Console.WriteLine(Environment.NewLine);
+
             return worked;
         }
 
