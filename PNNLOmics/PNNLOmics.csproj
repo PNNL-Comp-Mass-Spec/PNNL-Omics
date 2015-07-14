@@ -329,6 +329,7 @@
     <Compile Include="Data\XYData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\MassTags\Protein.cs" />
+    <Compile Include="Utilities\StringUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="PNNLOmicsElementData.xml">
