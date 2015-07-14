@@ -32,7 +32,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 //
-// Use Versioning Controlled Build add-in for Visual Studio to auto-increment these using Microsoft's numbering scheme
-// http://www.codeproject.com/Articles/5851/Versioning-Controlled-Build#InstallationNotes
-[assembly: AssemblyVersion("1.1.5385.41078")]
-[assembly: AssemblyFileVersion("1.1.5385.41078")]
+[assembly: AssemblyVersion("1.1.*")]
+
