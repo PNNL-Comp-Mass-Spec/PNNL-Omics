@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 
 namespace PNNLOmics.Utilities
 {
     public class StringUtilities
     {
-        private static byte mFormatStringPrecision = 1;
-        private static string mFormatString = "0.0";
+        /// <summary>
+        /// Dictionary that tracks the format string used for each digitsOfPrecision value
+        /// </summary>
+        private static readonly ConcurrentDictionary<byte, string> mFormatStrings = new ConcurrentDictionary<byte, string>();
 
         /// <summary>
         /// Format the value to a string with a fixed number of decimal points
@@ -29,22 +32,23 @@ namespace PNNLOmics.Utilities
                 return value.ToString("0");
             }
 
-            if (digitsOfPrecision == mFormatStringPrecision)
+            string formatString;
+            if (mFormatStrings.TryGetValue(digitsOfPrecision, out formatString))
             {
-                return value.ToString(mFormatString);
+                return value.ToString(formatString);
             }
 
-            mFormatString = "0.0";
+            formatString = "0.0";
 
             if (digitsOfPrecision > 1)
             {
                 // Update format string to be of the form "0.0#######"
-                mFormatString += new string('#', digitsOfPrecision - 1);
+                formatString += new string('#', digitsOfPrecision - 1);
             }
 
-            mFormatStringPrecision = digitsOfPrecision;
+            mFormatStrings.TryAdd(digitsOfPrecision, formatString);
 
-            return value.ToString(mFormatString);
+            return value.ToString(formatString);
         }
 
     }
