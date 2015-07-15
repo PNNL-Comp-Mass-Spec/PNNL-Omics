@@ -46,8 +46,15 @@ namespace PNNLOmics.Utilities
                 formatString += new string('#', digitsOfPrecision - 1);
             }
 
-            mFormatStrings.TryAdd(digitsOfPrecision, formatString);
-
+            try
+            {
+                mFormatStrings.TryAdd(digitsOfPrecision, formatString);
+            }
+            catch
+            {
+                // Ignore errors here
+            }
+            
             return value.ToString(formatString);
         }
 
