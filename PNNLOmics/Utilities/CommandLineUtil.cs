@@ -126,20 +126,30 @@ namespace PNNLOmics.Utilities
                         key = key.Substring(1);
                     }
 
-                    m_ParameterValueMap.Add(key, value);
+                    if (m_ParameterValueMap.ContainsKey(key))
+                    {
+                        Console.WriteLine("Ignoring duplicate switch, " + parameter);
+                    }
+                    else
+                    {
+                        m_ParameterValueMap.Add(key, value);
+                    }
                 }
                 else
                 {
-                    m_nonSwitchParameters.Add(key.Trim('"'));
+                    if (m_ParameterValueMap.ContainsKey(key))
+                    {
+                        Console.WriteLine("Ignoring duplicate switch, " + parameter);
+                    }
+                    else
+                    {
+                        m_nonSwitchParameters.Add(key.Trim('"'));
+                    }
+
                 }
             }
 
-            if (m_ParameterValueMap.Count + m_nonSwitchParameters.Count > 0)
-            {
-                return true;
-            }
-
-            return false;
+            return m_ParameterValueMap.Count + m_nonSwitchParameters.Count > 0;
         }
 
         /// <summary>
