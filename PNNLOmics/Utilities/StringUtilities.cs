@@ -55,7 +55,7 @@ namespace PNNLOmics.Utilities
             string formatString;
             if (mFormatStrings.TryGetValue(effectiveDigitsAfterDecimal, out formatString))
             {
-                return value.ToString(formatString);
+                return value.ToString(formatString, invariantCulture ? NumberFormatInfo.InvariantInfo : NumberFormatInfo.CurrentInfo);
             }
 
             formatString = "0.0";
