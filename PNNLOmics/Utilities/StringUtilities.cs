@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Globalization;
 
 namespace PNNLOmics.Utilities
 {
@@ -16,9 +17,10 @@ namespace PNNLOmics.Utilities
         /// <param name="value">Value to format</param>
         /// <param name="digitsAfterDecimal">Digits to show after the decimal place (0 or higher)</param>
         /// <param name="limitDecimalsForLargeValues">When true, will limit the number of decimal points shown for values over 1</param>
+        /// <param name="invariantCulture">When true (default) numbers will always use a period for the decimal point</param>
         /// <returns>String representation of the value</returns>
         /// <remarks>If digitsOfPrecision is 0, will round the number to the nearest integer</remarks>
-        public static string DblToString(double value, byte digitsAfterDecimal, bool limitDecimalsForLargeValues = false)
+        public static string DblToString(double value, byte digitsAfterDecimal, bool limitDecimalsForLargeValues = false, bool invariantCulture = true)
         {
             if (Math.Abs(value) < float.Epsilon)
                 return "0";
@@ -72,8 +74,8 @@ namespace PNNLOmics.Utilities
             {
                 // Ignore errors here
             }
-            
-            return value.ToString(formatString);
+
+            return value.ToString(formatString, invariantCulture ? NumberFormatInfo.InvariantInfo : NumberFormatInfo.CurrentInfo);
         }
 
     }
