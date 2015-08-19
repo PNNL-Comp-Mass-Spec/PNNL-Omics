@@ -132,7 +132,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
                 {
                     // If it is an MS 2 spectra... then let's link it to the parent MS
                     // Feature
-                    var matching = parentMsList.FindAll(
+                    var matching = parentMsList.Where(
                         x => Math.Abs(x.Mz - summary.PrecursorMz) <= FragmentationSizeWindow
                         );
 

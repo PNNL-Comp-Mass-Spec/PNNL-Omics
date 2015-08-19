@@ -233,7 +233,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 return features;
 
             //Filters features below the threshold
-            var filteredFeatures = features.FindAll(feature => feature.AbundanceSum >= threshhold);
+            var filteredFeatures = features.Where(feature => feature.AbundanceSum >= threshhold);
             return filteredFeatures;
         }
     }

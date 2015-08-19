@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PNNLOmics.Algorithms.SpectralComparisons;
 using PNNLOmics.Data;
 using PNNLOmics.Data.Constants.Libraries;
@@ -312,11 +313,8 @@ namespace PNNLOmics.Algorithms.FeatureClustering
                 clusters.AddRange(data);
             }
             UpdateStatus("Finished clustering.");
-            var passingClusters = clusters.FindAll(delegate(MsmsCluster cluster)
-                                                                    {
-                                                                        return (cluster.Features.Count >= MinimumClusterSize);
-                                                                    });
-            return passingClusters;
+            var passingClusters = clusters.Where(cluster => cluster.Features.Count >= MinimumClusterSize);
+            return passingClusters.ToList();
         }
     }
 }

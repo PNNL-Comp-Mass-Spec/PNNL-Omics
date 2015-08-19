@@ -14,7 +14,7 @@ namespace PNNLOmics.Data.Features
 
 
             // Scan Length
-            var newFeatures = features.FindAll(delegate(T x)
+            var newFeatures = features.Where(delegate(T x)
             {
                 var size = Math.Abs(x.ScanStart - x.ScanEnd);
                 return size >= minimumSize && size <= maximumSize;
@@ -31,7 +31,7 @@ namespace PNNLOmics.Data.Features
 
 
             // Scan Length
-            var newFeatures = features.FindAll(delegate(T x)
+            var newFeatures = features.Where(delegate(T x)
             {
                 try
                 {
@@ -69,35 +69,34 @@ namespace PNNLOmics.Data.Features
             var minimumCharge = options.ChargeRange.Minimum;
             var maximumCharge = options.ChargeRange.Maximum;
 
-            var filteredMsFeatures = new List<MSFeatureLight>();
-            filteredMsFeatures.AddRange(features);
+            var filteredMsFeatures = features;
 
             if (options.ShouldUseDeisotopingFilter)
             {
                 filteredMsFeatures =
-                    filteredMsFeatures.FindAll(msFeature => msFeature.Score <= options.MinimumDeisotopingScore);
+                    filteredMsFeatures.Where(msFeature => msFeature.Score <= options.MinimumDeisotopingScore);
             }
 
             if (options.ShouldUseIntensityFilter)
             {
                 filteredMsFeatures =
-                    filteredMsFeatures.FindAll(msFeature => msFeature.Abundance >= options.MinimumIntensity);
+                    filteredMsFeatures.Where(msFeature => msFeature.Abundance >= options.MinimumIntensity);
             }
 
             if (options.ShouldUseMzFilter)
             {
                 filteredMsFeatures =
-                    filteredMsFeatures.FindAll(msFeature => msFeature.Mz >= minimumMz && msFeature.Mz <= maximumMz);
+                    filteredMsFeatures.Where(msFeature => msFeature.Mz >= minimumMz && msFeature.Mz <= maximumMz);
             }
 
             if (options.ShouldUseChargeFilter)
             {
                 filteredMsFeatures =
-                   filteredMsFeatures.FindAll(msFeature => msFeature.ChargeState >= minimumCharge
+                   filteredMsFeatures.Where(msFeature => msFeature.ChargeState >= minimumCharge
                                                                 && msFeature.ChargeState <= maximumCharge);
             }
 
-            return filteredMsFeatures;
+            return filteredMsFeatures.ToList();
         }
     }
 }

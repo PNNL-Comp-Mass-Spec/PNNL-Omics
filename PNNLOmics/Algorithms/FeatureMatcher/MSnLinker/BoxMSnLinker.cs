@@ -121,12 +121,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
                         // Use the most abundant mass because it had a higher chance of being fragmented.
                         var mass = feature.Mz;
 
-                        var matching = suspectSpectra.FindAll(
-                                    delegate(MSSpectra x)
-                                    {
-                                        return Math.Abs(x.PrecursorMz - mass) <= ppmRange;                            
-                                    }
-                                    );                        
+                        var matching = suspectSpectra.Where(x => Math.Abs(x.PrecursorMz - mass) <= ppmRange);                        
 
                         // Finally link!
                         foreach (var spectrum in matching)
