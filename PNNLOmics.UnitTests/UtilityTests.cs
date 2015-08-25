@@ -189,7 +189,7 @@ namespace PNNLOmics.UnitTests
             string resultExpected,
             double thresholdScientific)
         {
-            TestValue(value, digitsAfterDecimal, resultExpected, false, thresholdScientific);
+            TestValue(value, digitsAfterDecimal, resultExpected, limitDecimalsForLargeValues: false, thresholdScientific: thresholdScientific);
         }
 
         private void TestValue(

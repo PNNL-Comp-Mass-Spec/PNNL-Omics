@@ -26,17 +26,15 @@ namespace PNNLOmics.Utilities
         /// </summary>
         /// <param name="value">Value to format</param>
         /// <param name="digitsAfterDecimal">Digits to show after the decimal place (0 or higher)</param>
-        /// <param name="limitDecimalsForLargeValues">When true, will limit the number of decimal points shown for values over 1</param>
         /// <param name="thresholdScientific">Numbers below this level will be displayed using Scientific notation</param>
         /// <returns>String representation of the value</returns>
         /// <remarks>If digitsOfPrecision is 0, will round the number to the nearest integer</remarks>
         public static string DblToString(
             double value,
             byte digitsAfterDecimal,
-            bool limitDecimalsForLargeValues = false,
-            double thresholdScientific = 0.001)
+            double thresholdScientific)
         {
-            return DblToString(value, digitsAfterDecimal, limitDecimalsForLargeValues, true, thresholdScientific);
+            return DblToString(value, digitsAfterDecimal, limitDecimalsForLargeValues: false, thresholdScientific: thresholdScientific, invariantCulture: true);
         }
 
         /// <summary>
@@ -45,16 +43,16 @@ namespace PNNLOmics.Utilities
         /// <param name="value">Value to format</param>
         /// <param name="digitsAfterDecimal">Digits to show after the decimal place (0 or higher)</param>
         /// <param name="limitDecimalsForLargeValues">When true, will limit the number of decimal points shown for values over 1</param>
-        /// <param name="invariantCulture">When true (default) numbers will always use a period for the decimal point</param>
         /// <param name="thresholdScientific">Numbers below this level will be displayed using Scientific notation</param>
+        /// <param name="invariantCulture">When true (default) numbers will always use a period for the decimal point</param>
         /// <returns>String representation of the value</returns>
         /// <remarks>If digitsOfPrecision is 0, will round the number to the nearest integer</remarks>
         public static string DblToString(
             double value,
             byte digitsAfterDecimal,
             bool limitDecimalsForLargeValues = false,
-            bool invariantCulture = true,
-            double thresholdScientific = 0.001)
+            double thresholdScientific = 0.001,
+            bool invariantCulture = true)
         {
 
             if (Math.Abs(value) < double.Epsilon)
