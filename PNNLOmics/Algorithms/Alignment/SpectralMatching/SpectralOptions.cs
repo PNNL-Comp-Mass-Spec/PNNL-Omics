@@ -1,4 +1,5 @@
-﻿using PNNLOmics.Algorithms.SpectralProcessing;
+﻿using System;
+using PNNLOmics.Algorithms.SpectralProcessing;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatches
 {
@@ -6,6 +7,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatches
     /// <summary>
     /// Options for computing spectral comparisons
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class SpectralOptions
     {
         public double MzBinSize { get; set; }

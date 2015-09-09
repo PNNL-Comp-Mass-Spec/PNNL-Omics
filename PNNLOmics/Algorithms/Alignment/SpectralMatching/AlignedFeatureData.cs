@@ -7,6 +7,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
     /// <summary>
     /// Holds data for features that were aligned.
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class AlignedFeatureData
     {
         /// <summary>

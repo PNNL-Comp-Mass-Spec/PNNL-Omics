@@ -11,6 +11,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Analyzes a set of clusters, and counts the number of times a peptide shows up in multiple or single clusters.
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class GlobalPeptideClusterScorer
     {
 

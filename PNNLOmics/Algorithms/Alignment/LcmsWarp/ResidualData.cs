@@ -1,9 +1,12 @@
+using System;
+
 namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Class to hold the residual data from the alignment process
     /// </summary>
-    public sealed class ResidualData
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public sealed class ResidualData
     {
         #region Public Properties
         /// <summary>

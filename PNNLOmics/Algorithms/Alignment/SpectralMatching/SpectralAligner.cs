@@ -10,6 +10,7 @@ using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class SpectralAligner :
         IFeatureAligner<IEnumerable<UMCLight>, IEnumerable<UMCLight>, IEnumerable<SpectralAnchorPointMatch>>,
         IFeatureAligner<MassTagDatabase, IEnumerable<UMCLight>, IEnumerable<SpectralAnchorPointMatch>>

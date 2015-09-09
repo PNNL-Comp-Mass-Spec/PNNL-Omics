@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PNNLOmics.Algorithms.Alignment.SpectralMatches;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
@@ -6,6 +7,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
     /// <summary>
     /// Holds information about each analysis window for true and false matches.
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class SpectralAnalysis
     {        
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PNNLOmics.Algorithms.Alignment.SpectralMatches;
 using PNNLOmics.Algorithms.Alignment.SpectralMatching;
 using PNNLOmics.Data;
@@ -6,6 +7,7 @@ using PNNLOmics.Utilities;
 
 namespace PNNLOmics.Algorithms.Alignment.SequenceMatching
 {
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SequenceMatching")]
     public class PeptideAnchorPointMatcher
     {
         /// <summary>

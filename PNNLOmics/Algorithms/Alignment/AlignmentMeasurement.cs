@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PNNLOmics.Algorithms.Alignment
 {
     /// <summary>
     /// Encapsulates the pre and post alignment error for a given metric
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment")]
     public sealed class AlignmentMeasurement<T>
     {
         public AlignmentMeasurement()

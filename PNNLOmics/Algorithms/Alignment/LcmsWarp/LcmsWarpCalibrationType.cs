@@ -1,9 +1,12 @@
-﻿namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
+﻿using System;
+
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Enumeration of calibration types for LCMSWarping
     /// </summary>
-    public enum LcmsWarpCalibrationType
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public enum LcmsWarpCalibrationType
     {
         /// <summary>
         /// Performs Regression based on MZ of the features

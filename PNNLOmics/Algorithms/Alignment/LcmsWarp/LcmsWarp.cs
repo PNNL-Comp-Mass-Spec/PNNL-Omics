@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using PNNLOmics.Algorithms.Statistics;
 using PNNLOmics.Data;
@@ -12,6 +11,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// <summary>
     /// Object which performs the LCMS Warping functionality
     /// </summary>
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
     public sealed class LcmsWarp
     {
         #region Private values
@@ -32,10 +32,6 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         private const int REQUIRED_MATCHES = 6;
 
         private bool m_useMass;
-        // Decides whether or not promiscuousmatches are kept in the scoring function for allignment
-        // to a MTDD. This can be used safely because MTDB will not have split UMCs but for Ms to MS
-        // alignments it is best to keep this false or all split UMCs will match to the first instance.
-        private readonly bool m_keepPromiscuousMatches;
 
         // Used to control the granularity of the MSMS section size when comparing against MS Sections.
         // The number of sectiosn in the MSMS will be # of sectiosn in MS * m_maxSectionDistortion.
@@ -88,7 +84,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public double MaxNet { get; private set; }
 
         /// <summary>
-        /// Gets or sets the LCMS Mass Tolerance
+        /// Gets or sets the LCMS Mass Tolerance (in ppm)
         /// </summary>
         public double MassTolerance { get; set; }
 
@@ -159,9 +155,19 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         public int MaxJump { private get; set; }
         
         /// <summary>
+        /// Whether or not promiscuous matches are kept in the scoring function for alignment
+        /// to a MT database. 
+        /// </summary>
+        /// <remarks>
+        /// This should be true for MTDBs because they do not have split UMCs
+        /// It should be false for MS to MS alignment, otherwise all split UMCs will match to the first instance
+        /// </remarks>
+        public bool KeepPromiscuousMatches { get; set; }
+        
+        /// <summary>
         /// AutoProperty for the number of promiscuous matches above which to filter UMC matches
         /// </summary>
-        public int MaxPromiscuousUmcMatches { private get; set; }
+        public int MaxPromiscuousUmcMatches { get; set; }
 
         /// <summary>
         /// AutoProperty for the number of "y" bins during regression
@@ -224,16 +230,18 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
             m_useMass = false;
             MassCalibrationWindow = 50;
-            MassTolerance = 20;
+            MassTolerance = 20;		// ppm
             NetTolerance = 0.02;
             
             m_netStd = 0.007;
             m_alignmentScore = null;
             m_bestPreviousIndex = null;
             MaxJump = 10;
-            m_massStd = 20;            
-            MaxPromiscuousUmcMatches = 5;
-            m_keepPromiscuousMatches = false;
+            m_massStd = 20;
+            
+            KeepPromiscuousMatches = false;
+            MaxPromiscuousUmcMatches = 3;
+
             m_bestPreviousIndex = null;
 
             CalibrationType = LcmsWarpCalibrationType.MzRegression;
@@ -695,9 +703,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                                                              ref List<double> umcDriftTimes, int minScan, int maxScan)
         {
             var numFeatures = m_features.Count;
+            var sortedFeatures = m_features.OrderBy(x => x.Id).ToList();
             for (var featureNum = 0; featureNum < numFeatures; featureNum++)
             {
-                var feature = m_features[featureNum];
+                var feature = sortedFeatures[featureNum];
                 umcIndices.Add(feature.Id);
                 umcCalibratedMasses.Add(feature.MassMonoisotopicAligned);
                 umcAlignedNets.Add(feature.NetAligned);
@@ -722,10 +731,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 
 
         /// <summary>
-        /// Function generates candidate matches between the MS and MSMS data loaded into
-        /// features and baseline features respectively.
+        /// Function generates candidate matches between m_Features and m_baselineFeatures
         /// It does so by finding all pairs of MassTimeFeature that match within a provided
         /// mass tolerance window
+        /// Elution time will be considered later
         /// </summary>
         public void GenerateCandidateMatches()
         {
@@ -763,16 +772,17 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             while (featureIndex < numFeatures)
             {
                 var feature = m_features[featureIndex];
-                var massTolerance = feature.MassMonoisotopic * MassTolerance/1000000;
+                var massToleranceDa = feature.MassMonoisotopic * MassTolerance/1000000;
 
+				// Backtrack baselineFeatureIndex while the baseline feature's mass is greater than the candidate feature's mass minus massToleranceDa
                 if (baselineFeatureIndex == numBaselineFeatures)
                 {
                     baselineFeatureIndex = numBaselineFeatures - 1;
                 }
                 var baselineFeature = m_baselineFeatures[baselineFeatureIndex];
-                while (baselineFeatureIndex >= 0 && (baselineFeature.MassMonoisotopic > feature.MassMonoisotopic - massTolerance))
+                while (baselineFeatureIndex >= 0 && (baselineFeature.MassMonoisotopic > feature.MassMonoisotopic - massToleranceDa))
                 {
-                    baselineFeatureIndex --;
+                    baselineFeatureIndex--;
                     if (baselineFeatureIndex >= 0)
                     {
                         baselineFeature = m_baselineFeatures[baselineFeatureIndex];
@@ -780,10 +790,11 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 }
                 baselineFeatureIndex++;
 
+				// Add candidate matches
                 while (baselineFeatureIndex < numBaselineFeatures &&
-                       (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic < (feature.MassMonoisotopic + massTolerance)))
+                       (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic < (feature.MassMonoisotopic + massToleranceDa)))
                 {
-                    if (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic > (feature.MassMonoisotopic - massTolerance))
+                    if (m_baselineFeatures[baselineFeatureIndex].MassMonoisotopic > (feature.MassMonoisotopic - massToleranceDa))
                     {
                         var matchToAdd = new LcmsWarpFeatureMatch
                         {
@@ -801,8 +812,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             }
 
             // Now that matches have been created, go through all the matches and find a mapping
-            // of how many times a basline feature is matched to. Puts the matches into a map from a
-            // mass tag id to a list of indexes of feature matches
+            // of how many times a baseline feature is matched to.
+            // Store the matches in a map from a mass tag id to a list of indexes of feature matches
 
             var massTagToMatches = new Dictionary<int, List<int>>();
             var numMatches = m_featureMatches.Count();
@@ -819,10 +830,10 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             }
 
             // Now go through each of the baseline features matched and for each one keep at
-            // most m_maxPromiscuousUMCMatches (or non if m_keepPromiscuousMatches is false)
-            // keeping only the first m_maxPromisuousUMCMatches by scan
+            // most MaxPromiscuousUmcMatches (or none if KeepPromiscuousMatches is false)
+            // keeping only the first MaxPromiscuousUmcMatches by scan
 
-            var tempMatches = new List<LcmsWarpFeatureMatch> {Capacity = m_featureMatches.Count};
+            var matchesToUse = new List<LcmsWarpFeatureMatch> {Capacity = m_featureMatches.Count};
             var netMatchesToIndex = new Dictionary<double, List<int>>();
 
             foreach (var matchIterator in massTagToMatches)
@@ -831,15 +842,15 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                 var numHits = massTagToMatches[baselineIndex].Count;
                 if (numHits <= MaxPromiscuousUmcMatches)
                 {
-                    // add all of these ot the temp matches
+                    // add all of these to the temp matches
                     for (var i = 0; i < numHits; i++)
                     {
                         var matchIndex = matchIterator.Value[i];
                         var match = m_featureMatches[matchIndex];
-                        tempMatches.Add(match);
+                        matchesToUse.Add(match);
                     }
                 }
-                else if (m_keepPromiscuousMatches)
+                else if (KeepPromiscuousMatches)
                 {
                     // keep the matches that have the minimum scan numbers.
                     netMatchesToIndex.Clear();
@@ -853,25 +864,26 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
                         }
                         netMatchesToIndex[m_featureMatches[matchIndex].Net].Add(matchIndex);
                     }
-                    // Now, keep only the first m_maxPromiscuousUMCMatches in the temp list
+                    
+                    // Now, keep only the first MaxPromiscuousUmcMatches in the temp list
                     //var scanMatches = netMatchesToIndex.First();
                     
                     for (var index = 0; index < MaxPromiscuousUmcMatches; index++)
                     {
                         var matchIndex = netMatchesToIndex.ElementAt(index).Value[0];
                         var match = m_featureMatches[matchIndex];
-                        tempMatches.Add(match);
+                        matchesToUse.Add(match);
                     }
                 }
             }
 
-            m_featureMatches = tempMatches;
+            m_featureMatches = matchesToUse;
         }
 
         /// <summary>
-        /// Performs Mass calibrtion, depending on calibration type, utilizing MZ
+        /// Performs Mass calibration, depending on calibration type, utilizing MZ
         /// regression, scan regression, or both (with the MZ regression preceeding
-        /// the scan regression
+        /// the scan regression)
         /// </summary>
         public void PerformMassCalibration()
         {

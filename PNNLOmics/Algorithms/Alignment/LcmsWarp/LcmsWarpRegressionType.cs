@@ -1,9 +1,12 @@
-﻿namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
+﻿using System;
+
+namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Enumeration for possible regression types for LCMS
     /// </summary>
-    public enum LcmsWarpRegressionType
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public enum LcmsWarpRegressionType
     {
         /// <summary>
         /// Performs piecewise linear regression for all of the sections

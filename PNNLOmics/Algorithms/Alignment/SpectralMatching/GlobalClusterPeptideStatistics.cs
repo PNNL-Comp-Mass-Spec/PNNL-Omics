@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PNNLOmics.Data.Features;
 
@@ -6,6 +7,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Handles tracking how many 
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public sealed class GlobalClusterPeptideStatistics
     {
         public GlobalClusterPeptideStatistics()

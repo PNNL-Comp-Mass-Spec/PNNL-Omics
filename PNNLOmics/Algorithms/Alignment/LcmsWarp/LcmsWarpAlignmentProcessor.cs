@@ -12,7 +12,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// <summary>
     /// Class which will use LCMSWarp to process alignment
     /// </summary>
-    public sealed class LcmsWarpAlignmentProcessor:
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public sealed class LcmsWarpAlignmentProcessor:
         IFeatureAligner<IEnumerable<UMCLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>,
         IFeatureAligner<MassTagDatabase, IEnumerable<UMCLight>, LcmsWarpAlignmentData>
     {
@@ -101,6 +102,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
             m_lcmsWarp.NumBaselineSections = Options.NumTimeSections * Options.ContractionFactor;
             m_lcmsWarp.NumMatchesPerBaseline = Options.ContractionFactor*Options.ContractionFactor;
             m_lcmsWarp.NumMatchesPerSection = m_lcmsWarp.NumBaselineSections * m_lcmsWarp.NumMatchesPerBaseline;
+
+            m_lcmsWarp.KeepPromiscuousMatches = Options.UsePromiscuousPoints;
             m_lcmsWarp.MaxPromiscuousUmcMatches = Options.MaxPromiscuity;
 
             // Applying options for Mass Calibration

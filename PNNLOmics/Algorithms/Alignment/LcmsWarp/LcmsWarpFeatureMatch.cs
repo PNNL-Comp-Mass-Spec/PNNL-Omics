@@ -7,7 +7,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// Contains the feature index, baseline index, feature normalized elution time,
     /// baseline normalized elution time and the error for the mass, the net and the drift time
     /// </summary>
-    public class LcmsWarpFeatureMatch: IComparable<LcmsWarpFeatureMatch>
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public class LcmsWarpFeatureMatch: IComparable<LcmsWarpFeatureMatch>
     {
         /// <summary>
         /// Constructor, initializes the testing values to -1 to ensure ability to see

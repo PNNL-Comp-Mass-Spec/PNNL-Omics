@@ -8,7 +8,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// Object to house the Alignment Function from LCMS warping, including the
     /// calibration and alignment type
     /// </summary>
-    public sealed class LcmsWarpAlignmentFunction
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public sealed class LcmsWarpAlignmentFunction
     {
         readonly LcmsWarpCalibrationType m_calibrationType;
         readonly AlignmentType m_alignmentType;

@@ -12,6 +12,7 @@ namespace PNNLOmics.Algorithms.Alignment.SequenceMatching
     /// <summary>
     /// Finds Anchor Points using Spectral Comparisons
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SequenceMatching")]
     public class PeptideAnchorPointFinder
     {
 

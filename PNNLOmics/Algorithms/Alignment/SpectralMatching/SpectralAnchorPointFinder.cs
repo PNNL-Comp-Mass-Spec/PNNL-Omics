@@ -13,6 +13,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
     /// <summary>
     /// Finds Anchor Points using Spectral Comparisons
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class SpectralAnchorPointFinder
     {
         ///// <summary>

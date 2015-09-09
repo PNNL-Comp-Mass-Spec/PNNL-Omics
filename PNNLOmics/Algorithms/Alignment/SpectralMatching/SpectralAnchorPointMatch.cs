@@ -1,9 +1,12 @@
-﻿namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
+﻿using System;
+
+namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {
 
     /// <summary>
     /// Defines an anchor point match
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class SpectralAnchorPointMatch
     {
         public SpectralAnchorPointMatch()

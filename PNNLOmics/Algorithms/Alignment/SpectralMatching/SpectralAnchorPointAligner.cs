@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class SpectralAnchorPointAligner: IAlignmentFunction
     {
         private LoessInterpolator m_netInterpolator;

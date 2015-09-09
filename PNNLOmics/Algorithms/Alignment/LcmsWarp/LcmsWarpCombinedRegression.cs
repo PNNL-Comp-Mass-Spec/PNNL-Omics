@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Data;
 
@@ -8,7 +9,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// Object that holds instances of all three regression types, as well as providing a wrapper method for all three of the
     /// regression types that LCMS could use
     /// </summary>
-    public sealed class LcmsWarpCombinedRegression
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public sealed class LcmsWarpCombinedRegression
     {
         private LcmsWarpRegressionType m_regressionType;
         private bool m_lsqFailed;

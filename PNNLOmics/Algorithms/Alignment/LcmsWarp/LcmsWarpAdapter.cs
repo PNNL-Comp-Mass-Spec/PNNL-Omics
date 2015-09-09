@@ -11,7 +11,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// <summary>
     /// Object which performs feature alignment through LCMSWarp
     /// </summary>
-    public sealed class LcmsWarpAdapter :  
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public sealed class LcmsWarpAdapter :  
         IFeatureAligner<IEnumerable<UMCLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>,
         IFeatureAligner<IEnumerable<MassTagLight>, IEnumerable<UMCLight>, LcmsWarpAlignmentData>
     {
@@ -72,7 +73,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// back the alignment data to the caller.
         /// </summary>
         /// <param name="massTags"></param>
-        /// <param name="features"></param>
+        /// <param name="aligneeFeatures"></param>
         /// <param name="options"></param>        
         /// <returns></returns>
         private LcmsWarpAlignmentData AlignFeatures(List<MassTagLight> massTags, List<UMCLight> aligneeFeatures,
@@ -128,7 +129,7 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
         /// back the alignment data to the caller.
         /// </summary>
         /// <param name="baseline"></param>
-        /// <param name="alignee"></param>
+        /// <param name="aligneeFeatures"></param>
         /// <param name="options"></param>
         /// <returns></returns>
         private LcmsWarpAlignmentData AlignFeatures(List<UMCLight> baseline, List<UMCLight> aligneeFeatures, LcmsWarpAlignmentOptions options)

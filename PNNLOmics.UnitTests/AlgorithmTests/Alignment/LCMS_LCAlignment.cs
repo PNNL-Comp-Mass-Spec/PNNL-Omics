@@ -27,17 +27,18 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Alignment
             ConvertToUMCLight(referenceTimes, experimentalTimes, out experimentalTimesAsUmc, out referenceTimesAsUmc, multiplier);
 
             //3.  set up processor and options
-            LcmsWarpAlignmentProcessor processor = new LcmsWarpAlignmentProcessor();
-            var options = new LcmsWarpAlignmentOptions();
-            options.MassTolerance = 0.5;//masses are exact so this does not matter in this test
-            options.NumTimeSections = 12;//default is 100
-            options.StoreAlignmentFunction = true;
-            options.NetBinSize = 0.001;//default is 0.001;//this does not do much
-            options.AlignType = AlignmentType.NET_MASS_WARP;
-            options.UsePromiscuousPoints = false;//this does not do much
-            options.AlignmentAlgorithmType = FeatureAlignmentType.LCMS_WARP;
-            options.ContractionFactor = 1;//setting this to 1 helped
-            options.AlignType = AlignmentType.NET_WARP;
+            var processor = new LcmsWarpAlignmentProcessor();
+            var options = new LcmsWarpAlignmentOptions
+            {
+                MassTolerance = 0.5,                //masses are exact so this does not matter in this test
+                NumTimeSections = 12,               //default is 100
+                StoreAlignmentFunction = true,
+                NetBinSize = 0.001,                 //default is 0.001; //this does not do much
+                UsePromiscuousPoints = false,       //this does not do much but is likely needed when matching to a dense AMT tag databaase
+                AlignmentAlgorithmType = FeatureAlignmentType.LCMS_WARP,
+                ContractionFactor = 1,              //setting this to 1 helped
+                AlignType = AlignmentType.NET_WARP
+            };
 
             processor.Options = options;
             processor.ApplyAlignmentOptions();

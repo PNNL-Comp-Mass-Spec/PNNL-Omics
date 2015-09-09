@@ -9,7 +9,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// <summary>
     /// Object which performs Central Regression for LCMSWarp
     /// </summary>
-    public class LcmsWarpCentralRegression
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public class LcmsWarpCentralRegression
     {
         private int m_numYBins;
         private int m_numJumps;

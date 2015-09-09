@@ -1,7 +1,9 @@
-﻿using PNNLOmics.Data;
+﻿using System;
+using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Alignment
 {
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment")]
     public interface IFeatureAligner<in TBaselineFeature, in TAligneeFeature, out TMatchData>: IProgressNotifer
     {
         /// <summary>

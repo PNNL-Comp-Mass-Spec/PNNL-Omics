@@ -1,10 +1,12 @@
-﻿using PNNLOmics.Data;
+﻿using System;
+using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {
     /// <summary>
     /// Defines an anchor point
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class SpectralAnchorPoint
     {
         public Peptide   Peptide    { get; set; }

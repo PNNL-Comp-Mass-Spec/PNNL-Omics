@@ -4,6 +4,7 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatches
 {
+[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public static class SpectralUtilities
     {
          static SpectralUtilities()

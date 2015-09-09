@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PNNLOmics.Algorithms.Alignment.SequenceMatching;
 using PNNLOmics.Algorithms.Alignment.SpectralMatches;
@@ -10,6 +11,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
     /// <summary>
     /// Assesses the validity of anchor point matches given a set of peptide sequences.
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class SpectralAnchorPointValidator
     {
         ///// <summary>

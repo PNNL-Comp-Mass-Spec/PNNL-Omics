@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PNNLOmics.Algorithms.Alignment.SpectralMatching;
 
 namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
@@ -9,7 +10,8 @@ namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
     /// Dataset name, Heatmap scores, the NET slope, intercept and r squared values,
     /// the mean and standard deviations for NET and Mass and the alignment function itself.
     /// </summary>
-    public sealed class LcmsWarpAlignmentData
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public sealed class LcmsWarpAlignmentData
     {       
         /// <summary>
         /// Property to hold the function for the alignment

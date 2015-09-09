@@ -4,6 +4,7 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
 {
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class AnchorPointErrorMeasurement
     {
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PNNLOmics.Algorithms.Regression;
 using PNNLOmics.Data.Features;
 
@@ -7,6 +8,7 @@ namespace PNNLOmics.Algorithms.Alignment
     /// <summary>
     /// Holds matches from drift time alignments.
     /// </summary>
+	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment")]
     public sealed class DriftTimeAlignmentResults<TTarget, TObserved>
 		where TTarget   : FeatureLight, new()
         where TObserved : FeatureLight, new()

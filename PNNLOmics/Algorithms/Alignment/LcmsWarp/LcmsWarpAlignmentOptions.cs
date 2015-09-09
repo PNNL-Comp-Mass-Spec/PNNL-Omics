@@ -1,11 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace PNNLOmics.Algorithms.Alignment.LcmsWarp
 {
     /// <summary>
     /// Object to hold the options for LcmsWarp Alignment. 
     /// </summary>
-    public class LcmsWarpAlignmentOptions
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.LcmsWarp")]
+	public class LcmsWarpAlignmentOptions
     {
         #region Auto Properties
         /// <summary>
