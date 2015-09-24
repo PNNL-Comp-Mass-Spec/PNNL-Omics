@@ -26,9 +26,9 @@ namespace PNNLOmics.Utilities
             var numberOfRows = covarianceMatrix.RowCount;
             var xMinusMean = xVector - meanVector;
             var xMinusMeanPrime = xMinusMean.Clone();
-            xMinusMeanPrime.Transpose();
+            var xMinusMeanPrimeT = xMinusMeanPrime.Transpose();
             var covarianceInverseMatrix = covarianceMatrix.Inverse();
-            var exponent = xMinusMeanPrime * covarianceInverseMatrix * xMinusMean;
+            var exponent = xMinusMeanPrimeT * covarianceInverseMatrix * xMinusMean;
             var denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrixDeterminant));
             return Math.Exp(-0.5 * exponent[0, 0]) / denominator;
         }
