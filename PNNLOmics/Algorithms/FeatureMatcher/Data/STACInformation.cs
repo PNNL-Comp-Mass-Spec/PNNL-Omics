@@ -392,7 +392,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             while (m_iteration <= MAX_ITERATIONS)
             {
                 // Update the parameters in the following order: mixture parameters, mean, covariance.
-                m_mixtureProportion = UpdateNNUMixtureParameter<T, U>(alphaList);
+                m_mixtureProportion = UpdateNNUMixtureParameter(alphaList);
                 m_meanVectorT = ExpectationMaximization.UpdateNormalMeanVector(dataList, alphaList, priorList, false);
                 m_meanVectorF = ExpectationMaximization.UpdateNormalMeanVector(dataList, alphaList, priorList, true);
                 m_covarianceMatrixT = ExpectationMaximization.UpdateNormalCovarianceMatrix(dataList, m_meanVectorT, alphaList, priorList, false, false);
@@ -462,7 +462,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             while (m_iteration <= MAX_ITERATIONS)
             {
                 // Update the parameters in the following order: mixture parameters, mean, covariance.
-                m_mixtureProportion = UpdateNUMixtureParameter(featureMatchList, uniformDensity, ref alphaList);
+                m_mixtureProportion = UpdateNUMixtureParameter(ref alphaList);
                 m_meanVectorT = ExpectationMaximization.UpdateNormalMeanVector(dataList, alphaList);
                 m_covarianceMatrixT = ExpectationMaximization.UpdateNormalCovarianceMatrix(dataList, m_meanVectorT, alphaList, false);
                 
@@ -500,17 +500,17 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <typeparam name="U">The type of the target feature.  Derived from Feature.</typeparam>
         /// <param name="featureMatch">FeatureMatch to evaluate at.</param>
         /// <param name="uniformDensity">Density of uniform distribution.</param>
-        /// <param name="stacScore"></param>
+        /// <param name="stacScore">STAC Score (output)</param>
         /// <returns>The value of the loglikelihood evaluated at featureMatch.</returns>
-        private double CalculateNuLogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity, ref double stacScore)
+        private double CalculateNuLogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity, out double stacScore)
             where T : FeatureLight, new()
             where U : FeatureLight, new()
         {
             if (featureMatch.UseDriftTimePredicted)
             {
-                return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, MatrixUtilities.RemoveRow(m_meanVectorT, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 3), uniformDensity, m_mixtureProportion, ref stacScore);
+                return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, MatrixUtilities.RemoveRow(m_meanVectorT, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 3), uniformDensity, m_mixtureProportion, out stacScore);
             }
-            return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, m_meanVectorT, m_covarianceMatrixT, uniformDensity, m_mixtureProportion, ref stacScore);
+            return ExpectationMaximization.NormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, m_meanVectorT, m_covarianceMatrixT, uniformDensity, m_mixtureProportion, out stacScore);
         }
 
         /// <summary>
@@ -526,10 +526,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             where U : FeatureLight, new()
         {
             var loglikelihood = 0.0;
-			var stacScore = 0.0;
             foreach (var match in featureMatchList)
             {
-                loglikelihood += CalculateNuLogLikelihood(match, uniformDensity, ref stacScore);
+                double stacScore;
+                loglikelihood += CalculateNuLogLikelihood(match, uniformDensity, out stacScore);
 				match.STACScore = stacScore;
             }
             return loglikelihood;
@@ -563,18 +563,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             }
             return logLikelihood;
         }
+
         /// <summary>
         /// Update the mixture proportion for the normal-uniform mixture model.
         /// </summary>
-        /// <typeparam name="T">The type of the observed feature.  Derived from Feature.</typeparam>
-        /// <typeparam name="U">The type of the target feature.  Derived from Feature.</typeparam>
-        /// <param name="featureMatchList">List of FeatureMatches to evaluate at.</param>
-        /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="alphaList">List to be filled with individual mixture values.</param>
         /// <returns>The updated mixture proportion.</returns>
-        private double UpdateNUMixtureParameter<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, ref List<double> alphaList)
-            where T : FeatureLight, new()
-            where U : FeatureLight, new()
+        private double UpdateNUMixtureParameter(ref List<double> alphaList)
         {
 			var alphaSum = 0.0;
 			foreach (var alpha in alphaList)
@@ -590,16 +585,17 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <typeparam name="T">The type of the observed feature.  Derived from Feature.</typeparam>
         /// <param name="featureMatch">FeatureMatch to evaluate at.</param>
         /// <param name="uniformDensity">Density of uniform distribution.</param>
+        /// <param name="stacScore">STAC Score (output)</param>
         /// <returns>The value of the loglikelihood evaluated at featureMatch.</returns>
-        private double CalculateNnuLogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity, ref double stacScore)
+        private double CalculateNnuLogLikelihood<T, U>(FeatureMatch<T, U> featureMatch, double uniformDensity, out double stacScore)
             where T : FeatureLight, new()
             where U : MassTagLight, new()
         {
             if (featureMatch.UseDriftTimePredicted)
             {
-				return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, MatrixUtilities.RemoveRow(m_meanVectorT, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 3), MatrixUtilities.RemoveRow(m_meanVectorF, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixF, 3), uniformDensity, m_mixtureProportion, ref stacScore);
+				return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, MatrixUtilities.RemoveRow(m_meanVectorT, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixT, 3), MatrixUtilities.RemoveRow(m_meanVectorF, 3), MatrixUtilities.ReduceMatrix(m_covarianceMatrixF, 3), uniformDensity, m_mixtureProportion, out stacScore);
             }
-            return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion, ref stacScore);
+            return ExpectationMaximization.NormalNormalUniformLogLikelihood(featureMatch.ReducedDifferenceVector, featureMatch.TargetFeature.PriorProbability, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion, out stacScore);
         }
 
         /// <summary>
@@ -614,14 +610,15 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             where U : MassTagLight, new()
         {
             var loglikelihood = 0.0;
-			var stacScore = 0.0;
             foreach (var match in featureMatchList)
             {
-				loglikelihood += CalculateNnuLogLikelihood(match, uniformDensity, ref stacScore);
+                double stacScore;
+                loglikelihood += CalculateNnuLogLikelihood(match, uniformDensity, out stacScore);
 				match.STACScore = stacScore;
             }
             return loglikelihood;
         }
+
         /// <summary>
         /// Calculate the loglikelihood for matches with the current parameters.
         /// </summary>
@@ -629,6 +626,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <param name="featureMatchList">List of FeatureMatches to evaluate at.</param>
         /// <param name="uniformDensity">Density of uniform distribution.</param>
         /// <param name="useDriftTime">Whether to use drift times in the calculations.</param>
+        /// <param name="alphaList">List to be filled with individual mixture values.</param>
         /// <returns>The value of the loglikelihood evaluated over featureMatchList.</returns>
         private double CalculateNnuLogLikelihood<T, U>(List<FeatureMatch<T, U>> featureMatchList, double uniformDensity, bool useDriftTime, ref List<double> alphaList)
             where T : FeatureLight, new()
@@ -641,7 +639,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
                 dataList.Add(match.DifferenceVector);
                 priorList.Add(match.TargetFeature.PriorProbability);
             }
-            double logLikelihood = ExpectationMaximization.NormalNormalUniformLogLikelihood(dataList, priorList, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion);
+            var logLikelihood = ExpectationMaximization.NormalNormalUniformLogLikelihood(dataList, priorList, m_meanVectorT, m_covarianceMatrixT, m_meanVectorF, m_covarianceMatrixF, uniformDensity, m_mixtureProportion);
 
 			// Get new values for alpha list
 			alphaList.Clear();
@@ -653,12 +651,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
         /// <summary>
         /// Update the mixture proportion for the normal-normal-uniform mixture model.
         /// </summary>
-        /// <typeparam name="T">The type of the observed feature.  Derived from Feature.</typeparam>
         /// <param name="alphaList">List to be filled with individual mixture values.</param>
         /// <returns>The updated mixture proportion.</returns>
-        private double UpdateNNUMixtureParameter<T, U>(List<double> alphaList)
-            where T : FeatureLight, new()
-            where U : MassTagLight, new()
+        private double UpdateNNUMixtureParameter(List<double> alphaList)
         {
 			var alphaSum = alphaList.Sum();
 
@@ -679,11 +674,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 
             if (usePrior)
             {
-                CalculateNnuLogLikelihood(featureMatch, uniformDensity, ref stacScore);
+                CalculateNnuLogLikelihood(featureMatch, uniformDensity, out stacScore);
             }
             else
             {
-                CalculateNuLogLikelihood(featureMatch, uniformDensity, ref stacScore);
+                CalculateNuLogLikelihood(featureMatch, uniformDensity, out stacScore);
             }
 
 			return stacScore;
@@ -702,7 +697,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Data
             where TU : FeatureLight, new()
         {
 			var stacScore = 0.0;
-            CalculateNuLogLikelihood(featureMatch, uniformDensity, ref stacScore);
+            CalculateNuLogLikelihood(featureMatch, uniformDensity, out stacScore);
 			return stacScore;
         }
 

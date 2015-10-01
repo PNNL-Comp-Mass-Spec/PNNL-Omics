@@ -25,9 +25,11 @@ namespace PNNLOmicsIO.IO
 	    public char Delimiter { get; set; }
 
 	    /// <summary>
-        /// Gets or sets the file reading delimiter.
+        /// Gets or sets the file reading delimiter
         /// </summary>
-        [ObsoleteAttribute("Old spelling; use Delimiter")]
+		/// <remarks>
+		/// The setter only uses the first character of the string
+		/// </remarks>
         public string Delimeter
         {
 	        get { return Delimiter.ToString(); }

@@ -8,6 +8,7 @@ using PNNLOmics.Utilities;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher
 {
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.FeatureMatcher")]
     public class FeatureMatcher<TObserved, TTarget> : 
         IFeatureMatcher<TObserved, TTarget> 
         where TObserved : FeatureLight, new()

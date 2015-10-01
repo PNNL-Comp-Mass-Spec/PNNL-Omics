@@ -65,7 +65,7 @@ namespace PNNLOmics.Algorithms.Distance
 		{
 			var centeredMatrix = CenterMatrixOnArithmeticMean(matrix, arithmeticMeans);
 
-			var covarianceMatrix = (DenseMatrix)centeredMatrix.Transpose() * centeredMatrix * (1.0 / matrix.RowCount);
+			var covarianceMatrix = (DenseMatrix)(centeredMatrix.Transpose()) * centeredMatrix * (1.0 / matrix.RowCount);
 
 			return covarianceMatrix;
 
@@ -140,7 +140,7 @@ namespace PNNLOmics.Algorithms.Distance
 			var inversePooledCovarianceMatrix = (DenseMatrix)pooledCovarianceMatrix.Inverse();
 
 			var meanDifferenceMatrix = CreateMeanDifferenceMatrix(meanA, meanB);
-			var transposedMeanDifferenceMatrix = (DenseMatrix)meanDifferenceMatrix.Transpose();
+			var transposedMeanDifferenceMatrix = (DenseMatrix)(meanDifferenceMatrix.Transpose());
 
 			var finalMatrix = transposedMeanDifferenceMatrix.Multiply(inversePooledCovarianceMatrix).Multiply(meanDifferenceMatrix);
 

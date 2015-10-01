@@ -139,8 +139,8 @@ namespace PNNLOmics.Algorithms.Regression
                 b[pointNum, 0] = point.MassError;
             }
 
-            var aTrans = (DenseMatrix)a.Transpose();
-            var aTransA = (DenseMatrix)a.Multiply(aTrans);
+            var aTrans = (DenseMatrix)(a.Transpose());
+            var aTransA = (DenseMatrix)(a.Multiply(aTrans));
 
             // Can't invert a matrix with a determinant of 0.
             if (Math.Abs(aTransA.Determinant()) < double.Epsilon)

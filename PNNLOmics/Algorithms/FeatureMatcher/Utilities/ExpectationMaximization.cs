@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PNNLOmics.Utilities;
 
@@ -80,8 +79,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 
             for (var i = 0; i < dataList.Count; i++)
             {
-                var dataT = dataList[i].Clone() as DenseMatrix;
-                dataT.Transpose();
+                var dataT = dataList[i].Transpose() as DenseMatrix;
 
                 numerator += alphaList[i] * dataList[i] * dataT;
                 denominator += alphaList[i];
@@ -135,8 +133,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 
             for (var i = 0; i < dataList.Count; i++)
             {
-                var dataT = dataList[i].Clone() as DenseMatrix;
-                dataT.Transpose();
+                var dataT = dataList[i].Transpose() as DenseMatrix;
                 var weight = alphaList[i] * (adder + multiplier * priorList[i]);
                 numerator += weight * dataList[i] * dataT;
                 denominator += weight;
@@ -196,7 +193,6 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
             }
             // Calculate the starting loglikelihood and initialize a variable for the loglikelihood at the next iteration.
             var logLikelihood = NormalUniformLogLikelihood(dataList, meanVector, covarianceMatrix, uniformDensity, mixtureParameter);
-            var nextLogLikelihood = 0.0;
             // Initialize the individual observation mixture estimates to the given mixture parameter and a list of priors to 1.
             var alphaList = new List<double>(dataList.Count);
             var priorList = new List<double>(dataList.Count);
@@ -212,10 +208,13 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
                 mixtureParameter = UpdateNormalUniformMixtureParameter(dataList, meanVector, covarianceMatrix, mixtureParameter, uniformDensity, ref alphaList);
                 meanVector = UpdateNormalMeanVector(dataList, alphaList, priorList, false);
                 covarianceMatrix = UpdateNormalCovarianceMatrix(dataList, meanVector, alphaList, priorList, independent, false);
+
                 // Calculate the loglikelihood based on the new parameters.
-                nextLogLikelihood = NormalUniformLogLikelihood(dataList, meanVector, covarianceMatrix, uniformDensity, mixtureParameter);
+                var nextLogLikelihood = NormalUniformLogLikelihood(dataList, meanVector, covarianceMatrix, uniformDensity, mixtureParameter);
+                
                 // Increment the counter to show that another iteration has been completed.
                 iteration++;
+                
                 // Set the convergence flag and exit the while loop if the convergence criteria is met.
                 if (Math.Abs(nextLogLikelihood - logLikelihood) < EPSILON)
                 {
@@ -236,8 +235,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <param name="covarianceMatrix">The current covariance matrix.</param>
         /// <param name="uniformDensity">The density of the uniform distribution.</param>
         /// <param name="mixtureParameter">The current mixture parameter.</param>
+        /// <param name="stacScore">STAC Score (output)</param>
         /// <returns>The value of the loglikelihood evaluated at data.</returns>
-        static public double NormalUniformLogLikelihood(DenseMatrix  data, DenseMatrix meanVector, DenseMatrix covarianceMatrix, double uniformDensity, double mixtureParameter, ref double stacScore)
+        static public double NormalUniformLogLikelihood(DenseMatrix data, DenseMatrix meanVector, DenseMatrix covarianceMatrix, double uniformDensity, double mixtureParameter, out double stacScore)
         {
             var normalDensity = MathUtilities.MultivariateNormalDensity(data, meanVector, covarianceMatrix);
             if (normalDensity > 0)
@@ -249,12 +249,14 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 
 				return Math.Log(posteriorReal + posteriorFalse);
             }
+
+            stacScore = 0;
             return 0.0;
         }
         /// <summary>
         /// Calculate the loglikelihood for a normal-uniform mixture.
         /// </summary>
-        /// <param name="data">List of Matrices of data.</param>
+        /// <param name="dataList">List of Matrices of data.</param>
         /// <param name="meanVector">Matrix containing the current means.</param>
         /// <param name="covarianceMatrix">The current covariance matrix.</param>
         /// <param name="uniformDensity">The density of the uniform distribution.</param>
@@ -263,10 +265,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         static public double NormalUniformLogLikelihood(List<DenseMatrix> dataList, DenseMatrix meanVector, DenseMatrix covarianceMatrix, double uniformDensity, double mixtureParameter)
         {
             var loglikelihood = 0.0;
-			var stacScore = 0.0;
             foreach (var data in dataList)
             {
-                loglikelihood += NormalUniformLogLikelihood(data, meanVector, covarianceMatrix, uniformDensity, mixtureParameter, ref stacScore);
+                double stacScore;
+                loglikelihood += NormalUniformLogLikelihood(data, meanVector, covarianceMatrix, uniformDensity, mixtureParameter, out stacScore);
             }
             return loglikelihood;
         }
@@ -283,11 +285,11 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         static public double UpdateNormalUniformMixtureParameter(List<DenseMatrix> dataList, DenseMatrix meanVector, DenseMatrix covarianceMatrix, double mixtureParameter, double uniformDensity, ref List<double> alphaList)
         {
             var nextMixtureParameter = 0.0;
-			var stacScore = 0.0;
 
             for (var i = 0; i < dataList.Count; i++)
             {
-                alphaList[i] = Math.Exp(NormalUniformLogLikelihood(dataList[i], meanVector, covarianceMatrix, uniformDensity, mixtureParameter, ref stacScore));
+                double stacScore;
+                alphaList[i] = Math.Exp(NormalUniformLogLikelihood(dataList[i], meanVector, covarianceMatrix, uniformDensity, mixtureParameter, out stacScore));
                 nextMixtureParameter += alphaList[i];
             }
 
@@ -307,8 +309,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <param name="covarianceMatrixF">The current covariance matrix for the false normal distribution.</param>
         /// <param name="uniformDensity">The density of the uniform distribution.</param>
         /// <param name="mixtureParameter">The current mixture parameter.</param>
+        /// <param name="stacScore">STAC Score (output)</param>
         /// <returns>The value of the loglikelihood evaluated at data.</returns>
-        static public double NormalNormalUniformLogLikelihood(DenseMatrix  data, double prior, DenseMatrix meanVectorT, DenseMatrix covarianceMatrixT, DenseMatrix meanVectorF, DenseMatrix covarianceMatrixF, double uniformDensity, double mixtureParameter, ref double stacScore)
+        static public double NormalNormalUniformLogLikelihood(DenseMatrix  data, double prior, DenseMatrix meanVectorT, DenseMatrix covarianceMatrixT, DenseMatrix meanVectorF, DenseMatrix covarianceMatrixF, double uniformDensity, double mixtureParameter, out double stacScore)
         {
             var normalDensityT = MathUtilities.MultivariateNormalDensity(data, meanVectorT, covarianceMatrixT);
             var normalDensityF = MathUtilities.MultivariateNormalDensity(data, meanVectorF, covarianceMatrixF);
@@ -345,7 +348,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// <summary>
         /// Calculate the loglikelihood for a normal-normal-uniform mixture.
         /// </summary>
-        /// <param name="data">List of Matrices of data.</param>
+        /// <param name="dataList">List of Matrices of data.</param>
         /// <param name="prior">List of prior probabilities of being correct, i.e. the probability of being from the normal distribution with parameters meanVectorT and covarianceMatrixT.</param>
         /// <param name="meanVectorT">Matrix containing the current means for the true normal distribution.</param>
         /// <param name="covarianceMatrixT">The current covariance matrix for the true normal distribution.</param>
@@ -357,10 +360,10 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         static public double NormalNormalUniformLogLikelihood(List<DenseMatrix> dataList, List<double> prior, DenseMatrix meanVectorT, DenseMatrix covarianceMatrixT, DenseMatrix meanVectorF, DenseMatrix covarianceMatrixF, double uniformDensity, double mixtureParameter)
         {
             var logLikelihood = 0.0;
-			var stacScore = 0.0;
             for (var i = 0; i < dataList.Count; i++)
             {
-				logLikelihood += NormalNormalUniformLogLikelihood(dataList[i], prior[i], meanVectorT, covarianceMatrixT, meanVectorF, covarianceMatrixF, uniformDensity, mixtureParameter, ref stacScore);
+                double stacScore;
+                logLikelihood += NormalNormalUniformLogLikelihood(dataList[i], prior[i], meanVectorT, covarianceMatrixT, meanVectorF, covarianceMatrixF, uniformDensity, mixtureParameter, out stacScore);
             }
             return logLikelihood;
         }
@@ -379,7 +382,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         /// Update the mixture parameter for the normal-normal-uniform mixture model.
         /// </summary>
         /// <param name="dataList">List of matrices containing the data.</param>
-        /// <param name="prior">The prior probability of being correct, i.e. the probability of being from the normal distribution with parameters meanVectorT and covarianceMatrixT.</param>
+        /// <param name="priorList">The prior probability of being correct, i.e. the probability of being from the normal distribution with parameters meanVectorT and covarianceMatrixT.</param>
         /// <param name="meanVectorT">Matrix containing the current means for the true normal distribution.</param>
         /// <param name="covarianceMatrixT">The current covariance matrix for the true normal distribution.</param>
         /// <param name="meanVectorF">Matrix containing the current means for the false normal distribution.</param>
@@ -391,10 +394,9 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
         static public double UpdateNormalNormalUniformMixtureParameter(List<DenseMatrix> dataList, List<double> priorList, DenseMatrix meanVectorT, DenseMatrix covarianceMatrixT, DenseMatrix meanVectorF, DenseMatrix covarianceMatrixF, double mixtureParameter, double uniformDensity, ref List<double> alphaList)
         {
             var nextMixtureParameter = 0.0;
-            var numerator = 0.0;
             for (var i = 0; i < dataList.Count; i++)
             {
-                numerator = priorList[i] * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorT, covarianceMatrixT) + (1 - priorList[i]) * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorF, covarianceMatrixF);
+                var numerator = priorList[i] * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorT, covarianceMatrixT) + (1 - priorList[i]) * MathUtilities.MultivariateNormalDensity(dataList[i], meanVectorF, covarianceMatrixF);
                 alphaList[i] = (numerator * mixtureParameter) / (numerator * mixtureParameter + (1 - mixtureParameter) * uniformDensity);
                 nextMixtureParameter += alphaList[i];
             }
