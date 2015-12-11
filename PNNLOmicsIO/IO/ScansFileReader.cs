@@ -28,7 +28,7 @@ namespace PNNLOmicsIO.IO
             var columnMap = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
 
             var readLine = textReader.ReadLine();
-            if (readLine == null) return columnMap;
+            if (string.IsNullOrWhiteSpace(readLine)) return columnMap;
 
             string[] columnTitles;
 
@@ -89,6 +89,9 @@ namespace PNNLOmicsIO.IO
 
             while ((line = textReader.ReadLine()) != null)
             {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
                 var columns = line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                 var scan = new ScanSummary();
 

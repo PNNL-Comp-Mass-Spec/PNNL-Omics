@@ -45,14 +45,14 @@ namespace PNNLOmicsIO.IO
         #endregion
 
         /// <summary>
-        /// 
+        /// Open the file and return an enumerable of type T
         /// </summary>
         /// <param name="fileLocation"></param>
-        /// <returns></returns>
+        /// <returns>Enumerable list of data from the file</returns>        
 		public IEnumerable<T> ReadFile(string fileLocation) 
 		{
             IEnumerable<T> returnEnumerable;
-            using (TextReader textReader = new StreamReader(fileLocation))
+            using (TextReader textReader = new StreamReader(new FileStream(fileLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {
                 returnEnumerable = ReadFile(textReader);
                 textReader.Close();

@@ -12,7 +12,7 @@ namespace PNNLOmicsIO.IO
             var columnMap = new Dictionary<String, int>(StringComparer.CurrentCultureIgnoreCase);
 
             var readLine = textReader.ReadLine();
-            if (readLine == null) return columnMap;
+            if (string.IsNullOrWhiteSpace(readLine)) return columnMap;
 
             var columnTitles = readLine.Split('\t', '\n');
             var numOfColumns = columnTitles.Length;
@@ -67,6 +67,9 @@ namespace PNNLOmicsIO.IO
 
             while ((line = textReader.ReadLine()) != null)
             {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
                 var columns = line.Split('\t', '\n');
 
                 var peptide = new Peptide();
