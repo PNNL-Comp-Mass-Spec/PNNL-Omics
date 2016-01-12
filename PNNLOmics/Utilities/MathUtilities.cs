@@ -96,7 +96,18 @@ namespace PNNLOmics.Utilities
         }
         #endregion
 
-
+        /// <summary>
+        /// Two dimensional expectation maximization
+        /// </summary>
+        /// <param name="x">Difference between alignee feature and baseline feature, X value (e.g. mass)</param>
+        /// <param name="y">Difference between alignee feature and baseline feature, Y value (e.g. NET)</param>
+        /// <param name="p">Probabability of belonging to the normal distribution (output)</param>
+        /// <param name="u">Probability density of false hits (output)</param>
+        /// <param name="muX">Mean of X values (output)</param>
+        /// <param name="muY">Mean of Y values (output)</param>
+        /// <param name="stdX">Standard deviation of X values (output)</param>
+        /// <param name="stdY">Standard deviation of Y values (output)</param>
+        /// <remarks>Used by LCMSWarp for computation of likelihood</remarks>
         public static void TwoDem(List<double> x, List<double> y, out double p, out double u, out double muX,
                            out double muY, out double stdX, out double stdY)
         {
@@ -137,7 +148,8 @@ namespace PNNLOmics.Utilities
 
             for (var iterNum = 0; iterNum < numIterations; iterNum++)
             {
-                // Calculate current probability assignments
+                // Calculate current probability assignments 
+                // (expectation step)
                 for (var pointNum = 0; pointNum < numPoints; pointNum++)
                 {
                     var xDiff = (x[pointNum] - muX) / stdX;
@@ -149,7 +161,8 @@ namespace PNNLOmics.Utilities
                     pVals[1, pointNum] = pVals[1, pointNum] / sum;
                 }
 
-                // Calculates new estimates from maximization step
+                // Calculate new estimates from maximization step
+                // (maximization step)
                 double pNumerator = 0;
                 double muXNumerator = 0;
                 double muYNumerator = 0;
@@ -210,6 +223,43 @@ namespace PNNLOmics.Utilities
         {
             return ((mass1 - mass2) / mass2 * 1000000);
         }
+
+        /// <summary>
+        /// Convert value to a string with 5 digits of precision
+        /// </summary>
+        /// <param name="value">Number to convert to text</param>
+        /// <returns>Number as text; numbers larger than 1000000 or smaller than 0.000001 will be in scientific notation</returns>
+        public static string ValueToString(double value)
+        {
+            return StringUtilities.ValueToString(value, 5, 1000000);
+        }
+
+        /// <summary>
+        /// Convert value to a string with the specified digits of precision
+        /// </summary>
+        /// <param name="value">Number to convert to text</param>
+        /// <param name="digitsOfPrecision">Total digits of precision (before and after the decimal point)</param>
+        /// <returns>Number as text; numbers larger than 1000000 or smaller than 0.000001 will be in scientific notation</returns>
+        [Obsolete("Use StringUtilities.ValueToString")]
+        public static string ValueToString(double value, int digitsOfPrecision)
+        {
+            return StringUtilities.ValueToString(value, (byte)digitsOfPrecision, 1000000);
+        }
+
+        /// <summary>
+        /// Convert value to a string with the specified digits of precision and customized scientific notation threshold
+        /// </summary>
+        /// <param name="value">Number to convert to text</param>
+        /// <param name="digitsOfPrecision">Total digits of precision (before and after the decimal point)</param>
+        /// <param name="scientificNotationThreshold">Values larger than this threshold (positive or negative) will be converted to scientific notation</param>
+        /// <returns>Number as text</returns>
+        /// [Obsolete("Use StringUtilities.ValueToString")]
+        public static string ValueToString(double value, int digitsOfPrecision, double scientificNotationThreshold)
+        {
+            return StringUtilities.ValueToString(value, (byte)digitsOfPrecision, scientificNotationThreshold);
+        }
+
         #endregion
+
     }
 }

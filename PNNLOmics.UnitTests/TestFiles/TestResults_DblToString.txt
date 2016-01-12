@@ -1,0 +1,193 @@
+TestDblToString
+                   0, digits= 0: 0             
+                   0, digits= 1: 0             
+                   0, digits= 2: 0             
+                   0, digits= 3: 0             
+
+                   1, digits= 1: 1.0           
+                   1, digits= 3: 1.0           
+                   5, digits= 3: 5.0           
+
+                  10, digits= 0: 10            
+                  10, digits= 1: 10            
+                  10, digits= 2: 10            
+                  10, digits= 3: 10            
+
+              10.123, digits= 0: 10            
+              10.123, digits= 1: 10.1          
+              10.123, digits= 2: 10.12         
+              10.123, digits= 3: 10.123        
+              10.123, digits= 5: 10.123        
+              10.123, digits= 7: 10.123        
+
+                  50, digits= 0: 50            
+                  50, digits= 2: 50            
+                  50, digits= 4: 50            
+
+              50.653, digits= 0: 51            
+              50.653, digits= 1: 50.7          
+              50.653, digits= 2: 50.65         
+              50.653, digits= 3: 50.653        
+              50.653, digits= 4: 50.653        
+
+              54.753, digits= 0: 55            
+              54.753, digits= 1: 54.8          
+              54.753, digits= 2: 54.75         
+              54.753, digits= 3: 54.753        
+              54.753, digits= 4: 54.753        
+
+                 110, digits= 0: 110           
+                 110, digits= 1: 110           
+                 110, digits= 2: 110           
+
+             9.99999, digits= 6: 9.99999       
+             9.99999, digits= 5: 9.99999       
+             9.99999, digits= 4: 10.0          
+             9.99999, digits= 2: 10.0          
+             9.99999, digits= 1: 10.0          
+             9.99999, digits= 0: 10            
+
+             9.98765, digits= 6: 9.98765       
+             9.98765, digits= 5: 9.98765       
+             9.98765, digits= 4: 9.9877        
+             9.98765, digits= 3: 9.988         
+             9.98765, digits= 2: 9.99          
+             9.98765, digits= 1: 10.0          
+
+             0.12345, digits= 5: 0.12345       
+             5.12345, digits= 5: 5.12345       
+            50.12345, digits= 5: 50.12345      
+           500.12345, digits= 5: 500.12345     
+          5000.12345, digits= 5: 5000.12345    
+         50000.12345, digits= 5: 50000.12345   
+        500000.12345, digits= 5: 500000.12345  
+
+             0.12345, digits= 5: 0.12345        (limitDecimals=True)
+             5.12345, digits= 5: 5.12345        (limitDecimals=True)
+            50.12345, digits= 5: 50.1235        (limitDecimals=True)
+           500.12345, digits= 5: 500.123        (limitDecimals=True)
+          5000.12345, digits= 5: 5000.12        (limitDecimals=True)
+         50000.12345, digits= 5: 50000.1        (limitDecimals=True)
+        500000.12345, digits= 5: 500000         (limitDecimals=True)
+
+             9.98765, digits= 3: 9.988          (limitDecimals=True)
+            99.98765, digits= 3: 99.99          (limitDecimals=True)
+           998.98765, digits= 3: 999.0          (limitDecimals=True)
+          9987.98765, digits= 3: 9988           (limitDecimals=True)
+         99876.98765, digits= 3: 99877          (limitDecimals=True)
+        998765.98765, digits= 3: 998766         (limitDecimals=True)
+
+                 0.1, digits= 0: 0             
+                 0.1, digits= 1: 0.1           
+                 0.1, digits= 2: 0.1           
+
+              0.1234, digits= 0: 0             
+              0.1234, digits= 1: 0.1           
+              0.1234, digits= 2: 0.12          
+              0.1234, digits= 3: 0.123         
+              0.1234, digits= 4: 0.1234        
+              0.1234, digits= 5: 0.1234        
+              0.1234, digits= 8: 0.1234        
+
+         0.987654321, digits= 0: 1             
+         0.987654321, digits= 1: 1.0           
+         0.987654321, digits= 2: 0.99          
+         0.987654321, digits= 4: 0.9877        
+         0.987654321, digits= 8: 0.98765432    
+         0.987654321, digits= 9: 0.987654321   
+         0.987654321, digits=12: 0.987654321   
+
+        -0.987654321, digits= 0: -1            
+        -0.987654321, digits= 1: -1.0          
+        -0.987654321, digits= 2: -0.99         
+        -0.987654321, digits= 4: -0.9877       
+        -0.987654321, digits= 8: -0.98765432   
+        -0.987654321, digits= 9: -0.987654321  
+        -0.987654321, digits=12: -0.987654321  
+
+           9.876E-05, digits= 0: 0             
+           9.876E-05, digits= 1: 0.0           
+           9.876E-05, digits= 2: 0.0           
+           9.876E-05, digits= 3: 0.0           
+           9.876E-05, digits= 4: 0.0001        
+           9.876E-05, digits= 5: 0.0001        
+           9.876E-05, digits= 6: 0.000099      
+           9.876E-05, digits= 7: 0.0000988     
+           9.876E-05, digits= 8: 0.00009876    
+           9.876E-05, digits= 9: 0.00009876    
+
+           9.876E-05, digits= 0: 0             
+           9.876E-05, digits= 1: 9.9E-05       
+           9.876E-05, digits= 2: 9.88E-05      
+           9.876E-05, digits= 3: 9.876E-05     
+           9.876E-05, digits= 4: 9.876E-05     
+           9.876E-05, digits= 5: 9.876E-05     
+
+           4.002E-05, digits= 0: 0             
+           4.002E-05, digits= 1: 0.0           
+           4.002E-05, digits= 2: 0.0           
+           4.002E-05, digits= 3: 0.0           
+           4.002E-05, digits= 4: 0.0           
+           4.002E-05, digits= 5: 0.00004       
+           4.002E-05, digits= 6: 0.00004       
+           4.002E-05, digits= 7: 0.00004       
+           4.002E-05, digits= 8: 0.00004002    
+
+           4.002E-05, digits= 0: 0             
+           4.002E-05, digits= 1: 4.0E-05       
+           4.002E-05, digits= 2: 4.0E-05       
+           4.002E-05, digits= 3: 4.002E-05     
+           4.002E-05, digits= 4: 4.002E-05     
+
+          -4.002E-05, digits= 0: 0             
+          -4.002E-05, digits= 1: 0.0           
+          -4.002E-05, digits= 2: 0.0           
+          -4.002E-05, digits= 3: 0.0           
+          -4.002E-05, digits= 4: 0.0           
+          -4.002E-05, digits= 5: -0.00004      
+          -4.002E-05, digits= 6: -0.00004      
+          -4.002E-05, digits= 7: -0.00004      
+          -4.002E-05, digits= 8: -0.00004002   
+
+          -4.002E-05, digits= 0: 0             
+          -4.002E-05, digits= 1: -4.0E-05      
+          -4.002E-05, digits= 2: -4.0E-05      
+          -4.002E-05, digits= 3: -4.002E-05    
+          -4.002E-05, digits= 4: -4.002E-05    
+
+           0.1234567, digits= 0: 0             
+          0.01234567, digits= 1: 0.0           
+          0.00123456, digits= 2: 0.0           
+          0.00012345, digits= 3: 1.235E-04     
+          1.2345E-05, digits= 4: 1.2345E-05    
+           1.234E-06, digits= 4: 1.234E-06     
+
+           0.1234567, digits= 0: 0             
+          0.01234567, digits= 1: 1.2E-02       
+          0.00123456, digits= 2: 1.23E-03      
+          0.00123456, digits= 2: 0.0           
+          0.00123456, digits= 2: 0.0           
+          0.00123456, digits= 2: 0.0           
+          0.00123456, digits= 2: 0.0           
+          0.00123456, digits= 2: 1.23E-03      
+          0.00123456, digits= 2: 1.23E-03      
+          0.00123456, digits= 2: 1.23E-03      
+
+4.94065645841247E-324, digits= 6: 4.940656E-324 
+     4.94065645E-150, digits= 6: 4.940656E-150 
+     4.94065645E-101, digits= 6: 4.940656E-101 
+      4.02735019E-10, digits= 6: 4.02735E-10   
+
+       4.0273501E-05, digits= 6: 4.02735E-05   
+       0.00040273501, digits= 6: 4.02735E-04   
+        0.0040273501, digits= 6: 0.004027      
+         0.040273501, digits= 6: 0.040274      
+          0.40273501, digits= 6: 0.402735      
+           0.0134886, digits= 6: 0.013489      
+
+       4.0273501E-10, digits= 6: 0.0            (limitDecimals=True)
+           0.0134886, digits= 6: 0.013489       (limitDecimals=True)
+          7063.79431, digits= 6: 7063.794       (limitDecimals=True)
+          6496286.95, digits= 6: 6496287        (limitDecimals=True)
+
+
