@@ -18,10 +18,11 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="initialCoefficients"></param>
-        /// <param name="functionChoise"></param>
+        /// <param name="basisFunction">Basis function</param>
+        /// <param name="coeffs">Computed Coefficients</param>
+        /// <param name="showDetails">True to display debug information at the console</param>
         /// <returns></returns>
-        protected SolverReport EvaluateFunction(List<double> x, List<double> y, BasisFunctionBase basisFunction, ref double[] coeffs, bool showDetails)
+        protected SolverReport EvaluateFunction(List<double> x, List<double> y, BasisFunctionBase basisFunction, out double[] coeffs, bool showDetails = false)
         {
             mShowDetails = showDetails;
 

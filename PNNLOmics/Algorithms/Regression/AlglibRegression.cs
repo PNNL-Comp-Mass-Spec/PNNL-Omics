@@ -30,8 +30,8 @@ namespace PNNLOmics.Algorithms.Regression
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="initialCoefficients"></param>
-        /// <param name="functionChoise"></param>
+        /// <param name="basisFunction">Basis function</param>
+        /// <param name="coeffs">initial Coefficients</param>
         /// <returns></returns>
         protected SolverReport EvaluateFunction(List<double> x, List<double> y, BasisFunctionBase basisFunction, ref double[] coeffs)
         {

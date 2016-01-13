@@ -93,9 +93,9 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
                     {
                         solver = new Hanning();
                         solver.Coefficients = new double[3];
-                        solver.Coefficients[0] = 1;//?
-                        solver.Coefficients[1] = 1;//?
-                        solver.Coefficients[2] = 1;//?
+                        solver.Coefficients[0] = 30;          //hanningI
+                        solver.Coefficients[1] = 5;           //hanningK
+                        solver.Coefficients[2] = 1234.388251; //xoffset
                     }
                     break;
             }

@@ -94,17 +94,17 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
                 var basisFunction = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
 
-                var coefficients = basisFunction.Coefficients;
+                var coeffs = basisFunction.Coefficients;
                 var start = xic.x.Min() - .5;
                 var stop  = xic.x.Max() + .5;
                 var A     = xic.y.Max();
                 A += (A * .05);
                 var width = Math.Abs(stop - start);
 
-                coefficients[0] = start + ((stop - start) / 2);
-                coefficients[1] = A;
-                coefficients[2] = width * .5;
-                coefficients[3] = coefficients[2];
+                coeffs[0] = start + ((stop - start) / 2);
+                coeffs[1] = A;
+                coeffs[2] = width * .5;
+                coeffs[3] = coeffs[2];
 
                 //Console.WriteLine("Xic {0}", xic.id); 
                 //Console.WriteLine();
@@ -119,7 +119,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
                 try
                 {
-                    worked = EvaluateFunction(xic.x, xic.y, basisFunction, ref coefficients, showDetails);
+                    worked = EvaluateFunction(xic.x, xic.y, basisFunction, out coeffs, showDetails);
 
                 }
                 catch (Exception)
@@ -151,7 +151,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 for (var i = 0; i < numberOfSamples + 1; i++)
                 {
                     x += delta;
-                    var y = basisFunction.Evaluate(coefficients, x);
+                    var y = basisFunction.Evaluate(coeffs, x);
                              
                     newXic.x.Add(x);
                     newXic.y.Add(y);
@@ -207,13 +207,13 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
                 var basisFunction = BasisFunctionFactory.BasisFunctionSelector(functionChoise);
 
-                var coefficients = basisFunction.Coefficients;
+                var coeffs = basisFunction.Coefficients;
                 var start = xic.x.Min() - .5;
                 var stop = xic.x.Max() + .5;
 
-                coefficients[2] = start + ((stop - start) / 2);
-                coefficients[0] = coefficients[2] * .5;
-                coefficients[1] = xic.y.Max();
+                coeffs[2] = start + ((stop - start) / 2);
+                coeffs[0] = coeffs[2] * .5;
+                coeffs[1] = xic.y.Max();
 
                 Console.WriteLine("Xic {0}", xic.id);
                 Console.WriteLine();
@@ -232,7 +232,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
 
                 try
                 {
-                    worked = EvaluateFunction(xic.x, xic.y, basisFunction, ref coefficients, showDetails);
+                    worked = EvaluateFunction(xic.x, xic.y, basisFunction, out coeffs, showDetails);
 
                 }
                 catch (Exception)
@@ -265,7 +265,7 @@ namespace PNNLOmics.UnitTests.AlgorithmTests.Solvers
                 for (var i = 0; i < numberOfSamples + 1; i++)
                 {
                     x += delta;
-                    var y = basisFunction.Evaluate(coefficients, x);
+                    var y = basisFunction.Evaluate(coeffs, x);
 
                     newXic.x.Add(x);
                     newXic.y.Add(y);

@@ -19,7 +19,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
         /// <summary>
         /// Evaluates the function.
         /// </summary>
-        /// <param name="cofficients"></param>
+        /// <param name="coefficients"></param>
         /// <param name="x"></param>
         /// <returns></returns>
         public virtual double Evaluate(double[] coefficients, double x)
