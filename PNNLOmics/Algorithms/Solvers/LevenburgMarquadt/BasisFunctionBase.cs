@@ -5,6 +5,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
     /// <summary>
     /// interface for strategy design pattern
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt")]
     public abstract class BasisFunctionBase
     {
         public virtual void Scale(List<double> x)

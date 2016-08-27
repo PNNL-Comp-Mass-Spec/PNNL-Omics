@@ -3,6 +3,7 @@
     /// <summary>
     /// Factory for creating numerical integration objects.
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt")]
     public class NumericalIntegrationFactory
     {
         /// Creates a numerical integration object based on the specified function.

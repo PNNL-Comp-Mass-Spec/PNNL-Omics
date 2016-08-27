@@ -3,6 +3,7 @@
     /// <summary>
     /// Basis function for the LM Algorithm using Polynomials
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions")]
     public class Cubic : BasisFunctionBase
     {
         

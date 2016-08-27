@@ -6,7 +6,7 @@ namespace PNNLOmics.Algorithms.Statistics
     /// <summary>
     /// Performs the Wilcoxon Signed Rank Test
     /// </summary>
-    [UsedImplicitly]
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Statistics")]
     public class WilcoxonSignedRankTest : IHypothesisTestingTwoSample
     {
         /// <summary>

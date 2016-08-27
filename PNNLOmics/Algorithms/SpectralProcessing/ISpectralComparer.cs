@@ -5,6 +5,7 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
     /// <summary>
     /// Interface for spectral comparison algorithms
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public interface ISpectralComparer
     {
         /// <summary>

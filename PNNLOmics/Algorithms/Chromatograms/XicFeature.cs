@@ -4,6 +4,7 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Chromatograms
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Chromatograms")]
     public sealed class XicFeature : Chromatogram, IComparable<XicFeature>
     {
         public double LowMz { get; set; }

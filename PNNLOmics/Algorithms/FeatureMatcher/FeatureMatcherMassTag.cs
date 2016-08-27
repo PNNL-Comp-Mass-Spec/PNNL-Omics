@@ -6,7 +6,7 @@ using PNNLOmics.Data.MassTags;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher
 {
-    [UsedImplicitly]
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher")]
     public class FeatureMatcherMassTag<TObserved, TTarget> :
         FeatureMatcher<TObserved, TTarget>               
         where TObserved : FeatureLight, new()

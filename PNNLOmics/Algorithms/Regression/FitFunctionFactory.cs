@@ -2,6 +2,7 @@ using System;
 
 namespace PNNLOmics.Algorithms.Regression
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public class FitFunctionFactory
     {
         public static Func<double, double> Create(FitFunctionTypes type)

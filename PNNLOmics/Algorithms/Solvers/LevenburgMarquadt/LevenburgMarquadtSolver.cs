@@ -3,6 +3,7 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt")]
     public class LevenburgMarquadtSolver
     {
         public LevenburgMarquadtSolver()

@@ -1,5 +1,6 @@
 ﻿namespace PNNLOmics.Algorithms.Statistics
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Statistics")]
     public class HypothesisTestingFactory
     {
         public static IHypothesisTestingTwoSample CreateTests(HypothesisTests test)

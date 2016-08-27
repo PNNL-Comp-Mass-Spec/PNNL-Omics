@@ -4,6 +4,7 @@
     /// <summary>
     /// Holds hypothesis testing rules.
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Statistics")]
     public class HypothesisTestingData
     {
         public HypothesisTestingData(double twoTail,

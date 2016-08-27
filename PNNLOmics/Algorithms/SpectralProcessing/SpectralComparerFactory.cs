@@ -2,6 +2,7 @@
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class SpectralComparerFactory
     {
         /// <summary>

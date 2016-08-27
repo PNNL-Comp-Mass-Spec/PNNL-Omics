@@ -3,6 +3,7 @@
     /// <summary>
     /// Basis function for the LM Algorithm using Quadratic Peak Shapes
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions")]
     public class Quadratic : BasisFunctionBase
     {
         /// <summary>

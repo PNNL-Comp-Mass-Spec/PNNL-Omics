@@ -7,6 +7,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Creates UMC's based on MS Features.
     /// </summary>
+	[System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public interface IFeatureFinder: IProgressNotifer
     {
         /// <summary>

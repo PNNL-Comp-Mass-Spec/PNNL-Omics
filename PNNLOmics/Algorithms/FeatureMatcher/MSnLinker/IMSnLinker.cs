@@ -7,6 +7,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
     /// <summary>
     /// Interface for linking features together from MSMS to MSn
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher.MSnLinker")]
     public interface IMSnLinker
     {
 

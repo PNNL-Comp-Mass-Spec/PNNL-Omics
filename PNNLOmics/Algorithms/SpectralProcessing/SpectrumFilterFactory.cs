@@ -1,11 +1,13 @@
 ﻿namespace PNNLOmics.Algorithms.SpectralProcessing
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public enum SpectraFilters
     {
         RawThreshold,
         TopPercent        
     }
 
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class SpectrumFilterFactory
     {
         public static ISpectraFilter CreateFilter(SpectraFilters filterType)

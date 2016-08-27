@@ -2,6 +2,7 @@
 
 namespace PNNLOmics.Algorithms.Distance
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Distance")]
     public static class DistanceFactory<T> where T: FeatureLight, new()
     {
         public static DistanceFunction<T> CreateDistanceFunction(DistanceMetric metric)

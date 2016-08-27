@@ -3,6 +3,7 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
+	[System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class LcmsClusteringOptions
     {
         public LcmsClusteringOptions(FeatureTolerances instrumentTolerances)

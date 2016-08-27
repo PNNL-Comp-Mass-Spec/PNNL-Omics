@@ -6,6 +6,7 @@ namespace PNNLOmics.Algorithms.Regression
     /// <summary>
     /// Class to hold onto the uniform distribution data for expectation maximization
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public class NormalUniformEm
     {
         private double m_mean;

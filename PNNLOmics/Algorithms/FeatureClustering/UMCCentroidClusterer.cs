@@ -16,6 +16,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// </summary>
     /// <typeparam name="T">Object to link</typeparam>
     /// <typeparam name="U">Cluster to produce.</typeparam>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class UMCCentroidClusterer<T, U> : LinkageClustererBase<T, U>
         where T : FeatureLight, IChildFeature<U>, new()
         where U : FeatureLight, IFeatureCluster<T>, new()

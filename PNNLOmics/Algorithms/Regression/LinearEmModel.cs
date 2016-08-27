@@ -10,7 +10,8 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Regression
 {
-    public class LinearEmModel : IRegressorAlgorithm<LinearRegressionResult>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
+	public class LinearEmModel : IRegressorAlgorithm<LinearRegressionResult>
     {
         private DenseMatrix m_x;
         private DenseMatrix m_xTranspose;

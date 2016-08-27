@@ -3,6 +3,7 @@
 namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {
     [Serializable]
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher.Data")]
     public class STACFDR
     {
         #region Members

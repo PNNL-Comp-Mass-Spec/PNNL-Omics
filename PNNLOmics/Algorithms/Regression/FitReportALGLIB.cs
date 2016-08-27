@@ -6,6 +6,7 @@ namespace PNNLOmics.Algorithms.Regression
     /// <summary>
     /// fit report that includes information from ALGLIB
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public class FitReportALGLIB: FitReport
     {
         double AverageError{ get; set; }

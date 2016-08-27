@@ -6,6 +6,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// Options for MS feature clustering.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+	[System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class MsFeatureClusterParameters<T>:
         FeatureClusterParameters<T>
         where T : FeatureLight, new()

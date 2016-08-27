@@ -6,6 +6,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
     /// <summary>
     /// Defines how a spectra should be filtered.
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public interface ISpectraFilter
     {
         /// <summary>

@@ -8,6 +8,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// Node / tree structure for creating UMC's
     /// </summary>
     /// <typeparam name="T"></typeparam>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class FeatureTree<T, U>:
         BinarySearchTree<T, FeatureTree<T, U>>
         where T: FeatureLight, new()

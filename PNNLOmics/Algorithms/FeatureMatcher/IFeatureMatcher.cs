@@ -6,6 +6,7 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher")]
     public interface IFeatureMatcher<TObserved, TTarget> 
         where TObserved : FeatureLight, new() 
         where TTarget : FeatureLight, new()

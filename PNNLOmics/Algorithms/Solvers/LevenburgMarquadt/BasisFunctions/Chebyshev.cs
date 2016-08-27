@@ -6,6 +6,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
     /// <summary>
     /// Basis function for the LM Algorithm using First Order Chebyshev
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions")]
     public class Chebyshev : BasisFunctionBase
     {
 

@@ -7,6 +7,7 @@ namespace PNNLOmics.Algorithms.SpectralComparisons
     /// <summary>
     /// Compares two spectra based on their 
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class SpectralMzComparer: ISpectralComparer
     {
         /// <summary>

@@ -3,6 +3,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Data
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher.Data")]
     public class FeatureMatcherTolerances
     {
         #region Members

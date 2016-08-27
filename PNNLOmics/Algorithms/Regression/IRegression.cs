@@ -7,6 +7,7 @@ namespace PNNLOmics.Algorithms.Regression
     /// interface for regression packages
     /// </summary>
     /// <typeparam name="T">data type for X and Y data</typeparam>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public interface IRegression<T>
     {
         /// <summary>

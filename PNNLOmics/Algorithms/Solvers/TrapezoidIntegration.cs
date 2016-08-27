@@ -7,6 +7,7 @@ namespace PNNLOmics.Algorithms.Solvers
     /// <summary>
     /// Class for using the trapezoid rule to integrate a basis function.
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt")]
     public class TrapezoidIntegration : NumericalIntegrationBase
     {
         /// <summary>

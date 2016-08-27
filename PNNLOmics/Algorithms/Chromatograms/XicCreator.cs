@@ -8,6 +8,7 @@ using PNNLOmics.Extensions;
 
 namespace PNNLOmics.Algorithms.Chromatograms
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Chromatograms")]
     public class XicCreator
     {
         private const int CONST_POLYNOMIAL_ORDER = 3;

@@ -8,6 +8,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// Holds only unique edges based on edge id.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+	[System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     class UniqueEdgeList<T> : IEnumerable<Edge<T>>
         where T : FeatureLight, new()
     {

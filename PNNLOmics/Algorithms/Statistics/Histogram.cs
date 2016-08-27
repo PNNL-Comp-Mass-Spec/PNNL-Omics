@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace PNNLOmics.Algorithms.Statistics
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Statistics")]
     public class Histogram
     {
         public static void CreateHistogram(List<double> inputValues, ref List<double> bins,

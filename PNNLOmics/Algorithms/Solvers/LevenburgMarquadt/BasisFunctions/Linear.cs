@@ -3,6 +3,7 @@
     /// <summary>
     /// Basis function for adding a fit to a linear function.
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions")]
     public class Linear : BasisFunctionBase
     {
         /// <summary>

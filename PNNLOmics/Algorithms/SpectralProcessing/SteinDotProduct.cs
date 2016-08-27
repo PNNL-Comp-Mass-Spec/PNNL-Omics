@@ -2,6 +2,7 @@
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class SteinDotProduct: ISpectralComparer
     {
         public double CompareSpectra(Data.MSSpectra spectraX, Data.MSSpectra spectraY)

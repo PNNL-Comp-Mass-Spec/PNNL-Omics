@@ -5,6 +5,7 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Distance
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Distance")]
     public class EuclideanDistanceMetric<T> where T: FeatureLight, new ()
     {
         /// <summary>

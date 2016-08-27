@@ -5,6 +5,7 @@ using PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions;
 
 namespace PNNLOmics.Algorithms.Regression
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public class AlglibRegression: IRegression<double>
     {
         public FitReport Fit(IEnumerable<double> x, IEnumerable<double> y, BasisFunctionsEnum basisFunction, ref double[] coeffs)

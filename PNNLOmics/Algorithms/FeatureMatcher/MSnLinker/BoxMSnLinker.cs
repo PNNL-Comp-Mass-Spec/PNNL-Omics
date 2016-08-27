@@ -10,6 +10,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher.MSnLinker
     /// <summary>
     /// Maps MS/MS data to MS features.
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher.MSnLinker")]
     public class BoxMSnLinker: IMSnLinker
     {
         /// <summary>

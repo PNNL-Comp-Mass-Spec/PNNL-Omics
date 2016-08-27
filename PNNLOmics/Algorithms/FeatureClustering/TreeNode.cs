@@ -5,6 +5,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Binary Search Tree Node
     /// </summary>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class TreeNode<T> where T : IComparable, IComparable<T>
     {
         public TreeNode(T value)

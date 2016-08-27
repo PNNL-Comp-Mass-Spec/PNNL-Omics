@@ -18,6 +18,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Parameters for the single linkage UMC Clustering Algorithm.
     /// </summary>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class FeatureClusterParameters<T>
         where T: FeatureLight, new()
     {        

@@ -9,6 +9,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// Encapsulates an Edge between two vertices.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     class Edge<T> : IComparable<Edge<T>>, IComparable
 
         where T : FeatureLight, new()

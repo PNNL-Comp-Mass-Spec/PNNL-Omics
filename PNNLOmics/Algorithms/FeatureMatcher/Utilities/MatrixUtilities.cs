@@ -5,6 +5,7 @@ using PNNLOmics.Utilities;
 
 namespace PNNLOmics.Algorithms.FeatureMatcher.Utilities
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher.Utilities")]
     static public class MatrixUtilities
     {
         #region Remove rows/columns

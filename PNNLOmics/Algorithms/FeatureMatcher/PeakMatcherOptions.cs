@@ -4,6 +4,7 @@
     /// <summary>
     /// Options class for matching AMT's to features
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher")]
     public class PeakMatcherOptions
     {
         /// <summary>

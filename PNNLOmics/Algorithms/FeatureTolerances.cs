@@ -19,6 +19,7 @@ namespace PNNLOmics.Algorithms
     /// <summary>
     /// Tolerances for the single linkage clustering algorithm.
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms")]
     public sealed class FeatureTolerances
     {
         /// <summary>

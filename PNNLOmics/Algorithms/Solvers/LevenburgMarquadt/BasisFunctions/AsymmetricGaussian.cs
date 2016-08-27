@@ -2,6 +2,7 @@
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions")]
     class AsymmetricGaussian: BasisFunctionBase
     {
         /*

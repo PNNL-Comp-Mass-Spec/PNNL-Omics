@@ -9,6 +9,7 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.FeatureClustering
 {
+	[System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class UMCAverageLinkageClusterer<T, U> : LinkageClustererBase<T, U>
         where T : FeatureLight, IChildFeature<U>, new()
         where U : FeatureLight, IFeatureCluster<T>, new()

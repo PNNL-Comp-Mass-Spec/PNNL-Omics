@@ -3,6 +3,7 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralComparisons
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class SpectralCosineComparer: ISpectralComparer
     {
         /// <summary>

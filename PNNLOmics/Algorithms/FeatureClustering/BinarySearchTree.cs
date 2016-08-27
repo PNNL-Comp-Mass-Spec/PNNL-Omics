@@ -7,6 +7,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// </summary>
     /// <typeparam name="T">Data type</typeparam>
     /// <typeparam name="TNodeType">Node Type for (Left and Right)</typeparam>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public abstract class BinarySearchTree<T, TNodeType>
         where TNodeType: BinarySearchTree<T, TNodeType>, new ()
     {        

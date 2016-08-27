@@ -10,6 +10,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// Encapsulates data about a minimum spanning tree.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     class MinimumSpanningTree<T> : IEnumerable<Edge<T>>
         where T : FeatureLight, new()
     {

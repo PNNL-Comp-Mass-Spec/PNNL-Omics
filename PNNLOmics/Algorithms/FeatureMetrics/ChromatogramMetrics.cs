@@ -10,6 +10,7 @@ namespace PNNLOmics.Algorithms.FeatureMetrics
     /// <summary>
     /// Scores chromatograms based on various relationships between charge state and isotopic distribution.
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMetrics")]
     public class ChromatogramMetrics
     {
         public void FitChromatograms(Chromatogram profile,

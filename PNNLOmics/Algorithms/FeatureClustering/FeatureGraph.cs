@@ -9,6 +9,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// Manages a graph of connected features based on some similarity metric.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     class FeatureGraph<T>
         where T : FeatureLight, new()
     {

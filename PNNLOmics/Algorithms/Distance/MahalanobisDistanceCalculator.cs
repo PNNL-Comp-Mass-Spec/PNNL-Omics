@@ -8,6 +8,7 @@ namespace PNNLOmics.Algorithms.Distance
 	/// <summary>
 	/// Contains methods used for calculating the Mahalanobis distance between 2 clusters of data.
 	/// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Distance")]
 	public class MahalanobisDistanceCalculator
 	{
 		/// <summary>

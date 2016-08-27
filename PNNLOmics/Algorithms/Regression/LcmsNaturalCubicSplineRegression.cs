@@ -9,6 +9,7 @@ namespace PNNLOmics.Algorithms.Regression
     /// Object which contains all the information necesary for a natural cubic spline regression
     /// for LCMS Warp
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public class LcmsNaturalCubicSplineRegression
     {
         readonly List<RegressionPoint> m_pts;

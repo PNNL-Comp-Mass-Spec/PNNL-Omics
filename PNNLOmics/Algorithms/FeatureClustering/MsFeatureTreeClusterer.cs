@@ -15,6 +15,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// </summary>
     /// <typeparam name="TChildFeature"></typeparam>
     /// <typeparam name="TParentFeature"></typeparam>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class MsFeatureTreeClusterer<TChildFeature, TParentFeature>
         : IProgressNotifer
         where TChildFeature: MSFeatureLight, new()

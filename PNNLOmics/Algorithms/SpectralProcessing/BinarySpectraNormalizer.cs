@@ -5,6 +5,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
     /// <summary>
     /// Converts a spectrum into a binary one
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class BinarySpectraNormalizer : ISpectralNormalizer
     {
         #region ISpectralNormalizer Members

@@ -8,6 +8,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Holds data about the mean and stdev of a Gaussian distribution.
     /// </summary>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     internal class DistributionData
     {
         public DistributionData(double mean, double stdev, double variance, int size)

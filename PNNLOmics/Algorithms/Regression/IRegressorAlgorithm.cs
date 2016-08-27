@@ -7,6 +7,7 @@ using PNNLOmics.Annotations;
 
 namespace PNNLOmics.Algorithms.Regression
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public interface IRegressorAlgorithm<T>
     {
         [UsedImplicitly]

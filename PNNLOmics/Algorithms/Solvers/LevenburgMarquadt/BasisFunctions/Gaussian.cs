@@ -5,6 +5,7 @@ namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions
     /// <summary>
     /// Basis function for the LM Algorithm using Gaussian Peak Shapes
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt.BasisFunctions")]
     public class Gaussian : BasisFunctionBase
     {
         /// <summary>

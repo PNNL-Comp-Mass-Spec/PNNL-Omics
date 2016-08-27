@@ -5,6 +5,7 @@ namespace PNNLOmics.Algorithms
     /// <summary>
     /// Argument object for a progress notifier.
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms")]
     public sealed class ProgressNotifierArgs: EventArgs
     {
         /// <summary>

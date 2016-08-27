@@ -8,6 +8,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
     /// <summary>
     /// Filters spectra based on a perctange value.
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class TopPercentSpectralFilter : ISpectraFilter
     {
         #region ISpectraFilter Members

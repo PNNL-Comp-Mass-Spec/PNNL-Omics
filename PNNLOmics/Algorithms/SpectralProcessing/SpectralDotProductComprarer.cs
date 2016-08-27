@@ -5,6 +5,7 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class SpectralDotProductComprarer: ISpectralComparer 
     {
         

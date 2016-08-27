@@ -4,6 +4,7 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Regression
 {    
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
 	public sealed class LinearRegressionModel: IRegressorAlgorithm<LinearRegressionResult>
 	{
         public LinearRegressionResult CalculateRegression(IEnumerable<XYData> xyDataList)

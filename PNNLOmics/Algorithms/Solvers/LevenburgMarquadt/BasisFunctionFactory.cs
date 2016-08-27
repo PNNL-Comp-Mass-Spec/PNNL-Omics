@@ -2,6 +2,7 @@
 
 namespace PNNLOmics.Algorithms.Solvers.LevenburgMarquadt
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt")]
     public class BasisFunctionFactory
     {        
         public static BasisFunctionBase BasisFunctionSelector(BasisFunctionsEnum functionChoise)

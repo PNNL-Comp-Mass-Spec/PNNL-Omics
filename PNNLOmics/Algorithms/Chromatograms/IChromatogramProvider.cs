@@ -5,6 +5,7 @@ namespace PNNLOmics.Algorithms.Chromatograms
     /// <summary>
     /// Provides chromatograms to client components to avoid coupling data structure backend or caching scheme.
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Chromatograms")]
     public interface IChromatogramProvider
     {
         /// <summary>

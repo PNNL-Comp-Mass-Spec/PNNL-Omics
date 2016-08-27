@@ -4,6 +4,7 @@ using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Algorithms.Distance
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Distance")]
     public class MahalanobisWrapper<T> where T : FeatureLight, new()
     {
         private DenseMatrix CreateMatrix(List<T> x)

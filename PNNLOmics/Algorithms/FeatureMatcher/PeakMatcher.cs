@@ -7,6 +7,7 @@ namespace PNNLOmics.Algorithms.FeatureMatcher
     /// Matches features to a list of mass tags.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.FeatureMatcher")]
     public class PeakMatcher<T, U>
         where T : FeatureLight, new()
         where U : FeatureLight, new ()

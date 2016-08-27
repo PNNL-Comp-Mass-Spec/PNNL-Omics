@@ -9,7 +9,7 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.Regression
 {
-    // TODO: Double check all calculations.  Doesn't calculate correctly.
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public sealed class MixtureModelEm : IRegressorAlgorithm<LinearRegressionResult>
     {
         private double m_normalizingSlopeX;

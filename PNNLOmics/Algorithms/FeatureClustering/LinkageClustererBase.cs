@@ -10,6 +10,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// </summary>
     /// <typeparam name="T">Features to cluster.</typeparam>
     /// <typeparam name="T">Clusters produced.</typeparam>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
 	public abstract class LinkageClustererBase<T, U> : IProgressNotifer, IClusterer<T, U>
         where T : FeatureLight, IChildFeature<U>, new()    
         where U : FeatureLight, IFeatureCluster<T>, new()

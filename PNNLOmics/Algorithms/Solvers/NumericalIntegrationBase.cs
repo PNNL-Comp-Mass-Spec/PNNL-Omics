@@ -6,6 +6,7 @@ namespace PNNLOmics.Algorithms.Solvers
     /// <summary>
     /// Integration technique
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Solvers.LevenburgMarquadt")]
     public abstract class NumericalIntegrationBase
     {
         /// <summary>

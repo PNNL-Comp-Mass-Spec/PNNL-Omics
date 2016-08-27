@@ -5,6 +5,7 @@ namespace PNNLOmics.Algorithms.SpectralProcessing
     /// <summary>
     /// Converts a spectra
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public interface ISpectralNormalizer
     {
         /// <summary>

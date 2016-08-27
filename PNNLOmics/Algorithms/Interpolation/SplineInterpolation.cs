@@ -2,6 +2,7 @@
 
 namespace PNNLOmics.OmicsMath
 {
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Interpolation")]
     public class SplineInterpolation
     {
         // used to temporarily store the spline coefficients

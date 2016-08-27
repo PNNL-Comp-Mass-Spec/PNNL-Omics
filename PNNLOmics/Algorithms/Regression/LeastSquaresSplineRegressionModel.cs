@@ -9,6 +9,7 @@ namespace PNNLOmics.Algorithms.Regression
     /// <summary>
     /// Object to hold the necesary information for an LSQ regression for LCMSWarp
     /// </summary>
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public sealed class LeastSquaresSplineRegressionModel
     {
         readonly List<RegressionPoint> m_points;

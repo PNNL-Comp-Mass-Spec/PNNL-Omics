@@ -19,6 +19,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Clusters UMC's (LC-MS Features, LC-IMS-MS Features) into UMC Clusters.
     /// </summary>
+	[System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class UMCSingleLinkageClusterer<T, U> : LinkageClustererBase<T, U>
         where T : FeatureLight, IChildFeature<U>,   new()
         where U : FeatureLight, IFeatureCluster<T>, new()

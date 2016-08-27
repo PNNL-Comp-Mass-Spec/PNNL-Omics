@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace PNNLOmics.Algorithms.Regression
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Regression")]
     public class LoessInterpolator
     {
         public static double DEFAULT_BANDWIDTH = 0.50;

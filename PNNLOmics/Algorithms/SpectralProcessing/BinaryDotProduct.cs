@@ -4,6 +4,7 @@ using PNNLOmics.Data;
 
 namespace PNNLOmics.Algorithms.SpectralProcessing
 {
+    [Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.SpectralProcessing")]
     public class BinaryDotProduct : ISpectralComparer
     {
         public BinaryDotProduct(double percent)

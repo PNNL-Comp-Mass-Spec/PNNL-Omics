@@ -3,6 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
+    [System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Statistics")]
     public enum HypothesisTests
     {
         TTest,

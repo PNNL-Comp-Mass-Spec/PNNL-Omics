@@ -11,6 +11,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// <summary>
     /// Aligns multiple datasets based on MS/MS clustering methods.
     /// </summary>
+	[Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public class MSMSClusterer : IProgressNotifer
     {
         /// <summary>

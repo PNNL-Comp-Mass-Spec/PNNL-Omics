@@ -19,6 +19,7 @@ namespace PNNLOmics.Algorithms.FeatureClustering
     /// </summary>
     /// <typeparam name="T">Type to cluster data objects of.</typeparam>
     /// <typeparam name="U">Type of cluster output objects.</typeparam>
+	[System.Obsolete("Code moved to MultiAlign: MultiAlignCore.Algorithms.Clustering")]
     public interface IClusterer<T, U>:  IProgressNotifer
         where T: FeatureLight, new ()
     {
