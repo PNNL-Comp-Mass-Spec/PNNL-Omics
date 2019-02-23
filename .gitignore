@@ -10,3 +10,5 @@ SVN_Path.txt
 *.suo
 *.DotSettings.user
 packages/
+
+/.vs/

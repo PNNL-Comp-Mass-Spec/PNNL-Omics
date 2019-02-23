@@ -6,7 +6,7 @@ using PNNLOmics.Data.Constants;
 using PNNLOmics.Utilities;
 
 /// <example>
-/// dictionary implementation                        
+/// dictionary implementation
 /// Dictionary<string,ElementObject> ElementDictionary = ElementLibrary.LoadElementData();
 /// double elementC12Mass = ElementDictionary["C"].IsotopeDictionary["C12"].Mass;
 /// double elementC13Mass = ElementDictionary["C"].IsotopeDictionary["C13"].Mass;
@@ -14,7 +14,7 @@ using PNNLOmics.Utilities;
 /// double elementC13Abund = ElementDictionary["C"].IsotopeDictionary["C13"].NaturalAbundance;
 /// double elemetMonoMass = ElementDictionary["C"].MonoIsotopicMass;
 /// string elementName = ElementDictionary["C"].Name;
-/// string elementSymbol = ElementDictionary["C"].Symbol;                     
+/// string elementSymbol = ElementDictionary["C"].Symbol;
 ///
 /// One line implementation
 /// double elementMonoMass = ElementConstantsStaticLibrary.GetMonoisotopicMass("C");
@@ -30,7 +30,7 @@ namespace PNNLOmics.Data.Constants.Libraries
     /// </summary>
     public class ElementLibrary : MatterLibrary<Element, ElementName>
     {
-		protected const string OMICS_ELEMENT_DATA_FILE = "PNNLOmicsElementData.xml";
+        protected const string OMICS_ELEMENT_DATA_FILE = "PNNLOmicsElementData.xml";
 
         #region Loading Data
         /// <summary>
@@ -40,7 +40,39 @@ namespace PNNLOmics.Data.Constants.Libraries
         /// </summary>
         public void LoadXML(string constantsFileName, out List<string> elementSymbolList, out List<Element> elementList)
         {
-            XmlReader readerXML = XmlReader.Create(constantsFileName);
+            LoadDataWithFallback(new FileInfo(constantsFileName), out elementSymbolList, out elementList);
+        }
+
+        /// <summary>
+        /// Reads the element data from the specified XML file.
+        /// </summary>
+        /// <param name="constantsFileName"></param>
+        /// <param name="elementSymbolList"></param>
+        /// <param name="elementList"></param>
+        public void LoadXMLFromFile(string constantsFileName, out List<string> elementSymbolList, out List<Element> elementList)
+        {
+            ReadXmlFromStream(new FileStream(constantsFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), out elementSymbolList, out elementList);
+        }
+
+        /// <summary>
+        /// This is a Class designed to load periodic table of the elements data from a hard coded class derived from PNNLOmicsElementData.xml
+        /// IUPAC 2000 Atomic Weights of the Elements (published 2003) was used.
+        /// Differences from the old version:  Elements H, B, C, N, O, Na, P, S, Cl, K, Ca were updated.  Table 5 in the paper has the probabilities (best measurement column was used).
+        /// </summary>
+        public void LoadHardCoded(out List<string> elementSymbolList, out List<Element> elementList)
+        {
+            PeriodicTableLibrary.Load(out elementSymbolList, out elementList);
+        }
+
+        /// <summary>
+        /// Read the PNNLOmicsElementData.xml file, from file in disk or from the file embedded in the dll
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="elementSymbolList"></param>
+        /// <param name="elementList"></param>
+        private void ReadXmlFromStream(Stream stream, out List<string> elementSymbolList, out List<Element> elementList)
+        {
+            XmlReader readerXML = XmlReader.Create(stream);
 
             int numberOfIsotopes = 0;
             int atomicity = 0;
@@ -127,13 +159,89 @@ namespace PNNLOmics.Data.Constants.Libraries
         }
 
         /// <summary>
-        /// This is a Class designed to load periodic table of the elements data from a hard coded class derived from PNNLOmicsElementData.xml
-        /// IUPAC 2000 Atomic Weights of the Elements (published 2003) was used.
-        /// Differences from the old version:  Elements H, B, C, N, O, Na, P, S, Cl, K, Ca were updated.  Table 5 in the paper has the probabilities (best measurement column was used).
+        /// Read the element data from the embedded resource
         /// </summary>
-        public void LoadHardCoded(out List<string> elementSymbolList, out List<Element> elementList)
+        /// <param name="elementSymbolList"></param>
+        /// <param name="elementList"></param>
+        /// <param name="writeFilePath">Path to try writing the XML file out to, for later use.</param>
+        /// <returns>True if the XML data was written to writeFilePath;</returns>
+        public bool LoadDefaultXml(out List<string> elementSymbolList, out List<Element> elementList, string writeFilePath = null)
         {
-            PeriodicTableLibrary.Load(out elementSymbolList, out elementList);
+            const string embeddedXmlFileName = "PNNLOmics." + OMICS_ELEMENT_DATA_FILE;
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            ReadXmlFromStream(assembly.GetManifestResourceStream(embeddedXmlFileName), out elementSymbolList, out elementList);
+            if (!string.IsNullOrWhiteSpace(writeFilePath) && !File.Exists(writeFilePath))
+            {
+                using (var fileReader = new StreamReader(assembly.GetManifestResourceStream(embeddedXmlFileName)))
+                using (var writer = new StreamWriter(new FileStream(writeFilePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                {
+                    try
+                    {
+                        writer.Write(fileReader.ReadToEnd());
+                    }
+                    catch (System.Exception)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (writeFilePath == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to load element data, in order, from <paramref name="constantsFilePath"/>, then from the embedded XML file, then from hardcoded values
+        /// </summary>
+        /// <param name="constantsFilePath"></param>
+        /// <param name="elementSymbolList"></param>
+        /// <param name="elementList"></param>
+        /// <returns>True if data was loaded</returns>
+        public bool LoadDataWithFallback(string constantsFilePath, out List<string> elementSymbolList, out List<Element> elementList)
+        {
+            return LoadDataWithFallback(new FileInfo(constantsFilePath), out elementSymbolList, out elementList);
+        }
+
+        /// <summary>
+        /// Attempts to load element data, in order, from <paramref name="constantsFileInfo"/>, then from the embedded XML file, then from hardcoded values
+        /// </summary>
+        /// <param name="constantsFileInfo"></param>
+        /// <param name="elementSymbolList"></param>
+        /// <param name="elementList"></param>
+        /// <returns>True if data was loaded</returns>
+        public bool LoadDataWithFallback(FileInfo constantsFileInfo, out List<string> elementSymbolList, out List<Element> elementList)
+        {
+            elementSymbolList = new List<string>();
+            elementList = new List<Element>();
+            if (constantsFileInfo.Exists)
+            {
+                try
+                {
+                    LoadXMLFromFile(constantsFileInfo.FullName, out elementSymbolList, out elementList);
+                    return true;
+                }
+                catch
+                {
+                    // Swallow it, for fall-through
+                }
+            }
+
+            try
+            {
+                LoadDefaultXml(out elementSymbolList, out elementList, constantsFileInfo.FullName);
+                return true;
+            }
+            catch
+            {
+                // Swallow it, for fall-through
+            }
+
+            LoadHardCoded(out elementSymbolList, out elementList);
+
+            return elementSymbolList.Count > 0;
         }
 
         /// <summary>
@@ -146,43 +254,21 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_enumToSymbolMap = new Dictionary<ElementName, string>();
 
             ResolveUNCPath.MappedDriveResolver uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
-            string asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtilities.AssemblyDirectory);
+            string assemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtilities.AssemblyDirectory);
 
-            FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
-			//FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(PathUtil.AssemblyDirectory, OMICS_ELEMENT_DATA_FILE));
-
-            
+            FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(assemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
+            //FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(PathUtil.AssemblyDirectory, OMICS_ELEMENT_DATA_FILE));
 
             List<string> elementSymbolList = new List<string>();
             List<Element> elementList = new List<Element>();
 
-            if (constantsFileInfo.Exists)
-            {
-                try
-                {
-                    LoadXML(constantsFileInfo.FullName, out elementSymbolList, out elementList);
-                }
-                catch
-                {
-                    LoadHardCoded(out elementSymbolList, out elementList);
-                }
-            }
-            else
-            {
-                LoadHardCoded(out elementSymbolList, out elementList);
-            }
+            var success = LoadDataWithFallback(constantsFileInfo, out elementSymbolList, out elementList);
 
-            //if there is no file load from code
-            if(elementSymbolList.Count==0)//file did not work
-            {
-                LoadHardCoded(out elementSymbolList, out elementList);
-            }
-
-            if (elementSymbolList.Count==0)//we still failed
+            if (!success)
             {
                 throw new FileNotFoundException("The " + OMICS_ELEMENT_DATA_FILE + " file cannot be found at " + constantsFileInfo.FullName);
             }
-           
+
             for (int i = 0; i < elementSymbolList.Count; i++)
             {
                 m_symbolToCompoundMap.Add(elementSymbolList[i], elementList[i]);

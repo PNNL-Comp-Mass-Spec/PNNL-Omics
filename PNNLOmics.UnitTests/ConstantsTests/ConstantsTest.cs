@@ -12,17 +12,17 @@ namespace PNNLOmics.UnitTests.ConstantsTests
     class ConstantsTest
     {
         [Test]
-        public void LoadPeriodicDableFromDiskOrCode()
+        public void LoadPeriodicTableFromDiskOrCode()
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
             string OMICS_ELEMENT_DATA_FILE = "PNNLOmicsElementData.xml";
-            
-            ResolveUNCPath.MappedDriveResolver uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
-            string asemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtilities.AssemblyDirectory);
 
-            FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(asemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
+            ResolveUNCPath.MappedDriveResolver uncPathCheck = new ResolveUNCPath.MappedDriveResolver();
+            string assemblyDirectoryOrUNCDirectory = uncPathCheck.ResolveToUNC(PathUtilities.AssemblyDirectory);
+
+            FileInfo constantsFileInfo = new FileInfo(System.IO.Path.Combine(assemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE));
 
             ElementLibrary libraryLoad = new ElementLibrary();
 
@@ -51,6 +51,29 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             elementSymbolList = null;
             elementList = null;
 
+            FileInfo constantsFileInfoBad = new FileInfo(System.IO.Path.Combine(assemblyDirectoryOrUNCDirectory, OMICS_ELEMENT_DATA_FILE + "_bad"));
+            Assert.IsFalse(constantsFileInfoBad.Exists);
+
+            try
+            {
+                elementSymbolList = new List<string>();
+                elementList = new List<Element>();
+                libraryLoad.LoadXML(constantsFileInfoBad.FullName, out elementSymbolList, out elementList);
+            }
+            catch
+            {
+                // ???
+                // Should return valid values no matter what.
+            }
+
+            Assert.AreEqual(elementList.Count, 104);
+            Assert.AreEqual(elementSymbolList.Count, 104);
+            Assert.AreEqual(elementList[50].MassAverage, 121.76);
+            Assert.AreEqual(elementSymbolList[50], "Sb");
+
+            elementSymbolList = null;
+            elementList = null;
+
             libraryLoad.LoadHardCoded(out elementSymbolList, out elementList);
 
             Assert.AreEqual(elementList.Count, 104);
@@ -59,9 +82,9 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(elementSymbolList[50], "Sb");
 
             stopWatch.Stop();
-            Console.WriteLine("This took " + stopWatch.Elapsed + "seconds to Load and initialize the library twice");
+            Console.WriteLine("This took " + stopWatch.Elapsed + "seconds to Load and initialize the library three times");
         }
-        
+
         [Test]
         public void TestCyclingThroughDictionary()
         {
@@ -222,7 +245,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             var elementX999Isotope = Constants.Elements[ElementName.Generic].IsotopeDictionary["X999"].NaturalAbundance;
             var newIsotope = new Isotope(1000, 1000.500, 0.75);
             Constants.Elements[ElementName.Generic].IsotopeDictionary.Add("X1000", newIsotope);
-            
+
             var elementX1000Isotope = Constants.Elements[ElementName.Generic].IsotopeDictionary["X1000"].NaturalAbundance;
 
             //string elementKeyXList
@@ -233,7 +256,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual(0.5, elementX999Isotope);
             Assert.AreEqual(0.75, elementX1000Isotope);
             //Assert.AreEqual(elementKey, "newName");
-            
+
             stopWatch.Stop();
             Console.WriteLine("This took " + stopWatch.Elapsed + "seconds to TestElements");
         }
@@ -296,7 +319,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
             Assert.AreEqual("O-acetyl", otherNameNew);
             Assert.AreEqual("C2H2O", otherFormulaNew);
 
-            //using a Select Key and Enum 
+            //using a Select Key and Enum
             var otherMass3 = Constants.MiscellaneousMatter[MiscellaneousMatterName.Ammonia].MassMonoIsotopic;
             var otherMass4 = Constants.MiscellaneousMatter[MiscellaneousMatterName.Sulfate].MassMonoIsotopic;
 
@@ -398,7 +421,7 @@ namespace PNNLOmics.UnitTests.ConstantsTests
         [Test]
         public void TestMasses()
         {
-            
+
             var newlibrary1 = new AminoAcidLibrary();
             //Dictionary<string, Compound> dictionaryIn1 = newlibrary1.LoadLibrary();
             //foreach (KeyValuePair<string, Compound> matterObject in dictionaryIn1)
