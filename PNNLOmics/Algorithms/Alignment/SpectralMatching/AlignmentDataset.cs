@@ -7,7 +7,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
     /// <summary>
     /// Encapsulates dataset information 
     /// </summary>
-	[Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
+    [Obsolete("Code moved to MultiAlignWinOmics: MultiAlignCore.Algorithms.Alignment.SpectralMatching")]
     public class AlignmentDataset
     {
         public AlignmentDataset()

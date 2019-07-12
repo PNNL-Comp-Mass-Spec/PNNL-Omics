@@ -7,11 +7,11 @@
             if (path == null)
                 return null;
 
-            var type =  GetFileType(path);
+            var type = GetFileType(path);
 
             if (type == SequenceFileType.None)
-                return null; 
-             
+                return null;
+
             return CreateReader(type);
         }
         public static ISequenceFileReader CreateReader(SequenceFileType type)
@@ -37,19 +37,17 @@
         private static SequenceFileType GetFileType(string peptidePath)
         {
             var type = SequenceFileType.None;
-            var lowerPath      = peptidePath.ToLower();
-           
             if (lowerPath.EndsWith("msgfdb_fht.txt"))
             {
-                    type = SequenceFileType.MSGF;
+                type = SequenceFileType.MSGF;
             }
             else if (lowerPath.EndsWith("fht_msgf.txt"))
             {
-                    type  = SequenceFileType.MSGF;
+                type = SequenceFileType.MSGF;
             }
             else if (lowerPath.EndsWith("syn.txt"))
             {
-                    type = SequenceFileType.SEQUESTSynopsis;
+                type = SequenceFileType.SEQUESTSynopsis;
             }
             else if (lowerPath.EndsWith("fht.txt"))
             {
