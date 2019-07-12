@@ -37,7 +37,12 @@
         private static SequenceFileType GetFileType(string peptidePath)
         {
             var type = SequenceFileType.None;
-            if (lowerPath.EndsWith("msgfdb_fht.txt"))
+            var lowerPath = peptidePath.ToLower();
+
+            if (lowerPath.EndsWith("msgfplus_fht.txt") ||
+                lowerPath.EndsWith("msgfplus_syn.txt") ||
+                lowerPath.EndsWith("msgfdb_fht.txt") ||
+                lowerPath.EndsWith("msgfdb_syn.txt"))
             {
                 type = SequenceFileType.MSGF;
             }

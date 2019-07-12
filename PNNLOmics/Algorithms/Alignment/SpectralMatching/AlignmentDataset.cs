@@ -17,7 +17,7 @@ namespace PNNLOmics.Algorithms.Alignment.SpectralMatching
         public AlignmentDataset(string basePath, string name)
         {
             RawFile     = Path.Combine(basePath, name + ".raw");
-            PeptideFile = Path.Combine(basePath, name + "_msgfdb_fht.txt");
+            PeptideFile = Path.Combine(basePath, name + "_msgfplus_fht.txt");
             FeatureFile = Path.Combine(basePath, name + "_isos.csv");
         }
 
