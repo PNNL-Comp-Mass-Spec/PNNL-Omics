@@ -50,6 +50,7 @@ namespace PNNLOmicsIO.IO
                 sb.Append(string.Format("TITLE={0}.1.dta", feature.Scan));
                 sb.Append(Environment.NewLine);
 
+                // ReSharper disable once StringLiteralTypo
                 sb.Append(string.Format("PEPMASS={0}", feature.PrecursorMz));
                 sb.Append(Environment.NewLine);
 

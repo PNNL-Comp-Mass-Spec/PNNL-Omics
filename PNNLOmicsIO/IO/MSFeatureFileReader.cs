@@ -70,6 +70,7 @@ namespace PNNLOmicsIO.IO
                     case "monoisotopic_mw":
                         columnMap.Add(MONO_MASS, i);
                         break;
+                    // ReSharper disable once StringLiteralTypo
                     case "mostabundant_mw":
                         columnMap.Add(ABUNDANT_MASS, i);
                         break;

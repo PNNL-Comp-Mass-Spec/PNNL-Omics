@@ -26,15 +26,15 @@
         /// <summary>
         /// Creates a spectra writer based on the file type.
         /// </summary>
-        /// <param name="writerType"></param>
+        /// <param name="extension"></param>
         /// <returns></returns>
-        public static IMsMsSpectraWriter CreateSpectraWriter(string  extension)
+        public static IMsMsSpectraWriter CreateSpectraWriter(string extension)
         {
             IMsMsSpectraWriter writer = null;
             switch (extension)
             {
                 case ".dta":
-                    writer =  CreateSpectraWriter(MsMsWriterType.DTA);
+                    writer = CreateSpectraWriter(MsMsWriterType.DTA);
                     break;
                 case ".mgf":
                     writer = CreateSpectraWriter(MsMsWriterType.MGF);

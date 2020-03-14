@@ -67,7 +67,7 @@
     }
 
     /// <summary>
-    /// Types of peptide sequence fiels to read.
+    /// Types of peptide sequence fields to read.
     /// </summary>
     public enum SequenceFileType
     {

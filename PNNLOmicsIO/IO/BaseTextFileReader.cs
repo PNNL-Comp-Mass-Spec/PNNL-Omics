@@ -5,16 +5,16 @@ using PNNLOmics.Annotations;
 
 namespace PNNLOmicsIO.IO
 {
-	public abstract class BaseTextFileReader<T> : ITextFileReader<T>
-	{
+    public abstract class BaseTextFileReader<T> : ITextFileReader<T>
+    {
         /// <summary>
         /// Default file delimiter.
         /// </summary>
         private const char DEFAULT_DELIMITER = ',';
-	    protected BaseTextFileReader()
-		{
+        protected BaseTextFileReader()
+        {
             Delimiter = DEFAULT_DELIMITER;
-		}
+        }
 
         #region Properties
 
@@ -22,23 +22,24 @@ namespace PNNLOmicsIO.IO
         /// Gets or sets the file reading delimiter.
         /// </summary>
         [UsedImplicitly]
-	    public char Delimiter { get; set; }
+        public char Delimiter { get; set; }
 
-	    /// <summary>
+        /// <summary>
         /// Gets or sets the file reading delimiter
         /// </summary>
-		/// <remarks>
-		/// The setter only uses the first character of the string
-		/// </remarks>
-        public string Delimeter
+        /// <remarks>
+        /// The setter only uses the first character of the string
+        /// </remarks>
+        // ReSharper disable once UnusedMember.Global
+        public string DelimiterFromString
         {
-	        get { return Delimiter.ToString(); }
-	        set
-	        {
-	            if (string.IsNullOrEmpty(value))
-	                throw new ArgumentOutOfRangeException(value, "Column delimiter cannot be empty");
+            get => Delimiter.ToString();
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentOutOfRangeException(value, "Column delimiter cannot be empty");
 
-                Delimiter = value[0]; 
+                Delimiter = value[0];
             }
         }
 
@@ -48,36 +49,36 @@ namespace PNNLOmicsIO.IO
         /// Open the file and return an enumerable of type T
         /// </summary>
         /// <param name="fileLocation"></param>
-        /// <returns>Enumerable list of data from the file</returns>        
-		public IEnumerable<T> ReadFile(string fileLocation) 
-		{
+        /// <returns>Enumerable list of data from the file</returns>
+        public IEnumerable<T> ReadFile(string fileLocation)
+        {
             IEnumerable<T> returnEnumerable;
             using (TextReader textReader = new StreamReader(new FileStream(fileLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {
                 returnEnumerable = ReadFile(textReader);
                 textReader.Close();
             }
-			return returnEnumerable;
-		}
+            return returnEnumerable;
+        }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="textReader"></param>
         /// <returns></returns>
-		public IEnumerable<T> ReadFile(TextReader textReader)
-		{
-			var columnMapping = CreateColumnMapping(textReader);
+        public IEnumerable<T> ReadFile(TextReader textReader)
+        {
+            var columnMapping = CreateColumnMapping(textReader);
 
-			if (columnMapping.Count == 0)
-			{
-				throw new ApplicationException("Given file does not contain any valid column headers.");
-			}
+            if (columnMapping.Count == 0)
+            {
+                throw new ApplicationException("Given file does not contain any valid column headers.");
+            }
 
-			var enumerable = SaveFileToEnumerable(textReader, columnMapping);
-			return enumerable;
-		}
+            var enumerable = SaveFileToEnumerable(textReader, columnMapping);
+            return enumerable;
+        }
 
-		protected abstract Dictionary<string, int> CreateColumnMapping(TextReader textReader);
-		protected abstract IEnumerable<T> SaveFileToEnumerable(TextReader textReader, Dictionary<string, int> columnMapping);
-	}
+        protected abstract Dictionary<string, int> CreateColumnMapping(TextReader textReader);
+        protected abstract IEnumerable<T> SaveFileToEnumerable(TextReader textReader, Dictionary<string, int> columnMapping);
+    }
 }

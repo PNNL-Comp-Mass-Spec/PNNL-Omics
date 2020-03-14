@@ -10,8 +10,8 @@ namespace PNNLOmicsIO.IO
     {
         public IEnumerable<Peptide> Read(string path)
         {
-            var peptides  = new List<Peptide>();
-            var lines      = File.ReadAllLines(path).ToList();
+            var peptides = new List<Peptide>();
+            var lines = File.ReadAllLines(path).ToList();
 
             var precursorMap = new Dictionary<string, List<List<string>>>();
 
@@ -40,17 +40,16 @@ namespace PNNLOmicsIO.IO
 
             foreach (var key in precursorMap.Keys)
             {
-                var data     = precursorMap[key];
-                var peptide             = new Peptide();
-                peptide                     = new Peptide();
-                peptide.Sequence            = data[0][3];                
-                var spectrum          = new MSSpectra();
-                spectrum.PrecursorMz        = Convert.ToDouble(key);
-                
+                var data = precursorMap[key];
+                var peptide = new Peptide();
+                peptide.Sequence = data[0][3];
+                var spectrum = new MSSpectra();
+                spectrum.PrecursorMz = Convert.ToDouble(key);
+
                 foreach (var line in data)
                 {
                     var fragment = Convert.ToDouble(line[1]);
-                    var point    = new XYData(fragment, 100);
+                    var point = new XYData(fragment, 100);
                     spectrum.Peaks.Add(point);
                 }
                 spectrum.Peptides = new List<Peptide>();

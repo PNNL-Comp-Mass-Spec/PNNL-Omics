@@ -19,6 +19,7 @@ namespace PNNLOmicsIO.IO
 
             for (var i = 0; i < numOfColumns; i++)
             {
+                // ReSharper disable StringLiteralTypo
                 var column = columnTitles[i].ToLower().Trim();
                 switch (column)
                 {
@@ -34,7 +35,7 @@ namespace PNNLOmicsIO.IO
                     case "peptide":
                         columnMap.Add("Peptide.Sequence", i);
                         break;
-                    case "msgfdb_specprob":                        
+                    case "msgfdb_specprob":
                         columnMap.Add("Peptide.ScorePRISM", i);
                         break;
                     case "msgfscore":
@@ -50,6 +51,7 @@ namespace PNNLOmicsIO.IO
                         columnMap.Add("Peptide.QualityScore", i);
                         break;
                 }
+                // ReSharper restore StringLiteralTypo
             }
 
             return columnMap;
@@ -103,7 +105,7 @@ namespace PNNLOmicsIO.IO
                 }
                 if (columnMapping.ContainsKey("Peptide.evalue"))
                 {
-                    peptide.Score = Convert.ToDouble(columns[columnMapping["peptide.evalue"]]);
+                    peptide.Score = Convert.ToDouble(columns[columnMapping["Peptide.evalue"]]);
                 }
                 if (columnMapping.ContainsKey("Peptide.PrecursorMz"))
                 {

@@ -8,7 +8,7 @@ namespace PNNLOmicsIO.IO
     /// <summary>
     /// Writes Mascot Generic File formatted MS/MS spectra.
     /// </summary>
-    public class MgfFileReader: IMsMsSpectraReader
+    public class MgfFileReader : IMsMsSpectraReader
     {
         /// <summary>
         /// Creates a MGF file based on the spectra provided.
@@ -16,29 +16,29 @@ namespace PNNLOmicsIO.IO
         /// <param name="path"></param>
         public List<MSSpectra> Read(string path)
         {
-            var lines  = File.ReadAllLines(path);
-            var mode        = 0;
+            var lines = File.ReadAllLines(path);
+            var mode = 0;
 
-            var spectra   = new List<MSSpectra>();
+            var spectra = new List<MSSpectra>();
             MSSpectra currentSpectrum = null;
-            var delimiter       = new[] {" "};
+            var delimiter = new[] { " " };
 
-            for(var i = 0; i < lines.Length; i++)
+            for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i].ToUpper();
                 if (line.Contains("BEGIN IONS"))
                 {
-                    mode    = 0;
+                    mode = 0;
                 }
                 else if (line.Contains("CHARGE="))
                 {
-                    mode            = 1;
-                    i               = i + 1;
+                    mode = 1;
+                    i = i + 1;
                     currentSpectrum = new MSSpectra();
                 }
                 else if (line.Contains("END IONS"))
                 {
-                    mode            = 0;
+                    mode = 0;
                     if (currentSpectrum != null)
                     {
                         spectra.Add(currentSpectrum);
@@ -59,12 +59,13 @@ namespace PNNLOmicsIO.IO
                         var x = Convert.ToDouble(data[0]);
                         var y = Convert.ToDouble(data[1]);
                         var datum = new XYData(x, y);
-                        currentSpectrum.Peaks.Add(datum);
+                        currentSpectrum?.Peaks.Add(datum);
                     }
                     catch
                     {
+                        // Ignore errors here
                     }
-                }                
+                }
             }
 
             return spectra;

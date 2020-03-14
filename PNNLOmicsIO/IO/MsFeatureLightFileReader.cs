@@ -70,6 +70,7 @@ namespace PNNLOmicsIO.IO
                     case "monoisotopic_mw":
                         columnMap.Add(MONO_MASS, i);
                         break;
+                    // ReSharper disable once StringLiteralTypo
                     case "mostabundant_mw":
                         columnMap.Add(ABUNDANT_MASS, i);
                         break;
@@ -115,7 +116,7 @@ namespace PNNLOmicsIO.IO
                 //If mono_plus2_abundance is 0, we don't want to count this as a real feature.
                 //TODO: Make an optional filter. This biases against low abundance features.
                 //if (columnMapping.ContainsKey(MONO_2_ABUNDANCE))
-                //    if (double.Parse(columns[columnMapping[MONO_2_ABUNDANCE]]) <= 0) continue; 
+                //    if (double.Parse(columns[columnMapping[MONO_2_ABUNDANCE]]) <= 0) continue;
 
                 // In case this file does not have drift time, we need to make sure we clean up the
                 // feature so the downstream processing can complete successfully.
@@ -153,7 +154,8 @@ namespace PNNLOmicsIO.IO
                         }
                         else
                         {
-                            throw new InvalidDataException("The abundance column in the input ISOS file was not understood.");
+                            // ReSharper disable once StringLiteralTypo
+                            throw new InvalidDataException("The abundance column in the input .isos file was not understood.");
                         }
                     }
 
