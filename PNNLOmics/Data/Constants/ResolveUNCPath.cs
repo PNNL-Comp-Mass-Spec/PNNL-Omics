@@ -40,10 +40,10 @@ namespace PNNLOmics.Data.Constants
                 //this contains all the path - the root
                 var activeDirectoryPath = PathUtilities.AssemblyDirectory;
 
-                //2.  repalce // with space for splitting
-                var charSeperator = Path.DirectorySeparatorChar;
-                var activeDirectoryWords = activeDirectoryPath.Split(charSeperator).ToList();
-                var rootOfMysteryWords = rootOfMysteryPath.Split(charSeperator).ToList();
+                //2.  replace // with space for splitting
+                var charSeparator = Path.DirectorySeparatorChar;
+                var activeDirectoryWords = activeDirectoryPath.Split(charSeparator).ToList();
+                var rootOfMysteryWords = rootOfMysteryPath.Split(charSeparator).ToList();
 
                 //3.  find intersecting folder between the root and the active directory
                 var startOfRealPath = "";

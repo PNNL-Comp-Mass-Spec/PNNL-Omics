@@ -93,8 +93,8 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     signaltoBackground = peakList[i].Height / averageBackgroundNoise;
                     signaltoNoise = peakList[i].Height / averagePeakNoise;
 
-                    //thresholdIntensity = Parameters.SignalToShoulderCuttoff * stdevMAD + averagePeakNoise;//average peak noise is too high
-                    thresholdIntensity = Parameters.SignalToShoulderCuttoff * stdevMAD + averageNoise;//average noise is nice here
+                    //thresholdIntensity = Parameters.SignalToShoulderCutoff * stdevMAD + averagePeakNoise;//average peak noise is too high
+                    thresholdIntensity = Parameters.SignalToShoulderCutoff * stdevMAD + averageNoise;//average noise is nice here
 
                     if (peakList[i].Height >= thresholdIntensity)
                     {

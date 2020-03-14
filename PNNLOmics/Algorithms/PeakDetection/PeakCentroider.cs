@@ -95,7 +95,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                         if (rawXYData[i].Y < rawXYData[i - 1].Y)  // Is it Decreasing?
                         {
                             //peak top data point is at location i-1
-                            var newcentroidPeak = new ProcessedPeak();
+                            var newCentroidPeak = new ProcessedPeak();
 
                             //1.  find local noise (or shoulder noise) by finding the average fo the local minima on each side of the peak
                             //XYData storeMinimaDataIndex = new XYData();//will contain the index of the locations where the surrounding local mnima are
@@ -103,19 +103,19 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             var shoulderNoiseToRightIndex = 0;
 
                             var peakTopCalculation = new PeakCentroider();
-                            newcentroidPeak.LocalLowestMinimaHeight = peakTopCalculation.FindShoulderNoise(ref rawXYData, i - 1, Parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
-                            newcentroidPeak.MinimaOfLowerMassIndex = shoulderNoiseToLeftIndex;
-                            newcentroidPeak.MinimaOfHigherMassIndex = shoulderNoiseToRightIndex;
-                            newcentroidPeak.LocalHighestMinimaHeight = Convert.ToDouble(Math.Max((decimal)rawXYData[shoulderNoiseToLeftIndex].Y, (decimal)rawXYData[shoulderNoiseToRightIndex].Y));
-                            newcentroidPeak.LocalHighestMinimaHeight = Convert.ToDouble(Math.Max((decimal)newcentroidPeak.LocalHighestMinimaHeight, 1));//takes care of the 0 condition
+                            newCentroidPeak.LocalLowestMinimaHeight = peakTopCalculation.FindShoulderNoise(ref rawXYData, i - 1, Parameters.DefaultShoulderNoiseValue, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex);
+                            newCentroidPeak.MinimaOfLowerMassIndex = shoulderNoiseToLeftIndex;
+                            newCentroidPeak.MinimaOfHigherMassIndex = shoulderNoiseToRightIndex;
+                            newCentroidPeak.LocalHighestMinimaHeight = Convert.ToDouble(Math.Max((decimal)rawXYData[shoulderNoiseToLeftIndex].Y, (decimal)rawXYData[shoulderNoiseToRightIndex].Y));
+                            newCentroidPeak.LocalHighestMinimaHeight = Convert.ToDouble(Math.Max((decimal)newCentroidPeak.LocalHighestMinimaHeight, 1));//takes care of the 0 condition
 
                             if (rawXYData[i].Y > rawXYData[i - 2].Y)//decide which flanking point is lower.  the higher will have the max closer to it.  i-1 is the max point
                             {
-                                newcentroidPeak.CenterIndexLeft = i - 1;//this is interesting because we always return the point just to the left of the parabola apex
+                                newCentroidPeak.CenterIndexLeft = i - 1;//this is interesting because we always return the point just to the left of the parabola apex
                             }
                             else
                             {
-                                newcentroidPeak.CenterIndexLeft = i - 2;
+                                newCentroidPeak.CenterIndexLeft = i - 2;
                             }
 
                             //2.   centroid peaks via fitting a parabola
@@ -129,14 +129,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
                             //calculate parabola apex returning int and centroided MZ
                             centroidedPeak = peakTopCalculation.Parabola(peakTopParabolaPoints);
-                            newcentroidPeak.XValue = centroidedPeak.X;
-                            newcentroidPeak.Height = centroidedPeak.Y;
+                            newCentroidPeak.XValue = centroidedPeak.X;
+                            newCentroidPeak.Height = centroidedPeak.Y;
 
-                            //if it fails, we simply select the center peak.  This fails when the three y values are very very similar (within the tolerence of a single)
-                            if(double.IsNaN(newcentroidPeak.Height))
+                            //if it fails, we simply select the center peak.  This fails when the three y values are very very similar (within the tolerance of a single)
+                            if(double.IsNaN(newCentroidPeak.Height))
                             {
-                                newcentroidPeak.XValue = peakTopParabolaPoints[1].X;
-                                newcentroidPeak.Height = peakTopParabolaPoints[1].Y;
+                                newCentroidPeak.XValue = peakTopParabolaPoints[1].X;
+                                newCentroidPeak.Height = peakTopParabolaPoints[1].Y;
                             }
 
                             //if(double.IsPositiveInfinity(newCentroidPeak.XValue) || double.IsNegativeInfinity(newCentroidPeak.XValue) )
@@ -144,14 +144,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             //3.  find FWHM
                             var centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
 
-                            newcentroidPeak.Width = Convert.ToSingle(peakTopCalculation.FindFWHM(rawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, Parameters.FWHMPeakFitType));
+                            newCentroidPeak.Width = Convert.ToSingle(peakTopCalculation.FindFWHM(rawXYData, centerIndex, centroidedPeak, ref shoulderNoiseToLeftIndex, ref shoulderNoiseToRightIndex, Parameters.FWHMPeakFitType));
 
                             //4.  calculate signal to noise
-                            newcentroidPeak.SignalToNoiseLocalHighestMinima = newcentroidPeak.Height / newcentroidPeak.LocalHighestMinimaHeight;
-                            
+                            newCentroidPeak.SignalToNoiseLocalHighestMinima = newCentroidPeak.Height / newCentroidPeak.LocalHighestMinimaHeight;
+
 
                             //4.  add centroided peak
-                            resultsListCentroid.Add(newcentroidPeak);
+                            resultsListCentroid.Add(newCentroidPeak);
                         }
 
                     }

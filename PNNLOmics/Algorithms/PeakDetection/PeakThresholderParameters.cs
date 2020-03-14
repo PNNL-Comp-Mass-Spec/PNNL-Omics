@@ -15,7 +15,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// <summary>
         /// Gets or sets the ratio of highest point at the peak apex to the lowest peak valley.
         /// </summary>
-        public float SignalToShoulderCuttoff { get; set; }
+        public float SignalToShoulderCutoff { get; set; }
 
         /// <summary>
         /// Gets or sets a method for how a threshold line is chosen.
@@ -41,7 +41,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         public void Clear()
         {
             isDataThresholded = false;
-            SignalToShoulderCuttoff = 3;
+            SignalToShoulderCutoff = 3;
             ThresholdMethod = "AveragePlusSigma";
             DataNoiseType = InstrumentDataNoiseType.Standard;
         }

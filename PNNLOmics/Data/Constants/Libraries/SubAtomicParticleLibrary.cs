@@ -26,7 +26,7 @@ namespace PNNLOmics.Data.Constants.Libraries
     public class SubAtomicParticleLibrary : MatterLibrary<SubAtomicParticle, SubAtomicParticleName>
     {
         public const double MASS_PROTON     = 1.00727646677;
-        public const double MASS_NUETRON    = 1.00866491597;
+        public const double MASS_NEUTRON    = 1.00866491597;
         public const double MASS_ELECTRON   = 0.00054857990943;
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             var neutron = new SubAtomicParticle();
             neutron.Name = "Neutron";
-            neutron.MassMonoIsotopic = MASS_NUETRON;//units of u a.k.a.Da.  NIST CODATA 2006
+            neutron.MassMonoIsotopic = MASS_NEUTRON;//units of u a.k.a.Da.  NIST CODATA 2006
             neutron.Symbol = "n";
             neutron.ParticleType = SubAtomicParticleName.Neutron;
 
