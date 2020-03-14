@@ -10,8 +10,8 @@
         /// Elemental Formula for the compound
         /// </summary>
         public string ChemicalFormula { get; set; }
- 
-        //This naming standard was changed so that the number of elements are grouped together in Intelli Sense
+
+        // This naming standard was changed so that the number of elements are grouped together in Intellisense
         /// <summary>
         /// Number of carbon atoms in the compound
         /// </summary>

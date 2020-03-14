@@ -68,7 +68,7 @@ namespace PNNLOmics.Utilities
         /// <summary>
         /// Returns True if any command line parameters were found.
         /// Otherwise, returns False.
-        /// 
+        ///
         /// If /? or /help is found, then returns False and sets ShowHelp to True.
         /// </summary>
         /// <returns>true if any command line parameters, beyond /? or /help were found, false otherwise</returns>

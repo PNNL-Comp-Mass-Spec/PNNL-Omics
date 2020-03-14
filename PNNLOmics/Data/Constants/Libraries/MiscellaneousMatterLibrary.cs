@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 
 //TODO: SCOTT - CR - Update all dictionary example xml comments.
-/// <example>
-/// dictionarty implementation
-/// Dictionary<string, Compound> OtherMoleculeDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
-/// double OtherMass = OtherMoleculeDictionary["Aldehyde"].MonoIsotopicMass;
-/// string OtherName = OtherMoleculeDictionary["Aldehyde"].Name;
-/// string OtherFormula = OtherMoleculeDictionary["Aldehyde"].ChemicalFormula;
-///
-/// One line implememtation
-/// double OtherMass2 = OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Aldehyde");
-/// string OtherName2 = OtherMoleculeConstantsStaticLibrary.GetName("Aldehyde");
-/// string OtherFormula2 = OtherMoleculeConstantsStaticLibrary.GetFormula("Aldehyde");
-///
-/// double mass5 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
-/// </example>
+// <example>
+// Dictionary implementation
+// Dictionary<string, Compound> OtherMoleculeDictionary = OtherMoleculeLibrary.LoadOtherMoleculeData();
+// double OtherMass = OtherMoleculeDictionary["Aldehyde"].MonoIsotopicMass;
+// string OtherName = OtherMoleculeDictionary["Aldehyde"].Name;
+// string OtherFormula = OtherMoleculeDictionary["Aldehyde"].ChemicalFormula;
+//
+// One line implementation
+// double OtherMass2 = OtherMoleculeConstantsStaticLibrary.GetMonoisotopicMass("Aldehyde");
+// string OtherName2 = OtherMoleculeConstantsStaticLibrary.GetName("Aldehyde");
+// string OtherFormula2 = OtherMoleculeConstantsStaticLibrary.GetFormula("Aldehyde");
+//
+// double mass5 = OtherMoleculeStaticLibrary.GetMonoisotopicMass(SelectOtherMolecule.Ammonia);
+// </example>
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
@@ -134,7 +134,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_symbolToCompoundMap.Add(aminoGlycan.Symbol, aminoGlycan);
             m_symbolToCompoundMap.Add(fragment.Symbol, fragment);
 
- 
+
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Aldehyde, aldehyde.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Alditol, alditol.Symbol);
             m_enumToSymbolMap.Add(MiscellaneousMatterName.Ammonia, ammonia.Symbol);

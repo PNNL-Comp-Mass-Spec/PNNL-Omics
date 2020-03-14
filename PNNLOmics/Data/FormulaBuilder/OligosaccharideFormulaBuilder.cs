@@ -17,7 +17,7 @@ namespace PNNLOmics.Data.FormulaBuilder
             var chemicalFormula = new Dictionary<string, int>();
 
             var monosacharideCount = inputCode.Split(',');
-            
+
             for (var monosaccharideCodePosition = 0; monosaccharideCodePosition < monosacharideCount.Length; monosaccharideCodePosition++)
             {
                 var tempFormula = "";
@@ -65,10 +65,10 @@ namespace PNNLOmics.Data.FormulaBuilder
                      chemicalFormula["H"]--;
                 }
             }
-           
+
             //for aldehyde
             AddFormulaToPreviousFormula("H2O", ref chemicalFormula);
-            
+
             return chemicalFormula;
         }
 

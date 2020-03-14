@@ -24,7 +24,7 @@ namespace PNNLOmics.Utilities
         /// </summary>
         /// <remarks>
         /// Keys are the number of digits of precision and
-        ///   "false" if the format string is of the form 0.00E+00 or 
+        ///   "false" if the format string is of the form 0.00E+00 or
         ///   "true"  if the format string is of the form 0.00E+000
         /// Values are strings like "0.0E+00", "0.0#E+00", "0.0##E+00", "0.0#E+000", or "0.0##E+000"
         /// </remarks>
@@ -66,7 +66,7 @@ namespace PNNLOmics.Utilities
         /// <param name="limitDecimalsForLargeValues">When true, will limit the number of decimal points shown for values over 1</param>
         /// <param name="thresholdScientific">Numbers below this level will be displayed using Scientific notation</param>
         /// <param name="invariantCulture">
-        /// When true (default) numbers will always use a period for the decimal point.  
+        /// When true (default) numbers will always use a period for the decimal point.
         /// When false, the decimal point symbol will depend on the current system's culture settings.
         /// </param>
         /// <returns>String representation of the value</returns>
@@ -142,7 +142,7 @@ namespace PNNLOmics.Utilities
         /// <param name="value">Value to format</param>
         /// <param name="digitsAfterDecimal">Digits to show after the decimal place (0 or higher)</param>
         /// <param name="invariantCulture">
-        /// When true (default) numbers will always use a period for the decimal point.  
+        /// When true (default) numbers will always use a period for the decimal point.
         /// When false, the decimal point symbol will depend on the current system's culture settings.
         /// </param>
         /// <returns>String representation of the value</returns>
@@ -231,8 +231,8 @@ namespace PNNLOmics.Utilities
         /// <returns>Number as text</returns>
         /// <remarks>This function differs from DblToString in that here digitsOfPrecision is the total digits while DblToString focuses on the number of digits after the decimal point</remarks>
         public static string ValueToString(
-            double value, 
-            byte digitsOfPrecision, 
+            double value,
+            byte digitsOfPrecision,
             double scientificNotationThreshold)
         {
             byte totalDigitsOfPrecision;

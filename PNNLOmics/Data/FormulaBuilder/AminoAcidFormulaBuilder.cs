@@ -9,7 +9,6 @@ namespace PNNLOmics.Data.FormulaBuilder
 		/// Converts an amino acid sequence into a molecular formula.  This does not include water or any other adduct.
 		/// </summary>
 		/// <param name="inputSequence"></param>
-		/// <param name="chargeState"></param>
 		/// <returns></returns>
 		public override Dictionary<string, int> ConvertToMolecularFormula(string inputSequence)
 		{

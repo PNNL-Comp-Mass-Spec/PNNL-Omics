@@ -28,7 +28,7 @@ namespace PNNLOmics.Data.Constants
         /// </summary>
         private static MonosaccharideLibrary m_monosaccharideLibrary;
         /// <summary>
-        /// Sub atomics particle library instance.
+        /// Sub atomic particle library instance.
         /// </summary>
         private static SubAtomicParticleLibrary m_subAtomicParticleLibrary;
 
@@ -151,7 +151,7 @@ namespace PNNLOmics.Data.Constants
             }
             set
             {
-       
+
             }
         }
 

@@ -1,10 +1,10 @@
 ﻿/*
- * 
- * Reviewed 
+ *
+ * Reviewed
  *  1-18-2011
- * 
+ *
  *  REVIEW STOPPED HERE, need to look at inner loop of while for detect peaks.
- * 
+ *
  */
 
 using System;
@@ -15,15 +15,15 @@ using PNNLOmics.Data.Peaks;
 
 namespace PNNLOmics.Algorithms.PeakDetection
 {
-    
-    
+
+
     /// <summary>
-    /// Converts raw XYdata into differential peaks with an a X-centroid and an apex Y-abundance 
+    /// Converts raw XYdata into differential peaks with an a X-centroid and an apex Y-abundance
     /// </summary>
     public class PeakCentroider
     {
-       
-        
+
+
         /// <summary>
         /// Gets or sets the peak centroider parameters.
         /// </summary>
@@ -46,10 +46,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
         }
 
         /// <summary>
-        /// Find candidate peaks in the spectra (incressing and then decreasing).  For each peak top, find centroid
+        /// Find candidate peaks in the spectra (increasing and then decreasing).  For each peak top, find centroid
         /// </summary>
-        /// <param name="RawXYData">List of PNNL Omics XYData</param>
-        /// <param name="parameters">parameters needed for the fit</param>
+        /// <param name="rawXYData">List of PNNL Omics XYData</param>
         public List<ProcessedPeak> DiscoverPeaks(List<XYData> rawXYData)
         {
             var resultsListCentroid = new List<ProcessedPeak>();
@@ -59,7 +58,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
             var numPoints = rawXYData.Count;
 
             if (Parameters.IsXYDataCentroided)
-            {               
+            {
                 var width = Convert.ToSingle(Parameters.DefaultFWHMForCentroidedData);
                 foreach(var rawData in rawXYData)
                 {
@@ -72,16 +71,16 @@ namespace PNNLOmics.Algorithms.PeakDetection
             }
             else
             {
-                // Holds the apex of a fitted parabola.  
+                // Holds the apex of a fitted parabola.
                 var peakTopParabolaPoints = new List<XYData>();
-                
-                //TODO: Assert that the number of points is 3, 5, 7? Throw exception if not odd and greater than 3.               
+
+                //TODO: Assert that the number of points is 3, 5, 7? Throw exception if not odd and greater than 3.
                 for (var i = 0; i < Parameters.NumberOfPoints; i++)//number of points must be 3,5,7
                 {
                     var newPoint = new XYData(0, 0);
                     peakTopParabolaPoints.Add(newPoint);
                 }
-                
+
 
                 var centroidedPeak = new XYData(0, 0);
                 for (var i = 1; i < numPoints - 1; i++)//numPoints-1 because of possible overrun error 4 lines down i+=1
@@ -91,7 +90,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     while (rawXYData[i].Y > rawXYData[i - 1].Y && i < numPoints - 1)  //Is it Still Increasing?
                     {
                         // Look at next peak.
-                        i++;  
+                        i++;
 
                         if (rawXYData[i].Y < rawXYData[i - 1].Y)  // Is it Decreasing?
                         {
@@ -120,7 +119,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             }
 
                             //2.   centroid peaks via fitting a parabola
-                            //TODO: decide if sending indexes is better becaus the modulariy of the parabola finder will be broken
+                            //TODO: decide if sending indexes is better because the modularity of the parabola finder will be broken
                             //store points to go to the parabola fitter
                             for (var j = 0; j < Parameters.NumberOfPoints; j += 1)
                             {
@@ -140,7 +139,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                                 newcentroidPeak.Height = peakTopParabolaPoints[1].Y;
                             }
 
-                            //if(double.IsPositiveInfinity(newcentroidPeak.XValue) || double.IsNegativeInfinity(newcentroidPeak.XValue) )
+                            //if(double.IsPositiveInfinity(newCentroidPeak.XValue) || double.IsNegativeInfinity(newCentroidPeak.XValue) )
 
                             //3.  find FWHM
                             var centerIndex = i - 1;//this is the index in the raw data for the peak top (non centroided)
@@ -154,9 +153,9 @@ namespace PNNLOmics.Algorithms.PeakDetection
                             //4.  add centroided peak
                             resultsListCentroid.Add(newcentroidPeak);
                         }
-                    
+
                     }
-                    
+
                 }
             }
 
@@ -170,10 +169,10 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
         #region private functions
         /// <summary>
-        /// find the centoid mass and apex intenxity via paraola fit to the top three points
+        /// find the centroid mass and apex intensity via parabola fit to the top three points
         /// </summary>
         /// <param name="peakTopList">A list of PNNL Omics XYData</param>
-        /// <returns>XYData point correspiding to the pair at the apex intensity and center of mass </returns>
+        /// <returns>XYData point corresponding to the pair at the apex intensity and center of mass </returns>
         private XYData Parabola(List<XYData> peakTopList)
         {
             double apexMass;
@@ -579,8 +578,8 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
 
         /// <summary>
-        /// Find full width at half maximum value at position specified. 
-        /// remarks Looks for half height locations at left and right side, and uses twice of that value as the FWHM value. If half height 
+        /// Find full width at half maximum value at position specified.
+        /// remarks Looks for half height locations at left and right side, and uses twice of that value as the FWHM value. If half height
         /// locations cannot be found (because of say an overlapping neighbouring peak), we perform interpolations.
         /// </summary>
         /// <param name="rawData">data to search in</param>
@@ -717,7 +716,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
 
                     #endregion
 
-                    //fit parabola to the data so we can extrapolate the missing FWHM 
+                    //fit parabola to the data so we can extrapolate the missing FWHM
                     var peakTopCalculation = new PeakCentroider();
                     peakTopCalculation.ParabolaABC(peakRightSideList, ref A, ref B, ref C);
 
@@ -828,7 +827,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                     }
                     #endregion
 
-                    //fit parabola to the data so we can extrapolate the missing FWHM                  
+                    //fit parabola to the data so we can extrapolate the missing FWHM
                     var peakTopCalculation = new PeakCentroider();
                     peakTopCalculation.ParabolaABC(peakLeftSideList, ref A, ref B, ref C);
 

@@ -7,7 +7,7 @@ namespace PNNLOmics.Data.Constants.Libraries
     /// </summary>
     public class UserUnitLibrary : MatterLibrary<UserUnit, UserUnitName>
     {
-            
+
         /// <summary>
         /// Loads the information from the const section into a user specified library
         /// </summary>
@@ -76,7 +76,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             user10.Symbol = "U10";
             user10.UserUnitType = UserUnitName.User10;
 
-            
+
             m_symbolToCompoundMap.Add(user01.Symbol, user01);
             m_symbolToCompoundMap.Add(user02.Symbol, user02);
             m_symbolToCompoundMap.Add(user03.Symbol, user03);
@@ -97,7 +97,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             m_enumToSymbolMap.Add(UserUnitName.User07, user07.Symbol);
             m_enumToSymbolMap.Add(UserUnitName.User08, user08.Symbol);
             m_enumToSymbolMap.Add(UserUnitName.User09, user09.Symbol);
-            m_enumToSymbolMap.Add(UserUnitName.User10, user10.Symbol);  
+            m_enumToSymbolMap.Add(UserUnitName.User10, user10.Symbol);
         }
         /// <summary>
         /// Creates a UserUnitLibrary from Usernits so that it can be stored as a singleton with Constants.SetUserUnitLibrary(myLibrary);
@@ -108,8 +108,8 @@ namespace PNNLOmics.Data.Constants.Libraries
         public void SetLibrary(UserUnit user1)
         {
             var library = new UserUnitLibrary();
-            library.m_symbolToCompoundMap.Add(user1.Symbol, user1);     
-    
+            library.m_symbolToCompoundMap.Add(user1.Symbol, user1);
+
             library.m_enumToSymbolMap.Add(user1.UserUnitType, user1.Symbol);
 
             m_enumToSymbolMap = library.m_enumToSymbolMap;

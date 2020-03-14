@@ -4,7 +4,7 @@
     /// Sub atomic particles
     /// </summary>
     public enum SubAtomicParticleName
-    {        
+    {
         Electron,
         Neutron,
         Proton

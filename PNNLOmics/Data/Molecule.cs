@@ -19,7 +19,7 @@ namespace PNNLOmics.Data
         {
             get;
             set;
-        } 
+        }
         public string Description
         {
             get;
@@ -46,7 +46,7 @@ namespace PNNLOmics.Data
             set;
         }
         /// <summary>
-        /// Gets the moleculare Weight
+        /// Gets the molecular Weight
         /// </summary>
         public double MassMonoisotopic
         {

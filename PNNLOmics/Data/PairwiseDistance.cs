@@ -2,7 +2,7 @@
 using PNNLOmics.Data.Features;
 
 namespace PNNLOmics.Data
-{          
+{
     /// <summary>
     /// Holds the distance between two features and indices.
     /// </summary>
@@ -28,7 +28,7 @@ namespace PNNLOmics.Data
             FeatureY = y;
             Distance = distance;
         }
-        
+
         #region Properties
         /// <summary>
         /// Gets or sets the id of a pairwise distance.
@@ -47,7 +47,7 @@ namespace PNNLOmics.Data
         /// </summary>
         public double Distance { get; set; }
         #endregion
-        
+
         #region IComparer<PairwiseDistance> Members
         /// <summary>
         /// Compares the distance between x and y.
@@ -65,5 +65,5 @@ namespace PNNLOmics.Data
         {
             return string.Format("{0}  ({1}, {2}) - ({3}, {4})  = {5}", Id, FeatureX.Id, FeatureX.GroupId, FeatureY.Id, FeatureY.GroupId, Distance);
         }
-    }    
+    }
 }

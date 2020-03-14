@@ -1,5 +1,5 @@
 ﻿namespace PNNLOmics.Data
-{    
+{
     /// <summary>
     /// Encapsulates MS Spectrum summary information (e.g. BPI, # of peaks, TIC)
     /// </summary>
@@ -28,9 +28,9 @@
         {
             get;
             set;
-        }       
-        public double PrecursorMz  
-        {   
+        }
+        public double PrecursorMz
+        {
             get;
             set;
         }
@@ -38,7 +38,7 @@
         {
             get;
             set;
-        }       
+        }
         /// <summary>
         /// Gets or sets the scan time in seconds.
         /// </summary>
@@ -79,5 +79,5 @@
             get;
             set;
         }
-    }    
+    }
 }

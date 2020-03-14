@@ -23,7 +23,7 @@
         /// <param name="name">name to call the user unit such as sodium</param>
         /// <param name="symbol">short name to reference it by, such as Na for sodium</param>
         /// <param name="mass">monoisotopic mass</param>
-        /// <param name="userUnitName">enum userunitname (user01, user02, user03)</param>
+        /// <param name="userUnitName">enum UserUnitName (user01, user02, user03)</param>
         public UserUnit(string name, string symbol, double mass, UserUnitName userUnitName)
         {
             Name = name;
@@ -38,7 +38,7 @@
         public UserUnit()
         {
         }
-            
+
         /// <summary>
         /// Gets or sets the type of UserUnit.
         /// </summary>

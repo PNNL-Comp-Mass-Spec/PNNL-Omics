@@ -1,27 +1,27 @@
 ﻿using System.Collections.Generic;
 
-/// <example>
-/// dictionary implementation
-/// Dictionary<string, Compound> AminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
-/// double AAmass = AminoAcidsDictionary["A"].MonoIsotopicMass;
-/// string AAName = AminoAcidsDictionary["A"].Name;
-/// string AAFormula = AminoAcidsDictionary["A"].ChemicalFormula;
-///
-/// one line implementation
-/// double AAmass2 = AminoAcidConstantsStaticLibrary.GetMonoisotopicMass("A");
-/// string AAName2 = AminoAcidConstantsStaticLibrary.GetName("A");
-/// string AAFormula2 = AminoAcidConstantsStaticLibrary.GetFormula("A");
-///
-/// double mass3 = AminoAcidStaticLibrary.GetMonoisotopicMass(SelectAminoAcid.GlutamicAcid);
-///
-/// how to calculate the mass of a peptide
-/// double massPeptide=0;
-/// string peptideSequence = "NRTL";
-/// {
-///     massPeptide += AminoAcidStaticLibrary.GetMonoisotopicMass(peptideSequence[y].ToString());
-/// }
-/// massPeptide = 484.27578094385393
-/// </example>
+// <example>
+// dictionary implementation
+// Dictionary<string, Compound> AminoAcidsDictionary = AminoAcidLibrary.LoadAminoAcidData();
+// double AAmass = AminoAcidsDictionary["A"].MonoIsotopicMass;
+// string AAName = AminoAcidsDictionary["A"].Name;
+// string AAFormula = AminoAcidsDictionary["A"].ChemicalFormula;
+//
+// one line implementation
+// double AAmass2 = AminoAcidConstantsStaticLibrary.GetMonoisotopicMass("A");
+// string AAName2 = AminoAcidConstantsStaticLibrary.GetName("A");
+// string AAFormula2 = AminoAcidConstantsStaticLibrary.GetFormula("A");
+//
+// double mass3 = AminoAcidStaticLibrary.GetMonoisotopicMass(SelectAminoAcid.GlutamicAcid);
+//
+// how to calculate the mass of a peptide
+// double massPeptide=0;
+// string peptideSequence = "NRTL";
+// {
+//     massPeptide += AminoAcidStaticLibrary.GetMonoisotopicMass(peptideSequence[y].ToString());
+// }
+// massPeptide = 484.27578094385393
+// </example>
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
@@ -34,7 +34,7 @@ namespace PNNLOmics.Data.Constants.Libraries
         /// This designed to create amino acids objects from the elements.
         /// The amino acids are added to a Dictionary searchable by char keys such as 'A' for Alanine.
         /// This is the only library with char keys.
-        /// </summary>		
+        /// </summary>
         public override void LoadLibrary()
         {
             //TODO: CONSTANTS Load data from XML - put this data into XML

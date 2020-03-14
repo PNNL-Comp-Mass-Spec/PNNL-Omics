@@ -1,27 +1,27 @@
 ﻿using System.Collections.Generic;
 
-/// <example>
-/// http://physics.nist.gov/cuu/Constants/index.html  NIST CODATA 2006  
-/// 
-/// dictinoary implementation
-/// Dictionary<string,AtomObject> AtomDictionary = AtomLibrary.LoadAtomicData();
-/// double AtomMass = AtomDictionary["e"].MonoIsotopicMass;
-/// string AtomName = AtomDictionary["e"].Name;
-/// string AtomSymbol = AtomDictionary["e"].Symbol;
+// <example>
+// http://physics.nist.gov/cuu/Constants/index.html  NIST CODATA 2006
+//
+// Dictionary implementation
+// Dictionary<string,AtomObject> AtomDictionary = AtomLibrary.LoadAtomicData();
+// double AtomMass = AtomDictionary["e"].MonoIsotopicMass;
+// string AtomName = AtomDictionary["e"].Name;
+// string AtomSymbol = AtomDictionary["e"].Symbol;
 
-/// one line implementation
-/// double AtomMass2 = AtomConstantsStaticLibrary.GetMonoisotopicMass("e");
-/// string AtomName2 = AtomConstantsStaticLibrary.GetName("e");
-/// string AtomSymbol2 = AtomConstantsStaticLibrary.GetSymbol("e");
+// one line implementation
+// double AtomMass2 = AtomConstantsStaticLibrary.GetMonoisotopicMass("e");
+// string AtomName2 = AtomConstantsStaticLibrary.GetName("e");
+// string AtomSymbol2 = AtomConstantsStaticLibrary.GetSymbol("e");
 
-/// double atomMass3 = AtomStaticLibrary.GetMonoisotopicMass(SelectAtom.Proton);
-/// </example>
+// double atomMass3 = AtomStaticLibrary.GetMonoisotopicMass(SelectAtom.Proton);
+// </example>
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
     /// <summary>
     /// This is a Class designed to convert tabulated data into a atom objects which are similar to physical constants.
-    /// Electron, Neutron and Protons are created here and added to a Dictionarty with string keys such as "e" for electron
+    /// Electron, Neutron and Protons are created here and added to a Dictionary with string keys such as "e" for electron
     /// </summary>
     public class SubAtomicParticleLibrary : MatterLibrary<SubAtomicParticle, SubAtomicParticleName>
     {
@@ -30,7 +30,7 @@ namespace PNNLOmics.Data.Constants.Libraries
         public const double MASS_ELECTRON   = 0.00054857990943;
 
         /// <summary>
-        /// Loads the information from the const section into a sub atomics particle library
+        /// Loads the information from the const section into a sub atomic particle library
         /// </summary>
         public override void LoadLibrary()
         {
@@ -39,7 +39,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             var electron = new SubAtomicParticle();
             electron.Name = "Electron";
-            electron.MassMonoIsotopic = MASS_ELECTRON;//units of u a.k.a.Da.  NIST CODATA 2006 
+            electron.MassMonoIsotopic = MASS_ELECTRON;//units of u a.k.a.Da.  NIST CODATA 2006
             electron.Symbol = "e";
             electron.ParticleType = SubAtomicParticleName.Electron;
 

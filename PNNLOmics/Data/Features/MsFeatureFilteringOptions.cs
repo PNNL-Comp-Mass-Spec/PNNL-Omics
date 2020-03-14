@@ -8,7 +8,7 @@
         /// <summary>
         /// Minimum deisotoping score from the DeconTools paper
         /// </summary>
-        private const double MINIMUM_DEISOTOPING_SCORE = .15;
+        private const double MINIMUM_DEISOTOPING_SCORE = 0.15;
 
         public MsFeatureFilteringOptions()
         {
@@ -31,7 +31,7 @@
         public double MinimumDeisotopingScore   { get; set; }
         public bool ShouldUseMzFilter           { get; set; }
         public bool ShouldUseIntensityFilter    { get; set; }
-        public bool ShouldUseChargeFilter        { get; set; }  
-        public bool ShouldUseDeisotopingFilter  { get; set; }        
+        public bool ShouldUseChargeFilter       { get; set; }
+        public bool ShouldUseDeisotopingFilter  { get; set; }
     }
 }

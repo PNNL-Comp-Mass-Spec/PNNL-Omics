@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PNNLOmics.Annotations;
 using PNNLOmics.Data;
 
 namespace PNNLOmics.Utilities
 {
-    static public class MathUtilities
+    public static class MathUtilities
     {
         #region Statistical distributions
         /// <summary>
-        /// Finds the density of the n-variate normal distribution with mean meanVector and covariance structure covarianceMatrix 
+        /// Finds the density of the n-variate normal distribution with mean meanVector and covariance structure covarianceMatrix
         /// at the value xVector.
         /// </summary>
         /// <param name="xVector">Value at which the density is to be evaluated.  [n x 1]</param>
@@ -20,7 +19,7 @@ namespace PNNLOmics.Utilities
         /// <returns>Double</returns>
         static public double MultivariateNormalDensity(DenseMatrix xVector, DenseMatrix meanVector, DenseMatrix covarianceMatrix)
         {
-			var covarianceMatrixDeterminant = covarianceMatrix.Determinant();
+            var covarianceMatrixDeterminant = covarianceMatrix.Determinant();
 
             if (!(Math.Abs(covarianceMatrixDeterminant) > double.Epsilon)) return 0.0;
             var numberOfRows = covarianceMatrix.RowCount;
@@ -31,7 +30,7 @@ namespace PNNLOmics.Utilities
             var exponent = xMinusMeanPrime * covarianceInverseMatrix * xMinusMean;
             var denominator = Math.Sqrt(Math.Pow((2 * Math.PI), numberOfRows) * Math.Abs(covarianceMatrixDeterminant));
             return Math.Exp(-0.5 * exponent[0, 0]) / denominator;
-            
+
         }
         #endregion
 
@@ -101,7 +100,7 @@ namespace PNNLOmics.Utilities
         /// </summary>
         /// <param name="x">Difference between alignee feature and baseline feature, X value (e.g. mass)</param>
         /// <param name="y">Difference between alignee feature and baseline feature, Y value (e.g. NET)</param>
-        /// <param name="p">Probabability of belonging to the normal distribution (output)</param>
+        /// <param name="p">Probability of belonging to the normal distribution (output)</param>
         /// <param name="u">Probability density of false hits (output)</param>
         /// <param name="muX">Mean of X values (output)</param>
         /// <param name="muY">Mean of Y values (output)</param>
@@ -148,7 +147,7 @@ namespace PNNLOmics.Utilities
 
             for (var iterNum = 0; iterNum < numIterations; iterNum++)
             {
-                // Calculate current probability assignments 
+                // Calculate current probability assignments
                 // (expectation step)
                 for (var pointNum = 0; pointNum < numPoints; pointNum++)
                 {

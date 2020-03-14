@@ -1,8 +1,8 @@
 ﻿/*
- * 
- * Reviewed 
+ *
+ * Reviewed
  *  1-18-2011
- * 
+ *
  */
 
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
 {
     //TODO: Fill in this comment.
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class KronewitterPeakDetector: PeakDetector
     {
@@ -27,7 +27,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// Parameters used for thresholding algorithms
         /// </summary>
         public PeakThresholderParameters ThresholdParameters { get; set; }
-        
+
 
         /// <summary>
         /// default constructor
@@ -58,15 +58,15 @@ namespace PNNLOmics.Algorithms.PeakDetection
             //TODO: Scott Create constructor that accepts parameters.
             var newPeakThresholder = new PeakThresholder();
             newPeakThresholder.Parameters = ThresholdParameters;
-            
+
             // Separate signal from noise.
-            List<ProcessedPeak> thresholdedData = null; 
+            List<ProcessedPeak> thresholdedData = null;
             thresholdedData = newPeakThresholder.ApplyThreshold(centroidedPeakList);
 
             // Find peaks.
-            var outputPeakList = ProcessedPeak.ToPeaks(thresholdedData); 
+            var outputPeakList = ProcessedPeak.ToPeaks(thresholdedData);
 
             return outputPeakList;
         }
-    } 
+    }
 }

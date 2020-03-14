@@ -3,7 +3,7 @@
 namespace PNNLOmics.Data.Features
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="T">child features</typeparam>
     /// <typeparam name="U">parent features</typeparam>
@@ -15,8 +15,9 @@ namespace PNNLOmics.Data.Features
         /// </summary>
         /// <param name="feature"></param>
         void AddChildFeature(T feature);
+
         /// <summary>
-        /// Calcualte the statistics for the given cluster.
+        /// Calculate the statistics for the given cluster.
         /// </summary>
         /// <param name="centroid"></param>
         void CalculateStatistics(ClusterCentroidRepresentation centroid);

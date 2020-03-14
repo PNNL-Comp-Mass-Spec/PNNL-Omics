@@ -4,30 +4,30 @@ using PNNLOmics.Annotations;
 
 namespace PNNLOmics.Data.Features
 {
-	/// <summary>
-	/// Representation of a UMC with only basic information
-	/// </summary>
+    /// <summary>
+    /// Representation of a UMC with only basic information
+    /// </summary>
     public class UMCLight : FeatureLight,
                             IFeatureCluster<MSFeatureLight>,        // This allows for ms features
                             IFeatureCluster<UMCLight>,              // This allows for labeled development
                             IChildFeature<UMCClusterLight>
-	{
-		/// <summary>
-		/// Default group ID.
-		/// </summary>
-		private const int DEFAULT_GROUP_ID = -1;
+    {
+        /// <summary>
+        /// Default group ID.
+        /// </summary>
+        private const int DEFAULT_GROUP_ID = -1;
         private readonly List<UMCLight> m_umcList;
-		
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		public UMCLight()
-		{
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public UMCLight()
+        {
             ChargeStateChromatograms = new Dictionary<int, Chromatogram>();
             IsotopeChromatograms     = new Dictionary<int, List<Chromatogram>>();
 
-			GroupId		= DEFAULT_GROUP_ID;
-			UmcCluster	= null;
+            GroupId		= DEFAULT_GROUP_ID;
+            UmcCluster	= null;
             Scan        = -1;
             ScanEnd     = Scan;
             ScanStart   = Scan;
@@ -40,8 +40,8 @@ namespace PNNLOmics.Data.Features
 
             if (m_umcList == null)
                 m_umcList = new List<UMCLight>();
-            m_umcList.Clear();		
-		}
+            m_umcList.Clear();
+        }
 
         [UsedImplicitly]
         public UMCLight(UMCLight feature)
@@ -50,13 +50,13 @@ namespace PNNLOmics.Data.Features
             AbundanceSum                       = feature.AbundanceSum;
             AmbiguityScore                     = feature.AmbiguityScore;
             AverageDeconFitScore               = feature.AverageDeconFitScore;
-            AverageInterferenceScore           = feature.AverageInterferenceScore;           
+            AverageInterferenceScore           = feature.AverageInterferenceScore;
             ChargeState                        = feature.ChargeState;
             ClusterId                          = feature.ClusterId;
             ConformationFitScore               = feature.ConformationFitScore;
             ConformationId                     = feature.ConformationId;
             DriftTime                          = feature.DriftTime;
-            GroupId                            = feature.GroupId; 
+            GroupId                            = feature.GroupId;
             Id                                 = feature.Id;
             IdentifiedSpectraCount             = feature.IdentifiedSpectraCount;
             Index                              = feature.Index;
@@ -78,26 +78,26 @@ namespace PNNLOmics.Data.Features
             SpectralCount                      = feature.SpectralCount;
             Tightness                          = feature.Tightness;
             // UmcCluster                      = feature.UmcCluster;
-            
+
             // Charge state and Isotopic Chromatograms
-            ChargeStateChromatograms           = new Dictionary<int, Chromatogram>();    
+            ChargeStateChromatograms           = new Dictionary<int, Chromatogram>();
             IsotopeChromatograms               = new Dictionary<int, List<Chromatogram>>();
-        } 
+        }
 
         /// <summary>
-		/// Gets or sets the UMC Cluster this feature is part of.
-		/// </summary>
-		public UMCClusterLight UmcCluster { get; set; }
+        /// Gets or sets the UMC Cluster this feature is part of.
+        /// </summary>
+        public UMCClusterLight UmcCluster { get; set; }
 
         /// <summary>
         /// Gets or sets the list of MS features for the given UMC.
         /// </summary>
-        /// 
+        ///
         public List<MSFeatureLight> MsFeatures { get; private set; }
         /// <summary>
         /// Gets or sets the first scan number the feature was seen in.
         /// </summary>
-        /// 
+        ///
         public int ScanStart
         {
             get;
@@ -168,7 +168,7 @@ namespace PNNLOmics.Data.Features
             get;
             set;
         }
-        
+
 
         #region IMS Data Members
         public double AverageInterferenceScore
@@ -206,47 +206,47 @@ namespace PNNLOmics.Data.Features
 
         #region Overriden Base Methods
         /// <summary>
-		/// Returns a basic string representation of the cluster.
-		/// </summary>
-		/// <returns></returns>
-		public override string ToString()
-		{
-			return "UMCLight Group ID " + GroupId + " " + base.ToString();
-		}
-		/// <summary>
-		/// Compares two objects' values to each other.
-		/// </summary>
-		/// <param name="obj">Object to compare to.</param>
-		/// <returns>True if similar, False if not.</returns>
-		public override bool Equals(object obj)
-		{
-			if (obj == null)
-				return false;
+        /// Returns a basic string representation of the cluster.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "UMCLight Group ID " + GroupId + " " + base.ToString();
+        }
+        /// <summary>
+        /// Compares two objects' values to each other.
+        /// </summary>
+        /// <param name="obj">Object to compare to.</param>
+        /// <returns>True if similar, False if not.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
 
-			var umc = obj as UMCLight;
-			if (umc == null)
-				return false;
+            var umc = obj as UMCLight;
+            if (umc == null)
+                return false;
 
-			if (Id != umc.Id)
-				return false;
+            if (Id != umc.Id)
+                return false;
 
-			var isBaseEqual = base.Equals(umc);
-			if (!isBaseEqual)
-				return false;
-			
-			return true;
-		}
-		/// <summary>
-		/// Computes a hash code for the cluster.
-		/// </summary>
-		/// <returns>Hashcode as an integer.</returns>
-		public override int GetHashCode()
-		{
-			return base.GetHashCode();
-		}
+            var isBaseEqual = base.Equals(umc);
+            if (!isBaseEqual)
+                return false;
 
-		#endregion
-        
+            return true;
+        }
+        /// <summary>
+        /// Computes a hash code for the cluster.
+        /// </summary>
+        /// <returns>Hashcode as an integer.</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #endregion
+
         /// <summary>
         /// Calculates the centroid and other statistics about the cluster.
         /// </summary>
@@ -263,7 +263,7 @@ namespace PNNLOmics.Data.Features
             var net        = new List<double>();
             var mass       = new List<double>();
             var driftTime  = new List<double>();
-        
+
             double  sumNet          = 0;
             double  sumMass         = 0;
             double  sumDrifttime    = 0;
@@ -295,7 +295,7 @@ namespace PNNLOmics.Data.Features
                 sumDrifttime    += feature.DriftTime;
                 minScan          = Math.Min(feature.Scan, minScan);
                 maxScan          = Math.Max(feature.Scan, maxScan);
-            }            
+            }
             Abundance       = maxAbundance;
             AbundanceSum    = sumAbundance;
             ScanEnd         = maxScan;
@@ -328,9 +328,9 @@ namespace PNNLOmics.Data.Features
                         median                  = Convert.ToInt32((numUmCs) / 2);
                         Net      = net[median];
                         DriftTime          = Convert.ToSingle(driftTime[median]);
-                    }                                        
+                    }
                     break;
-                    
+
             }
             if ((numUmCs % 2) == 1)
             {
@@ -372,7 +372,7 @@ namespace PNNLOmics.Data.Features
         #region IFeatureCluster<MSFeatureLight> Members
 
         public void AddChildFeature(MSFeatureLight feature)
-        {            
+        {
             feature.SetParentFeature(this);
             MsFeatures.Add(feature);
         }

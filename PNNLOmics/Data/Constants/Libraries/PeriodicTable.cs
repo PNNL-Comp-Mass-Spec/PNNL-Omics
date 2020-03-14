@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
@@ -48,7 +45,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -90,7 +87,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_Li(ref elementSymbolList, ref elementList);
@@ -131,7 +128,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_Be(ref elementSymbolList, ref elementList);
@@ -166,7 +163,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_B(ref elementSymbolList, ref elementList);
@@ -207,7 +204,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_C(ref elementSymbolList, ref elementList);
@@ -248,7 +245,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -290,7 +287,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_O(ref elementSymbolList, ref elementList);
@@ -337,7 +334,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_F(ref elementSymbolList, ref elementList);
@@ -372,7 +369,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -420,7 +417,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -456,7 +453,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_Mg(ref elementSymbolList, ref elementList);
@@ -503,7 +500,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_Al(ref elementSymbolList, ref elementList);
@@ -538,7 +535,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_Si(ref elementSymbolList, ref elementList);
@@ -585,7 +582,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_P(ref elementSymbolList, ref elementList);
@@ -620,7 +617,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_S(ref elementSymbolList, ref elementList);
@@ -673,7 +670,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_Cl(ref elementSymbolList, ref elementList);
@@ -714,7 +711,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -762,7 +759,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -810,7 +807,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -876,7 +873,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -912,7 +909,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
 
@@ -962,9 +959,9 @@ namespace PNNLOmics.Data.Constants.Libraries
             isotopeNumber = 50;
             isotopeMass = 49.94479;
             isotopeProbability = 0.054;
-            Isotope NewIsotope50 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope50 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope50);
-            
+
             newElement.IsotopeDictionary = newIsotopeDictionary;
             newElement.MassMonoIsotopic = monoIsotopicMass;
             newElement.MassAverage = massAverage; //IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -972,7 +969,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1014,7 +1011,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1068,7 +1065,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1104,7 +1101,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_Fe(ref elementSymbolList, ref elementList);
@@ -1157,7 +1154,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1186,7 +1183,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope59);
             monoIsotopicMass = newIsotopeDictionary[(newElement.Symbol + isotopeNumber).ToString()].Mass;
 
-           
+
             newElement.IsotopeDictionary = newIsotopeDictionary;
             newElement.MassMonoIsotopic = monoIsotopicMass;
             newElement.MassAverage = massAverage; //IUPAC Atomic weights of the elements 2007, M. Wieser, M. Berglund
@@ -1194,7 +1191,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1255,7 +1252,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1297,7 +1294,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1358,7 +1355,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1400,7 +1397,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1461,7 +1458,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1497,7 +1494,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1563,7 +1560,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
 
         }
@@ -1607,7 +1604,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1671,7 +1668,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1713,7 +1710,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1767,7 +1764,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1803,7 +1800,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1863,7 +1860,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1899,7 +1896,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -1969,7 +1966,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2005,7 +2002,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2077,7 +2074,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2114,7 +2111,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2181,7 +2178,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2223,7 +2220,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2275,7 +2272,7 @@ namespace PNNLOmics.Data.Constants.Libraries
             isotopeProbability = 0.2413;
             Isotope NewIsotope112 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope112);
-            
+
             isotopeNumber = 113;
             isotopeMass = 112.9044;
             isotopeProbability = 0.1222;
@@ -2301,7 +2298,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
         }
 
         //PeriodicTable.SetElement_In(ref elementSymbolList, ref elementList);
@@ -2342,7 +2339,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2433,7 +2430,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2475,7 +2472,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2553,7 +2550,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2589,7 +2586,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2674,7 +2671,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2710,7 +2707,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2782,7 +2779,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2824,7 +2821,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2878,7 +2875,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2914,7 +2911,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -2987,7 +2984,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3023,7 +3020,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3095,7 +3092,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3137,7 +3134,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3209,7 +3206,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3246,7 +3243,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3318,7 +3315,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3355,7 +3352,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3421,7 +3418,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3457,7 +3454,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3529,7 +3526,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3571,7 +3568,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3621,13 +3618,13 @@ namespace PNNLOmics.Data.Constants.Libraries
             isotopeNumber = 179;
             isotopeMass = 178.9458;
             isotopeProbability = 0.13629;
-            Isotope NewIsotope179 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope179 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope179);
 
             isotopeNumber = 180;
             isotopeMass = 179.9465;
             isotopeProbability = 0.351;
-            Isotope NewIsotope180 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope180 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope180);
 
             newElement.IsotopeDictionary = newIsotopeDictionary;
@@ -3637,7 +3634,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3679,7 +3676,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
         //PeriodicTable.SetElement_W(ref elementSymbolList, ref elementList);
@@ -3738,7 +3735,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3780,7 +3777,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3830,19 +3827,19 @@ namespace PNNLOmics.Data.Constants.Libraries
             isotopeNumber = 189;
             isotopeMass = 188.9581;
             isotopeProbability = 0.161;
-            Isotope NewIsotope189 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope189 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope189);
 
             isotopeNumber = 190;
             isotopeMass = 189.9584;
             isotopeProbability = 0.264;
-            Isotope NewIsotope190 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope190 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope190);
 
             isotopeNumber = 192;
             isotopeMass = 191.9615;
             isotopeProbability = 0.41;
-            Isotope NewIsotope192 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope192 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope192);
 
             newElement.IsotopeDictionary = newIsotopeDictionary;
@@ -3852,7 +3849,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3894,7 +3891,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3944,13 +3941,13 @@ namespace PNNLOmics.Data.Constants.Libraries
             isotopeNumber = 196;
             isotopeMass = 195.9649;
             isotopeProbability = 0.253;
-            Isotope NewIsotope196 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope196 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope196);
 
             isotopeNumber = 198;
             isotopeMass = 197.9679;
             isotopeProbability = 0.072;
-            Isotope NewIsotope198 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope198 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope198);
 
             newElement.IsotopeDictionary = newIsotopeDictionary;
@@ -3960,7 +3957,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -3996,7 +3993,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4046,19 +4043,19 @@ namespace PNNLOmics.Data.Constants.Libraries
             isotopeNumber = 201;
             isotopeMass = 200.9703;
             isotopeProbability = 0.132;
-            Isotope NewIsotope201 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope201 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope201);
 
             isotopeNumber = 202;
             isotopeMass = 201.9706;
             isotopeProbability = 0.298;
-            Isotope NewIsotope202 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope202 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope202);
 
             isotopeNumber = 204;
             isotopeMass = 203.9735;
             isotopeProbability = 0.0685;
-            Isotope NewIsotope204 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability); 
+            Isotope NewIsotope204 = new Isotope(isotopeNumber, isotopeMass, isotopeProbability);
             newIsotopeDictionary.Add(newElement.Symbol + isotopeNumber.ToString(), NewIsotope204);
 
             newElement.IsotopeDictionary = newIsotopeDictionary;
@@ -4068,7 +4065,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4110,7 +4107,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4164,7 +4161,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4200,7 +4197,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4236,7 +4233,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4272,7 +4269,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4309,7 +4306,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4345,7 +4342,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4381,7 +4378,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4417,7 +4414,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4453,7 +4450,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4489,7 +4486,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4537,7 +4534,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4573,7 +4570,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4610,7 +4607,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4646,7 +4643,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4682,7 +4679,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4718,7 +4715,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4754,7 +4751,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4790,7 +4787,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4826,7 +4823,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4862,7 +4859,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4898,7 +4895,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4934,7 +4931,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
 
@@ -4970,7 +4967,7 @@ namespace PNNLOmics.Data.Constants.Libraries
 
             elementList.Add(newElement);
             elementSymbolList.Add(newElement.Symbol);
-            
+
 
         }
     }

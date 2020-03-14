@@ -11,7 +11,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// moniosopic mass of the matter
+        /// monoisotopic mass of the matter
         /// </summary>
         public double MassMonoIsotopic { get; set; }
 

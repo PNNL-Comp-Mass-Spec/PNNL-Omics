@@ -51,25 +51,6 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlgorithmTests\Alignment\DriftTimeAlignmentTest.cs" />
-    <Compile Include="AlgorithmTests\Alignment\LCMS_LCAlignment.cs" />
-    <Compile Include="AlgorithmTests\Alignment\SimilarityScoreTest.cs" />
-    <Compile Include="AlgorithmTests\Distance\WeightedDistanceCalculatorTests.cs" />
-    <Compile Include="AlgorithmTests\Distance\DistanceCalculatorTests.cs" />
-    <Compile Include="AlgorithmTests\FeatureClustering\UMCAverageLinkageTests.cs" />
-    <Compile Include="AlgorithmTests\FeatureClustering\PrimsTest.cs" />
-    <Compile Include="AlgorithmTests\FeatureClustering\UMCClusterReprocessingTests.cs" />
-    <Compile Include="AlgorithmTests\FeatureClustering\UMCSingleLinkageClusterParametersTest.cs" />
-    <Compile Include="AlgorithmTests\PeakDetectorTests\PeakDetectorTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AlgorithmTests\Regression\LoessRegression.cs" />
-    <Compile Include="AlgorithmTests\Solvers\NumericalIntegrationTests.cs" />
-    <Compile Include="AlgorithmTests\Solvers\LevenburgMarquadtSolverTests.cs" />
-    <Compile Include="AlgorithmTests\Solvers\SolverTestBase.cs" />
-    <Compile Include="AlgorithmTests\Solvers\XicAnnotationTests.cs" />
-    <Compile Include="AlgorithmTests\SpectralComparisons\SpectralComparisonTest.cs" />
-    <Compile Include="AlgorithmTests\STACTests\STACTests.cs" />
     <Compile Include="ConstantsTests\ConstantsTest.cs" />
     <Compile Include="DataTests\Features\UMCClusterLightTests.cs" />
     <Compile Include="DataTests\Features\UMCClusterTests.cs" />
@@ -92,10 +73,7 @@
       <Name>PNNLOmics</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FeatureFinderTests\" />
-    <Folder Include="StatisticsTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>

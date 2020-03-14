@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 
-/// <example>
-/// dictionary implementation
-/// Dictionary<string, Compound> OligosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
-/// double OSmass = OligosacchaideDictionary["Hex"].MonoIsotopicMass;
-/// string OSname = OligosacchaideDictionary["Hex"].Name;
-/// string OSformula = OligosacchaideDictionary["Hex"].ChemicalFormula;
-///
-/// one line implementaiton
-/// double OSmass2 = MonosaccharideConstantsStaticLibrary.GetMonoisotopicMass("Hex");
-/// string OSname2 = MonosaccharideConstantsStaticLibrary.GetName("Hex");
-/// string OSformula2 = MonosaccharideConstantsStaticLibrary.GetFormula("Hex");
-///
-/// double mass3 = MonosaccharideStaticLibrary.GetMonoisotopicMass(SelectMonosaccharide.NeuraminicAcid);
-/// </example>
+// <example>
+// dictionary implementation
+// Dictionary<string, Compound> OligosacchaideDictionary = MonosaccharideLibrary.LoadMonosaccharideData();
+// double OSmass = OligosacchaideDictionary["Hex"].MonoIsotopicMass;
+// string OSname = OligosacchaideDictionary["Hex"].Name;
+// string OSformula = OligosacchaideDictionary["Hex"].ChemicalFormula;
+//
+// one line implementaiton
+// double OSmass2 = MonosaccharideConstantsStaticLibrary.GetMonoisotopicMass("Hex");
+// string OSname2 = MonosaccharideConstantsStaticLibrary.GetName("Hex");
+// string OSformula2 = MonosaccharideConstantsStaticLibrary.GetFormula("Hex");
+//
+// double mass3 = MonosaccharideStaticLibrary.GetMonoisotopicMass(SelectMonosaccharide.NeuraminicAcid);
+// </example>
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
@@ -21,7 +21,7 @@ namespace PNNLOmics.Data.Constants.Libraries
     /// Sets up the monosaccharide compound library and calculates its monoisotopic masses from its elemental composition
     /// </summary>
     public class MonosaccharideLibrary : MatterLibrary<Compound, MonosaccharideName>
-    {        
+    {
         //TODO: SCOTT - CR - update XML comments, this is not accurate anymore.
         /// <summary>
         /// This is a Class designed to create Compound objects from the elements.
@@ -29,7 +29,7 @@ namespace PNNLOmics.Data.Constants.Libraries
         /// </summary>
         public override void LoadLibrary()
         {
-            //TODO: SCOTT - CR - remove and commented code that is old 
+            //TODO: SCOTT - CR - remove and commented code that is old
 
             m_symbolToCompoundMap = new Dictionary<string, Compound>();
             m_enumToSymbolMap = new Dictionary<MonosaccharideName, string>();

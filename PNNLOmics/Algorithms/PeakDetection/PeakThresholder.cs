@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PNNLOmics.Data;
 using PNNLOmics.Data.Peaks;
 
 namespace PNNLOmics.Algorithms.PeakDetection
@@ -29,7 +28,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         {
             Parameters = parameters;
         }
-        
+
         /// <summary>
         /// calculate mean of the noise (aka mean of the data) then calculate the standard deviation of the noise (aks data)
         /// if peak is above Xsigma+mean reject
@@ -59,7 +58,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                 double averagePeakNoise = 0;//average of all data.  usefull if noise dominates
                 double averageBackgroundNoise = 0;//average of lower minima = baseline
                 double averageNoise = 0; //average between the the lower and higher minima.  this means that half the minima are higher and half the minima are lower.  should also work well on large numbers of points
-                
+
                 for (var i = 0; i < numPoints; i++)
                 {
                     //averageShoulderNoise += peakShoulderNoise[i];
@@ -81,11 +80,11 @@ namespace PNNLOmics.Algorithms.PeakDetection
                 double MAD;
                 double stdevMAD;
                 CalculateDeviation(peakList, numPoints, averageNoise, out stdevSumDeviationsSquared, out standardDevAllSignal, out MAD, out stdevMAD);
-                
+
                 #endregion
                 stdevMAD = MAD * 1.4826;
                 standardDevAllSignal = Math.Sqrt(stdevSumDeviationsSquared / (numPoints - 1));
-                
+
                 for (var i = 0; i < numPoints; i++)
                 {
                     var thresholdedPeak = new ProcessedPeak();
@@ -104,7 +103,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
                         thresholdedPeak.SignalToNoiseGlobal = signaltoNoise;
                         thresholdedPeak.SignalToNoiseLocalHighestMinima = signaltoShoulder;
                         thresholdedPeak.SignalToBackground = signaltoBackground;
-                       
+
                         resultListThresholded.Add(thresholdedPeak);// parameters.ThresholdedPeakData.Add(thresholdedPeak);
                     }
                 }

@@ -2,9 +2,9 @@
 namespace PNNLOmics.Algorithms.PeakDetection
 {
     /// <summary>
-    /// paramaters used for calculating a threshold
+    /// Parameters used for calculating a threshold
     /// </summary>
- 
+
     public class PeakThresholderParameters
     {
         /// <summary>
@@ -13,7 +13,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         public bool isDataThresholded { get; set; }
 
         /// <summary>
-        /// Gets or sets the ratio of highest piont at the peak apex to the lowet peak valley.
+        /// Gets or sets the ratio of highest point at the peak apex to the lowest peak valley.
         /// </summary>
         public float SignalToShoulderCuttoff { get; set; }
 
@@ -36,15 +36,14 @@ namespace PNNLOmics.Algorithms.PeakDetection
         }
 
         /// <summary>
-        /// initializes the default values 
+        /// initializes the default values
         /// </summary>
         public void Clear()
         {
             isDataThresholded = false;
             SignalToShoulderCuttoff = 3;
             ThresholdMethod = "AveragePlusSigma";
-            DataNoiseType = InstrumentDataNoiseType.Standard;     
+            DataNoiseType = InstrumentDataNoiseType.Standard;
         }
     }
 }
- 

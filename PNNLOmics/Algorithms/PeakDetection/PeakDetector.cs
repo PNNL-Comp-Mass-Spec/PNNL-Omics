@@ -9,7 +9,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
     public abstract class PeakDetector
     {
         /// <summary>
-        /// Processes a list of XYdata and returns a set of peaks.
+        /// Processes a list of XYData and returns a set of peaks.
         /// </summary>
         /// <param name="rawXYData">List of XY data.</param>
         /// <returns>List of peaks.</returns>

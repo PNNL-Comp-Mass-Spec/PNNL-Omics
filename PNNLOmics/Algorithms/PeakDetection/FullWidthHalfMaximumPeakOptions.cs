@@ -1,17 +1,17 @@
 ﻿/*
- * 
- * Reviewed 
+ *
+ * Reviewed
  *  1-18-2011
- * 
+ *
  */
 
 namespace PNNLOmics.Algorithms.PeakDetection
 {
     /// <summary>
     /// Sets the options for finding the FWHM of the data.  Unassigned is the default
-    /// Interpolated occures when there is enough data to interpolate betwen 2 detected data points.  this works well for resolved peaks
+    /// Interpolated occurs when there is enough data to interpolate between 2 detected data points.  this works well for resolved peaks
     /// Linear Extrapolation.  When there are not enough data points N=2, project a linear line to get the FWHM
-    /// Quadratic Extrapolation.  When ther are more than 2 points on a side we can fit a curve.  The curve is fit to the full peak, not just the side to prevent convex curves
+    /// Quadratic Extrapolation.  When there are more than 2 points on a side we can fit a curve.  The curve is fit to the full peak, not just the side to prevent convex curves
     /// </summary>
     public enum FullWidthHalfMaximumPeakOptions
     {

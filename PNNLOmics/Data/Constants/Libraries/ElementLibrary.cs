@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using PNNLOmics.Data.Constants;
 using PNNLOmics.Utilities;
 
-/// <example>
-/// dictionary implementation
-/// Dictionary<string,ElementObject> ElementDictionary = ElementLibrary.LoadElementData();
-/// double elementC12Mass = ElementDictionary["C"].IsotopeDictionary["C12"].Mass;
-/// double elementC13Mass = ElementDictionary["C"].IsotopeDictionary["C13"].Mass;
-/// double elementC12Abund = ElementDictionary["C"].IsotopeDictionary["C12"].NaturalAbundance;
-/// double elementC13Abund = ElementDictionary["C"].IsotopeDictionary["C13"].NaturalAbundance;
-/// double elemetMonoMass = ElementDictionary["C"].MonoIsotopicMass;
-/// string elementName = ElementDictionary["C"].Name;
-/// string elementSymbol = ElementDictionary["C"].Symbol;
-///
-/// One line implementation
-/// double elementMonoMass = ElementConstantsStaticLibrary.GetMonoisotopicMass("C");
-/// string elementName = ElementConstantsStaticLibrary.GetName("C");
-/// string elementSymbol = ElementConstantsStaticLibrary.GetSymbol("C");
-///
-/// double elementMass3 = ElementStaticLibrary.GetMonoisotopicMass(SelectElement.Hydrogen);
-/// </example>
+// <example>
+// dictionary implementation
+// Dictionary<string,ElementObject> ElementDictionary = ElementLibrary.LoadElementData();
+// double elementC12Mass = ElementDictionary["C"].IsotopeDictionary["C12"].Mass;
+// double elementC13Mass = ElementDictionary["C"].IsotopeDictionary["C13"].Mass;
+// double elementC12Abund = ElementDictionary["C"].IsotopeDictionary["C12"].NaturalAbundance;
+// double elementC13Abund = ElementDictionary["C"].IsotopeDictionary["C13"].NaturalAbundance;
+// double elemetMonoMass = ElementDictionary["C"].MonoIsotopicMass;
+// string elementName = ElementDictionary["C"].Name;
+// string elementSymbol = ElementDictionary["C"].Symbol;
+//
+// One line implementation
+// double elementMonoMass = ElementConstantsStaticLibrary.GetMonoisotopicMass("C");
+// string elementName = ElementConstantsStaticLibrary.GetName("C");
+// string elementSymbol = ElementConstantsStaticLibrary.GetSymbol("C");
+//
+// double elementMass3 = ElementStaticLibrary.GetMonoisotopicMass(SelectElement.Hydrogen);
+// </example>
+
 namespace PNNLOmics.Data.Constants.Libraries
 {
     /// <summary>

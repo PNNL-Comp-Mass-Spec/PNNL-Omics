@@ -11,7 +11,7 @@ namespace PNNLOmics.Data.Constants
         {
 
             /// <summary>
-            /// returns the path when it has a drive letter or a network path when it has a \\ infront
+            /// returns the path when it has a drive letter or a network path when it has a \\ in front
             /// </summary>
             /// <param name="pPath"></param>
             /// <returns></returns>

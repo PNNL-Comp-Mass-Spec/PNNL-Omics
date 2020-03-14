@@ -5,52 +5,52 @@ using PNNLOmics.Annotations;
 
 namespace PNNLOmics.Data.Features
 {
-	/// <summary>
-	/// Basic representation of a group of UMC's observed across datasets.
-	/// </summary>
+    /// <summary>
+    /// Basic representation of a group of UMC's observed across datasets.
+    /// </summary>
     public class UMCClusterLight :  FeatureLight,
                                     IFeatureCluster<UMCLight>
-	{
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		public UMCClusterLight()	
-		{            
-            UmcList = new List<UMCLight>();         
+    {
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public UMCClusterLight()
+        {
+            UmcList = new List<UMCLight>();
             MsMsCount = 0;
             IdentifiedSpectraCount = 0;
-		}
+        }
 
-	    /// <summary>
-	    /// Creates a UMC Cluster from the umc, while also connecting them together.
+        /// <summary>
+        /// Creates a UMC Cluster from the umc, while also connecting them together.
         /// </summary>
         [UsedImplicitly]
-	    public UMCClusterLight(UMCLight umc)
-        {            
-            var umcs  = new List<UMCLight>();            
-            
+        public UMCClusterLight(UMCLight umc)
+        {
+            var umcs  = new List<UMCLight>();
+
             UmcList				= umcs;
-            umc.UmcCluster		= this;             
+            umc.UmcCluster		= this;
             Abundance			= umc.Abundance;
             ChargeState			= umc.ChargeState;
             DriftTime			= umc.DriftTime;
             Id					= umc.Id;
             Net       = umc.NetAligned;
-            MassMonoisotopic    = umc.MassMonoisotopicAligned;                        
+            MassMonoisotopic    = umc.MassMonoisotopicAligned;
             MsMsCount           = umc.MsMsCount;
-            AddChildFeature(umc);            
-        }		
+            AddChildFeature(umc);
+        }
 
         /// <summary>
-        /// Copy constructor. 
+        /// Copy constructor.
         /// </summary>
         /// <param name="cluster"></param>
         [UsedImplicitly]
         public UMCClusterLight(UMCClusterLight cluster)
-        {            
+        {
             var umcs     = new List<UMCLight>();
             umcs.AddRange(cluster.UmcList);
-            UmcList				    = umcs;            
+            UmcList				    = umcs;
             Abundance			    = cluster.Abundance;
             ChargeState			    = cluster.ChargeState;
             DriftTime			    = cluster.DriftTime;
@@ -105,44 +105,44 @@ namespace PNNLOmics.Data.Features
             get;
             private set;
         }
-        
-		/// <summary>
-		/// Gets or sets the list of UMC's that comprise this cluster.
-		/// </summary>
-		public List<UMCLight> UmcList { get; set; }
 
-		/// <summary>
-		/// Calculates the centroid and other statistics about the cluster.
-		/// </summary>
-		/// <param name="centroid"></param>
-		public void CalculateStatistics(ClusterCentroidRepresentation centroid)
-		{
-			if (UmcList == null)
-				throw new NullReferenceException("The UMC list was not set to an object reference.");
+        /// <summary>
+        /// Gets or sets the list of UMC's that comprise this cluster.
+        /// </summary>
+        public List<UMCLight> UmcList { get; set; }
 
-			if (UmcList.Count < 1)
-				throw new Exception("No data to compute statistics over.");
+        /// <summary>
+        /// Calculates the centroid and other statistics about the cluster.
+        /// </summary>
+        /// <param name="centroid"></param>
+        public void CalculateStatistics(ClusterCentroidRepresentation centroid)
+        {
+            if (UmcList == null)
+                throw new NullReferenceException("The UMC list was not set to an object reference.");
 
-			// Lists for holding onto masses etc.
-			var net = new List<double>();
-			var mass = new List<double>();
-			var driftTime = new List<double>();
+            if (UmcList.Count < 1)
+                throw new Exception("No data to compute statistics over.");
 
-			// Histogram of representative charge states
-			var chargeStates = new Dictionary<int, int>();
+            // Lists for holding onto masses etc.
+            var net = new List<double>();
+            var mass = new List<double>();
+            var driftTime = new List<double>();
 
-			double sumNet = 0;
-			double sumMass = 0;
-			double sumDrifttime = 0;
+            // Histogram of representative charge states
+            var chargeStates = new Dictionary<int, int>();
+
+            double sumNet = 0;
+            double sumMass = 0;
+            double sumDrifttime = 0;
 
             var datasetMembers = new Dictionary<int,int>();
             MemberCount = UmcList.Count;
 
-			foreach (var umc in UmcList)
-			{
+            foreach (var umc in UmcList)
+            {
 
-				if (umc == null)
-					throw new NullReferenceException("A UMC was null when trying to calculate cluster statistics.");
+                if (umc == null)
+                    throw new NullReferenceException("A UMC was null when trying to calculate cluster statistics.");
 
                 if (!datasetMembers.ContainsKey(umc.GroupId))
                 {
@@ -150,60 +150,60 @@ namespace PNNLOmics.Data.Features
                 }
                 datasetMembers[umc.GroupId]++;
 
-				net.Add(umc.Net);
-				mass.Add(umc.MassMonoisotopicAligned);
-				driftTime.Add(umc.DriftTime);
+                net.Add(umc.Net);
+                mass.Add(umc.MassMonoisotopicAligned);
+                driftTime.Add(umc.DriftTime);
 
-				sumNet		 += umc.Net;
-				sumMass		 += umc.MassMonoisotopicAligned;
-				sumDrifttime += umc.DriftTime;
+                sumNet		 += umc.Net;
+                sumMass		 += umc.MassMonoisotopicAligned;
+                sumDrifttime += umc.DriftTime;
 
-				// Calculate charge states.
-				if (!chargeStates.ContainsKey(umc.ChargeState))
-				{
-					chargeStates.Add(umc.ChargeState, 1);
-				}
-				else
-				{
-					chargeStates[umc.ChargeState]++;
-				}
-			}
-            
+                // Calculate charge states.
+                if (!chargeStates.ContainsKey(umc.ChargeState))
+                {
+                    chargeStates.Add(umc.ChargeState, 1);
+                }
+                else
+                {
+                    chargeStates[umc.ChargeState]++;
+                }
+            }
+
             DatasetMemberCount = datasetMembers.Keys.Count;
 
-			var numUmCs = UmcList.Count;
+            var numUmCs = UmcList.Count;
 
-		    // Calculate the centroid of the cluster.
-			switch (centroid)
-			{
-				case ClusterCentroidRepresentation.Mean:
-					MassMonoisotopic   = (sumMass / numUmCs);
-					Net      = (sumNet / numUmCs);
-					DriftTime          = Convert.ToSingle(sumDrifttime / numUmCs);
-					break;
-				case ClusterCentroidRepresentation.Median:
-					net.Sort();
-					mass.Sort();
-					driftTime.Sort();
+            // Calculate the centroid of the cluster.
+            switch (centroid)
+            {
+                case ClusterCentroidRepresentation.Mean:
+                    MassMonoisotopic   = (sumMass / numUmCs);
+                    Net      = (sumNet / numUmCs);
+                    DriftTime          = Convert.ToSingle(sumDrifttime / numUmCs);
+                    break;
+                case ClusterCentroidRepresentation.Median:
+                    net.Sort();
+                    mass.Sort();
+                    driftTime.Sort();
 
-					// If the median index is odd.  Then take the average.
-			        int median;
-			        if ((numUmCs % 2) == 0)
-					{
-						median                  = Convert.ToInt32(numUmCs / 2);
-						MassMonoisotopic   = (mass[median] + mass[median - 1]) / 2;
-						Net      = (net[median] + net[median - 1]) / 2;
-						DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
-					}
-					else
-					{
-						median                  = Convert.ToInt32((numUmCs) / 2);
-						MassMonoisotopic   = mass[median];
-						Net      = net[median];
-						DriftTime          = Convert.ToSingle(driftTime[median]);
-					}
-					break;
-			}
+                    // If the median index is odd.  Then take the average.
+                    int median;
+                    if ((numUmCs % 2) == 0)
+                    {
+                        median                  = Convert.ToInt32(numUmCs / 2);
+                        MassMonoisotopic   = (mass[median] + mass[median - 1]) / 2;
+                        Net      = (net[median] + net[median - 1]) / 2;
+                        DriftTime          = Convert.ToSingle((driftTime[median] + driftTime[median - 1]) / 2);
+                    }
+                    else
+                    {
+                        median                  = Convert.ToInt32((numUmCs) / 2);
+                        MassMonoisotopic   = mass[median];
+                        Net      = net[median];
+                        DriftTime          = Convert.ToSingle(driftTime[median]);
+                    }
+                    break;
+            }
 
 
             var distances = new List<double>();
@@ -221,7 +221,7 @@ namespace PNNLOmics.Data.Features
                 massDeviationSum += (massValue*massValue);
                 netDeviationSum += (netValue * netValue);
 
-                var distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));               
+                var distance = Math.Sqrt((netValue * netValue) + (massValue * massValue) + (driftValue * driftValue));
                 distances.Add(distance);
                 distanceSum += distance;
             }
@@ -240,67 +240,67 @@ namespace PNNLOmics.Data.Features
                 distances.Sort();
                 Tightness = Convert.ToSingle(distances[mid]);
             }
-			// Calculate representative charge state as the mode.
-			var maxCharge = int.MinValue;
-			foreach (var charge in chargeStates.Keys)
-			{
-				if (maxCharge == int.MinValue || chargeStates[charge] > chargeStates[maxCharge])
-				{
-					maxCharge = charge;
-				}
-			}
-			ChargeState = maxCharge;
-		}
+            // Calculate representative charge state as the mode.
+            var maxCharge = int.MinValue;
+            foreach (var charge in chargeStates.Keys)
+            {
+                if (maxCharge == int.MinValue || chargeStates[charge] > chargeStates[maxCharge])
+                {
+                    maxCharge = charge;
+                }
+            }
+            ChargeState = maxCharge;
+        }
 
-		#region Overriden Base Methods
-		public override string ToString()
-		{
-			var size = 0;
-			if (UmcList != null)
-			{
-				size = UmcList.Count;
-			}
-			return "UMC Cluster (size = " + size + ") " + base.ToString();
-		}
-		/// <summary>
-		/// Compares two objects' values to each other.
-		/// </summary>
-		/// <param name="obj">Object to compare to.</param>
-		/// <returns>True if similar, False if not.</returns>
-		public override bool Equals(object obj)
-		{
-			if (obj == null)
-				return false;
+        #region Overriden Base Methods
+        public override string ToString()
+        {
+            var size = 0;
+            if (UmcList != null)
+            {
+                size = UmcList.Count;
+            }
+            return "UMC Cluster (size = " + size + ") " + base.ToString();
+        }
+        /// <summary>
+        /// Compares two objects' values to each other.
+        /// </summary>
+        /// <param name="obj">Object to compare to.</param>
+        /// <returns>True if similar, False if not.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
 
-			var cluster = obj as UMCClusterLight;
-			if (cluster == null)
-				return false;
+            var cluster = obj as UMCClusterLight;
+            if (cluster == null)
+                return false;
 
-			var isBaseEqual = base.Equals(cluster);
-			if (!isBaseEqual)
-				return false;
+            var isBaseEqual = base.Equals(cluster);
+            if (!isBaseEqual)
+                return false;
 
-			if (UmcList == null && cluster.UmcList != null)
-				return false;
-            
-			if (UmcList != null && cluster.UmcList == null)
-				return false;
+            if (UmcList == null && cluster.UmcList != null)
+                return false;
 
-			if (UmcList != null && (cluster.UmcList != null && UmcList.Count != cluster.UmcList.Count))
-				return false;
+            if (UmcList != null && cluster.UmcList == null)
+                return false;
 
-		    return UmcList != null && UmcList.Select(umc => cluster.UmcList.FindIndex(x => x.Equals(umc))).All(index => index >= 0);
-		}
-		/// <summary>
-		/// Computes a hash code for the cluster.
-		/// </summary>
-		/// <returns>Hashcode as an integer.</returns>
-		public override int GetHashCode()
-		{
-			return base.GetHashCode();
-		}
-		#endregion      
-    
+            if (UmcList != null && (cluster.UmcList != null && UmcList.Count != cluster.UmcList.Count))
+                return false;
+
+            return UmcList != null && UmcList.Select(umc => cluster.UmcList.FindIndex(x => x.Equals(umc))).All(index => index >= 0);
+        }
+        /// <summary>
+        /// Computes a hash code for the cluster.
+        /// </summary>
+        /// <returns>Hashcode as an integer.</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
+
         #region IFeatureCluster<UMCLight> Members
 
         public void AddChildFeature(UMCLight feature)

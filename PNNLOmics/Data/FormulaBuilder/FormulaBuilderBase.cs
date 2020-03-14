@@ -14,7 +14,7 @@ namespace PNNLOmics.Data.FormulaBuilder
 		public abstract Dictionary<string, int> ConvertToMolecularFormula(string inputSequence);
 
 		/// <summary>
-		/// Converts a formula into a series of keyvaluepairs of element and count
+		/// Converts a formula into a series of KeyValue pairs of element and count
 		/// </summary>
 		/// <param name="tempFormula"></param>
 		/// <returns></returns>

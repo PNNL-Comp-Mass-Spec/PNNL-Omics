@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 
-/// <example>
-/// dictionarty implementation
-/// Dictionary<string, Compound> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
-/// double CRMass = CrossRingDictionary["crfNeu5Ac_03_X1"].MonoIsotopicMass;
-/// string crformula = CrossRingDictionary["crfNeu5Ac_03_X1"].ChemicalFormula;
-/// string CRName = CrossRingDictionary["crfNeu5Ac_03_X1"].Name;
-///
-/// one line implementation
-/// double CRMass2 = CrossRingConstantsStaticLibrary.GetMonoisotopicMass("crfNeu5Ac_03_X1");
-/// string CRFormula2 = CrossRingConstantsStaticLibrary.GetFormula("crfNeu5Ac_03_X1");
-/// string CRName2 = CrossRingConstantsStaticLibrary.GetName("crfNeu5Ac_03_X1");
-///
-/// double mass2 = CrossRingStaticLibrary.GetMonoisotopicMass(SelectCrossRing.CRFHex_02_A2);
-/// </example>
+// <example>
+// Dictionary implementation
+// Dictionary<string, Compound> CrossRingDictionary = CrossRingLibrary.LoadCrossRingData();
+// double CRMass = CrossRingDictionary["crfNeu5Ac_03_X1"].MonoIsotopicMass;
+// string crformula = CrossRingDictionary["crfNeu5Ac_03_X1"].ChemicalFormula;
+// string CRName = CrossRingDictionary["crfNeu5Ac_03_X1"].Name;
+//
+// one line implementation
+// double CRMass2 = CrossRingConstantsStaticLibrary.GetMonoisotopicMass("crfNeu5Ac_03_X1");
+// string CRFormula2 = CrossRingConstantsStaticLibrary.GetFormula("crfNeu5Ac_03_X1");
+// string CRName2 = CrossRingConstantsStaticLibrary.GetName("crfNeu5Ac_03_X1");
+//
+// double mass2 = CrossRingStaticLibrary.GetMonoisotopicMass(SelectCrossRing.CRFHex_02_A2);
+// </example>
 
 namespace PNNLOmics.Data.Constants.Libraries
 {
@@ -24,7 +24,7 @@ namespace PNNLOmics.Data.Constants.Libraries
     {
         /// <summary>
         /// This is a Class designed to create cross ring fragments objects of monosaccharides from the elements.
-        /// The cross ring fragments are added to a Dictionary searchable with string keys such as "CRFNeu5Ac_02_X1" for the 
+        /// The cross ring fragments are added to a Dictionary searchable with string keys such as "CRFNeu5Ac_02_X1" for the
         /// X1 cross ring fragment which breaks across the 0 and 2 ring bonds of a Neuraminic acid monosachcaride
         /// </summary>
         public override void LoadLibrary()

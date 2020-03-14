@@ -10,7 +10,7 @@ namespace PNNLOmics.Algorithms.PeakDetection
         /// noise has not been removed
         /// </summary>
         Standard,
-    
+
         /// <summary>
         /// noise has ben thresholded away prior, such as orbitrap
         /// </summary>

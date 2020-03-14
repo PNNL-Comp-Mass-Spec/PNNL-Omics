@@ -20,8 +20,8 @@ namespace PNNLOmics.Data
         /// Default constructor
         /// </summary>
         public MSSpectra ()
-        {                        
-            
+        {
+
             ScanMetaData            = new ScanSummary();
             MsLevel                 = CONST_DEFAULT_MS_LEVEL;
             CollisionType           = CollisionType.None;
@@ -72,16 +72,16 @@ namespace PNNLOmics.Data
         /// </summary>
         public int PrecursorChargeState
         {
-            get; 
-            set; 
+            get;
+            set;
         }
         /// <summary>
         /// Gets or sets the MS Level.
         /// </summary>
         public int MsLevel
         {
-            get; 
-            set; 
+            get;
+            set;
         }
         /// <summary>
         /// Gets or sets the base peak.
@@ -199,7 +199,7 @@ namespace PNNLOmics.Data
                                 PrecursorMz,
                                 PrecursorChargeState,
                                 GroupId);
-            
+
         }
         /// <summary>
         /// Compares two objects' values.
@@ -208,11 +208,7 @@ namespace PNNLOmics.Data
         /// <returns>True if values are the same, false if not.</returns>
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
-
-            var other = obj as MSSpectra;
-            if (other == null)
+            if (!(obj is MSSpectra other))
                 return false;
 
             if (!GroupId.Equals(other.GroupId))
@@ -273,7 +269,7 @@ namespace PNNLOmics.Data
         {
             Peaks          = null;
             PeaksProcessed = null;
-            PrecursorPeak  = null;                        
+            PrecursorPeak  = null;
             ParentSpectra  = null;
 
 

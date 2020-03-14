@@ -1,11 +1,11 @@
 ﻿namespace PNNLOmics.Data
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class FilterRange
     {
-        public FilterRange() : 
+        public FilterRange() :
             this(0, 10000)
         {
         }
@@ -17,6 +17,6 @@
         }
 
         public double Minimum { get; set; }
-        public double Maximum { get; set; }        
+        public double Maximum { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace PNNLOmics.Data
-{    
+{
     /// <summary>
     /// Interface for objects that have access to raw data.
     /// </summary>
@@ -16,7 +16,6 @@ namespace PNNLOmics.Data
         /// <summary>
         /// Gets a list of all raw spectra
         /// </summary>
-        /// <param name="scan"></param>
         /// <param name="group"></param>
         /// <returns></returns>
         List<MSSpectra> GetRawSpectra(int group);
@@ -49,7 +48,7 @@ namespace PNNLOmics.Data
         List<MSSpectra> GetMSMSSpectra(int group, Dictionary<int, int> excludeMap);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="group"></param>
         /// <param name="excludeMap"></param>
@@ -62,8 +61,8 @@ namespace PNNLOmics.Data
         /// </summary>
         /// <param name="path"></param>
         /// <param name="groupId"></param>
-        void AddDataFile(string path, int groupId);  
-    
+        void AddDataFile(string path, int groupId);
+
         /// <summary>
         /// Retrieves the scan data for the given dataset ID (i.e. group ID)
         /// </summary>
