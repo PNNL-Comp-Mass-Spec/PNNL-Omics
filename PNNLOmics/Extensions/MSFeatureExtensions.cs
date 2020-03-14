@@ -8,8 +8,7 @@ namespace PNNLOmics.Extensions
     {
         public static UMCLight GetParentUmc(this MSFeatureLight feature)
         {
-            if (feature == null) return null;
-            return feature.ParentFeature;
+            return feature?.ParentFeature;
         }
 
         /// <summary>
