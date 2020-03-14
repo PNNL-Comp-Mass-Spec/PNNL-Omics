@@ -3,7 +3,7 @@ using System.IO;
 
 namespace PNNLOmicsIO.IO
 {
-	public interface ITextFileReader<T>
+	public interface ITextFileReader<out T>
 	{
 		// TODO: Add XML Comments
 		// TODO: Abstract this out from PNNLOmics entirely
