@@ -18,6 +18,9 @@ namespace PNNLOmicsIO.IO
         /// <param name="msmsFeatures"></param>
         public void Write(string path, IEnumerable<MSSpectra> msmsFeatures)
         {
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
             var baseName = Path.GetFileNameWithoutExtension(path);
             using (TextWriter writer = File.CreateText(path))
             {
@@ -32,6 +35,9 @@ namespace PNNLOmicsIO.IO
         /// <param name="msmsFeatures"></param>
         public void Append(string path, IEnumerable<MSSpectra> msmsFeatures)
         {
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
             var baseName = Path.GetFileNameWithoutExtension(path);
             using (TextWriter writer = File.AppendText(path))
             {
