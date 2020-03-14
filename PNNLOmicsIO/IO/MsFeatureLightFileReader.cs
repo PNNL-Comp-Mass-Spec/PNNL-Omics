@@ -138,16 +138,14 @@ namespace PNNLOmicsIO.IO
                     // DeconTools auto processor was outputting the abundances as doubles...
 
                     var data = columns[columnMapping[ABUNDANCE]];
-                    long longAbundance;
-                    var worked = long.TryParse(data, out longAbundance);
+                    var worked = long.TryParse(data, out var abundanceLong);
                     if (worked)
                     {
-                        feature.Abundance = longAbundance;
+                        feature.Abundance = abundanceLong;
                     }
                     else
                     {
-                        double abundance;
-                        worked = double.TryParse(data, out abundance);
+                        worked = double.TryParse(data, out var abundance);
                         if (worked)
                         {
                             feature.Abundance = Convert.ToInt64(abundance);
