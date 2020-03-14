@@ -1,12 +1,10 @@
 ﻿using System;
-using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
-using PNNLOmics.Algorithms.FeatureMatcher.Data;
-using PNNLOmics.Algorithms.FeatureMatcher.Utilities;
 
 namespace PNNLOmics.Data.Features
 {
-    public sealed class FeatureMatch<TObserved, TTarget> 
+    [Obsolete("Moved to MultiAlignCore")]
+    public sealed class FeatureMatch<TObserved, TTarget>
         where TObserved : FeatureLight, new()
         where TTarget : FeatureLight, new()
     {
@@ -177,13 +175,13 @@ namespace PNNLOmics.Data.Features
         {
             return featureMatch1.m_stacScore.CompareTo(featureMatch2.STACScore);
         };
-		/// <summary>
-		/// Comparison function for sorting by STAC score descending.
-		/// </summary>
-		public static Comparison<FeatureMatch<TObserved, TTarget>> STACComparisonDescending = delegate(FeatureMatch<TObserved, TTarget> featureMatch1, FeatureMatch<TObserved, TTarget> featureMatch2)
-		{
-			return featureMatch2.m_stacScore.CompareTo(featureMatch1.STACScore);
-		};
+        /// <summary>
+        /// Comparison function for sorting by STAC score descending.
+        /// </summary>
+        public static Comparison<FeatureMatch<TObserved, TTarget>> STACComparisonDescending = delegate(FeatureMatch<TObserved, TTarget> featureMatch1, FeatureMatch<TObserved, TTarget> featureMatch2)
+        {
+            return featureMatch2.m_stacScore.CompareTo(featureMatch1.STACScore);
+        };
         #endregion
 
         #region Private functions
@@ -204,7 +202,7 @@ namespace PNNLOmics.Data.Features
         #endregion
 
         #region Public functions
-        
+
         /// <summary>
         /// Add (or replace) features in a match.
         /// </summary>
@@ -219,8 +217,9 @@ namespace PNNLOmics.Data.Features
             m_targetFeature = targetFeature;
             m_useDriftTime = useDriftTime;
             m_shiftedMatch = shiftedMatch;
-			SetDifferenceMatrices();
+            SetDifferenceMatrices();
         }
+
         /// <summary>
         /// Sets the internal flag as to whether the match is within the given tolerances.
         /// </summary>
