@@ -5,9 +5,9 @@ namespace PNNLOmics.Data.Constants
     /// <summary>
     /// Elements, updated spellings 10-8-10
     /// </summary>
-    /// <comment>
+    /// <remarks>
     /// The spelling of sulphur is "sulfur" in the USA and now that IUPAC has decided it has jurisdiction over the British English language (as distinct from American English) as well as nomenclature, so we in the UK are expected to use the f word.
-    /// </comment>
+    /// </remarks>
     public enum ElementName
     {
         Hydrogen,
